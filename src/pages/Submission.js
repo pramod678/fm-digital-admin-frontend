@@ -11,7 +11,7 @@ const Submission = () => {
   console.log("submissionGet",submissionGet);
   useEffect(() => {
     
-    fetch("http://192.168.0.108:5000/api/v1/user/userData", {
+    fetch("http://192.168.103.153:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -39,7 +39,7 @@ const Submission = () => {
   function handlesubmissionGet(userData) {
     console.log(">>>>>>",userData);
     fetch(
-      `http://192.168.0.108:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
+      `http://192.168.103.153:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -50,11 +50,12 @@ const Submission = () => {
         // console.log("releseInfoGetOne ---------", data.data);
         setsubmissionGet(data.data);
       });
-    }
+    };
+    
     // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
     const handleSubmit = async (e) => {
       fetch(
-        "http://192.168.0.108:5000/api/v1/createRelease/submissionPost",
+        "http://192.168.103.153:5000/api/v1/createRelease/submissionPost",
         {
           method: "POST",
           crossDomain: true,
@@ -115,7 +116,7 @@ const Submission = () => {
                </table>
                <div className="box2">
               <img style={{ height:146, width:145}}
-                src={`http://localhost:5000/${submissionGet?.AudioDocument}`}
+                src={`http://localhost:5000/${submissionGet?.ImageDocument}`}
                 type="file"
                 alt="Art Work"
               ></img>

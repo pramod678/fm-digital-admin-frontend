@@ -22,7 +22,7 @@ function ImageUpload() {
     },[])
 
     function uploadImage() {
-        fetch("http://192.168.0.108:5000/upload-image", {
+        fetch("http://192.168.103.153:5000/upload-image", {
             method: "POST",
             crossDomain: true,
             headers: {
@@ -36,7 +36,7 @@ function ImageUpload() {
         }).then((res) => res.json()).then((data) => console.log(data))
     }
     function getImage() {
-        fetch("http://192.168.0.108:5000/get-image", {
+        fetch("http://192.168.103.153:5000/get-image", {
             method: "GET",
         }).then((res) => res.json()).then((data) => {
             console.log(data)

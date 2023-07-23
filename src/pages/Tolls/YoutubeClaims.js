@@ -10,6 +10,12 @@ const YoutubeClaims = () => {
     SelectPolicy: "",
     PasteURL: "",
   });
+  const [releseInfoGetOne, setReleseInfoGetOne] = useState("");
+  const [userData, setUserData] = useState("");
+  const [ProfileLinkinAdudiogGet, setprofileLinkinAdudiogGet] = useState([]);
+  const [youtubeClaimsGetAll, setyoutubeClaimsGetAll] = useState([]);
+  console.log("releseInfoGetOne",releseInfoGetOne);
+  console.log("youtubeClaimsGetAll",youtubeClaimsGetAll);
   const data = [
     {
       id: 1,
@@ -28,9 +34,83 @@ const YoutubeClaims = () => {
       URLs: "hgdhg",
     },
   ];
+  useEffect(() => {
+    fetch("http://192.168.103.153:5000/api/v1/user/userData", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem("token"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUserData(data.data);
+        handleyoutubeClaimsGetAll(data.data)
+        
+        // console.log("dgd",data.data);
+        if (data.data === "token expired") {
+          alert("Token expired login again");
+          localStorage.clear();
+          window.location.href = "./sign-in";
+        }
+      });
+  }, []);
+  ////getuser
+  console.log("userData",userData);
+  function handlereleseInfoGetOne() {
+    // console.log("userData.user_id",userData);
+    fetch(
+      `http://192.168.103.153:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      {
+        method: "GET",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+
+        // console.log("releseInfoGetOne ---------", data.data);
+        setReleseInfoGetOne(data.data);
+        // handleProfileLinkinAdudiogGet(data.data)
+      });
+    };
+ 
+    function handleProfileLinkinAdudiogGet() {
+      // console.log("userData.user_id",userData);
+      fetch(
+        `http://192.168.103.153:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
+        {
+          method: "GET",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+  
+          // console.log("releseInfoGetOne ---------", data.data);
+          setprofileLinkinAdudiogGet(data.data);
+        });
+      };
+      function handleyoutubeClaimsGetAll(userData) {
+        // console.log("userData.user_id",userData);
+        fetch(
+          `http://192.168.103.153:5000/api/v1/tools/youtubeClaimsGetAll/${userData.users_id}`,
+          {
+            method: "GET",
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log("releseInfoGetOne ---------", data.data);
+            setyoutubeClaimsGetAll(data.data);
+          });
+      }
   // console.log("formData",formData);
   const handleSubmit = async (e) => {
-    fetch("http://192.168.0.108:5000/api/v1/tools/youtubeClaimsPost", {
+    fetch("http://192.168.103.153:5000/api/v1/tools/youtubeClaimsPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -44,6 +124,7 @@ const YoutubeClaims = () => {
         Selectplatform: formData.Selectplatform,
         SelectPolicy: formData.SelectPolicy,
         PasteURL: formData.PasteURL,
+        users_id:parseInt(userData.users_id),
       }),
     })
       .then((res) => res.json())
@@ -68,6 +149,7 @@ const YoutubeClaims = () => {
 
           <select
             className="form-select"
+            onClick={handlereleseInfoGetOne}
             onChange={(event) =>
               setformData((prev) => ({
                 ...prev,
@@ -75,8 +157,10 @@ const YoutubeClaims = () => {
               }))
             }
           >
-            <option>Select release</option>
-            <option value="A">A</option>
+                 <option value="">Select an option</option>
+            <option value={releseInfoGetOne.ReleaseTitle}>
+              {releseInfoGetOne.ReleaseTitle}
+            </option>
           </select>
           <label className="lable">Select platform*</label>
 
@@ -90,7 +174,7 @@ const YoutubeClaims = () => {
             }
           >
             <option>Select platform</option>
-            <option value="A">Youtube Content ID</option>
+            <option value="YoutubeContentID">Youtube Content ID</option>
           </select>
           <label className="lable">Paste URL*</label>
 
@@ -108,6 +192,7 @@ const YoutubeClaims = () => {
           <select
             className="form-select"
             // value={formData.PasteURL}
+            onClick={handleProfileLinkinAdudiogGet}
             onChange={(event) =>
               setformData((prev) => ({
                 ...prev,
@@ -115,9 +200,12 @@ const YoutubeClaims = () => {
               }))
             }
           >
-            <option>Select Audio</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
+              <option value="">Select an option</option>
+            {ProfileLinkinAdudiogGet?.map((option) => (
+              <option key={option?._id} value={option?.Title}>
+                {option?.Title}
+              </option>
+            ))}
           </select>
           <label className="lable">Select Policy*</label>
 
@@ -168,17 +256,17 @@ const YoutubeClaims = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
-              <tr className="tr" key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.ReleaseTitle}</td>
-                <td>{item.AudioTitle}</td>
-                <td>{item.Policy}</td>
+            {youtubeClaimsGetAll.map((item,index) => (
+              <tr className="tr" key={item._id}>
+                <td>{index+1}</td>
+                <td>{item.Selectrelease}</td>
+                <td>{item.SelectAudio}</td>
+                <td>{item.SelectPolicy}</td>
                 <td>
                   <input type="checkbox"></input>
                 </td>
-                <td>{item.Date}</td>
-                <td>{item.URLs}</td>
+                <td>{String(item.createdAt).slice(0, 10)}</td>
+                <td>{item.PasteURL}</td>
               </tr>
             ))}
           </tbody>

@@ -1,12 +1,13 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Create-Release.css";
-import { Link,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SideBar from "../components/Sidebar/SideBar";
 import Label from "./Label";
+import { TbRuler } from "react-icons/tb";
 
 const PlatForm = () => {
   const navigate = useNavigate();
-  // const [UPCEAN, setUPCEAN] = useState(null);
+  const [songsInfoGet, setSongsInfoGet] = useState("");
   const [userData, setUserData] = useState("");
   const [formData, setformData] = useState({
     Audio: "",
@@ -82,9 +83,9 @@ const PlatForm = () => {
     },
   ];
   // console.log(formData);
- 
+
   useEffect(() => {
-    fetch("http://192.168.0.108:5000/api/v1/user/userData", {
+    fetch("http://192.168.103.153:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -99,6 +100,7 @@ const PlatForm = () => {
       .then((res) => res.json())
       .then((data) => {
         setUserData(data.data);
+        handlesongsInfoGet(data.data);
         if (data.data === "token expired") {
           alert("Token expired login again");
           localStorage.clear();
@@ -106,11 +108,22 @@ const PlatForm = () => {
         }
       });
   }, []);
+  function handlesongsInfoGet(userData) {
+    fetch(
+      `http://192.168.103.153:5000/api/v1/createRelease/songsInfoGet/${userData.users_id}`,
+      {
+        method: "GET",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("Data ---------", data.data);
+        setSongsInfoGet(data.data);
+        // let items =[]
+      });
+  }
   const handleSubmit = async (e) => {
-    // console.log("DATAUser",data,
-    //   data1,
-    //   data2);
-    fetch("http://192.168.0.108:5000/api/v1/createRelease/platformPost", {
+    fetch("http://192.168.103.153:5000/api/v1/createRelease/platformPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -122,7 +135,7 @@ const PlatForm = () => {
         Audio: data,
         CRBT: data1,
         VideoPlatform: data2,
-        users_id:parseInt(userData.users_id),
+        users_id: parseInt(userData.users_id),
       }),
     })
       .then((res) => res.json())
@@ -130,12 +143,31 @@ const PlatForm = () => {
         console.log(Data, "CreateSuccesfully");
         if (Data.status === "ok") {
           alert("Create Successful");
-          navigate('/Submission')
+          navigate("/Submission");
         } else {
           alert("Something went wrong");
         }
       });
   };
+  console.log("songsInfoGet", songsInfoGet);
+  const checkdCrbt = songsInfoGet?.CallerTuneTiming?.length
+  const checkdVideos = songsInfoGet?.DistributeMusicvideo?.length
+  console.log("checkdCrbt",checkdCrbt,"checkdVideos",checkdVideos);
+  // console.log(data1);
+  // songsInfoGet?.CallerTuneTiming?.length!==0
+  // var checkdCRBT = "";
+  if (checkdCrbt > 0 ) {
+    console.log("44");
+    var checkdCRBT = "true";
+   
+  }
+  // // songsInfoGet?.DistributeMusicvideo?.length!==0
+  // // var checkdVideo = "";
+
+  if (checkdVideos > 0 ) {
+    var checkdVideo = "true";
+    console.log("45");
+  }
   return (
     <div className="mai-nev">
       <Link className="button1" to="/ReleseInfo">
@@ -154,7 +186,17 @@ const PlatForm = () => {
         <SideBar />
       </div>
       <div className="audio-list">
-        <h4 style={{ fontSize: "30px" }}>Audio (120+)</h4>
+        <h4 style={{ fontSize: "30px" }}>
+          Audio (120+)&nbsp;&nbsp;
+          <input
+            type="checkbox"
+            // value={item.company5}
+            onChange={(e) => {
+              setformData(e.target.value);
+            }}
+            checked
+          ></input>
+        </h4>
         <table className="adioTable">
           <tbody>
             {data.map((item) => (
@@ -227,7 +269,15 @@ const PlatForm = () => {
           <h4
             style={{ fontSize: "30px", marginTop: "40px", marginLeft: "-50px" }}
           >
-            CRBT(2+)
+            CRBT(2+)&nbsp;&nbsp;
+            <input
+              type="checkbox"
+              // value={item.company5}
+              onChange={(e) => {
+                setformData(e.target.value);
+              }}
+              checked={checkdCRBT}
+            ></input>
           </h4>
           <table className="adioTable1">
             <tbody>
@@ -240,7 +290,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdCRBT}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company1}</lable>
@@ -252,7 +302,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdCRBT}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company2}</lable>
@@ -264,27 +314,11 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdCRBT}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company3}</lable>
                   </td>
-                  {/* <td>
-                    <input type="checkbox" 
-                                    value={item.company3}
-                    onChange={(e) => {
-                      setformData(e.target.value);
-                    }}></input>&nbsp;&nbsp;
-                    <lable>{item.company4}</lable>
-                  </td> */}
-                  {/* <td>
-                    <input type="checkbox" 
-                                    value={item.company4}
-                    onChange={(e) => {
-                      setformData(e.target.value);
-                    }}></input>&nbsp;&nbsp;
-                    <lable>{item.company5}</lable>
-                  </td> */}
                 </tr>
               ))}
             </tbody>
@@ -294,7 +328,15 @@ const PlatForm = () => {
           <h4
             style={{ fontSize: "30px", marginTop: "40px", marginLeft: "90px" }}
           >
-            Video Platform(8+)
+            Video Platform(8+)&nbsp;&nbsp;
+            <input
+              type="checkbox"
+              // value={item.company5}
+              onChange={(e) => {
+                setformData(e.target.value);
+              }}
+              checked={checkdVideo}
+            ></input>
           </h4>
           <table className="adioTable2">
             <tbody>
@@ -307,7 +349,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdVideo}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company1}</lable>
@@ -319,7 +361,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdVideo}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company2}</lable>
@@ -331,7 +373,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdVideo}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company3}</lable>
@@ -343,7 +385,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdVideo}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company4}</lable>
@@ -355,7 +397,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked
+                      checked={checkdVideo}
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company5}</lable>

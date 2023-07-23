@@ -16,6 +16,7 @@ const SongsInfo = () => {
   const [inputFields, setInputFields] = useState([{ PrimaryArtist: "" }]);
   const [genreGet, setgenreGet] = useState([]);
   const [primaryArtistGet, setprimaryArtistGet] = useState([]);
+  const [ReleseInfoGet, setReleseInfoGet] = useState([]);
   const [featuringArtistGet, setfeaturingArtistGet] = useState([]);
   const [languageGet, setLanguageGet] = useState([]);
   const [userData, setUserData] = useState("");
@@ -41,6 +42,7 @@ const SongsInfo = () => {
     CallerTuneTiming: '',
     DistributeMusicvideo: '',
   });
+  console.log("ReleseInfoGet",ReleseInfoGet);
   const [AudioDocument, setAudioDocument] = useState({ preview: "", data: "" });
   const handleFileChange = (e) => {
     // console.log("handleFileChange");
@@ -53,7 +55,7 @@ const SongsInfo = () => {
   };
 // console.log("AudioDocument.data",AudioDocument.data);
 useEffect(() => {
-  fetch("http://192.168.0.108:5000/api/v1/user/userData", {
+  fetch("http://192.168.103.153:5000/api/v1/user/userData", {
     method: "POST",
     crossDomain: true,
     headers: {
@@ -70,6 +72,7 @@ useEffect(() => {
       setUserData(data.data);
       handlegenregGet()
       handleLanguageGet()
+      handleReleseInfoGet(data.data)
       if (data.data === "token expired") {
         alert("Token expired login again");
         localStorage.clear();
@@ -79,7 +82,7 @@ useEffect(() => {
 }, []);
 function handleArtistGet() {
   fetch(
-    `http://192.168.0.108:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
+    `http://192.168.103.153:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
     {
       method: "GET",
     }
@@ -90,9 +93,22 @@ function handleArtistGet() {
       setprimaryArtistGet(data.data);
     });
 }
+function handleReleseInfoGet() {
+  fetch(
+    `http://192.168.103.153:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+    {
+      method: "GET",
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log("Data ---------", data.data);
+      setReleseInfoGet(data.data);
+    });
+}
 function handleFeacturingGet() {
   fetch(
-    `http://192.168.0.108:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
+    `http://192.168.103.153:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
     {
       method: "GET",
     }
@@ -106,7 +122,7 @@ function handleFeacturingGet() {
 }
 function handlegenregGet() {
   fetch(
-    `http://192.168.0.108:5000/api/v1/createRelease/genreGet`,
+    `http://192.168.103.153:5000/api/v1/createRelease/genreGet`,
     {
       method: "GET",
     }
@@ -119,7 +135,7 @@ function handlegenregGet() {
 }
 function handleLanguageGet() {
   fetch(
-    `http://192.168.0.108:5000/api/v1/createRelease/languageGet`,
+    `http://192.168.103.153:5000/api/v1/createRelease/languageGet`,
     {
       method: "GET",
     }
@@ -153,9 +169,10 @@ function handleLanguageGet() {
     formData.append("CallerTuneTiming", formdata.CallerTuneTiming);
     formData.append("DistributeMusicvideo", formdata.DistributeMusicvideo);
     formData.append("users_id",parseInt(userData.users_id));
+    formData.append("releseInfo_id",parseInt(ReleseInfoGet.releseInfo_id));
     // console.log("formData.Trackversion", formdata.Trackversion);
     const res = await fetch(
-      "http://192.168.0.108:5000/api/v1/createRelease/songsInfoPost",
+      "http://192.168.103.153:5000/api/v1/createRelease/songsInfoPost",
       {
         method: "POST",
         body: formData,
@@ -167,13 +184,17 @@ function handleLanguageGet() {
         if (Data.status === "ok") {
           alert("Create Successful");
           handleClose()
-          // navigate('/Songsinfo')
+          // navigate('/Platform')
         } else {
           // navigate('/Songsinfo')
           alert("Something went wrong");
           // console.log("Something went wrong");
         }
       });
+  };
+  const handleSubmit1 = async (event) => {
+    navigate('/Platform')
+ 
   };
 
   //////add songs function
@@ -566,7 +587,7 @@ console.log(languageGet,"remove");
           </Modal.Footer>
         </Modal>
       </>
-      <Button variant="primary" >
+      <Button variant="primary" onClick={handleSubmit1} >
               Save Changes
             </Button>
     </div>

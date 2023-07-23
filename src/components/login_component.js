@@ -1,14 +1,26 @@
 import React, { Component, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const showToastMessageSucess = () => {
+    toast.success("login Successful !", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+  const showToastMessageError = () => {
+    toast.error("login Invalid !", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  }
   function handleSubmit(e) {
     e.preventDefault();
 
     console.log(email, password);
-    fetch("http://192.168.0.108:5000/api/v1/user/login", {
+    fetch("http://192.168.103.153:5000/api/v1/user/login", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -25,11 +37,15 @@ export default function Login() {
       .then((data) => {
         console.log(data, "userRegister");
         if (data.status ==="ok") {
-          alert("login successful");
+          // alert("login successful");
+          showToastMessageSucess();
           window.localStorage.setItem("token", data.data);
           window.localStorage.setItem("loggedIn", true);
 
           window.location.href = "./userDetails";
+        }else{
+          // alert("Error Invalid");
+          showToastMessageError();
         }
       });
   }
@@ -79,6 +95,7 @@ export default function Login() {
             <button type="submit" className="btn btn-primary">
               Submit
             </button>
+            <ToastContainer />
           </div>
           <p className="forgot-password text-right">
             <a href="/sign-up">Sign Up</a>

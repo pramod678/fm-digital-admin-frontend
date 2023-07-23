@@ -13,7 +13,11 @@ const ProfileLinking = () => {
   });
   const [releseInfoGetOne, setReleseInfoGetOne] = useState("");
   const [userData, setUserData] = useState("");
-  console.log("releseInfoGetOne",releseInfoGetOne);
+  const [ProfileLinkinAdudiogGet, setprofileLinkinAdudiogGet] = useState([]);
+  const [profileLinkingGetAll, setprofileLinkingGetAll] = useState([]);
+  console.log("profileLinkingGetAll", profileLinkingGetAll);
+  // console.log("releseInfoGetOne",releseInfoGetOne);
+  // console.log("ProfileLinkinAdudiogGet",ProfileLinkinAdudiogGet);
   const data = [
     {
       id: 1,
@@ -35,7 +39,7 @@ const ProfileLinking = () => {
     },
   ];
   useEffect(() => {
-    fetch("http://192.168.0.108:5000/api/v1/user/userData", {
+    fetch("http://192.168.103.153:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -50,7 +54,9 @@ const ProfileLinking = () => {
       .then((res) => res.json())
       .then((data) => {
         setUserData(data.data);
-        handlereleseInfoGetOne(data.data)
+        handleprofileLinkingGetAll(data.data);
+        // handlereleseInfoGetOne(data.data)
+
         // console.log("dgd",data.data);
         if (data.data === "token expired") {
           alert("Token expired login again");
@@ -60,23 +66,54 @@ const ProfileLinking = () => {
       });
   }, []);
   ////getuser
-  function handlereleseInfoGetOne(userData) {
+  console.log("userData", userData);
+  function handlereleseInfoGetOne() {
+    // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.0.108:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `http://192.168.103.153:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
     )
       .then((res) => res.json())
       .then((data) => {
-
         // console.log("releseInfoGetOne ---------", data.data);
         setReleseInfoGetOne(data.data);
+        // handleProfileLinkinAdudiogGet(data.data)
       });
-    }
+  }
+
+  function handleProfileLinkinAdudiogGet() {
+    // console.log("userData.user_id",userData);
+    fetch(
+      `http://192.168.103.153:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
+      {
+        method: "GET",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("releseInfoGetOne ---------", data.data);
+        setprofileLinkinAdudiogGet(data.data);
+      });
+  }
+  function handleprofileLinkingGetAll(userData) {
+    // console.log("userData.user_id",userData);
+    fetch(
+      `http://192.168.103.153:5000/api/v1/tools/profileLinkingGetAll/${userData.users_id}`,
+      {
+        method: "GET",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("releseInfoGetOne ---------", data.data);
+        setprofileLinkingGetAll(data.data);
+      });
+  }
   // console.log("formData", formData);
   const handleSubmit = async (e) => {
-    fetch("http://192.168.0.108:5000/api/v1/tools/profileLinkingPost", {
+    fetch("http://192.168.103.153:5000/api/v1/tools/profileLinkingPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -90,6 +127,7 @@ const ProfileLinking = () => {
         Selectplatform: formData.Selectplatform,
         FecebookLink: formData.FecebookLink,
         InstagramLink: formData.InstagramLink,
+        users_id: parseInt(userData.users_id),
       }),
     })
       .then((res) => res.json())
@@ -115,6 +153,7 @@ const ProfileLinking = () => {
           <select
             className="form-select"
             // value={formData.PasteURL}
+            onClick={handlereleseInfoGetOne}
             onChange={(event) =>
               setformData((prev) => ({
                 ...prev,
@@ -122,8 +161,10 @@ const ProfileLinking = () => {
               }))
             }
           >
-                  <option value="">Select an option</option>
-                  <option value={releseInfoGetOne.ReleaseTitle}>{releseInfoGetOne.ReleaseTitle}</option>
+            <option value="">Select an option</option>
+            <option value={releseInfoGetOne.ReleaseTitle}>
+              {releseInfoGetOne.ReleaseTitle}
+            </option>
           </select>
           <label className="lable">Select platform*</label>
 
@@ -158,7 +199,8 @@ const ProfileLinking = () => {
           <label className="lable">Select Audio*</label>
           <select
             className="form-select"
-            value={formData.SelectAudio}
+            // value={formData.SelectAudio}
+            onClick={handleProfileLinkinAdudiogGet}
             onChange={(event) =>
               setformData((prev) => ({
                 ...prev,
@@ -166,8 +208,13 @@ const ProfileLinking = () => {
               }))
             }
           >
-            <option value="Select">Select Audio</option>
-            <option value="Radish">Dynamic</option>
+            <option value="">Select an option</option>
+            {ProfileLinkinAdudiogGet?.map((option) => (
+              <option key={option?._id} value={option?.Title}>
+                {option?.Title}
+              </option>
+            ))}
+            {/* <option value={ProfileLinkinAdudiogGet.map((item) => (item.Title))}>{ProfileLinkinAdudiogGet[0].Title}</option> */}
           </select>
           <label className="lable">Fecebook Link*</label>
 
@@ -216,18 +263,18 @@ const ProfileLinking = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.ReleaseTitle}</td>
-                <td>{item.AudioTitle}</td>
-                <td>{item.Artist}</td>
-                <td>{item.FB}</td>
-                <td>{item.IG}</td>
+            {profileLinkingGetAll?.map((item, index) => (
+              <tr key={item._id}>
+                <td>{index + 1}</td>
+                <td>{item.Selectrelease}</td>
+                <td>{item.SelectAudio}</td>
+                <td>{item.Selectplatform}</td>
+                <td>{item.FecebookLink}</td>
+                <td>{item.InstagramLink}</td>
                 <td>
                   <input type="checkbox"></input>
                 </td>
-                <td>{item.Date}</td>
+                <td>{String(item.createdAt).slice(0, 10)}</td>
               </tr>
             ))}
           </tbody>
