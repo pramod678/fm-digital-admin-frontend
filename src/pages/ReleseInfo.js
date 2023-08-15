@@ -68,7 +68,7 @@ const ReleseInfo = () => {
     // });
   };
   useEffect(() => {
-    fetch("http://192.168.103.153:5000/api/v1/user/userData", {
+    fetch("http://192.168.181.212:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -94,18 +94,18 @@ const ReleseInfo = () => {
   }, []);
   ////getuser
   function handlegenregGet() {
-    fetch(`http://192.168.103.153:5000/api/v1/createRelease/genreGet`, {
+    fetch(`http://192.168.181.212:5000/api/v1/createRelease/genreGet`, {
       method: "GET",
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log("genere ---------", data.data);
+        console.log("genere ---------", data.data);
         setgenreGet(data.data);
       });
   }
   function handlereleseInfoGetOne(userData) {
     fetch(
-      `http://192.168.103.153:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `http://192.168.181.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -120,7 +120,7 @@ const ReleseInfo = () => {
 
   function handleArtistGet() {
     fetch(
-      `http://192.168.103.153:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
+      `http://192.168.181.212:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -133,7 +133,7 @@ const ReleseInfo = () => {
   }
   function handleFeacturingGet() {
     fetch(
-      `http://192.168.103.153:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
+      `http://192.168.181.212:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -148,7 +148,7 @@ const ReleseInfo = () => {
   // console.log("Genre", Genre);
   // console.log("inputFields", inputFields[0].PrimaryArtist);
   const handleSubmit1 = async (e) => {
-    fetch("http://192.168.103.153:5000/api/v1/createRelease/primaryArtistPost", {
+    fetch("http://192.168.181.212:5000/api/v1/createRelease/primaryArtistPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -168,6 +168,7 @@ const ReleseInfo = () => {
         console.log(data, "CreateSuccesfully");
         if (data.status === "ok") {
           showToastMessageSucess();
+          handleClose1()
           // alert("Create Successful");
         } else {
           showToastMessageError();
@@ -177,7 +178,7 @@ const ReleseInfo = () => {
   };
   const handleSubmit2 = async (e) => {
     fetch(
-      "http://192.168.103.153:5000/api/v1/createRelease/featuringArtisttPost",
+      "http://192.168.181.212:5000/api/v1/createRelease/featuringArtisttPost",
       {
         method: "POST",
         crossDomain: true,
@@ -199,6 +200,7 @@ const ReleseInfo = () => {
         console.log(data, "CreateSuccesfully");
         if (data.status === "ok") {
           showToastMessageSucess();
+          handleClose2()
           // alert("Create Successful");
         } else {
           showToastMessageError();
@@ -225,7 +227,7 @@ const ReleseInfo = () => {
     formData.append("Status", parseInt(0));
     formData.append("submission", "");
     const res = await fetch(
-      "http://192.168.103.153:5000/api/v1/createRelease/releseInfoPost",
+      "http://192.168.181.212:5000/api/v1/createRelease/releseInfoPost",
       {
         method: "POST",
         body: formData,
@@ -253,7 +255,18 @@ const ReleseInfo = () => {
     setImageDocument(img);
     // console.log(img,"img");
   };
-
+  var todayDate = new Date();
+  var month = (todayDate.getMonth()+1);
+  var year = todayDate.getUTCFullYear() - 0;
+  var tdate = (todayDate.getDate()+5);
+  if (month < 10) {
+      month = "0" + month
+  }
+  if (tdate < 10) {
+      tdate = "0" + tdate;
+  }
+  var maxDate = year + "-" + month + "-" + tdate;
+  console.log("maxDate",maxDate);
   return (
     <div className="mai-nev">
       <Link className="button1" to="/ReleseInfo">
@@ -395,7 +408,7 @@ const ReleseInfo = () => {
                     <Form.Label>Primary Artist Apple Id</Form.Label>
                     &nbsp;&nbsp;
                     <Form.Control
-                      value={releseInfoformData.AppleId}
+                      // value={releseInfoformData.AppleId}
                       required="true"
                       onChange={(event) =>
                         setReleseInfosetformData((prev) => ({
@@ -410,7 +423,7 @@ const ReleseInfo = () => {
                     <Form.Label>Primary Artist Spotify Id</Form.Label>
                     &nbsp;&nbsp;
                     <Form.Control
-                      value={releseInfoformData.SpotifyId}
+                      // value={releseInfoformData.SpotifyId}
                       required="true"
                       onChange={(event) =>
                         setReleseInfosetformData((prev) => ({
@@ -437,9 +450,11 @@ const ReleseInfo = () => {
             </>
             <button
               style={{
-                position: "absolute",
-                marginTop: "-38px",
-                marginLeft: "26%",
+                position: "relative",
+                top:"-9%",
+                left:"98%",
+                marginLeft: "-8%",
+                // marginTop: "-88px",
               }}
               className="btn btn-outline-success"
               onClick={handleShow1}
@@ -492,7 +507,7 @@ const ReleseInfo = () => {
                     <Form.Label>Featuring Artist Apple Id</Form.Label>
                     &nbsp;&nbsp;
                     <Form.Control
-                      value={releseInfoformData.AppleId}
+                      // value={releseInfoformData.AppleId}
                       required="true"
                       onChange={(event) =>
                         setReleseInfosetformData((prev) => ({
@@ -507,7 +522,7 @@ const ReleseInfo = () => {
                     <Form.Label>Featuring Artist Spotify Id</Form.Label>
                     &nbsp;&nbsp;
                     <Form.Control
-                      value={releseInfoformData.SpotifyId}
+                      // value={releseInfoformData.SpotifyId}
                       required="true"
                       onChange={(event) =>
                         setReleseInfosetformData((prev) => ({
@@ -533,9 +548,11 @@ const ReleseInfo = () => {
             </>
             <button
               style={{
-                position: "absolute",
-                marginTop: "-38px",
-                marginLeft: "26%",
+                position: "relative",
+                // marginTop: "-88px",
+                top:"-9%",
+                left:"98%",
+                marginLeft: "-8%",
               }}
               className="btn btn-outline-success"
               onClick={handleShow2}
@@ -557,7 +574,7 @@ const ReleseInfo = () => {
                 }))
               }
             >
-              <option value="">Select an option</option>
+              <option >Select an option</option>
               {genreGet?.map((option) => (
                 <option key={option?._id} value={option?.genre}>
                   {option?.genre}
@@ -603,6 +620,7 @@ const ReleseInfo = () => {
               className="form-control"
               placeholder="Release Date"
               id="ReleaseDate"
+              min={maxDate}
               value={releseInfoformData.ReleaseDate}
               onChange={(event) =>
                 setReleseInfosetformData((prev) => ({

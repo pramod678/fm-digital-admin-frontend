@@ -85,7 +85,7 @@ const PlatForm = () => {
   // console.log(formData);
 
   useEffect(() => {
-    fetch("http://192.168.103.153:5000/api/v1/user/userData", {
+    fetch("http://192.168.181.212:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -110,7 +110,7 @@ const PlatForm = () => {
   }, []);
   function handlesongsInfoGet(userData) {
     fetch(
-      `http://192.168.103.153:5000/api/v1/createRelease/songsInfoGet/${userData.users_id}`,
+      `http://192.168.181.212:5000/api/v1/createRelease/songsInfoGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -123,7 +123,7 @@ const PlatForm = () => {
       });
   }
   const handleSubmit = async (e) => {
-    fetch("http://192.168.103.153:5000/api/v1/createRelease/platformPost", {
+    fetch("http://192.168.181.212:5000/api/v1/createRelease/platformPost", {
       method: "POST",
       crossDomain: true,
       headers: {
