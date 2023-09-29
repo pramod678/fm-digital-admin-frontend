@@ -14,7 +14,11 @@ const Label = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  //   const [platform, setPlatform] = useState("");
+  const [formdata, setFormdata] = useState({
+    title: "",
+    youtubeURL: "",
+    labelDocument:""
+  });
   const data = [
     {
       id: 1,
@@ -29,10 +33,85 @@ const Label = () => {
       Action: "jhjdshjhsj",
     },
   ];
-  const fileTypes = ["JPEG", "PNG", "GIF"];
-  const [file, setFile] = useState(null);
-  const handleChange = (file) => {
-    setFile(file);
+  const [userData, setUserData] = useState("");
+  const [labelGet, setlabelGet] = useState([]);
+  const [ImageDocument, setImageDocument] = useState({ preview: "", data: "" });
+  console.log("labelGet", labelGet);
+console.log(userData,"userData");
+useEffect(() => {
+  fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    method: "POST",
+    crossDomain: true,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem("token"),
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setUserData(data.data);
+      handleLabelGet(data.data)
+      if (data.data === "token expired") {
+        alert("Token expired login again");
+        localStorage.clear();
+        window.location.href = "./sign-in";
+      }
+    });
+}, []);
+const handleSubmit = async (event) => {
+  let formData = new FormData();
+  formData.append("title", formdata.title);
+  formData.append("youtubeURL", formdata.youtubeURL);
+  formData.append("labelDocument", ImageDocument.data);
+
+  // console.log("formData.Trackversion", formdata.Trackversion);
+  const res = await fetch(
+    "http://192.168.34.212:5000/api/v1/createRelease/labelPost",
+    {
+      method: "POST",
+      body: formData,
+    }
+  )
+    .then((res) => res.json())
+    .then((Data) => {
+      console.log(Data, "CreateSuccesfully");
+      if (Data.status === "ok") {
+        alert("Create Successful");
+        handleClose()
+        // navigate('/Platform')
+      } else {
+        // navigate('/Songsinfo')
+        alert("Something went wrong");
+        // console.log("Something went wrong");
+      }
+    });
+};
+function handleLabelGet() {
+  fetch(
+    `http://192.168.34.212:5000/api/v1/createRelease/labelgetAll`,
+    {
+      method: "GET",
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log("genere ---------", data.data);
+      setlabelGet(data.data);
+    });
+}
+
+  const handleFileChange = (e) => {
+    // console.log("handleFileChange");
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    };
+    setImageDocument(img);
+    // console.log(img,"img");
   };
   return (
     <div className="mai-nev">
@@ -43,8 +122,13 @@ const Label = () => {
       <div className="flex-container1">
         <div className="youtube">
           <button
-          className="btn btn-default"
-            style={{ width: "40%", color: "red",borderRadius:"8px", borderColor:"black" }}
+            className="btn btn-default"
+            style={{
+              width: "40%",
+              color: "red",
+              borderRadius: "8px",
+              borderColor: "black",
+            }}
             type="submit"
             onClick={handleShow}
           >
@@ -63,20 +147,44 @@ const Label = () => {
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label>Title</Form.Label>
-                  <Form.Control type="text" placeholder="Title" autoFocus /><br/>
+                  <Form.Control
+                    type="text"
+                    placeholder="Title"
+                    onChange={(event) =>
+                      setFormdata((prev) => ({
+                        ...prev,
+                        title: event.target.value,
+                      }))
+                    }
+                    autoFocus
+                  />
+                  <br />
                   <Form.Label>Youtube URL</Form.Label>
-                  <Form.Control type="text" placeholder="Youtube URL" autoFocus /><br/>
+
+                  <Form.Control
+                    type="text"
+                    placeholder="Youtube URL"
+                    onChange={(event) =>
+                      setFormdata((prev) => ({
+                        ...prev,
+                        youtubeURL: event.target.value,
+                      }))
+                    }
+                    autoFocus
+                  />
                   <Form.Label>File</Form.Label>
- 
-      <FileUploader
-        multiple={true}
-        handleChange={handleChange}
-        name="file"
-        types={fileTypes}
-        placeholder="file"
-      />
-      <p>{file ? `File name: ${file[0].name}` : "no files uploaded yet"}</p>
-                  {/* <Form.Control type="file" placeholder="Composer" autoFocus /> */}
+                  <br />
+                  <br />
+
+                  <div className="labelImageDocument">
+                    <input
+                      accept="image/*"
+                      type="file"
+                      name="ImageDocument"
+                      onChange={handleFileChange}
+                      required="true"
+                    />
+                  </div>
                 </Form.Group>
               </Form>
             </Modal.Body>
@@ -84,7 +192,7 @@ const Label = () => {
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button variant="primary" onClick={handleSubmit}>
                 Save Changes
               </Button>
             </Modal.Footer>
@@ -100,13 +208,14 @@ const Label = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item) => (
+            {labelGet.map((item, index) => (
               <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.Title}</td>
-                <td><input type="checkbox"></input></td>
-                <td>{item.Action}</td>
-  
+                <td>{index + 1}</td>
+                <td>{item.title}</td>
+                <td>
+                  <input type="checkbox"></input>
+                </td>
+                <td>{item.youtubeURL}</td>
               </tr>
             ))}
           </tbody>

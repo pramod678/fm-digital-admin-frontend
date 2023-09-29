@@ -68,7 +68,7 @@ const ReleseInfo = () => {
     // });
   };
   useEffect(() => {
-    fetch("http://192.168.181.212:5000/api/v1/user/userData", {
+    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -94,7 +94,7 @@ const ReleseInfo = () => {
   }, []);
   ////getuser
   function handlegenregGet() {
-    fetch(`http://192.168.181.212:5000/api/v1/createRelease/genreGet`, {
+    fetch(`http://192.168.34.212:5000/api/v1/createRelease/genreGet`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -105,7 +105,7 @@ const ReleseInfo = () => {
   }
   function handlereleseInfoGetOne(userData) {
     fetch(
-      `http://192.168.181.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -120,7 +120,7 @@ const ReleseInfo = () => {
 
   function handleArtistGet() {
     fetch(
-      `http://192.168.181.212:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -133,7 +133,7 @@ const ReleseInfo = () => {
   }
   function handleFeacturingGet() {
     fetch(
-      `http://192.168.181.212:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -148,7 +148,7 @@ const ReleseInfo = () => {
   // console.log("Genre", Genre);
   // console.log("inputFields", inputFields[0].PrimaryArtist);
   const handleSubmit1 = async (e) => {
-    fetch("http://192.168.181.212:5000/api/v1/createRelease/primaryArtistPost", {
+    fetch("http://192.168.34.212:5000/api/v1/createRelease/primaryArtistPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -178,7 +178,7 @@ const ReleseInfo = () => {
   };
   const handleSubmit2 = async (e) => {
     fetch(
-      "http://192.168.181.212:5000/api/v1/createRelease/featuringArtisttPost",
+      "http://192.168.34.212:5000/api/v1/createRelease/featuringArtisttPost",
       {
         method: "POST",
         crossDomain: true,
@@ -227,7 +227,7 @@ const ReleseInfo = () => {
     formData.append("Status", parseInt(0));
     formData.append("submission", "");
     const res = await fetch(
-      "http://192.168.181.212:5000/api/v1/createRelease/releseInfoPost",
+      "http://192.168.34.212:5000/api/v1/createRelease/releseInfoPost",
       {
         method: "POST",
         body: formData,
@@ -291,7 +291,7 @@ const ReleseInfo = () => {
           <div>
             <div className="box">
               <img
-                style={{ height: 146, width: 145 }}
+                style={{ height: 145, width: 145 }}
                 src={`http://localhost:5000/${releseInfoGetOne?.ImageDocument}`}
                 type="file"
                 alt="Art Work"
@@ -308,7 +308,7 @@ const ReleseInfo = () => {
             </div>
 
             <div className="GUIDELINES">
-              <ul style={{ fontSize: "10px" }}>
+              <ul style={{ fontSize: "10px",marginLeft:"30%" }}>
                 {/* <h4>Use The lines in the box</h4> */}
                 <h6>Artwork Guidelines</h6>
                 <li>A minimum size of 3000 x 3000 pixels (a perfect square)</li>

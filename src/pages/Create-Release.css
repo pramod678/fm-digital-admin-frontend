@@ -227,6 +227,7 @@ button1.selected {
 
 .flex-container > div {
   margin: 60px;
+  width: 50%;
   /* margin-right: 30px; */
   /* padding: 20px; */
   font-size: 30px;
@@ -258,7 +259,7 @@ button1.selected {
 }
 .box {
   position: relative;
-  margin-left: 170px;
+  margin-left: 230px;
   margin-top: 50px;
   width: 150px;
   height: 150px;
@@ -365,12 +366,12 @@ h1 {
 /* new drowpdown file uplod css */
 
 .ImageDocument{
-  position: absolute;
-  top: 65%;
-  left: 0%;
+  position: relative;
+  top: -35%;
+  left: 10%;
   margin-top: 60px;
   margin-left: -80px;
-  width: 300px;
+  width: 280px;
   height: 50px;
   border: 2px dashed #3607f0;
 }
@@ -385,13 +386,14 @@ h1 {
   outline: none;
   opacity: .4;
 }
+
 .AudioDocumentsongs{
   position: relative;
   top:30%;
   left: 0%;
   margin-top: -53px;
   margin-left: -10px;
-  width: 300px;
+  width: 280px;
   height: 50px;
   border: 2px dashed #3607f0;
 }
@@ -405,7 +407,28 @@ h1 {
   outline: none;
   opacity: .4;
 }
+/* labelImageDocument */
+.labelImageDocument{
+  position: absolute;
+  top: 65%;
+  left: 0%;
+  margin-top: 40px;
+  margin-left: 10px;
+  width: 300px;
+  height: 50px;
+  border: 2px dashed #3607f0;
+}
 
+.labelImageDocument input{
+  position: absolute;
+  font-size: 70%;
+  margin: 0;
+  padding: 0;
+  width: 90%;
+  height: 90%;
+  outline: none;
+  opacity: .4;
+}
 
 
 

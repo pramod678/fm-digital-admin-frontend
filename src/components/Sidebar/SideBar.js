@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaHome, FaQuora } from "react-icons/fa";
 import { FiLink, FiYoutube } from "react-icons/fi";
-import { BiSearch } from "react-icons/bi";
+import { CgProfile } from "react-icons/bi";
 import { MdOutlineLabel } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { TbTool } from "react-icons/tb";
@@ -64,7 +64,7 @@ const routes = [
 ];
 
 const SideBar = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
   const inputAnimation = {
     hidden: {

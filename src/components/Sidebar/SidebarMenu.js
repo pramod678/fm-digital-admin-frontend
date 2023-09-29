@@ -79,7 +79,7 @@ const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
             <FaAngleDown />
           </motion.div>
         )}
-      </div>{" "}
+      </div>
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div

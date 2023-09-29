@@ -6,12 +6,14 @@ import Button from 'react-bootstrap/Button';
 import SideBar from "../components/Sidebar/SideBar";
 
 const Submission = () => {
-  // const [userData, setUserData] = useState("");
+  const [userIagery, setUserIagery] = useState(false);
   const [submissionGet, setsubmissionGet] = useState("");
   console.log("submissionGet",submissionGet);
+  
+  console.log("userIagery",userIagery);
   useEffect(() => {
     
-    fetch("http://192.168.181.212:5000/api/v1/user/userData", {
+    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -39,7 +41,7 @@ const Submission = () => {
   function handlesubmissionGet(userData) {
     console.log(">>>>>>",userData);
     fetch(
-      `http://192.168.181.212:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -55,7 +57,7 @@ const Submission = () => {
     // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
     const handleSubmit = async (e) => {
       fetch(
-        "http://192.168.181.212:5000/api/v1/createRelease/submissionPost",
+        "http://192.168.34.212:5000/api/v1/createRelease/submissionPost",
         {
           method: "POST",
           crossDomain: true,
@@ -68,6 +70,7 @@ const Submission = () => {
             releseInfo_id: submissionGet.releseInfo_id,
             Status: 1,
             users_id: parseInt(submissionGet.users_id),
+            userIagery:userIagery,
           }),
         }
       )
@@ -122,10 +125,10 @@ const Submission = () => {
               ></img>
         
             </div>
-        <input style={{marginRight:'20px',marginTop:"5%"}} type="checkbox"></input>
+        <input style={{marginRight:'20px',marginTop:"5%"}} type="checkbox" onChange={(event) => setUserIagery(current => !current, event.target.value)}></input>
         <label>I understand and agree to the </label> <a href="/">FM Digital Distribution Terms & Privacy Policy.</a>
         <div>
-        <Button style={{marginTop:'20px'}} onClick={() => handleSubmit()}  variant="btn btn-dark">Submit</Button>
+        <Button style={{marginTop:'20px'}} onClick={() => handleSubmit()} disabled={!userIagery}  variant="btn btn-dark">Submit</Button>
         </div>
       </div>
   

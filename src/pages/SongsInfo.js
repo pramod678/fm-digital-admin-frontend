@@ -55,7 +55,7 @@ const SongsInfo = () => {
   };
 // console.log("AudioDocument.data",AudioDocument.data);
 useEffect(() => {
-  fetch("http://192.168.181.212:5000/api/v1/user/userData", {
+  fetch("http://192.168.34.212:5000/api/v1/user/userData", {
     method: "POST",
     crossDomain: true,
     headers: {
@@ -82,7 +82,7 @@ useEffect(() => {
 }, []);
 function handleArtistGet() {
   fetch(
-    `http://192.168.181.212:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
+    `http://192.168.34.212:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
     {
       method: "GET",
     }
@@ -93,22 +93,23 @@ function handleArtistGet() {
       setprimaryArtistGet(data.data);
     });
 }
-function handleReleseInfoGet() {
+// console.log("userData.users_id",userData.users_id);
+function handleReleseInfoGet(userData) {
   fetch(
-    `http://192.168.181.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+    `http://192.168.34.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
     {
       method: "GET",
     }
   )
     .then((res) => res.json())
     .then((data) => {
-      // console.log("Data ---------", data.data);
+      // console.log("Datareleseinfo ---------", data.data);
       setReleseInfoGet(data.data);
     });
 }
 function handleFeacturingGet() {
   fetch(
-    `http://192.168.181.212:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
+    `http://192.168.34.212:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
     {
       method: "GET",
     }
@@ -122,7 +123,7 @@ function handleFeacturingGet() {
 }
 function handlegenregGet() {
   fetch(
-    `http://192.168.181.212:5000/api/v1/createRelease/genreGet`,
+    `http://192.168.34.212:5000/api/v1/createRelease/genreGet`,
     {
       method: "GET",
     }
@@ -135,7 +136,7 @@ function handlegenregGet() {
 }
 function handleLanguageGet() {
   fetch(
-    `http://192.168.181.212:5000/api/v1/createRelease/languageGet`,
+    `http://192.168.34.212:5000/api/v1/createRelease/languageGet`,
     {
       method: "GET",
     }
@@ -172,7 +173,7 @@ function handleLanguageGet() {
     formData.append("releseInfo_id",parseInt(ReleseInfoGet.releseInfo_id));
     // console.log("formData.Trackversion", formdata.Trackversion);
     const res = await fetch(
-      "http://192.168.181.212:5000/api/v1/createRelease/songsInfoPost",
+      "http://192.168.34.212:5000/api/v1/createRelease/songsInfoPost",
       {
         method: "POST",
         body: formData,
@@ -233,7 +234,7 @@ console.log(languageGet,"remove");
 
       <div className="songuploging">
         <div className="GUIDELINES2">
-          <ul style={{ fontSize: "12px" }}>
+          <ul style={{ fontSize: "12px",marginLeft:"30%" }}>
             {/* <h4>Use The lines in the box</h4> */}
             <h6>AUDIO GUIDELINES </h6>
             <li>Format: mp3 or wav</li>
@@ -587,8 +588,8 @@ console.log(languageGet,"remove");
           </Modal.Footer>
         </Modal>
       </>
-      <Button variant="primary" onClick={handleSubmit1} >
-              Save Changes
+      <Button style={{position:"relative",marginTop:"32%",marginLeft:"75%"}} disabled={!formdata.Title || !formdata.TrackTitleLanguage} variant="primary" onClick={handleSubmit1} >
+              Next Save
             </Button>
     </div>
     

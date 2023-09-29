@@ -1,75 +1,138 @@
-import { useState } from "react"
-function AddRemoveInputField(){
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import SideBar from "../components/Sidebar/SideBar";
 
-    const [inputFields, setInputFields] = useState([{
-        fullName:'',
+function GridComplexExample() {
+  return (
+    <div>
+    <Row>
+        <Col lg="12"md="8" sm="8">
+    <Form>
+    <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
 
-    } ]);
- 
-    const addInputField = ()=>{
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+    <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
 
-        setInputFields([...inputFields, {
-            fullName:'',
-        } ])
-      
-    }
-    const removeInputFields = (index)=>{
-        const rows = [...inputFields];
-        rows.splice(index, 1);
-        setInputFields(rows);
-   }
-   const handleChange = (index, evnt)=>{
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+    <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+
+      <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+      <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+      <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+      <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+           <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+      </Row>
+  
+      <Row className="mb-3">
+        <Form.Group as={Col} controlId="formGridCity">
+          <Form.Label>City</Form.Label>
+          <Form.Control />
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridState">
+          <Form.Label>State</Form.Label>
+          <Form.Select defaultValue="Choose...">
+            <option>Choose...</option>
+            <option>...</option>
+          </Form.Select>
+        </Form.Group>
+
+        <Form.Group as={Col} controlId="formGridZip">
+          <Form.Label>Zip</Form.Label>
+          <Form.Control />
+        </Form.Group>
+      </Row>
+
+      <Form.Group className="mb-3" id="formGridCheckbox">
+        <Form.Check type="checkbox" label="Check me out" />
+      </Form.Group>
+
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
+    </Col>
+    </Row>
+    </div>
     
-    const { name, value } = evnt.target;
-    const list = [...inputFields];
-    list[index][name] = value;
-    setInputFields(list);
-    
- 
- 
+  );
 }
-    return(
-    
-        <div className="container">
-            <div className="row">
-                <div className="col-sm-8">
-                  {
-                      inputFields.map((data, index)=>{
-                          const {fullName, emailAddress, salary}= data;
-                          return(
-                            <div className="row my-3" key={index}>
-                    <div className="col">
-                    <div className="form-group">
-                    <input type="text" onChange={(evnt)=>handleChange(index, evnt)} value={fullName} name="fullName" className="form-control"  placeholder="Full Name" />
-                    </div>
-                    </div>
-                   
-                    <div className="col">
-                
 
-                
-                 {(inputFields.length!==1)? <button className="btn btn-outline-danger" onClick={removeInputFields}>x</button>:''}
-                  
-                 
-                    </div>
-                  </div>
-                          )
-                      })
-                  }
-     
-                <div className="row">
-                    <div className="col-sm-12">
-
-                    <button className="btn btn-outline-success " onClick={addInputField}>Add New</button>
-                    </div>
-                </div>
-                  </div>
-                </div>
-                <div className="col-sm-4">
-
-                </div>
-            </div>
-        
-    )
-}
-export default AddRemoveInputField
+export default GridComplexExample;

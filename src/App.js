@@ -20,12 +20,11 @@ import FAQ from "./pages/FAQ";
 import Songsinfo from "./pages/SongsInfo";
 import Platform from "./pages/Platform";
 import Submission from "./pages/Submission";
-import { FiYoutube } from 'react-icons/fi';
+import { FiYoutube } from "react-icons/fi";
 
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn");
   return (
-    
     <Router>
       <div className="App">
         {/* <SideBar> */}
@@ -35,14 +34,12 @@ function App() {
             path="/"
             element={isLoggedIn === "true" ? <UserDetails /> : <Login />}
           />
-          
-          <Route path="/Platform" element={<Platform />} />
-          <Route path="/Submission" element={<Submission />} />
-          <Route path="/Songsinfo" element={<Songsinfo />} />
           <Route path="/sign-in" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/userDetails" element={<UserDetails />} />
-          {/* nev bar route */}
+          <Route path="/Platform" element={<Platform />} />
+          <Route path="/Submission" element={<Submission />} />
+          <Route path="/Songsinfo" element={<Songsinfo />} />
           <Route path="/ReleseInfo" element={<ReleseInfo />} />
           <Route path="/Catalogs" element={<Catalogs />} />
           <Route path="/Label" element={<Label />} />
@@ -57,7 +54,6 @@ function App() {
         {/* <ImageUpload/> */}
       </div>
     </Router>
-
   );
 }
 

@@ -139,7 +139,7 @@ export default function App() {
       </select>
     </div>
 
-    <h4 style={{position:'relative',marginLeft:'550%',marginTop:'10%',fontSize:'130%'}}>Total&nbsp;Tickets:3</h4>
+    <h4 style={{position:'relative',marginLeft:'400%',marginTop:'10%',fontSize:'130%'}}>Total&nbsp;Tickets:3</h4>
     {/* <p>{message}</p> */}
     
     </div>

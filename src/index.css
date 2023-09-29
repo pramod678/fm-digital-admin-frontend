@@ -5,18 +5,20 @@
 }
 .cantener{ 
   position:relative;
-  margin-top:-30%;
-  margin-left:280px;
+  margin-top:-10%;
+  margin-left:230px;
   text-align:left;
   background-color:black;
   color:white;
-  width:780px;
+  width:600px;
 }
   
 .newsLable{
   text-align:left;
-
+  margin-bottom: 30%
+ 
 }
+
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800");
 
 * {

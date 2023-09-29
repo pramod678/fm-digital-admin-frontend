@@ -15,7 +15,7 @@ const Catalogs = () => {
   const [userData, setUserData] = useState("");
   console.log("catalogsGet", catalogsGet);
   useEffect(() => {
-    fetch("http://192.168.181.212:5000/api/v1/user/userData", {
+    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -31,6 +31,7 @@ const Catalogs = () => {
       .then((data) => {
         // setUserData(data.data);
         handlecatalogsGet(data.data);
+        
         // handlegenregGet()
         console.log(data.data);
         if (data.data === "token expired") {
@@ -44,7 +45,7 @@ const Catalogs = () => {
   function handlecatalogsGet(userData) {
     console.log("userData>>>", userData);
     fetch(
-      `http://192.168.181.212:5000/api/v1/createRelease/catalogsGet/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/catalogsGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -55,7 +56,22 @@ const Catalogs = () => {
         setcatalogsGet(data.result);
       });
   }
+  const [records, setRecords] = useState([catalogsGet]);
 
+  function handleFilter(event) {
+    console.log("catalogsGet-->>>",catalogsGet);
+    const inputValue = event.target.value || '';
+    console.log("inputValue",inputValue);
+    const filtered = catalogsGet.filter(row => row.Title.toLowerCase().includes(inputValue)
+    ||row.ArtistName.toLowerCase().includes(inputValue)
+    ||row.Label.toLowerCase().includes(inputValue)
+    // ||row.action.toLowerCase().includes(inputValue)
+    );
+    console.log("filtered",filtered);
+    setRecords(filtered); // Update the state with the filtered data
+  }
+
+  console.log("records", records);
   const iconSelector = (status) => {
     switch (status) {
       case 0:
@@ -92,6 +108,7 @@ const Catalogs = () => {
         return <></>;
     }
   };
+  
   const actionStatus = (status) => {
     switch (status) {
       case 0:
@@ -150,6 +167,7 @@ const Catalogs = () => {
             className="form-control"
             id="search"
             placeholder="Search Title"
+            onChange={handleFilter}
             // value={searchTerm}
             // onChange={(e) => {
             //   setSearchTerm(e.target.value);
@@ -208,15 +226,11 @@ const Catalogs = () => {
           </tr>
         </thead>
         <tbody>
-          {catalogsGet.map((item, index) => (
+          {records?.map((item, index) => (
             <tr key={item._id}>
               <td>{index + 1}</td>
               <td>{iconSelector(item?.Status)}</td>
-              {/* <td> <button style={{borderRadius:"50%",fontSize:"10px",}} type="submit" className="btn btn-success">
-                
-                </button></td> */}
               <td>
-                {" "}
                 <img
                   style={{ height: 60, width: 80 }}
                   src={`http://localhost:5000/${item?.ImageDocument}`}
