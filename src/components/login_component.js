@@ -1,10 +1,13 @@
 import React, { Component, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const showToastMessageSucess = () => {
     toast.success("login Successful !", {
@@ -20,7 +23,7 @@ export default function Login() {
     e.preventDefault();
 
     console.log(email, password);
-    fetch("http://192.168.34.212:5000/api/v1/user/login", {
+    fetch("http://192.168.29.202:5000/api/v1/user/login", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -42,7 +45,7 @@ export default function Login() {
           window.localStorage.setItem("token", data.data);
           window.localStorage.setItem("loggedIn", true);
 
-          window.location.href = "./userDetails";
+          navigate('/');
         }else{
           // alert("Error Invalid");
           showToastMessageError();

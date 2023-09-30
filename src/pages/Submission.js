@@ -13,7 +13,7 @@ const Submission = () => {
   console.log("userIagery",userIagery);
   useEffect(() => {
     
-    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    fetch("http://192.168.29.202:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -41,7 +41,7 @@ const Submission = () => {
   function handlesubmissionGet(userData) {
     console.log(">>>>>>",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
+      `http://192.168.29.202:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -57,7 +57,7 @@ const Submission = () => {
     // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
     const handleSubmit = async (e) => {
       fetch(
-        "http://192.168.34.212:5000/api/v1/createRelease/submissionPost",
+        "http://192.168.29.202:5000/api/v1/createRelease/submissionPost",
         {
           method: "POST",
           crossDomain: true,

@@ -15,7 +15,7 @@ const Catalogs = () => {
   const [userData, setUserData] = useState("");
   console.log("catalogsGet", catalogsGet);
   useEffect(() => {
-    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    fetch("http://192.168.29.202:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -45,7 +45,7 @@ const Catalogs = () => {
   function handlecatalogsGet(userData) {
     console.log("userData>>>", userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/createRelease/catalogsGet/${userData.users_id}`,
+      `http://192.168.29.202:5000/api/v1/createRelease/catalogsGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -149,9 +149,6 @@ const Catalogs = () => {
   //   const [platform, setPlatform] = useState("");
   return (
     <div className="mai-nev">
-      <div style={{ position: "absolute", marginTop: "0px" }}>
-        <SideBar />
-      </div>
       <h3 className="catalogs">Catalog</h3>
       <div
         style={{

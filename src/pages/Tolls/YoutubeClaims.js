@@ -35,7 +35,7 @@ const YoutubeClaims = () => {
     },
   ];
   useEffect(() => {
-    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    fetch("http://192.168.29.202:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -65,7 +65,7 @@ const YoutubeClaims = () => {
   function handlereleseInfoGetOne() {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `http://192.168.29.202:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -82,7 +82,7 @@ const YoutubeClaims = () => {
     function handleProfileLinkinAdudiogGet() {
       // console.log("userData.user_id",userData);
       fetch(
-        `http://192.168.34.212:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
+        `http://192.168.29.202:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
         {
           method: "GET",
         }
@@ -97,7 +97,7 @@ const YoutubeClaims = () => {
       function handleyoutubeClaimsGetAll(userData) {
         // console.log("userData.user_id",userData);
         fetch(
-          `http://192.168.34.212:5000/api/v1/tools/youtubeClaimsGetAll/${userData.users_id}`,
+          `http://192.168.29.202:5000/api/v1/tools/youtubeClaimsGetAll/${userData.users_id}`,
           {
             method: "GET",
           }
@@ -110,7 +110,7 @@ const YoutubeClaims = () => {
       }
   // console.log("formData",formData);
   const handleSubmit = async (e) => {
-    fetch("http://192.168.34.212:5000/api/v1/tools/youtubeClaimsPost", {
+    fetch("http://192.168.29.202:5000/api/v1/tools/youtubeClaimsPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -139,9 +139,6 @@ const YoutubeClaims = () => {
   };
   return (
     <div className="mai-nev">
-      <div style={{ position: "absolute", marginTop: "0px" }}>
-        <SideBar />
-      </div>
       <h3 className="catalogs">Youtube Claims</h3>
       <div className="flex-container1">
         <div className="youtube">
