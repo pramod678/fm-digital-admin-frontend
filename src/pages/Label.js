@@ -39,7 +39,7 @@ const Label = () => {
   console.log("labelGet", labelGet);
 console.log(userData,"userData");
 useEffect(() => {
-  fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+  fetch("http://192.168.95.212:5000/api/v1/user/userData", {
     method: "POST",
     crossDomain: true,
     headers: {
@@ -70,7 +70,7 @@ const handleSubmit = async (event) => {
 
   // console.log("formData.Trackversion", formdata.Trackversion);
   const res = await fetch(
-    "http://192.168.34.212:5000/api/v1/createRelease/labelPost",
+    "http://192.168.95.212:5000/api/v1/createRelease/labelPost",
     {
       method: "POST",
       body: formData,
@@ -92,7 +92,7 @@ const handleSubmit = async (event) => {
 };
 function handleLabelGet() {
   fetch(
-    `http://192.168.34.212:5000/api/v1/createRelease/labelgetAll`,
+    `http://192.168.95.212:5000/api/v1/createRelease/labelgetAll`,
     {
       method: "GET",
     }
