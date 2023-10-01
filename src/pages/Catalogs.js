@@ -31,7 +31,7 @@ const Catalogs = () => {
       .then((data) => {
         // setUserData(data.data);
         handlecatalogsGet(data.data);
-        
+
         // handlegenregGet()
         console.log(data.data);
         if (data.data === "token expired") {
@@ -59,15 +59,15 @@ const Catalogs = () => {
   const [records, setRecords] = useState([catalogsGet]);
 
   function handleFilter(event) {
-    console.log("catalogsGet-->>>",catalogsGet);
+    console.log("catalogsGet-->>>", catalogsGet);
     const inputValue = event.target.value || '';
-    console.log("inputValue",inputValue);
+    console.log("inputValue", inputValue);
     const filtered = catalogsGet.filter(row => row.Title.toLowerCase().includes(inputValue)
-    ||row.ArtistName.toLowerCase().includes(inputValue)
-    ||row.Label.toLowerCase().includes(inputValue)
-    // ||row.action.toLowerCase().includes(inputValue)
+      || row.ArtistName.toLowerCase().includes(inputValue)
+      || row.Label.toLowerCase().includes(inputValue)
+      // ||row.action.toLowerCase().includes(inputValue)
     );
-    console.log("filtered",filtered);
+    console.log("filtered", filtered);
     setRecords(filtered); // Update the state with the filtered data
   }
 
@@ -108,7 +108,7 @@ const Catalogs = () => {
         return <></>;
     }
   };
-  
+
   const actionStatus = (status) => {
     switch (status) {
       case 0:
@@ -148,110 +148,112 @@ const Catalogs = () => {
   // console.log(catalogsGet[0].tottalTracks);
   //   const [platform, setPlatform] = useState("");
   return (
-    <div className="mai-nev">
-      <h3 className="catalogs">Catalog</h3>
-      <div
-        style={{
-          position: "absolute",
-          marginLeft: "15%",
-          marginTop: "5%",
-          fontSize: "150%",
-        }}
-      >
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control"
-            id="search"
-            placeholder="Search Title"
-            onChange={handleFilter}
+    <>
+      <div className="mai-nev">
+        <h3 className="catalogs">Catalog</h3>
+        <div
+          style={{
+            position: "absolute",
+            marginLeft: "15%",
+            marginTop: "5%",
+            fontSize: "150%",
+          }}
+        >
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              id="search"
+              placeholder="Search Title"
+              onChange={handleFilter}
             // value={searchTerm}
             // onChange={(e) => {
             //   setSearchTerm(e.target.value);
             //   setCurrentPage(1);
             // }}
-          />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            marginLeft: "112%",
-            top: "0%",
-            width: "30%",
-          }}
-        >
-          <select
-            className="form-select"
+            />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              marginLeft: "112%",
+              top: "0%",
+              width: "30%",
+            }}
+          >
+            <select
+              className="form-select"
             // value={filterCompleted}
             // onChange={(e) => {
             //   setFilterCompleted(e.target.value);
             //   setCurrentPage(1);
             // }}
-          >
-            <option defaultValue="All">All</option>
-            <option value="true">approved</option>
-            <option value="false">Draft</option>
-            <option value="false">corrections</option>
-          </select>
-        </div>
+            >
+              <option defaultValue="All">All</option>
+              <option value="true">approved</option>
+              <option value="false">Draft</option>
+              <option value="false">corrections</option>
+            </select>
+          </div>
 
-        <h4
-          style={{
-            position: "relative",
-            marginLeft: "350%",
-            marginTop: "-12%",
-            fontSize: "130%",
-          }}
-        >
-          Total&nbsp;Releases:{catalogsGet[0]?.tottalTracks}
-        </h4>
-        {/* <p>{message}</p> */}
-      </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Status</th>
-            <th>Album Artwork</th>
-            <th>Title</th>
-            <th>Artist Name</th>
-            <th>Genre</th>
-            <th>Label</th>
-            <th>Tracks</th>
-            <th>Relase Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {records?.map((item, index) => (
-            <tr key={item._id}>
-              <td>{index + 1}</td>
-              <td>{iconSelector(item?.Status)}</td>
-              <td>
-                <img
-                  style={{ height: 60, width: 80 }}
-                  src={`http://localhost:5000/${item?.ImageDocument}`}
-                  type="file"
-                  alt="Art Work"
-                ></img>
-              </td>
-              <td>{item.Title}</td>
-              <td>{item.ArtistName}</td>
-              <td>{item.Genre}</td>
-              <td>{item.Label}</td>
-              <td>{item.Tracks}</td>
-              <td>{String(item.createdAt).slice(0, 10)}</td>
-              <td>
-                {/* <button type="submit" className="btn btn-danger"> */}
-                {/* Draft */}
-                {actionStatus(item?.Status)}
-                {/* </button> */}
-              </td>
+          <h4
+            style={{
+              position: "relative",
+              marginLeft: "350%",
+              marginTop: "-12%",
+              fontSize: "130%",
+            }}
+          >
+            Total&nbsp;Releases:{catalogsGet[0]?.tottalTracks}
+          </h4>
+          {/* <p>{message}</p> */}
+        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Album Artwork</th>
+              <th>Title</th>
+              <th>Artist Name</th>
+              <th>Genre</th>
+              <th>Label</th>
+              <th>Tracks</th>
+              <th>Relase Date</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {records?.map((item, index) => (
+              <tr key={item._id}>
+                <td>{index + 1}</td>
+                <td>{iconSelector(item?.Status)}</td>
+                <td>
+                  <img
+                    style={{ height: 60, width: 80 }}
+                    src={`http://localhost:5000/${item?.ImageDocument}`}
+                    type="file"
+                    alt="Art Work"
+                  ></img>
+                </td>
+                <td>{item.Title}</td>
+                <td>{item.ArtistName}</td>
+                <td>{item.Genre}</td>
+                <td>{item.Label}</td>
+                <td>{item.Tracks}</td>
+                <td>{String(item.createdAt).slice(0, 10)}</td>
+                <td>
+                  {/* <button type="submit" className="btn btn-danger"> */}
+                  {/* Draft */}
+                  {actionStatus(item?.Status)}
+                  {/* </button> */}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 

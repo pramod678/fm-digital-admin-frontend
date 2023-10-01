@@ -256,431 +256,433 @@ const ReleseInfo = () => {
     // console.log(img,"img");
   };
   var todayDate = new Date();
-  var month = (todayDate.getMonth()+1);
+  var month = (todayDate.getMonth() + 1);
   var year = todayDate.getUTCFullYear() - 0;
-  var tdate = (todayDate.getDate()+5);
+  var tdate = (todayDate.getDate() + 5);
   if (month < 10) {
-      month = "0" + month
+    month = "0" + month
   }
   if (tdate < 10) {
-      tdate = "0" + tdate;
+    tdate = "0" + tdate;
   }
   var maxDate = year + "-" + month + "-" + tdate;
-  console.log("maxDate",maxDate);
+  console.log("maxDate", maxDate);
   return (
-    <div className="mai-nev">
-      <Link className="button1" to="/ReleseInfo">
-        Release Info
-      </Link>
-      <Link className="button1" to="/Songsinfo">
-        Song Info
-      </Link>
-      <Link className="button1" to="/Platform">
-        Platform
-      </Link>
-      <Link className="button1" to="/Submission">
-        Submission
-      </Link>
-      <div>
-        <div className="flex-container">
-          <div>
-            <div className="box">
-              <img
-                style={{ height: 145, width: 145 }}
-                src={`http://localhost:5000/${releseInfoGetOne?.ImageDocument}`}
-                type="file"
-                alt="Art Work"
-              ></img>
-              <div className="ImageDocument">
-                <input
-                  accept="image/*"
+    <>
+      <div className="mai-nev">
+        <Link className="button1" to="/ReleseInfo">
+          Release Info
+        </Link>
+        <Link className="button1" to="/Songsinfo">
+          Song Info
+        </Link>
+        <Link className="button1" to="/Platform">
+          Platform
+        </Link>
+        <Link className="button1" to="/Submission">
+          Submission
+        </Link>
+        <div>
+          <div className="flex-container">
+            <div>
+              <div className="box">
+                <img
+                  style={{ height: 145, width: 145 }}
+                  src={`http://localhost:5000/${releseInfoGetOne?.ImageDocument}`}
                   type="file"
-                  name="ImageDocument"
-                  onChange={handleFileChange}
-                  required="true" 
-                />
+                  alt="Art Work"
+                ></img>
+                <div className="ImageDocument">
+                  <input
+                    accept="image/*"
+                    type="file"
+                    name="ImageDocument"
+                    onChange={handleFileChange}
+                    required="true"
+                  />
+                </div>
+              </div>
+
+              <div className="GUIDELINES">
+                <ul style={{ fontSize: "10px", marginLeft: "30%" }}>
+                  {/* <h4>Use The lines in the box</h4> */}
+                  <h6>Artwork Guidelines</h6>
+                  <li>A minimum size of 3000 x 3000 pixels (a perfect square)</li>
+                  <li>A minimum resolution of 72dpi (we recommend 300dpi)</li>
+                  <li>RGB color mode (CMYK will not show up correctly)</li>
+                  <li>JPEG file format</li>
+                  <li>
+                    Do not send us thumbnails, .png files or images smaller than
+                    the requested size.”
+                  </li>
+                </ul>
               </div>
             </div>
 
-            <div className="GUIDELINES">
-              <ul style={{ fontSize: "10px",marginLeft:"30%" }}>
-                {/* <h4>Use The lines in the box</h4> */}
-                <h6>Artwork Guidelines</h6>
-                <li>A minimum size of 3000 x 3000 pixels (a perfect square)</li>
-                <li>A minimum resolution of 72dpi (we recommend 300dpi)</li>
-                <li>RGB color mode (CMYK will not show up correctly)</li>
-                <li>JPEG file format</li>
-                <li>
-                  Do not send us thumbnails, .png files or images smaller than
-                  the requested size.”
-                </li>
-              </ul>
-            </div>
-          </div>
+            <div>
+              <label className="lable">Release Type*</label>
+              <div style={{ fontSize: "80%" }}>
+                <select
+                  className="optiontype"
+                  name="work_days"
+                  id="id_work_days"
+                  required="true"
+                  // value={ReleaseType}
+                  onChange={(event) =>
+                    setReleseInfosetformData((prev) => ({
+                      ...prev,
+                      ReleaseType: event.target.value,
+                    }))
+                  }
+                  multiple
+                >
+                  <option value="EP">EP</option>
+                  <option value="Single">Single</option>
+                  <option value="Album">Album</option>
+                  <option value="Compilation">Compilation</option>
+                </select>
+              </div>
 
-          <div>
-            <label className="lable">Release Type*</label>
-            <div style={{ fontSize: "80%" }}>
-              <select
-                className="optiontype"
-                name="work_days"
-                id="id_work_days"
+              <label className="lable">Release Title*</label>
+              <input
+                type="text"
                 required="true"
-                // value={ReleaseType}
+                className="form-control"
+                placeholder="Release Title"
+                id="ReleaseTitle"
+                value={releseInfoformData.ReleaseTitle}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
-                    ReleaseType: event.target.value,
+                    ReleaseTitle: event.target.value,
                   }))
                 }
-                multiple
-              >
-                <option value="EP">EP</option>
-                <option value="Single">Single</option>
-                <option value="Album">Album</option>
-                <option value="Compilation">Compilation</option>
-              </select>
-            </div>
+              />
 
-            <label className="lable">Release Title*</label>
-            <input
-              type="text"
-              required="true"
-              className="form-control"
-              placeholder="Release Title"
-              id="ReleaseTitle"
-              value={releseInfoformData.ReleaseTitle}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  ReleaseTitle: event.target.value,
-                }))
-              }
-            />
-
-            <label className="lable">PrimaryArtist*</label>
-            <div className="col-sm-10">
-              <select
-                className="form-select"
-                onClick={handleArtistGet}
-                required="true"
-                onChange={(event) =>
-                  setReleseInfosetformData((prev) => ({
-                    ...prev,
-                    PrimaryArtist: event.target.value,
-                  }))
-                }
-              >
-                <option value="">Select an option</option>
-                {primaryArtistGet?.map((option) => (
-                  <option key={option?._id} value={option?.PrimaryArtist}>
-                    {option?.PrimaryArtist}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <>
-              <Modal show={show1} onHide={handleClose1}>
-                <Modal.Header closeButton>
-                  {/* <Modal.Title>PrimaryArtist</Modal.Title> */}
-                </Modal.Header>
-                <Modal.Body>
-                  <Form>
-                    <Form.Label>Primary Artist Name</Form.Label>
-                    <Form.Control
-                      value={releseInfoformData.PrimaryArtist}
-                      required="true"
-                      onChange={(event) =>
-                        setReleseInfosetformData((prev) => ({
-                          ...prev,
-                          PrimaryArtist: event.target.value,
-                        }))
-                      }
-                      type="text"
-                      placeholder="Primary Artist Name"
-                      autoFocus
-                    />
-                    <Form.Label>Primary Artist Apple Id</Form.Label>
-                    &nbsp;&nbsp;
-                    <Form.Control
-                      // value={releseInfoformData.AppleId}
-                      required="true"
-                      onChange={(event) =>
-                        setReleseInfosetformData((prev) => ({
-                          ...prev,
-                          AppleId: event.target.value,
-                        }))
-                      }
-                      type="text"
-                      placeholder="Primary Artist Apple Id"
-                      autoFocus
-                    />
-                    <Form.Label>Primary Artist Spotify Id</Form.Label>
-                    &nbsp;&nbsp;
-                    <Form.Control
-                      // value={releseInfoformData.SpotifyId}
-                      required="true"
-                      onChange={(event) =>
-                        setReleseInfosetformData((prev) => ({
-                          ...prev,
-                          SpotifyId: event.target.value,
-                        }))
-                      }
-                      type="text"
-                      placeholder="Primary Artist Spotify Id"
-                      autoFocus
-                    />
-                    &nbsp;&nbsp;
-                  </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose1}>
-                    Close
-                  </Button>
-                  <Button variant="primary" onClick={handleSubmit1}>
-                    Save Changes
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </>
-            <button
-              style={{
-                position: "relative",
-                top:"-9%",
-                left:"98%",
-                marginLeft: "-8%",
-                // marginTop: "-88px",
-              }}
-              className="btn btn-outline-success"
-              onClick={handleShow1}
+              <label className="lable">PrimaryArtist*</label>
+              <div className="col-sm-10">
+                <select
+                  className="form-select"
+                  onClick={handleArtistGet}
+                  required="true"
+                  onChange={(event) =>
+                    setReleseInfosetformData((prev) => ({
+                      ...prev,
+                      PrimaryArtist: event.target.value,
+                    }))
+                  }
+                >
+                  <option value="">Select an option</option>
+                  {primaryArtistGet?.map((option) => (
+                    <option key={option?._id} value={option?.PrimaryArtist}>
+                      {option?.PrimaryArtist}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <>
+                <Modal show={show1} onHide={handleClose1}>
+                  <Modal.Header closeButton>
+                    {/* <Modal.Title>PrimaryArtist</Modal.Title> */}
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Form>
+                      <Form.Label>Primary Artist Name</Form.Label>
+                      <Form.Control
+                        value={releseInfoformData.PrimaryArtist}
+                        required="true"
+                        onChange={(event) =>
+                          setReleseInfosetformData((prev) => ({
+                            ...prev,
+                            PrimaryArtist: event.target.value,
+                          }))
+                        }
+                        type="text"
+                        placeholder="Primary Artist Name"
+                        autoFocus
+                      />
+                      <Form.Label>Primary Artist Apple Id</Form.Label>
+                      &nbsp;&nbsp;
+                      <Form.Control
+                        // value={releseInfoformData.AppleId}
+                        required="true"
+                        onChange={(event) =>
+                          setReleseInfosetformData((prev) => ({
+                            ...prev,
+                            AppleId: event.target.value,
+                          }))
+                        }
+                        type="text"
+                        placeholder="Primary Artist Apple Id"
+                        autoFocus
+                      />
+                      <Form.Label>Primary Artist Spotify Id</Form.Label>
+                      &nbsp;&nbsp;
+                      <Form.Control
+                        // value={releseInfoformData.SpotifyId}
+                        required="true"
+                        onChange={(event) =>
+                          setReleseInfosetformData((prev) => ({
+                            ...prev,
+                            SpotifyId: event.target.value,
+                          }))
+                        }
+                        type="text"
+                        placeholder="Primary Artist Spotify Id"
+                        autoFocus
+                      />
+                      &nbsp;&nbsp;
+                    </Form>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose1}>
+                      Close
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit1}>
+                      Save Changes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </>
+              <button
+                style={{
+                  position: "relative",
+                  top: "-9%",
+                  left: "98%",
+                  marginLeft: "-8%",
+                  // marginTop: "-88px",
+                }}
+                className="btn btn-outline-success"
+                onClick={handleShow1}
               // onClick={addInputField}
-            >
-              +
-            </button>
-            <label className="lable">FeaturingArtist*</label>
-            <div className="col-sm-10">
+              >
+                +
+              </button>
+              <label className="lable">FeaturingArtist*</label>
+              <div className="col-sm-10">
+                <select
+                  className="form-select"
+                  required="true"
+                  onClick={handleFeacturingGet}
+                  onChange={(event) =>
+                    setReleseInfosetformData((prev) => ({
+                      ...prev,
+                      FeaturingArtist: event.target.value,
+                    }))
+                  }
+                >
+                  <option value="">Select an option</option>
+                  {featuringArtistGet?.map((option) => (
+                    <option key={option?._id} value={option?.FeaturingArtist}>
+                      {option?.FeaturingArtist}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <>
+                <Modal show={show2} onHide={handleClose2}>
+                  <Modal.Header closeButton>
+                    {/* <Modal.Title>Add songs Details</Modal.Title> */}
+                  </Modal.Header>
+                  <Modal.Body>
+                    <Form>
+                      <Form.Label>Featuring Artist Name</Form.Label>
+                      <Form.Control
+                        value={releseInfoformData.FeaturingArtist}
+                        required="true"
+                        onChange={(event) =>
+                          setReleseInfosetformData((prev) => ({
+                            ...prev,
+                            FeaturingArtist: event.target.value,
+                          }))
+                        }
+                        type="text"
+                        placeholder="Featuring Artist Name"
+                        autoFocus
+                      />
+                      <Form.Label>Featuring Artist Apple Id</Form.Label>
+                      &nbsp;&nbsp;
+                      <Form.Control
+                        // value={releseInfoformData.AppleId}
+                        required="true"
+                        onChange={(event) =>
+                          setReleseInfosetformData((prev) => ({
+                            ...prev,
+                            AppleId: event.target.value,
+                          }))
+                        }
+                        type="text"
+                        placeholder="Featuring Artist Apple Id"
+                        autoFocus
+                      />
+                      <Form.Label>Featuring Artist Spotify Id</Form.Label>
+                      &nbsp;&nbsp;
+                      <Form.Control
+                        // value={releseInfoformData.SpotifyId}
+                        required="true"
+                        onChange={(event) =>
+                          setReleseInfosetformData((prev) => ({
+                            ...prev,
+                            SpotifyId: event.target.value,
+                          }))
+                        }
+                        type="text"
+                        placeholder="Primary Artist Spotify Id"
+                        autoFocus
+                      />
+                    </Form>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose2}>
+                      Close
+                    </Button>
+                    <Button variant="primary" onClick={handleSubmit2}>
+                      Save Changes
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </>
+              <button
+                style={{
+                  position: "relative",
+                  // marginTop: "-88px",
+                  top: "-9%",
+                  left: "98%",
+                  marginLeft: "-8%",
+                }}
+                className="btn btn-outline-success"
+                onClick={handleShow2}
+              >
+                +
+              </button>
+              <label className="lable">Genre*</label>
               <select
-                className="form-select"
+                type="text"
                 required="true"
-                onClick={handleFeacturingGet}
+                className="form-select"
+                placeholder="Genre"
+                id="Genre"
+                // value={Genre}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
-                    FeaturingArtist: event.target.value,
+                    Genre: event.target.value,
                   }))
                 }
               >
-                <option value="">Select an option</option>
-                {featuringArtistGet?.map((option) => (
-                  <option key={option?._id} value={option?.FeaturingArtist}>
-                    {option?.FeaturingArtist}
+                <option >Select an option</option>
+                {genreGet?.map((option) => (
+                  <option key={option?._id} value={option?.genre}>
+                    {option?.genre}
                   </option>
                 ))}
               </select>
+              <label className="lable">Sub Genre*</label>
+              <input
+                type="text"
+                required="true"
+                className="form-control"
+                placeholder="Sub Genre"
+                id="SubGenre"
+                value={releseInfoformData.SubGenre}
+                onChange={(event) =>
+                  setReleseInfosetformData((prev) => ({
+                    ...prev,
+                    SubGenre: event.target.value,
+                  }))
+                }
+              />
             </div>
-            <>
-              <Modal show={show2} onHide={handleClose2}>
-                <Modal.Header closeButton>
-                  {/* <Modal.Title>Add songs Details</Modal.Title> */}
-                </Modal.Header>
-                <Modal.Body>
-                  <Form>
-                    <Form.Label>Featuring Artist Name</Form.Label>
-                    <Form.Control
-                      value={releseInfoformData.FeaturingArtist}
-                      required="true"
-                      onChange={(event) =>
-                        setReleseInfosetformData((prev) => ({
-                          ...prev,
-                          FeaturingArtist: event.target.value,
-                        }))
-                      }
-                      type="text"
-                      placeholder="Featuring Artist Name"
-                      autoFocus
-                    />
-                    <Form.Label>Featuring Artist Apple Id</Form.Label>
-                    &nbsp;&nbsp;
-                    <Form.Control
-                      // value={releseInfoformData.AppleId}
-                      required="true"
-                      onChange={(event) =>
-                        setReleseInfosetformData((prev) => ({
-                          ...prev,
-                          AppleId: event.target.value,
-                        }))
-                      }
-                      type="text"
-                      placeholder="Featuring Artist Apple Id"
-                      autoFocus
-                    />
-                    <Form.Label>Featuring Artist Spotify Id</Form.Label>
-                    &nbsp;&nbsp;
-                    <Form.Control
-                      // value={releseInfoformData.SpotifyId}
-                      required="true"
-                      onChange={(event) =>
-                        setReleseInfosetformData((prev) => ({
-                          ...prev,
-                          SpotifyId: event.target.value,
-                        }))
-                      }
-                      type="text"
-                      placeholder="Primary Artist Spotify Id"
-                      autoFocus
-                    />
-                  </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose2}>
-                    Close
-                  </Button>
-                  <Button variant="primary" onClick={handleSubmit2}>
-                    Save Changes
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </>
-            <button
-              style={{
-                position: "relative",
-                // marginTop: "-88px",
-                top:"-9%",
-                left:"98%",
-                marginLeft: "-8%",
-              }}
-              className="btn btn-outline-success"
-              onClick={handleShow2}
-            >
-              +
-            </button>
-            <label className="lable">Genre*</label>
-            <select
-              type="text"
-              required="true"
-              className="form-select"
-              placeholder="Genre"
-              id="Genre"
-              // value={Genre}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  Genre: event.target.value,
-                }))
-              }
-            >
-              <option >Select an option</option>
-              {genreGet?.map((option) => (
-                <option key={option?._id} value={option?.genre}>
-                  {option?.genre}
-                </option>
-              ))}
-            </select>
-            <label className="lable">Sub Genre*</label>
-            <input
-              type="text"
-              required="true"
-              className="form-control"
-              placeholder="Sub Genre"
-              id="SubGenre"
-              value={releseInfoformData.SubGenre}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  SubGenre: event.target.value,
-                }))
-              }
-            />
-          </div>
-          <div className="label">
-            <label className="lable">Label Name*</label>
-            <input
-              type="text"
-              required="true"
-              className="form-control"
-              placeholder="Label Name"
-              id="LabelName"
-              value={releseInfoformData.LabelName}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  LabelName: event.target.value,
-                }))
-              }
-            />
-            <label className="lable">Release Date*</label>
-            <input
-              type="date"
-              required="true"
-              className="form-control"
-              placeholder="Release Date"
-              id="ReleaseDate"
-              min={maxDate}
-              value={releseInfoformData.ReleaseDate}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  ReleaseDate: event.target.value,
-                }))
-              }
-            />
-            <label className="lable">PLine*</label>
-            <input
-              type="text"
-              required="true"
-              className="form-control"
-              placeholder="P line"
-              id="PLine"
-              value={releseInfoformData.PLine}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  PLine: event.target.value,
-                }))
-              }
-            />
-            <label className="lable">C Line*</label>
-            <input
-              type="text"
-              required="true"
-              className="form-control"
-              placeholder="C line"
-              id="CLine"
-              value={releseInfoformData.CLine}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  CLine: event.target.value,
-                }))
-              }
-            />
-            <label className="lable">UPC/EAN</label>
-            <input
-              type="number"
-              // required="true"
-              className="form-control"
-              placeholder="000000000001"
-              id="UPCEAN"
-              value={releseInfoformData.UPCEAN}
-              onChange={(event) =>
-                setReleseInfosetformData((prev) => ({
-                  ...prev,
-                  UPCEAN: event.target.value,
-                }))
-              }
-            />
-            <button
-              onClick={() => handleSubmit()}
-              type="submit"
-              className="btn btn-primary"
-            >
-              Save
-            </button>
-            <ToastContainer />
+            <div className="label">
+              <label className="lable">Label Name*</label>
+              <input
+                type="text"
+                required="true"
+                className="form-control"
+                placeholder="Label Name"
+                id="LabelName"
+                value={releseInfoformData.LabelName}
+                onChange={(event) =>
+                  setReleseInfosetformData((prev) => ({
+                    ...prev,
+                    LabelName: event.target.value,
+                  }))
+                }
+              />
+              <label className="lable">Release Date*</label>
+              <input
+                type="date"
+                required="true"
+                className="form-control"
+                placeholder="Release Date"
+                id="ReleaseDate"
+                min={maxDate}
+                value={releseInfoformData.ReleaseDate}
+                onChange={(event) =>
+                  setReleseInfosetformData((prev) => ({
+                    ...prev,
+                    ReleaseDate: event.target.value,
+                  }))
+                }
+              />
+              <label className="lable">PLine*</label>
+              <input
+                type="text"
+                required="true"
+                className="form-control"
+                placeholder="P line"
+                id="PLine"
+                value={releseInfoformData.PLine}
+                onChange={(event) =>
+                  setReleseInfosetformData((prev) => ({
+                    ...prev,
+                    PLine: event.target.value,
+                  }))
+                }
+              />
+              <label className="lable">C Line*</label>
+              <input
+                type="text"
+                required="true"
+                className="form-control"
+                placeholder="C line"
+                id="CLine"
+                value={releseInfoformData.CLine}
+                onChange={(event) =>
+                  setReleseInfosetformData((prev) => ({
+                    ...prev,
+                    CLine: event.target.value,
+                  }))
+                }
+              />
+              <label className="lable">UPC/EAN</label>
+              <input
+                type="number"
+                // required="true"
+                className="form-control"
+                placeholder="000000000001"
+                id="UPCEAN"
+                value={releseInfoformData.UPCEAN}
+                onChange={(event) =>
+                  setReleseInfosetformData((prev) => ({
+                    ...prev,
+                    UPCEAN: event.target.value,
+                  }))
+                }
+              />
+              <button
+                onClick={() => handleSubmit()}
+                type="submit"
+                className="btn btn-primary"
+              >
+                Save
+              </button>
+              <ToastContainer />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -8,11 +8,11 @@ import SideBar from "../components/Sidebar/SideBar";
 const Submission = () => {
   const [userIagery, setUserIagery] = useState(false);
   const [submissionGet, setsubmissionGet] = useState("");
-  console.log("submissionGet",submissionGet);
-  
-  console.log("userIagery",userIagery);
+  console.log("submissionGet", submissionGet);
+
+  console.log("userIagery", userIagery);
   useEffect(() => {
-    
+
     fetch("http://192.168.29.202:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
@@ -39,7 +39,7 @@ const Submission = () => {
   }, []);
   ////getuser
   function handlesubmissionGet(userData) {
-    console.log(">>>>>>",userData);
+    console.log(">>>>>>", userData);
     fetch(
       `http://192.168.29.202:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
       {
@@ -52,87 +52,88 @@ const Submission = () => {
         // console.log("releseInfoGetOne ---------", data.data);
         setsubmissionGet(data.data);
       });
-    };
-    
-    // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
-    const handleSubmit = async (e) => {
-      fetch(
-        "http://192.168.29.202:5000/api/v1/createRelease/submissionPost",
-        {
-          method: "POST",
-          crossDomain: true,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            releseInfo_id: submissionGet.releseInfo_id,
-            Status: 1,
-            users_id: parseInt(submissionGet.users_id),
-            userIagery:userIagery,
-          }),
+  };
+
+  // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
+  const handleSubmit = async (e) => {
+    fetch(
+      "http://192.168.29.202:5000/api/v1/createRelease/submissionPost",
+      {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          releseInfo_id: submissionGet.releseInfo_id,
+          Status: 1,
+          users_id: parseInt(submissionGet.users_id),
+          userIagery: userIagery,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "CreateSuccesfully");
+        if (data.status === "ok") {
+          alert("Create Successful");
+        } else {
+          alert("Something went wrong");
         }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data, "CreateSuccesfully");
-          if (data.status === "ok") {
-            alert("Create Successful");
-          } else {
-            alert("Something went wrong");
-          }
-        });
-    }
+      });
+  }
   return (
-    <div className="mai-nev">
-      <Link className="button1" to="/ReleseInfo">
-        Release Info
-      </Link>
-      <Link className="button1" to="/Songsinfo">
-        Song Info
-      </Link>
-      <Link className="button1" to="/Platform">
-        Platform
-      </Link>
-      <Link className="button1" to="/Submission">
-        Submission
-      </Link>
-      
-      <div style={{position:'absolute',marginTop:'-30px'}} ><SideBar/></div>
-        <h2 style={{marginTop:'35px',marginRight:'600px'}}>Release Information</h2>
-               <table width="70%" style={{marginLeft:"25%",marginTop:'40px', textAlign:"left"}} >
-              
-                  <tr>
-                     <td><h6>Titale:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Title}`}</h6></td>
-                     <td><h6>Genre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Genre}`}</h6></td>
-                  </tr>
-                  
-                  <tr>
-                     <td><h6>Artist:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Artist}`}</h6></td>
-                     <td><h6>SubGenre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.SubGenre}`}</h6></td>
-                  </tr>
-                  <tr>
-                     <td><h6>Label:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Label}`}</h6></td>
-                     <td><h6># Songs:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Songs}`}</h6></td>
-                  </tr>
-               </table>
-               <div className="box2">
-              <img style={{ height:146, width:145}}
-                src={`http://localhost:5000/${submissionGet?.ImageDocument}`}
-                type="file"
-                alt="Art Work"
-              ></img>
-        
-            </div>
-        <input style={{marginRight:'20px',marginTop:"5%"}} type="checkbox" onChange={(event) => setUserIagery(current => !current, event.target.value)}></input>
+    <>
+      <div className="mai-nev">
+        <Link className="button1" to="/ReleseInfo">
+          Release Info
+        </Link>
+        <Link className="button1" to="/Songsinfo">
+          Song Info
+        </Link>
+        <Link className="button1" to="/Platform">
+          Platform
+        </Link>
+        <Link className="button1" to="/Submission">
+          Submission
+        </Link>
+
+        <div style={{ position: 'absolute', marginTop: '-30px' }} ><SideBar /></div>
+        <h2 style={{ marginTop: '35px', marginRight: '600px' }}>Release Information</h2>
+        <table width="70%" style={{ marginLeft: "25%", marginTop: '40px', textAlign: "left" }} >
+
+          <tr>
+            <td><h6>Titale:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Title}`}</h6></td>
+            <td><h6>Genre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Genre}`}</h6></td>
+          </tr>
+
+          <tr>
+            <td><h6>Artist:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Artist}`}</h6></td>
+            <td><h6>SubGenre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.SubGenre}`}</h6></td>
+          </tr>
+          <tr>
+            <td><h6>Label:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Label}`}</h6></td>
+            <td><h6># Songs:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Songs}`}</h6></td>
+          </tr>
+        </table>
+        <div className="box2">
+          <img style={{ height: 146, width: 145 }}
+            src={`http://localhost:5000/${submissionGet?.ImageDocument}`}
+            type="file"
+            alt="Art Work"
+          ></img>
+
+        </div>
+        <input style={{ marginRight: '20px', marginTop: "5%" }} type="checkbox" onChange={(event) => setUserIagery(current => !current, event.target.value)}></input>
         <label>I understand and agree to the </label> <a href="/">FM Digital Distribution Terms & Privacy Policy.</a>
         <div>
-        <Button style={{marginTop:'20px'}} onClick={() => handleSubmit()} disabled={!userIagery}  variant="btn btn-dark">Submit</Button>
+          <Button style={{ marginTop: '20px' }} onClick={() => handleSubmit()} disabled={!userIagery} variant="btn btn-dark">Submit</Button>
         </div>
       </div>
-  
-    
+    </>
+
   );
 };
 

@@ -23,7 +23,7 @@ export default function App() {
       });
   }, []);
 
-  
+
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalTodos / todosPerPage); i++) {
@@ -35,34 +35,34 @@ export default function App() {
     let computedTodos = todos;
 
     if (searchTerm) {
-        computedTodos = computedTodos.filter(
-            todo =>
-            todo.title.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+      computedTodos = computedTodos.filter(
+        todo =>
+          todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     if (filterCompleted === "true") {
       computedTodos = computedTodos.filter(
-          todo =>
+        todo =>
           filterCompleted === "true" && todo.completed === true
       )
-  }
+    }
 
-  if (filterCompleted === "false") {
-    computedTodos = computedTodos.filter(
+    if (filterCompleted === "false") {
+      computedTodos = computedTodos.filter(
         todo =>
-        filterCompleted === "false" && todo.completed === false
-    )
-  }
+          filterCompleted === "false" && todo.completed === false
+      )
+    }
 
     setTotalTodos(computedTodos.length);
 
     //Current Page slice
     return computedTodos.slice(
-        (currentPage - 1) * todosPerPage,
-        (currentPage - 1) * todosPerPage + todosPerPage
+      (currentPage - 1) * todosPerPage,
+      (currentPage - 1) * todosPerPage + todosPerPage
     );
-}, [todos, currentPage, searchTerm, filterCompleted]);
+  }, [todos, currentPage, searchTerm, filterCompleted]);
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -84,23 +84,24 @@ export default function App() {
       CreatedAt: "23-06-2023",
       Status: "Conform",
     },
-  
+
     {
       id: 3,
       Reason: "Takedown",
       CreatedAt: "23-06-2023",
       Status: "Conform",
     },
-  
-  
+
+
   ];
-  
+
   return (
+    <>
     <div className="mai-nev">
-    <h3 className="catalogs">Tickets</h3>
-    <div style={{position:'absolute',marginLeft:'15%', marginTop:'5%',fontSize:'150%'}}>
-    {/* <input  type="text" placeholder="Search hear"></input> */}
-    {/* <select style={{position:'absolute',marginLeft:'2%',fontSize:'130%'}}
+      <h3 className="catalogs">Tickets</h3>
+      <div style={{ position: 'absolute', marginLeft: '15%', marginTop: '5%', fontSize: '150%' }}>
+        {/* <input  type="text" placeholder="Search hear"></input> */}
+        {/* <select style={{position:'absolute',marginLeft:'2%',fontSize:'130%'}}
       // value={this.state.selectValue} 
       // onChange={this.handleChange} 
     >
@@ -108,7 +109,7 @@ export default function App() {
       <option value="Radish">A</option>
       <option value="Cherry">B</option>
     </select> */}
-    {/* <div className="mb-3">
+        {/* <div className="mb-3">
       <input
         type="text"
         className="form-control"
@@ -121,53 +122,54 @@ export default function App() {
         // }}
       />
     </div> */}
-    <div style={{position:'absolute',marginLeft:'2%',top:'0%', width:'40%'}}>
-      <select
-        className="form-select"
-        // value={filterCompleted}
-        // onChange={(e) => {
-        //   setFilterCompleted(e.target.value);
-        //   setCurrentPage(1);
-        // }}
-      >
-        <option defaultValue="All">All</option>
-        <option value="true">Done</option>
-        <option value="false">Pending</option>
-      </select>
-    </div>
+        <div style={{ position: 'absolute', marginLeft: '2%', top: '0%', width: '40%' }}>
+          <select
+            className="form-select"
+          // value={filterCompleted}
+          // onChange={(e) => {
+          //   setFilterCompleted(e.target.value);
+          //   setCurrentPage(1);
+          // }}
+          >
+            <option defaultValue="All">All</option>
+            <option value="true">Done</option>
+            <option value="false">Pending</option>
+          </select>
+        </div>
 
-    <h4 style={{position:'relative',marginLeft:'400%',marginTop:'10%',fontSize:'130%'}}>Total&nbsp;Tickets:3</h4>
-    {/* <p>{message}</p> */}
-    
-    </div>
-    <table className="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Reason</th>
-          <th>Created At</th>
-          <th>Status</th>
- 
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((item) => (
-          <tr key={item.id}>
-            <td>{item.id}</td>
-            {/* <td><input type="checkbox"></input></td> */}
-            <td>{item.Reason}</td>
-            <td>{item.CreatedAt}</td>
+        <h4 style={{ position: 'relative', marginLeft: '400%', marginTop: '10%', fontSize: '130%' }}>Total&nbsp;Tickets:3</h4>
+        {/* <p>{message}</p> */}
 
-            <td>
-              <button type="submit" className="btn btn-primary">
-                Done
-              </button>
-            </td>
+      </div>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Reason</th>
+            <th>Created At</th>
+            <th>Status</th>
+
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {data.map((item) => (
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              {/* <td><input type="checkbox"></input></td> */}
+              <td>{item.Reason}</td>
+              <td>{item.CreatedAt}</td>
+
+              <td>
+                <button type="submit" className="btn btn-primary">
+                  Done
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    </>
     // <div className="container">
     //   <h3>Filters</h3>
     //   <div className="mb-3">
