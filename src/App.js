@@ -20,7 +20,9 @@ import SharedLayout from "./components/SharedLayout";
 import Home from "./components/Home"
 import UserDetails from "./components/userDetails";
 import ReleseInfo from "./pages/ReleseInfo"
-import PrivateRouteWrapper from "./components/PrivateRoute"
+import ProtectedRoute from "./components/PrivateRoute"
+import PublicRoute from "./components/PublicRoute"
+
 
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn");
@@ -28,10 +30,8 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<SharedLayout />}>
-            <Route
-              index
-              element={isLoggedIn === "true" ? <Home /> : <Login />}
+          <Route path="/" element={<ProtectedRoute><SharedLayout /></ProtectedRoute>}>
+            <Route index element={<Home />}
             />
             <Route path="userDetails" element={<UserDetails />} />
             <Route path="Platform" element={<Platform />} />
@@ -46,8 +46,8 @@ function App() {
             <Route path="ReleseInfo" element={<ReleseInfo />} />
           </Route>
           {/* Add other routes here */}
-          <Route path="sign-in" element={<Login />} />
-          <Route path="sign-up" element={<SignUp />} />
+          <Route path="sign-in" element={<PublicRoute><Login /></PublicRoute>} />
+          <Route path="sign-up" element={<PublicRoute><SignUp /></PublicRoute>} />
           {/* Add other routes outside of SharedLayout here */}
           <Route path="*" element={<>not found</>} />
         </Routes>

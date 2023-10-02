@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminHome from "./adminHome";
 
 import Dashboard from "./DashboardHome";
@@ -39,5 +39,5 @@ export default function Home() {
       });
   }, []);
 
-  return admin ? <AdminHome /> : <Dashboard userData={userData} />;
+  return (<>{admin ? <AdminHome /> : <Dashboard userData={userData} />}</>);
 }

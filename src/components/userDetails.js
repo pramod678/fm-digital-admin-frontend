@@ -1,6 +1,8 @@
-
+import React, { useState } from 'react';
 
 export default function UserDetails() {
+
+    const [isEditing, setIsEditing] = useState(false);
     return (
         <>
             <form onSubmit={(e) => e?.preventDefault()}>
@@ -61,14 +63,14 @@ export default function UserDetails() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:gap-10 p-1 md:p-3">
                         <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
                             <label htmlFor="name" className="text-xs md:text-sm mb-1">
-                                GST Registered? <span className="text-red-600 text-base">*</span>
+                                GST Registered?
                             </label>
                             <input id="name" type="text" placeholder="" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
 
                         <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
                             <label htmlFor="name" className="text-xs md:text-sm mb-1">
-                                GST Number <span className="text-red-600 text-base">*</span>
+                                GST Number
                             </label>
                             <input id="name" type="text" placeholder="Enter GST Number" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
@@ -100,7 +102,7 @@ export default function UserDetails() {
                         </div>
 
                         <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
-                            <label htmlFor="Twitter" className="text-xs md:text-sm mb-1">Twitter<span className="text-red-600 text-base">*</span></label>
+                            <label htmlFor="Twitter" className="text-xs md:text-sm mb-1">Twitter</label>
                             <input id="name" type="text" placeholder="URL to Twitter page" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
 
@@ -110,22 +112,22 @@ export default function UserDetails() {
                         </div>
 
                         <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
-                            <label htmlFor="Google Plus" className="text-xs md:text-sm mb-1">Google Plus<span className="text-red-600 text-base">*</span></label>
+                            <label htmlFor="Google Plus" className="text-xs md:text-sm mb-1">Google Plus</label>
                             <input id="name" type="text" placeholder="URL to Google Plus page" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
 
                         <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
-                            <label htmlFor="Linkedin" className="text-xs md:text-sm mb-1">Linkedin<span className="text-red-600 text-base">*</span></label>
+                            <label htmlFor="Linkedin" className="text-xs md:text-sm mb-1">Linkedin</label>
                             <input id="name" type="text" placeholder="URL to Linkedin page" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
 
                         <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
-                            <label htmlFor="Vevo" className="text-xs md:text-sm mb-1">Vevo<span className="text-red-600 text-base">*</span></label>
+                            <label htmlFor="Vevo" className="text-xs md:text-sm mb-1">Vevo</label>
                             <input id="name" type="text" placeholder="URL to Vevo page" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
 
                         <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
-                            <label htmlFor="SoundCloud" className="text-xs md:text-sm mb-1">SoundCloud<span className="text-red-600 text-base">*</span></label>
+                            <label htmlFor="SoundCloud" className="text-xs md:text-sm mb-1">SoundCloud</label>
                             <input id="name" type="text" placeholder="URL to SoundCloud page" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
 
@@ -157,14 +159,43 @@ export default function UserDetails() {
                             <input id="name" type="text" placeholder="Enter IFSC no." className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
                         </div>
 
+                        <div className="flex flex-col justify-start items-start sm:flex-row sm:justify-between sm:items-center w-full">
+                            <label htmlFor="IFSC Code" className="text-xs md:text-sm mb-1">Swift Code</label>
+                            <input id="name" type="text" placeholder="Enter Swift Code" className="border border-gray-300 focus:outline-none px-3 py-2 text-xs md:text-sm bg-gray-200 w-full sm:w-2/3" />
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="flex justify-end">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white mt-3 font-bold py-2 px-4 rounded">
-                        Submit
-                    </button>
+                <div className="flex justify-end">
+                    {!isEditing && (
+                        <button
+                            type="button"
+                            className="bg-blue-500 hover:bg-blue-700 text-white mt-3 font-bold py-2 px-4 rounded sm:text-xs md:text-sm lg:text-base"
+                            onClick={() => setIsEditing(true)}
+                        >
+                            Edit
+                        </button>
+                    )}
+                    {isEditing && (
+                        <>
+                            <button
+                                type="button"
+                                className="bg-blue-500 hover:bg-blue-700 mr-3 text-white mt-3 font-bold py-2 px-4 rounded sm:text-xs md:text-sm lg:text-base"
+                            >
+                                Update
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-blue-500 hover:bg-blue-700 text-white mt-3 font-bold py-2 px-4 rounded sm:text-xs md:text-sm lg:text-base"
+                                onClick={() => setIsEditing(false)}
+                            >
+                                Cancel
+                            </button>
+                        </>
+                    )}
                 </div>
+
             </form>
 
         </>

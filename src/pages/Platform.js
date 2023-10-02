@@ -152,196 +152,57 @@ const PlatForm = () => {
   console.log("songsInfoGet", songsInfoGet);
   const checkdCrbt = songsInfoGet?.CallerTuneTiming?.length
   const checkdVideos = songsInfoGet?.DistributeMusicvideo?.length
-  console.log("checkdCrbt",checkdCrbt,"checkdVideos",checkdVideos);
+  console.log("checkdCrbt", checkdCrbt, "checkdVideos", checkdVideos);
   // console.log(data1);
   // songsInfoGet?.CallerTuneTiming?.length!==0
   // var checkdCRBT = "";
-  if (checkdCrbt > 0 ) {
+  if (checkdCrbt > 0) {
     console.log("44");
     var checkdCRBT = "true";
-   
+
   }
   // // songsInfoGet?.DistributeMusicvideo?.length!==0
   // // var checkdVideo = "";
 
-  if (checkdVideos > 0 ) {
+  if (checkdVideos > 0) {
     var checkdVideo = "true";
     console.log("45");
   }
   return (
-    <div className="mai-nev ">
-      <Link className="button1" to="/ReleseInfo">
-        Release Info
-      </Link>
-      <Link className="button1" to="/Songsinfo">
-        Song Info
-      </Link>
-      <Link className="button1" to="/Platform">
-        Platform
-      </Link>
-      <Link className="button1" to="/Submission">
-        Submission
-      </Link>
-      <div style={{ position: "absolute", marginTop: "-30px" }}>
-        <SideBar />
-      </div>
-      <div className="audio-list">
-        <h4 style={{ fontSize: "30px" }}>
-          Audio (120+)&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            // value={item.company5}
-            onChange={(e) => {
-              setformData(e.target.value);
-            }}
-            checked
-          ></input>
-        </h4>
-        <table className="adioTable">
-          <tbody>
-            {data.map((item) => (
-              <tr>
-                <td>
-                  <input
-                    type="checkbox"
-                    value={item.company1}
-                    onChange={(e) => {
-                      setformData(e.target.value);
-                    }}
-                    checked
-                  ></input>
-                  &nbsp;&nbsp;
-                  <lable>{item.company1}</lable>
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    value={item.company2}
-                    onChange={(e) => {
-                      setformData(e.target.value);
-                    }}
-                    checked
-                  ></input>
-                  &nbsp;&nbsp;
-                  <lable>{item.company2}</lable>
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    value={item.company3}
-                    onChange={(e) => {
-                      setformData(e.target.value);
-                    }}
-                    checked
-                  ></input>
-                  &nbsp;&nbsp;
-                  <lable>{item.company3}</lable>
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    value={item.company4}
-                    onChange={(e) => {
-                      setformData(e.target.value);
-                    }}
-                    checked
-                  ></input>
-                  &nbsp;&nbsp;
-                  <lable>{item.company4}</lable>
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    value={item.company5}
-                    onChange={(e) => {
-                      setformData(e.target.value);
-                    }}
-                    checked
-                  ></input>
-                  &nbsp;&nbsp;
-                  <lable>{item.company5}</lable>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div>
-          <h4
-            style={{ fontSize: "30px", marginTop: "40px", marginLeft: "-50px" }}
-          >
-            CRBT(2+)&nbsp;&nbsp;
-            <input
-              type="checkbox"
-              // value={item.company5}
-              onChange={(e) => {
-                setformData(e.target.value);
-              }}
-              checked={checkdCRBT}
-            ></input>
-          </h4>
-          <table className="adioTable1">
-            <tbody>
-              {data1.map((item) => (
-                <tr className="Audiotable">
-                  <td>
-                    <input
-                      type="checkbox"
-                      value={item.company1}
-                      onChange={(e) => {
-                        setformData(e.target.value);
-                      }}
-                      checked={checkdCRBT}
-                    ></input>
-                    &nbsp;&nbsp;
-                    <lable>{item.company1}</lable>
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      value={item.company2}
-                      onChange={(e) => {
-                        setformData(e.target.value);
-                      }}
-                      checked={checkdCRBT}
-                    ></input>
-                    &nbsp;&nbsp;
-                    <lable>{item.company2}</lable>
-                  </td>
-                  <td>
-                    <input
-                      type="checkbox"
-                      value={item.company3}
-                      onChange={(e) => {
-                        setformData(e.target.value);
-                      }}
-                      checked={checkdCRBT}
-                    ></input>
-                    &nbsp;&nbsp;
-                    <lable>{item.company3}</lable>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <>
+
+      <div className="mai-nev ">
+        <Link className="button1" to="/ReleseInfo">
+          Release Info
+        </Link>
+        <Link className="button1" to="/Songsinfo">
+          Song Info
+        </Link>
+        <Link className="button1" to="/Platform">
+          Platform
+        </Link>
+        <Link className="button1" to="/Submission">
+          Submission
+        </Link>
+        <div style={{ position: "absolute", marginTop: "-30px" }}>
+          <SideBar />
         </div>
-        <div>
-          <h4
-            style={{ fontSize: "30px", marginTop: "40px", marginLeft: "90px" }}
-          >
-            Video Platform(8+)&nbsp;&nbsp;
+        <div className="audio-list">
+          <h4 style={{ fontSize: "30px" }}>
+            Audio (120+)&nbsp;&nbsp;
             <input
               type="checkbox"
               // value={item.company5}
               onChange={(e) => {
                 setformData(e.target.value);
               }}
-              checked={checkdVideo}
+              checked
             ></input>
           </h4>
-          <table className="adioTable2">
+          <table className="adioTable">
             <tbody>
-              {data2.map((item) => (
-                <tr className="Audiotable">
+              {data.map((item) => (
+                <tr>
                   <td>
                     <input
                       type="checkbox"
@@ -349,7 +210,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked={checkdVideo}
+                      checked
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company1}</lable>
@@ -361,7 +222,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked={checkdVideo}
+                      checked
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company2}</lable>
@@ -373,7 +234,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked={checkdVideo}
+                      checked
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company3}</lable>
@@ -385,7 +246,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked={checkdVideo}
+                      checked
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company4}</lable>
@@ -397,7 +258,7 @@ const PlatForm = () => {
                       onChange={(e) => {
                         setformData(e.target.value);
                       }}
-                      checked={checkdVideo}
+                      checked
                     ></input>
                     &nbsp;&nbsp;
                     <lable>{item.company5}</lable>
@@ -406,17 +267,160 @@ const PlatForm = () => {
               ))}
             </tbody>
           </table>
-          <button
-            style={{ marginLeft: "300%", marginTop: "15%" }}
-            onClick={() => handleSubmit()}
-            type="submit"
-            className="btn btn-primary"
-          >
-            Save
-          </button>
+          <div>
+            <h4
+              style={{ fontSize: "30px", marginTop: "40px", marginLeft: "-50px" }}
+            >
+              CRBT(2+)&nbsp;&nbsp;
+              <input
+                type="checkbox"
+                // value={item.company5}
+                onChange={(e) => {
+                  setformData(e.target.value);
+                }}
+                checked={checkdCRBT}
+              ></input>
+            </h4>
+            <table className="adioTable1">
+              <tbody>
+                {data1.map((item) => (
+                  <tr className="Audiotable">
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company1}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdCRBT}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company1}</lable>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company2}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdCRBT}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company2}</lable>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company3}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdCRBT}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company3}</lable>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h4
+              style={{ fontSize: "30px", marginTop: "40px", marginLeft: "90px" }}
+            >
+              Video Platform(8+)&nbsp;&nbsp;
+              <input
+                type="checkbox"
+                // value={item.company5}
+                onChange={(e) => {
+                  setformData(e.target.value);
+                }}
+                checked={checkdVideo}
+              ></input>
+            </h4>
+            <table className="adioTable2">
+              <tbody>
+                {data2.map((item) => (
+                  <tr className="Audiotable">
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company1}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdVideo}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company1}</lable>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company2}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdVideo}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company2}</lable>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company3}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdVideo}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company3}</lable>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company4}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdVideo}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company4}</lable>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        value={item.company5}
+                        onChange={(e) => {
+                          setformData(e.target.value);
+                        }}
+                        checked={checkdVideo}
+                      ></input>
+                      &nbsp;&nbsp;
+                      <lable>{item.company5}</lable>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button
+              style={{ marginLeft: "300%", marginTop: "15%" }}
+              onClick={() => handleSubmit()}
+              type="submit"
+              className="btn btn-primary"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+    </>
   );
 };
 

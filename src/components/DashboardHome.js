@@ -15,22 +15,6 @@ export default function UserHome({ userData }) {
 
 
   return (
-    // <div className="auth-wrapper">
-    //   <div style={{ position: 'absolute', marginTop: '0px' }} ><SideBar /></div>
-    //   <dev className="login-user">
-    //     <Navbar />
-    //     <h5 className="user-nmae">{userData.fname}user1</h5>
-    //     <button style={{ fontSize: "150%" }}><CgProfile /></button>
-
-    //     <button onClick={logOut} className="logout-button">
-    //       Log Out
-    //     </button>
-    //   </dev>
-    //   <div className="cantener">
-    //     <h3>News</h3>
-    //   </div>
-
-    // </div>
     <>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="sm:col-span-1 md:col-span-2 lg:col-span-2">

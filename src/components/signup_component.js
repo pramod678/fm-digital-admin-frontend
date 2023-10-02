@@ -45,6 +45,7 @@ export default function SignUp() {
   };
 
   return (
+    <>
     <div className="auth-wrapper">
       <div className="auth-inner">
         <form onSubmit={handleSubmit}>
@@ -138,5 +139,6 @@ export default function SignUp() {
         </form>
       </div>
     </div>
+    </>
   );
 }
