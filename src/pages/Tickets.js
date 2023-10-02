@@ -97,9 +97,6 @@ export default function App() {
   
   return (
     <div className="mai-nev">
-    <div style={{ position: "absolute", marginTop: "0px" }}>
-      <SideBar />
-    </div>
     <h3 className="catalogs">Tickets</h3>
     <div style={{position:'absolute',marginLeft:'15%', marginTop:'5%',fontSize:'150%'}}>
     {/* <input  type="text" placeholder="Search hear"></input> */}

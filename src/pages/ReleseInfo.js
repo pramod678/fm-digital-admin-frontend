@@ -282,11 +282,6 @@ const ReleseInfo = () => {
         Submission
       </Link>
       <div>
-        <div
-          style={{ margin: "0px", marginTop: "-30px", position: "absolute" }}
-        >
-          <SideBar />
-        </div>
         <div className="flex-container">
           <div>
             <div className="box">

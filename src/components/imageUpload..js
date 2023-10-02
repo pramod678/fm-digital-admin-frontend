@@ -22,7 +22,7 @@ function ImageUpload() {
     },[])
 
     function uploadImage() {
-        fetch("http://192.168.95.212:5000/upload-image", {
+        fetch("http://192.168.29.202:5000/upload-image", {
             method: "POST",
             crossDomain: true,
             headers: {

@@ -149,9 +149,6 @@ const Catalogs = () => {
   //   const [platform, setPlatform] = useState("");
   return (
     <div className="mai-nev">
-      <div style={{ position: "absolute", marginTop: "0px" }}>
-        <SideBar />
-      </div>
       <h3 className="catalogs">Catalog</h3>
       <div
         style={{

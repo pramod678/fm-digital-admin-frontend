@@ -139,9 +139,6 @@ const YoutubeClaims = () => {
   };
   return (
     <div className="mai-nev">
-      <div style={{ position: "absolute", marginTop: "0px" }}>
-        <SideBar />
-      </div>
       <h3 className="catalogs">Youtube Claims</h3>
       <div className="flex-container1">
         <div className="youtube">
