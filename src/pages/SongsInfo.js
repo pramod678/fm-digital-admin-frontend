@@ -229,9 +229,7 @@ const SongsInfo = () => {
         <Link className="button1" to="/Submission">
           Submission
         </Link>
-        <div style={{ position: "absolute", marginTop: "-30px" }}>
-          <SideBar />
-        </div>
+
 
         <div className="songuploging">
           <div className="GUIDELINES2">

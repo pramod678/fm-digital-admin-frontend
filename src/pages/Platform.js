@@ -184,9 +184,7 @@ const PlatForm = () => {
         <Link className="button1" to="/Submission">
           Submission
         </Link>
-        <div style={{ position: "absolute", marginTop: "-30px" }}>
-          <SideBar />
-        </div>
+        
         <div className="audio-list">
           <h4 style={{ fontSize: "30px" }}>
             Audio (120+)&nbsp;&nbsp;

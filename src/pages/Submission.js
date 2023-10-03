@@ -100,7 +100,6 @@ const Submission = () => {
           Submission
         </Link>
 
-        <div style={{ position: 'absolute', marginTop: '-30px' }} ><SideBar /></div>
         <h2 style={{ marginTop: '35px', marginRight: '600px' }}>Release Information</h2>
         <table width="70%" style={{ marginLeft: "25%", marginTop: '40px', textAlign: "left" }} >
 
