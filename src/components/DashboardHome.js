@@ -13,9 +13,9 @@ export default function UserHome({ userData }) {
     window.location.href = "./sign-in";
   };
 
-  const Spotifycards = [1, 2, 3, 4, 5, 6];
+  const Spotifycards = [1];
 
-  const YoutubeCards = [1, 2];
+  const YoutubeCards = [1];
 
 
   return (
@@ -39,11 +39,11 @@ export default function UserHome({ userData }) {
                       <div key={index} className="bg-[#212121] px-2 py-1 rounded-sm shadow-lg relative">
                         <div className="flex flex-col items-start">
                           <div className="w-full h-28 md:h-32 relative">
-                            <img src="./images/top.jpg" alt="..." className="object-cover h-full w-full rounded-sm" />
+                            <img src="./images/deathrow.jpg" alt="..." className="object-cover h-full w-full rounded-sm" />
                             <span className="absolute top-1 left-1 bg-gray-300 text-black text-xs px-2 py-1 rounded-full w-5 h-5 flex items-center justify-center">10</span>
                           </div>
                           <div className="mt-2 ">
-                            <p className="text-sm md:text-md font-bold text-white mb-1">Title {card}</p>
+                            <p className="text-sm md:text-md font-bold text-white mb-1">Death Row {card}</p>
                             <p className="text-xs  text-gray-300 mb-2 overflow-hidden line-clamp-2">Very long long that might be truncated if too long</p>
                           </div>
                         </div>
@@ -62,7 +62,7 @@ export default function UserHome({ userData }) {
                         <div className="bg-[#212121] px-2 py-1 rounded-sm shadow-lg relative">
                           <div className="flex flex-col items-start">
                             <div className="w-full h-30 md:h-36 relative">
-                              <img src="./images/top.jpg" alt="..." className="object-cover h-full w-full rounded-sm" />
+                              <img src="./images/12thFail.jpg" alt="..." className="object-cover h-full w-full rounded-sm" />
                               <span className="absolute bottom-1 right-1 bg-gray-800 text-white text-xs px-2 py-1 rounded-sm w-8 h-5 flex items-center justify-center">02:33</span>
                             </div>
                             <div className="mt-2 ">
@@ -70,9 +70,9 @@ export default function UserHome({ userData }) {
                               <div className="flex items-start space-x-2">
                                 <img src="./images/top.jpg" alt="Profile" className="w-6 h-6 md:w-8 md:h-8 rounded-full" />
                                 <div>
-                                  <p className="text-sm md:text-md font-bold text-white mb-1 overflow-hidden line-clamp-1">Titlesssss</p>
+                                  <p className="text-sm md:text-md font-bold text-white mb-1 overflow-hidden line-clamp-2">12th Fail - Official Trailer | Vidhu Vinod Chopra | In Cinemas Worldwide 27th Oct 2023 - Zee Studios</p>
                                   {/* below name and 5K views . 3 days go */}
-                                  <p className="text-xs text-gray-300 mb-2">Name {card}</p>
+                                  <p className="text-xs text-gray-300 mb-2 line-clamp-1">Nmae {card}</p>
                                   <p className="text-xs text-gray-300 mb-2">5K views | 3 days ago</p>
                                 </div>
                               </div>

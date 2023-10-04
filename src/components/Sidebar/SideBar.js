@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaQuora } from "react-icons/fa";
+import { FaBars, FaHome, FaLinkedin, FaQuora } from "react-icons/fa";
 import { FiLink, FiYoutube } from "react-icons/fi";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaSpotify } from 'react-icons/fa';
 import { MdOutlineLabel } from "react-icons/md";
@@ -176,12 +176,8 @@ const SideBar = ({ children }) => {
             <p className="text-white text-center mb-0">Connect with us</p>
             <div className="flex gap-3 mt-2">
               <FaFacebook className="text-white cursor-pointer" />
-              <a href="https://spotify.link/IrEoUTLzADb" target="_blank" rel="noopener noreferrer">
-                <FaSpotify className="text-white cursor-pointer" />
-              </a>
-              <a href="https://youtu.be/KjbtuqENvVE?si=IbJojASyUFpY99G5" target="_blank" rel="noopener noreferrer">
-                <FaYoutube className="text-white cursor-pointer" />
-              </a>
+              <FaLinkedin className="text-white cursor-pointer" />
+              <FaYoutube className="text-white cursor-pointer" />
               <FaInstagram className="text-white cursor-pointer" />
               <FaTwitter className="text-white cursor-pointer" />
             </div>
