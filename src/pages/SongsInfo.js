@@ -55,7 +55,7 @@ const SongsInfo = () => {
   };
   // console.log("AudioDocument.data",AudioDocument.data);
   useEffect(() => {
-    fetch("http://192.168.29.202:5000/api/v1/user/userData", {
+    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -82,7 +82,7 @@ const SongsInfo = () => {
   }, []);
   function handleArtistGet() {
     fetch(
-      `http://192.168.29.202:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -96,7 +96,7 @@ const SongsInfo = () => {
   // console.log("userData.users_id",userData.users_id);
   function handleReleseInfoGet(userData) {
     fetch(
-      `http://192.168.29.202:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -109,7 +109,7 @@ const SongsInfo = () => {
   }
   function handleFeacturingGet() {
     fetch(
-      `http://192.168.29.202:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
+      `http://192.168.34.212:5000/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -123,7 +123,7 @@ const SongsInfo = () => {
   }
   function handlegenregGet() {
     fetch(
-      `http://192.168.29.202:5000/api/v1/createRelease/genreGet`,
+      `http://192.168.34.212:5000/api/v1/createRelease/genreGet`,
       {
         method: "GET",
       }
@@ -136,7 +136,7 @@ const SongsInfo = () => {
   }
   function handleLanguageGet() {
     fetch(
-      `http://192.168.29.202:5000/api/v1/createRelease/languageGet`,
+      `http://192.168.34.212:5000/api/v1/createRelease/languageGet`,
       {
         method: "GET",
       }
@@ -173,7 +173,7 @@ const SongsInfo = () => {
     formData.append("releseInfo_id", parseInt(ReleseInfoGet.releseInfo_id));
     // console.log("formData.Trackversion", formdata.Trackversion);
     const res = await fetch(
-      "http://192.168.95.212:5000/api/v1/createRelease/songsInfoPost",
+      "http://192.168.34.212:5000/api/v1/createRelease/songsInfoPost",
       {
         method: "POST",
         body: formData,
@@ -229,9 +229,6 @@ const SongsInfo = () => {
         <Link className="button1" to="/Submission">
           Submission
         </Link>
-        <div style={{ position: "absolute", marginTop: "-30px" }}>
-          <SideBar />
-        </div>
 
         <div className="songuploging">
           <div className="GUIDELINES2">

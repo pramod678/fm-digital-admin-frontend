@@ -22,7 +22,7 @@ export default function AdminHome({ userData }) {
 
   //fetching all user
   const getAllUser = () => {
-    fetch("http://192.168.95.212:5000/getAllUser", {
+    fetch("http://192.168.34.212:5000/getAllUser", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -44,7 +44,7 @@ export default function AdminHome({ userData }) {
   //deleting user
   const deleteUser = (id, name) => {
     if (window.confirm(`Are you sure you want to delete ${name}`)) {
-      fetch("http://192.168.95.212:5000/deleteUser", {
+      fetch("http://192.168.34.212:5000/deleteUser", {
         method: "POST",
         crossDomain: true,
         headers: {
@@ -79,7 +79,7 @@ export default function AdminHome({ userData }) {
   }
 
   function getPaginatedUsers(){
-    fetch(`http://192.168.95.212/paginatedUsers?page=${currentPage.current}&limit=${limit}`, {
+    fetch(`http://192.168.34.212/paginatedUsers?page=${currentPage.current}&limit=${limit}`, {
       method: "GET",
     })
       .then((res) => res.json())

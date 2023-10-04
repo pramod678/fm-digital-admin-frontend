@@ -92,6 +92,7 @@ table, tr, td,th {
   width: 350px;
   box-sizing: border-box;
   border: none;
+  pointer-events: none;
   /* border-bottom: 2px solid red; */
 }
 .button1:active {
