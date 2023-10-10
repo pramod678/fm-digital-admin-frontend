@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaQuora } from "react-icons/fa";
+import { FaBars, FaHome, FaLinkedin, FaQuora } from "react-icons/fa";
 import { FiLink, FiYoutube } from "react-icons/fi";
-import { CgProfile } from "react-icons/bi";
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaSpotify } from 'react-icons/fa';
 import { MdOutlineLabel } from "react-icons/md";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { TbTool } from "react-icons/tb";
@@ -105,7 +105,7 @@ const SideBar = ({ children }) => {
       <div className="main-container">
         <motion.div
           animate={{
-            width: isOpen ? "250px" : "45px",
+            width: isOpen ? "150px" : "45px",
 
             transition: {
               duration: 0.5,
@@ -172,9 +172,19 @@ const SideBar = ({ children }) => {
               );
             })}
           </section>
+          <div className={` ${!isOpen ? 'hidden' : 'block'} mt-48 bg-[#00CED1] h-14 flex flex-col items-center justify-center`}>
+            <p className="text-white text-center mb-0">Connect with us</p>
+            <div className="flex gap-3 mt-2">
+              <FaFacebook className="text-white cursor-pointer" />
+              <FaLinkedin className="text-white cursor-pointer" />
+              <FaYoutube className="text-white cursor-pointer" />
+              <FaInstagram className="text-white cursor-pointer" />
+              <FaTwitter className="text-white cursor-pointer" />
+            </div>
+          </div>
         </motion.div>
 
-        
+
       </div>
     </>
   );

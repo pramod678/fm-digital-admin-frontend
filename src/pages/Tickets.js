@@ -100,28 +100,6 @@ export default function App() {
     <div className="mai-nev">
       <h3 className="catalogs">Tickets</h3>
       <div style={{ position: 'absolute', marginLeft: '15%', marginTop: '5%', fontSize: '150%' }}>
-        {/* <input  type="text" placeholder="Search hear"></input> */}
-        {/* <select style={{position:'absolute',marginLeft:'2%',fontSize:'130%'}}
-      // value={this.state.selectValue} 
-      // onChange={this.handleChange} 
-    >
-     <option value="Orange">All</option>
-      <option value="Radish">A</option>
-      <option value="Cherry">B</option>
-    </select> */}
-        {/* <div className="mb-3">
-      <input
-        type="text"
-        className="form-control"
-        id="search"
-        placeholder="Search Title"
-        // value={searchTerm}
-        // onChange={(e) => {
-        //   setSearchTerm(e.target.value);
-        //   setCurrentPage(1);
-        // }}
-      />
-    </div> */}
         <div style={{ position: 'absolute', marginLeft: '2%', top: '0%', width: '40%' }}>
           <select
             className="form-select"
@@ -137,7 +115,7 @@ export default function App() {
           </select>
         </div>
 
-        <h4 style={{ position: 'relative', marginLeft: '400%', marginTop: '10%', fontSize: '130%' }}>Total&nbsp;Tickets:3</h4>
+        <h4 style={{ position: 'relative', marginLeft: '340%', marginTop: '10%', fontSize: '130%' }}>Total&nbsp;Tickets:3</h4>
         {/* <p>{message}</p> */}
 
       </div>
@@ -170,83 +148,5 @@ export default function App() {
       </table>
     </div>
     </>
-    // <div className="container">
-    //   <h3>Filters</h3>
-    //   <div className="mb-3">
-    //     <label htmlFor="search" className="form-label">
-    //       Search
-    //     </label>
-    //     <input
-    //       type="text"
-    //       className="form-control"
-    //       id="search"
-    //       placeholder="Search Title"
-    //       value={searchTerm}
-    //       onChange={(e) => {
-    //         setSearchTerm(e.target.value);
-    //         setCurrentPage(1);
-    //       }}
-    //     />
-    //   </div>
-    //   <div className="mb-3">
-    //     <label htmlFor="search" className="form-label">
-    //       Completed
-    //     </label>
-    //     <select
-    //       className="form-select"
-    //       value={filterCompleted}
-    //       onChange={(e) => {
-    //         setFilterCompleted(e.target.value);
-    //         setCurrentPage(1);
-    //       }}
-    //     >
-    //       <option defaultValue="All">All</option>
-    //       <option value="true">true</option>
-    //       <option value="false">false</option>
-    //     </select>
-    //   </div>
-    //   <div className="mb-3">
-    //     <button
-    //       type="button"
-    //       className="btn btn-danger btn-sm"
-    //       onClick={resetFilter}
-    //     >
-    //       Reset Filters
-    //     </button>
-    //   </div>
-
-    //   <nav>
-    //     <ul className="pagination">
-    //       {pageNumbers.map((number) => (
-    //         <li key={number} className="page-item">
-    //           <button onClick={() => paginate(number)} className="page-link">
-    //             {number}
-    //           </button>
-    //         </li>
-    //       ))}
-    //     </ul>
-    //   </nav>
-
-    //   {todosData
-    //     .map((todo) => {
-    //       return (
-    //         <div key={todo.id} className="maincard">
-    //           <h5 className="card-header">
-    //             {/* <div className="card-header-flex">
-    //               <span className="id">{`#${todo.id}`}</span>
-    //             </div> */}
-    //           </h5>
-    //           <div className="card-body">
-    //             <div className="card-text">
-    //               <div className="card-body-flex">
-    //                 <span>{`Title: ${todo.title}`}</span>
-    //                 <span>{`Completed: ${todo.completed}`}</span>
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       );
-    //     })}
-    // </div>
   );
 }

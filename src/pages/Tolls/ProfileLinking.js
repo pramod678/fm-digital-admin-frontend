@@ -39,7 +39,7 @@ const ProfileLinking = () => {
     },
   ];
   useEffect(() => {
-    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    fetch("http://3.108.3.213:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -70,7 +70,7 @@ const ProfileLinking = () => {
   function handlereleseInfoGetOne() {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `http://3.108.3.213:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -86,7 +86,7 @@ const ProfileLinking = () => {
   function handleProfileLinkinAdudiogGet() {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
+      `http://3.108.3.213:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
       {
         method: "GET",
       }
@@ -100,7 +100,7 @@ const ProfileLinking = () => {
   function handleprofileLinkingGetAll(userData) {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/tools/profileLinkingGetAll/${userData.users_id}`,
+      `http://3.108.3.213:5000/api/v1/tools/profileLinkingGetAll/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -113,7 +113,7 @@ const ProfileLinking = () => {
   }
   // console.log("formData", formData);
   const handleSubmit = async (e) => {
-    fetch("http://192.168.34.212:5000/api/v1/tools/profileLinkingPost", {
+    fetch("http://3.108.3.213:5000/api/v1/tools/profileLinkingPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -239,8 +239,8 @@ const ProfileLinking = () => {
             <div
               style={{
                 position: "relative",
-                marginLeft: "-140%",
-                marginTop: "13%",
+                marginLeft: "-120%",
+                marginTop: "10%",
               }}
             >
               <h3>Your Profile Linking History</h3>

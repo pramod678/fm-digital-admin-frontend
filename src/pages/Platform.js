@@ -85,7 +85,7 @@ const PlatForm = () => {
   // console.log(formData);
 
   useEffect(() => {
-    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    fetch("http://3.108.3.213:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -110,7 +110,7 @@ const PlatForm = () => {
   }, []);
   function handlesongsInfoGet(userData) {
     fetch(
-      `http://192.168.34.212:5000/api/v1/createRelease/songsInfoGet/${userData.users_id}`,
+      `http://3.108.3.213:5000/api/v1/createRelease/songsInfoGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -123,7 +123,7 @@ const PlatForm = () => {
       });
   }
   const handleSubmit = async (e) => {
-    fetch("http://192.168.34.212:5000/api/v1/createRelease/platformPost", {
+    fetch("http://3.108.3.213:5000/api/v1/createRelease/platformPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -171,7 +171,7 @@ const PlatForm = () => {
   return (
     <>
 
-      <div className="mai-nev ">
+      <div className="mai-nev">
         <Link className="button1" to="/ReleseInfo">
           Release Info
         </Link>
@@ -184,8 +184,9 @@ const PlatForm = () => {
         <Link className="button1" to="/Submission">
           Submission
         </Link>
+        
         <div className="audio-list">
-          <h4 style={{ fontSize: "30px" }}>
+          <h4 style={{ fontSize: "25px" }}>
             Audio (120+)&nbsp;&nbsp;
             <input
               type="checkbox"
@@ -266,7 +267,7 @@ const PlatForm = () => {
           </table>
           <div>
             <h4
-              style={{ fontSize: "30px", marginTop: "40px", marginLeft: "-50px" }}
+              style={{ fontSize: "25px", marginTop: "30px", marginLeft: "-50px" }}
             >
               CRBT(2+)&nbsp;&nbsp;
               <input
@@ -325,7 +326,7 @@ const PlatForm = () => {
           </div>
           <div>
             <h4
-              style={{ fontSize: "30px", marginTop: "40px", marginLeft: "90px" }}
+              style={{ fontSize: "25px", marginTop: "30px", marginLeft: "90px" }}
             >
               Video Platform(8+)&nbsp;&nbsp;
               <input
@@ -406,7 +407,7 @@ const PlatForm = () => {
               </tbody>
             </table>
             <button
-              style={{ marginLeft: "300%", marginTop: "15%" }}
+              style={{ marginLeft: "90%", marginTop: "2%" }}
               onClick={() => handleSubmit()}
               type="submit"
               className="btn btn-primary"

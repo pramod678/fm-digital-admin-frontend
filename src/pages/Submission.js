@@ -13,7 +13,7 @@ const Submission = () => {
   console.log("userIagery", userIagery);
   useEffect(() => {
 
-    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    fetch("http://3.108.3.213:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -41,7 +41,7 @@ const Submission = () => {
   function handlesubmissionGet(userData) {
     console.log(">>>>>>", userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
+      `http://3.108.3.213:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -57,7 +57,7 @@ const Submission = () => {
   // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
   const handleSubmit = async (e) => {
     fetch(
-      "http://192.168.34.212:5000/api/v1/createRelease/submissionPost",
+      "http://3.108.3.213:5000/api/v1/createRelease/submissionPost",
       {
         method: "POST",
         crossDomain: true,
@@ -100,8 +100,8 @@ const Submission = () => {
           Submission
         </Link>
 
-        <h2 style={{ marginTop: '35px', marginRight: '600px' }}>Release Information</h2>
-        <table width="70%" style={{ marginLeft: "25%", marginTop: '40px', textAlign: "left" }} >
+        <h2 style={{ marginTop: '35px', marginRight: '700px' }}>Release Information</h2>
+        <table width="60%" style={{ marginLeft: "20%", marginTop: '40px', textAlign: "left" }} >
 
           <tr>
             <td><h6>Titale:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Title}`}</h6></td>
@@ -118,14 +118,14 @@ const Submission = () => {
           </tr>
         </table>
         <div className="box2">
-          <img style={{ height: 146, width: 145 }}
+          <img style={{ height: 146, width: 145}}
             src={`http://localhost:5000/${submissionGet?.ImageDocument}`}
             type="file"
             alt="Art Work"
           ></img>
 
         </div>
-        <input style={{ marginRight: '20px', marginTop: "5%" }} type="checkbox" onChange={(event) => setUserIagery(current => !current, event.target.value)}></input>
+        <input style={{  marginTop: "5%" }} type="checkbox" onChange={(event) => setUserIagery(current => !current, event.target.value)}></input>
         <label>I understand and agree to the </label> <a href="/">FM Digital Distribution Terms & Privacy Policy.</a>
         <div>
           <Button style={{ marginTop: '20px' }} onClick={() => handleSubmit()} disabled={!userIagery} variant="btn btn-dark">Submit</Button>

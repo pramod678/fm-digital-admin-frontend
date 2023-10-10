@@ -16,26 +16,9 @@ const YoutubeClaims = () => {
   const [youtubeClaimsGetAll, setyoutubeClaimsGetAll] = useState([]);
   console.log("releseInfoGetOne", releseInfoGetOne);
   console.log("youtubeClaimsGetAll", youtubeClaimsGetAll);
-  const data = [
-    {
-      id: 1,
-      ReleaseTitle: "hggsdhg",
-      AudioTitle: "sonfgdg",
-      Policy: "jhjdshjhsj",
-      Date: "06-06-2023",
-      URLs: "hgdhg",
-    },
-    {
-      id: 2,
-      ReleaseTitle: "hggsdhg",
-      AudioTitle: "sonfgdg",
-      Policy: "jhjdshjhsj",
-      Date: "06-06-2023",
-      URLs: "hgdhg",
-    },
-  ];
+  
   useEffect(() => {
-    fetch("http://192.168.34.212:5000/api/v1/user/userData", {
+    fetch("http://3.108.3.213:5000/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -65,7 +48,7 @@ const YoutubeClaims = () => {
   function handlereleseInfoGetOne() {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `http://3.108.3.213:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -82,7 +65,7 @@ const YoutubeClaims = () => {
   function handleProfileLinkinAdudiogGet() {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
+      `http://3.108.3.213:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
       {
         method: "GET",
       }
@@ -97,7 +80,7 @@ const YoutubeClaims = () => {
   function handleyoutubeClaimsGetAll(userData) {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://192.168.34.212:5000/api/v1/tools/youtubeClaimsGetAll/${userData.users_id}`,
+      `http://3.108.3.213:5000/api/v1/tools/youtubeClaimsGetAll/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -110,7 +93,7 @@ const YoutubeClaims = () => {
   }
   // console.log("formData",formData);
   const handleSubmit = async (e) => {
-    fetch("http://192.168.34.212:5000/api/v1/tools/youtubeClaimsPost", {
+    fetch("http://3.108.3.213:5000/api/v1/tools/youtubeClaimsPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -233,8 +216,8 @@ const YoutubeClaims = () => {
             <div
               style={{
                 position: "relative",
-                marginLeft: "-140%",
-                marginTop: "13%",
+                marginLeft: "-120%",
+                marginTop: "10%",
               }}
             >
               <h3>Your UGC Claims History</h3>
