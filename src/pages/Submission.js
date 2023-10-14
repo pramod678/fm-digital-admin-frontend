@@ -13,7 +13,7 @@ const Submission = () => {
   console.log("userIagery", userIagery);
   useEffect(() => {
 
-    fetch("http://3.108.3.213:5000/api/v1/user/userData", {
+    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -41,7 +41,7 @@ const Submission = () => {
   function handlesubmissionGet(userData) {
     console.log(">>>>>>", userData);
     fetch(
-      `http://3.108.3.213:5000/api/v1/createRelease/submissionGet/${userData.users_id}`,
+      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/submissionGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -57,7 +57,7 @@ const Submission = () => {
   // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
   const handleSubmit = async (e) => {
     fetch(
-      "http://3.108.3.213:5000/api/v1/createRelease/submissionPost",
+      "https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/submissionPost",
       {
         method: "POST",
         crossDomain: true,

@@ -22,7 +22,7 @@ function ImageUpload() {
     },[])
 
     function uploadImage() {
-        fetch("http://3.108.3.213:5000/upload-image", {
+        fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/upload-image", {
             method: "POST",
             crossDomain: true,
             headers: {
@@ -36,7 +36,7 @@ function ImageUpload() {
         }).then((res) => res.json()).then((data) => console.log(data))
     }
     function getImage() {
-        fetch("http://3.108.3.213:5000/get-image", {
+        fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/get-image", {
             method: "GET",
         }).then((res) => res.json()).then((data) => {
             console.log(data)

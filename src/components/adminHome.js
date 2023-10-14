@@ -22,7 +22,7 @@ export default function AdminHome({ userData }) {
 
   //fetching all user
   const getAllUser = () => {
-    fetch("http://3.108.3.213:5000/getAllUser", {
+    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/getAllUser", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -44,7 +44,7 @@ export default function AdminHome({ userData }) {
   //deleting user
   const deleteUser = (id, name) => {
     if (window.confirm(`Are you sure you want to delete ${name}`)) {
-      fetch("http://3.108.3.213:5000/deleteUser", {
+      fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/deleteUser", {
         method: "POST",
         crossDomain: true,
         headers: {

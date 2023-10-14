@@ -15,7 +15,7 @@ const Catalogs = () => {
   const [userData, setUserData] = useState("");
   console.log("catalogsGet", catalogsGet);
   useEffect(() => {
-    fetch("http://3.108.3.213:5000/api/v1/user/userData", {
+    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -45,7 +45,7 @@ const Catalogs = () => {
   function handlecatalogsGet(userData) {
     console.log("userData>>>", userData);
     fetch(
-      `http://3.108.3.213:5000/api/v1/createRelease/catalogsGet/${userData.users_id}`,
+      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/catalogsGet/${userData.users_id}`,
       {
         method: "GET",
       }

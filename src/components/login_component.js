@@ -23,7 +23,7 @@ export default function Login() {
     e.preventDefault();
 
     console.log(email, password);
-    fetch("http://3.108.3.213:5000/api/v1/user/login", {
+    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/user/login", {
       method: "POST",
       crossDomain: true,
       headers: {

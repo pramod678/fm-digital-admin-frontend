@@ -18,7 +18,7 @@ const YoutubeClaims = () => {
   console.log("youtubeClaimsGetAll", youtubeClaimsGetAll);
   
   useEffect(() => {
-    fetch("http://3.108.3.213:5000/api/v1/user/userData", {
+    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -48,7 +48,7 @@ const YoutubeClaims = () => {
   function handlereleseInfoGetOne() {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://3.108.3.213:5000/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -65,7 +65,7 @@ const YoutubeClaims = () => {
   function handleProfileLinkinAdudiogGet() {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://3.108.3.213:5000/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
+      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/tools/profileLinkinAdudiogGet/users_id/${releseInfoGetOne.users_id}/releseInfo_id/${releseInfoGetOne.releseInfo_id}`,
       {
         method: "GET",
       }
@@ -80,7 +80,7 @@ const YoutubeClaims = () => {
   function handleyoutubeClaimsGetAll(userData) {
     // console.log("userData.user_id",userData);
     fetch(
-      `http://3.108.3.213:5000/api/v1/tools/youtubeClaimsGetAll/${userData.users_id}`,
+      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/tools/youtubeClaimsGetAll/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -93,7 +93,7 @@ const YoutubeClaims = () => {
   }
   // console.log("formData",formData);
   const handleSubmit = async (e) => {
-    fetch("http://3.108.3.213:5000/api/v1/tools/youtubeClaimsPost", {
+    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/tools/youtubeClaimsPost", {
       method: "POST",
       crossDomain: true,
       headers: {
