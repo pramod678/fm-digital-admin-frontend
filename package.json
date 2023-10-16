@@ -2,7 +2,7 @@
   "name": "react-login-signup-ui-template",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://fmditital-1585723686.ap-south-1.elb.amazonaws.com:5000",
+  "proxy": "https://backend.fmdigitalofficial.com:5000",
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",

@@ -11,7 +11,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/user/userData", {
+    fetch("https://backend.fmdigitalofficial.com/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
