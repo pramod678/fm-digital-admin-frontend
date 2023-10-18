@@ -55,7 +55,7 @@ const SongsInfo = () => {
   };
   // console.log("AudioDocument.data",AudioDocument.data);
   useEffect(() => {
-    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/user/userData", {
+    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -82,7 +82,7 @@ const SongsInfo = () => {
   }, []);
   function handleArtistGet() {
     fetch(
-      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
+      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/primaryArtistGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -96,7 +96,7 @@ const SongsInfo = () => {
   // console.log("userData.users_id",userData.users_id);
   function handleReleseInfoGet(userData) {
     fetch(
-      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -109,7 +109,7 @@ const SongsInfo = () => {
   }
   function handleFeacturingGet() {
     fetch(
-      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
+      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -123,7 +123,7 @@ const SongsInfo = () => {
   }
   function handlegenregGet() {
     fetch(
-      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/genreGet`,
+      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/genreGet`,
       {
         method: "GET",
       }
@@ -136,7 +136,7 @@ const SongsInfo = () => {
   }
   function handleLanguageGet() {
     fetch(
-      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/languageGet`,
+      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/languageGet`,
       {
         method: "GET",
       }
@@ -173,7 +173,7 @@ const SongsInfo = () => {
     formData.append("releseInfo_id", parseInt(ReleseInfoGet.releseInfo_id));
     // console.log("formData.Trackversion", formdata.Trackversion);
     const res = await fetch(
-      "https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/songsInfoPost",
+      "https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/songsInfoPost",
       {
         method: "POST",
         body: formData,

@@ -39,7 +39,7 @@ const Label = () => {
   console.log("labelGet", labelGet);
   console.log(userData, "userData");
   useEffect(() => {
-    fetch("https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/user/userData", {
+    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -70,7 +70,7 @@ const Label = () => {
 
     // console.log("formData.Trackversion", formdata.Trackversion);
     const res = await fetch(
-      "https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/labelPost",
+      "https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/labelPost",
       {
         method: "POST",
         body: formData,
@@ -92,7 +92,7 @@ const Label = () => {
   };
   function handleLabelGet() {
     fetch(
-      `https://fmditital-1585723686.ap-south-1.elb.amazonaws.com/api/v1/createRelease/labelgetAll`,
+      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/labelgetAll`,
       {
         method: "GET",
       }
