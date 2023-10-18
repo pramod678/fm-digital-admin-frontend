@@ -16,7 +16,7 @@ export default function SignUp() {
       e.preventDefault();
 
       console.log(fname, lname, email, password);
-      fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/register", {
+      fetch("https://fmdigitalofficial.in/api/v1/user/register", {
         method: "POST",
         crossDomain: true,
         headers: {

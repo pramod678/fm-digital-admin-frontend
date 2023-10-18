@@ -22,7 +22,7 @@ function ImageUpload() {
     },[])
 
     function uploadImage() {
-        fetch("https://fmdigitalofficial.infmdigitalofficial.inupload-image", {
+        fetch("https://fmdigitalofficial.in/upload-image", {
             method: "POST",
             crossDomain: true,
             headers: {
@@ -36,7 +36,7 @@ function ImageUpload() {
         }).then((res) => res.json()).then((data) => console.log(data))
     }
     function getImage() {
-        fetch("https://fmdigitalofficial.infmdigitalofficial.inget-image", {
+        fetch("https://fmdigitalofficial.in/get-image", {
             method: "GET",
         }).then((res) => res.json()).then((data) => {
             console.log(data)

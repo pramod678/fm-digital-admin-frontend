@@ -22,7 +22,7 @@ export default function AdminHome({ userData }) {
 
   //fetching all user
   const getAllUser = () => {
-    fetch("https://fmdigitalofficial.infmdigitalofficial.ingetAllUser", {
+    fetch("https://fmdigitalofficial.in/getAllUser", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -44,7 +44,7 @@ export default function AdminHome({ userData }) {
   //deleting user
   const deleteUser = (id, name) => {
     if (window.confirm(`Are you sure you want to delete ${name}`)) {
-      fetch("https://fmdigitalofficial.infmdigitalofficial.indeleteUser", {
+      fetch("https://fmdigitalofficial.in/deleteUser", {
         method: "POST",
         crossDomain: true,
         headers: {

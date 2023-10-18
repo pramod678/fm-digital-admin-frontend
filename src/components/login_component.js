@@ -23,7 +23,7 @@ export default function Login() {
     e.preventDefault();
 
     console.log(email, password);
-    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/login", {
+    fetch("https://fmdigitalofficial.in/api/v1/user/login", {
       method: "POST",
       crossDomain: true,
       headers: {

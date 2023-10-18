@@ -13,7 +13,7 @@ const Submission = () => {
   console.log("userIagery", userIagery);
   useEffect(() => {
 
-    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/userData", {
+    fetch("https://fmdigitalofficial.in/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -41,7 +41,7 @@ const Submission = () => {
   function handlesubmissionGet(userData) {
     console.log(">>>>>>", userData);
     fetch(
-      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/submissionGet/${userData.users_id}`,
+      `https://fmdigitalofficial.in/api/v1/createRelease/submissionGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -57,7 +57,7 @@ const Submission = () => {
   // console.log("releseInfoGetOne",releseInfoGetOne?.ImageDocument);
   const handleSubmit = async (e) => {
     fetch(
-      "https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/submissionPost",
+      "https://fmdigitalofficial.in/api/v1/createRelease/submissionPost",
       {
         method: "POST",
         crossDomain: true,

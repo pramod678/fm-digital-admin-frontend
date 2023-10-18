@@ -15,7 +15,7 @@ const Catalogs = () => {
   const [userData, setUserData] = useState("");
   console.log("catalogsGet", catalogsGet);
   useEffect(() => {
-    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/userData", {
+    fetch("https://fmdigitalofficial.in/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -45,7 +45,7 @@ const Catalogs = () => {
   function handlecatalogsGet(userData) {
     console.log("userData>>>", userData);
     fetch(
-      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/catalogsGet/${userData.users_id}`,
+      `https://fmdigitalofficial.in/api/v1/createRelease/catalogsGet/${userData.users_id}`,
       {
         method: "GET",
       }

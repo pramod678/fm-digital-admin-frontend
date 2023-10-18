@@ -68,7 +68,7 @@ const ReleseInfo = () => {
     // });
   };
   useEffect(() => {
-    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/userData", {
+    fetch("https://fmdigitalofficial.in/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -94,7 +94,7 @@ const ReleseInfo = () => {
   }, []);
   ////getuser
   function handlegenregGet() {
-    fetch(`https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/genreGet`, {
+    fetch(`https://fmdigitalofficial.in/api/v1/createRelease/genreGet`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -105,7 +105,7 @@ const ReleseInfo = () => {
   }
   function handlereleseInfoGetOne(userData) {
     fetch(
-      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `https://fmdigitalofficial.in/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -120,7 +120,7 @@ const ReleseInfo = () => {
 
   function handleArtistGet() {
     fetch(
-      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/primaryArtistGet/${userData.users_id}`,
+      `https://fmdigitalofficial.in/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -133,7 +133,7 @@ const ReleseInfo = () => {
   }
   function handleFeacturingGet() {
     fetch(
-      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
+      `https://fmdigitalofficial.in/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -148,7 +148,7 @@ const ReleseInfo = () => {
   // console.log("Genre", Genre);
   // console.log("inputFields", inputFields[0].PrimaryArtist);
   const handleSubmit1 = async (e) => {
-    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/primaryArtistPost", {
+    fetch("https://fmdigitalofficial.in/api/v1/createRelease/primaryArtistPost", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -178,7 +178,7 @@ const ReleseInfo = () => {
   };
   const handleSubmit2 = async (e) => {
     fetch(
-      "https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/featuringArtisttPost",
+      "https://fmdigitalofficial.in/api/v1/createRelease/featuringArtisttPost",
       {
         method: "POST",
         crossDomain: true,
@@ -227,7 +227,7 @@ const ReleseInfo = () => {
     formData.append("Status", parseInt(0));
     formData.append("submission", "");
     const res = await fetch(
-      "https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/releseInfoPost",
+      "https://fmdigitalofficial.in/api/v1/createRelease/releseInfoPost",
       {
         method: "POST",
         body: formData,

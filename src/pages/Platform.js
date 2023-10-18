@@ -85,7 +85,7 @@ const PlatForm = () => {
   // console.log(formData);
 
   useEffect(() => {
-    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/user/userData", {
+    fetch("https://fmdigitalofficial.in/api/v1/user/userData", {
       method: "POST",
       crossDomain: true,
       headers: {
@@ -110,7 +110,7 @@ const PlatForm = () => {
   }, []);
   function handlesongsInfoGet(userData) {
     fetch(
-      `https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/songsInfoGet/${userData.users_id}`,
+      `https://fmdigitalofficial.in/api/v1/createRelease/songsInfoGet/${userData.users_id}`,
       {
         method: "GET",
       }
@@ -123,7 +123,7 @@ const PlatForm = () => {
       });
   }
   const handleSubmit = async (e) => {
-    fetch("https://fmdigitalofficial.infmdigitalofficial.inapi/v1/createRelease/platformPost", {
+    fetch("https://fmdigitalofficial.in/api/v1/createRelease/platformPost", {
       method: "POST",
       crossDomain: true,
       headers: {
