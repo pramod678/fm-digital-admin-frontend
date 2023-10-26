@@ -139,8 +139,8 @@ const YoutubeClaims = () => {
               }
             >
               <option value="">Select an option</option>
-              <option value={releseInfoGetOne.ReleaseTitle}>
-                {releseInfoGetOne.ReleaseTitle}
+              <option value={releseInfoGetOne?.ReleaseTitle}>
+                {releseInfoGetOne?.ReleaseTitle}
               </option>
             </select>
             <label className="lable">Select platform*</label>

@@ -2,7 +2,7 @@
 @media screen and (min-width: 260px) and (max-width: 740px) {
   .mai-nev {
     position: relative;
-   color: red;
+   /* color: red; */
   }
   .button1 {
     display:flex;
@@ -120,7 +120,7 @@ table, tr, td,th {
   width: 350px;
   box-sizing: border-box;
   border: none;
-  /* pointer-events: none; */
+  pointer-events: none;
   /* border-bottom: 2px solid red; */
 }
 .button1:active {

@@ -288,7 +288,7 @@ const ReleseInfo = () => {
               <div className="box">
                 <img
                   style={{ height: 145, width: 145 }}
-                  src={`http://localhost:5000/${releseInfoGetOne?.ImageDocument}`}
+                  src={`https://fmdigitalofficial.in/${releseInfoGetOne?.ImageDocument}`}
                   type="file"
                   alt="Art Work"
                 ></img>

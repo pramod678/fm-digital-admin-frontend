@@ -104,22 +104,22 @@ const Submission = () => {
         <table width="60%" style={{ marginLeft: "20%", marginTop: '40px', textAlign: "left" }} >
 
           <tr>
-            <td><h6>Titale:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Title}`}</h6></td>
-            <td><h6>Genre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Genre}`}</h6></td>
+            <td><h6>Titale:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet?.Title}`}</h6></td>
+            <td><h6>Genre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet?.Genre}`}</h6></td>
           </tr>
 
           <tr>
-            <td><h6>Artist:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Artist}`}</h6></td>
-            <td><h6>SubGenre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.SubGenre}`}</h6></td>
+            <td><h6>Artist:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet?.Artist}`}</h6></td>
+            <td><h6>SubGenre:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet?.SubGenre}`}</h6></td>
           </tr>
           <tr>
-            <td><h6>Label:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Label}`}</h6></td>
-            <td><h6># Songs:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet.Songs}`}</h6></td>
+            <td><h6>Label:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet?.Label}`}</h6></td>
+            <td><h6># Songs:&nbsp;&nbsp;&nbsp;&nbsp;{`${submissionGet?.Songs}`}</h6></td>
           </tr>
         </table>
         <div className="box2">
           <img style={{ height: 146, width: 145}}
-            src={`http://localhost:5000/${submissionGet?.ImageDocument}`}
+            src={`https://fmdigitalofficial.in/${submissionGet?.ImageDocument}`}
             type="file"
             alt="Art Work"
           ></img>

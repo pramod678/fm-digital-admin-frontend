@@ -233,7 +233,7 @@ const Catalogs = () => {
                 <td>
                   <img
                     style={{ height: 60, width: 80 }}
-                    src={`http://localhost:5000/${item?.ImageDocument}`}
+                    src={`https://fmdigitalofficial.in/${item?.ImageDocument}`}
                     type="file"
                     alt="Art Work"
                   ></img>

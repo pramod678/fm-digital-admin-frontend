@@ -19,7 +19,7 @@ const routes = [
   },
   {
     path: "/ReleseInfo",
-    name: "CReleseInfo",
+    name: "Create Relese",
     icon: <AiOutlinePlusCircle />,
   },
   {
