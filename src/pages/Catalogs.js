@@ -4,16 +4,17 @@ import { BsCheckCircle, BsClock } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 import { RiDraftFill } from "react-icons/ri";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
-// import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 // import Button from "react-bootstrap/Button";
 import SideBar from "../components/Sidebar/SideBar";
 import { BiCheck } from "react-icons/bi";
 // import { Dropdown } from 'semantic-ui-react'
 
 const Catalogs = () => {
+  const navigate = useNavigate();
   const [catalogsGet, setcatalogsGet] = useState([]);
   const [userData, setUserData] = useState("");
-  console.log("catalogsGet", catalogsGet);
+  // console.log("catalogsGet", catalogsGet);
   useEffect(() => {
     fetch("https://fmdigitalofficial.in/api/v1/user/userData", {
       method: "POST",
@@ -33,7 +34,7 @@ const Catalogs = () => {
         handlecatalogsGet(data.data);
 
         // handlegenregGet()
-        console.log(data.data);
+        // console.log(data.data);
         if (data.data === "token expired") {
           alert("Token expired login again");
           localStorage.clear();
@@ -43,7 +44,7 @@ const Catalogs = () => {
   }, []);
   ////getuser
   function handlecatalogsGet(userData) {
-    console.log("userData>>>", userData);
+    // console.log("userData>>>", userData);
     fetch(
       `https://fmdigitalofficial.in/api/v1/createRelease/catalogsGet/${userData.users_id}`,
       {
@@ -52,27 +53,29 @@ const Catalogs = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log("genere ---------", data.result);
+        // console.log("genere ---------", data.result);
         setcatalogsGet(data.result);
         setRecords(data.result);
       });
   }
-  const [records, setRecords] = useState([catalogsGet]);
+  const [records, setRecords] = useState(catalogsGet);
 
   function handleFilter(event) {
-    console.log("catalogsGet-->>>", catalogsGet);
-    const inputValue = event.target.value || '';
-    console.log("inputValue", inputValue);
-    const filtered = catalogsGet.filter(row => row.Title.toLowerCase().includes(inputValue)
-      || row.ArtistName.toLowerCase().includes(inputValue)
-      || row.Label.toLowerCase().includes(inputValue)
+    // console.log("catalogsGet-->>>", catalogsGet);
+    const inputValue = event.target.value || "";
+    // console.log("inputValue", inputValue);
+    const filtered = catalogsGet.filter(
+      (row) =>
+        row.Title.toLowerCase().includes(inputValue) ||
+        row.ArtistName.toLowerCase().includes(inputValue) ||
+        row.Label.toLowerCase().includes(inputValue)
       // ||row.action.toLowerCase().includes(inputValue)
     );
-    console.log("filtered", filtered);
+    // console.log("filtered", filtered);
     setRecords(filtered); // Update the state with the filtered data
   }
 
-  console.log("records", records);
+  console.log("records-catelogs", records);
   const iconSelector = (status) => {
     switch (status) {
       case 0:
@@ -109,12 +112,32 @@ const Catalogs = () => {
         return <></>;
     }
   };
-
+const navigateEdit = async (editId)=>{
+  const id = editId
+  fetch(
+    `https://fmdigitalofficial.in/api/v1/createRelease/releseInfoGetOne/${id}`,
+    {
+      method: "GET",
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log("fatchdata ---------", data.data);
+      // setcatalogsGet(data.result);
+      // setRecords(data.result);
+      if (data.data.Status ===0 ||data.data.Status ===3) {
+        console.log(id,"idpatch");
+        navigate(`/ReleseInfoUpdate/${id}`)
+      }
+    });
+ 
+}
   const actionStatus = (status) => {
     switch (status) {
       case 0:
         return (
-          <button type="button" className="btn btn-dark">
+          <button type="button" 
+           className="btn btn-dark">
             Draft
           </button>
         );
@@ -132,7 +155,8 @@ const Catalogs = () => {
         );
       case 3:
         return (
-          <button type="button" class="btn btn-secondary">
+          <button type="button" 
+          class="btn btn-secondary">
             Draft
           </button>
         );
@@ -146,8 +170,6 @@ const Catalogs = () => {
         return <></>;
     }
   };
-  // console.log(catalogsGet[0].tottalTracks);
-  //   const [platform, setPlatform] = useState("");
   return (
     <>
       <div className="mai-nev">
@@ -160,6 +182,7 @@ const Catalogs = () => {
             fontSize: "150%",
           }}
         >
+        
           <div className="mb-3">
             <input
               type="text"
@@ -168,11 +191,6 @@ const Catalogs = () => {
               placeholder="Search Title"
               defaultValue={""}
               onChange={handleFilter}
-            // value={searchTerm}
-            // onChange={(e) => {
-            //   setSearchTerm(e.target.value);
-            //   setCurrentPage(1);
-            // }}
             />
           </div>
           <div
@@ -183,14 +201,7 @@ const Catalogs = () => {
               width: "30%",
             }}
           >
-            <select
-              className="form-select"
-            // value={filterCompleted}
-            // onChange={(e) => {
-            //   setFilterCompleted(e.target.value);
-            //   setCurrentPage(1);
-            // }}
-            >
+            <select className="form-select">
               <option defaultValue="All">All</option>
               <option value="true">approved</option>
               <option value="false">Draft</option>
@@ -201,7 +212,7 @@ const Catalogs = () => {
           <h4
             style={{
               position: "relative",
-              marginLeft: "350%",
+              marginLeft: "280%",
               marginTop: "-12%",
               fontSize: "130%",
             }}
@@ -227,7 +238,7 @@ const Catalogs = () => {
           </thead>
           <tbody>
             {records?.map((item, index) => (
-              <tr key={item._id}>
+              <tr key={item._id} onClick={()=>navigateEdit(item.releseInfo_id)}>
                 <td>{index + 1}</td>
                 <td>{iconSelector(item?.Status)}</td>
                 <td>
@@ -244,13 +255,9 @@ const Catalogs = () => {
                 <td>{item.Label}</td>
                 <td>{item.Tracks}</td>
                 <td>{String(item.createdAt).slice(0, 10)}</td>
-                <td>
-                  {/* <button type="submit" className="btn btn-danger"> */}
-                  {/* Draft */}
-                  {actionStatus(item?.Status)}
-                  {/* </button> */}
-                </td>
+                <td>{actionStatus(item?.Status)}</td>
               </tr>
+              
             ))}
           </tbody>
         </table>

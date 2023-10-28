@@ -10,7 +10,7 @@ const YoutubeClaims = () => {
     SelectPolicy: "",
     PasteURL: "",
   });
-  const [releseInfoGetOne, setReleseInfoGetOne] = useState("");
+  const [releseInfoGetOne, setReleseInfoGetOne] = useState([]);
   const [userData, setUserData] = useState("");
   const [ProfileLinkinAdudiogGet, setprofileLinkinAdudiogGet] = useState([]);
   const [youtubeClaimsGetAll, setyoutubeClaimsGetAll] = useState([]);
@@ -139,9 +139,14 @@ const YoutubeClaims = () => {
               }
             >
               <option value="">Select an option</option>
-              <option value={releseInfoGetOne?.ReleaseTitle}>
+              {releseInfoGetOne?.map((option) => (
+                <option key={option?._id} value={option?.ReleaseTitle}>
+                  {option?.ReleaseTitle}
+                </option>
+              ))}
+              {/* <option value={releseInfoGetOne?.ReleaseTitle}>
                 {releseInfoGetOne?.ReleaseTitle}
-              </option>
+              </option> */}
             </select>
             <label className="lable">Select platform*</label>
 

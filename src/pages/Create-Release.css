@@ -5,7 +5,8 @@
    /* color: red; */
   }
   .button1 {
-    display:flex;
+    display:block;
+    height: 10px;
     color: black;
     width: 150px;
     box-sizing: border-box;
@@ -17,7 +18,7 @@
   .button1:focus {
     color: rgb(128, 255, 128);
     border-bottom: 2px solid rgb(128, 255, 128);
-  }
+  } 
   
   button1.selected {
     color: rgb(128, 255, 128);
@@ -25,6 +26,14 @@
   .primaryArtist2{
     position: relative;
     margin-top: 30%;
+  }
+  .box {
+    position: relative;
+    margin-left: 100px;
+    margin-top: 0px !important;
+    width: 150px;
+    height: 100px;
+    border: 3px solid #555;
   }
 }
 /* end media query */
@@ -100,7 +109,7 @@ table, tr, td,th {
 .catalogs{
   position:absolute;
    margin-top:20px;
-   margin-left:200px;
+   margin-left:160px;
    text-align:left;
    background-color:black;
    color:white;

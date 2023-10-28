@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Create-Release.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const ReleseInfo = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
   const handleClose1 = () => setShow1(false);
@@ -17,7 +18,7 @@ const ReleseInfo = () => {
   const handleShow1 = () => setShow1(true);
   const handleShow2 = () => setShow2(true);
   const [genreGet, setgenreGet] = useState([]);
-  const [releseInfoGetOne, setReleseInfoGetOne] = useState([]);
+  // const [releseInfoGetOne, setReleseInfoGetOne] = useState("");
   const [primaryArtistGet, setprimaryArtistGet] = useState([]);
   const [featuringArtistGet, setfeaturingArtistGet] = useState([]);
   const [userData, setUserData] = useState("");
@@ -37,10 +38,10 @@ const ReleseInfo = () => {
     SpotifyId: "",
     AppleId: "",
   });
-  console.log("genreGet", genreGet);
+  console.log("ImageDocument222->>", ImageDocument);
   // console.log("userData",userData);
-  //   console.log("formData", releseInfoformData);
-  //   console.log("primaryArtistGet", primaryArtistGet);
+  console.log("formData2", releseInfoformData);
+  // console.log("primaryArtistGet", primaryArtistGet);
   const showToastMessageSucess = () => {
     toast.success("Success Message !", {
       position: toast.POSITION.TOP_RIGHT,
@@ -82,9 +83,11 @@ const ReleseInfo = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setUserData(data.data);
-        handlereleseInfoGetOne(data.data);
-        handlegenregGet();
+        setUserData(data?.data);
+        handlereleseInfoGetOne(id);
+        handleArtistGet(data?.data);
+        handleFeacturingGet(data?.data);
+        handlegenregGet(data?.data);
         if (data.data === "token expired") {
           alert("Token expired login again");
           localStorage.clear();
@@ -99,26 +102,31 @@ const ReleseInfo = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("genere ---------", data.data);
+        // console.log("genere ---------", data.data);
         setgenreGet(data.data);
       });
   }
-  function handlereleseInfoGetOne(userData) {
+  function handlereleseInfoGetOne(id) {
+    console.log(id, "catlogEditId");
+
     fetch(
-      `https://fmdigitalofficial.in/api/v1/createRelease/releseInfoGetOne/${userData.users_id}`,
+      `https://fmdigitalofficial.in/api/v1/createRelease/releseInfoGetOne/${parseInt(
+        id
+      )}`,
       {
         method: "GET",
       }
     )
       .then((res) => res.json())
       .then((data) => {
-        // console.log("releseInfoGetOne ---------", data.data);
-        setReleseInfoGetOne(data.data);
+        console.log("releseInfoGetOne ---------", data?.data);
+        setReleseInfosetformData(data?.data);
+        // setReleseInfoGetOne(data.data);
       });
   }
-  console.log("releseInfoGetOne", releseInfoGetOne);
+  // console.log("releseInfoGetOne", releseInfoGetOne);
 
-  function handleArtistGet() {
+  function handleArtistGet(userData) {
     fetch(
       `https://fmdigitalofficial.in/api/v1/createRelease/primaryArtistGet/${userData.users_id}`,
       {
@@ -131,7 +139,7 @@ const ReleseInfo = () => {
         setprimaryArtistGet(data.data);
       });
   }
-  function handleFeacturingGet() {
+  function handleFeacturingGet(userData) {
     fetch(
       `https://fmdigitalofficial.in/api/v1/createRelease/featuringArtisttGet/${userData.users_id}`,
       {
@@ -148,27 +156,30 @@ const ReleseInfo = () => {
   // console.log("Genre", Genre);
   // console.log("inputFields", inputFields[0].PrimaryArtist);
   const handleSubmit1 = async (e) => {
-    fetch("https://fmdigitalofficial.in/api/v1/createRelease/primaryArtistPost", {
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        SpotifyId: releseInfoformData.SpotifyId,
-        AppleId: releseInfoformData.AppleId,
-        PrimaryArtist: releseInfoformData.PrimaryArtist,
-        users_id: parseInt(userData.users_id),
-      }),
-    })
+    fetch(
+      "https://fmdigitalofficial.in/api/v1/createRelease/primaryArtistPost",
+      {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          SpotifyId: releseInfoformData.SpotifyId,
+          AppleId: releseInfoformData.AppleId,
+          PrimaryArtist: releseInfoformData.PrimaryArtist,
+          users_id: parseInt(userData.users_id),
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "CreateSuccesfully");
+        // console.log(data, "CreateSuccesfully");
         if (data.status === "ok") {
           showToastMessageSucess();
-          handleClose1()
+          handleClose1();
           // alert("Create Successful");
         } else {
           showToastMessageError();
@@ -197,10 +208,10 @@ const ReleseInfo = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "CreateSuccesfully");
+        // console.log(data, "CreateSuccesfully");
         if (data.status === "ok") {
           showToastMessageSucess();
-          handleClose2()
+          handleClose2();
           // alert("Create Successful");
         } else {
           showToastMessageError();
@@ -225,7 +236,7 @@ const ReleseInfo = () => {
     formData.append("UPCEAN", releseInfoformData.UPCEAN);
     formData.append("users_id", parseInt(userData.users_id));
     formData.append("Status", parseInt(0));
-    formData.append("submission", "");
+    formData.append("releseInfo_id",parseInt(id));
     const res = await fetch(
       "https://fmdigitalofficial.in/api/v1/createRelease/releseInfoPost",
       {
@@ -235,7 +246,7 @@ const ReleseInfo = () => {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "CreateSuccesfully");
+        // console.log(data, "CreateSuccesfully");
         if (data.status === "ok") {
           showToastMessageSucess();
           // alert("Create Successful");
@@ -256,17 +267,36 @@ const ReleseInfo = () => {
     // console.log(img,"img");
   };
   var todayDate = new Date();
-  var month = (todayDate.getMonth() + 1);
+  var month = todayDate.getMonth() + 1;
   var year = todayDate.getUTCFullYear() - 0;
-  var tdate = (todayDate.getDate() + 5);
+  var tdate = todayDate.getDate() + 5;
   if (month < 10) {
-    month = "0" + month
+    month = "0" + month;
   }
   if (tdate < 10) {
     tdate = "0" + tdate;
   }
   var maxDate = year + "-" + month + "-" + tdate;
-  console.log("maxDate", maxDate);
+  // console.log("maxDate", maxDate);
+  console.log(releseInfoformData?.ReleaseType, "ReleaseType_select");
+
+  if (releseInfoformData?.ReleaseType === "Ep") {
+    var EpValue = true;
+  }
+  if (releseInfoformData?.ReleaseType === "Single") {
+    var SingleValue = true;
+  }
+  if (releseInfoformData?.ReleaseType === "Album") {
+    var AlbumValue = true;
+  }
+  if (releseInfoformData?.ReleaseType === "Compilation") {
+    var CompilationValue = true;
+  }
+  // console.log("EpValue",EpValue);
+  // console.log("SingleValue",SingleValue);
+  // console.log("AlbumValue",AlbumValue);
+  // console.log("CompilationValue",CompilationValue);
+  console.log("ImageDocument>",releseInfoformData?.ImageDocument?.slice(15));
   return (
     <>
       <div className="mai-nev">
@@ -288,7 +318,7 @@ const ReleseInfo = () => {
               <div className="box">
                 <img
                   style={{ height: 145, width: 145 }}
-                  src={`https://fmdigitalofficial.in/${releseInfoGetOne?.ImageDocument}`}
+                  src={`https://fmdigitalofficial.in/${releseInfoformData?.ImageDocument}`}
                   type="file"
                   alt="Art Work"
                 ></img>
@@ -296,6 +326,7 @@ const ReleseInfo = () => {
                   <input
                     accept="image/*"
                     type="file"
+                    // value= {releseInfoformData?.ImageDocument?.slice(15)}
                     name="ImageDocument"
                     onChange={handleFileChange}
                     required="true"
@@ -307,7 +338,9 @@ const ReleseInfo = () => {
                 <ul style={{ fontSize: "10px", marginLeft: "-25%" }}>
                   {/* <h4>Use The lines in the box</h4> */}
                   <h6>Artwork Guidelines</h6>
-                  <li>A minimum size of 3000 x 3000 pixels (a perfect square)</li>
+                  <li>
+                    A minimum size of 3000 x 3000 pixels (a perfect square)
+                  </li>
                   <li>A minimum resolution of 72dpi (we recommend 300dpi)</li>
                   <li>RGB color mode (CMYK will not show up correctly)</li>
                   <li>JPEG file format</li>
@@ -327,19 +360,28 @@ const ReleseInfo = () => {
                   name="work_days"
                   id="id_work_days"
                   required="true"
-                  // value={ReleaseType}
+                  multiple="multiple"
+                  // value={releseInfoformData?.ReleaseType}
+                  // checked={releseInfoformData?.ReleaseType}
                   onChange={(event) =>
                     setReleseInfosetformData((prev) => ({
                       ...prev,
                       ReleaseType: event.target.value,
                     }))
                   }
-                  multiple
                 >
-                  <option value="EP">EP</option>
-                  <option value="Single">Single</option>
-                  <option value="Album">Album</option>
-                  <option value="Compilation">Compilation</option>
+                  <option selected={EpValue} value="EP">
+                    EP
+                  </option>
+                  <option selected={SingleValue} value="Single">
+                    Single
+                  </option>
+                  <option selected={AlbumValue} value="Album">
+                    Album
+                  </option>
+                  <option selected={CompilationValue} value="Compilation">
+                    Compilation
+                  </option>
                 </select>
               </div>
 
@@ -350,7 +392,8 @@ const ReleseInfo = () => {
                 className="form-control"
                 placeholder="Release Title"
                 id="ReleaseTitle"
-                value={releseInfoformData.ReleaseTitle}
+                value={releseInfoformData?.ReleaseTitle}
+                // onChange={handleInputChange}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
@@ -363,8 +406,9 @@ const ReleseInfo = () => {
               <div className="col-sm-10">
                 <select
                   className="form-select"
-                  onClick={handleArtistGet}
+                  // onClick={handleArtistGet}
                   required="true"
+                  value={releseInfoformData?.PrimaryArtist}
                   onChange={(event) =>
                     setReleseInfosetformData((prev) => ({
                       ...prev,
@@ -372,7 +416,7 @@ const ReleseInfo = () => {
                     }))
                   }
                 >
-                  <option value="">Select an option</option>
+                  <option>Select an option</option>
                   {primaryArtistGet?.map((option) => (
                     <option key={option?._id} value={option?.PrimaryArtist}>
                       {option?.PrimaryArtist}
@@ -389,7 +433,7 @@ const ReleseInfo = () => {
                     <Form>
                       <Form.Label>Primary Artist Name</Form.Label>
                       <Form.Control
-                        value={releseInfoformData.PrimaryArtist}
+                        // value={releseInfoformData?.PrimaryArtist}
                         required="true"
                         onChange={(event) =>
                           setReleseInfosetformData((prev) => ({
@@ -404,7 +448,7 @@ const ReleseInfo = () => {
                       <Form.Label>Primary Artist Apple Id</Form.Label>
                       &nbsp;&nbsp;
                       <Form.Control
-                        // value={releseInfoformData.AppleId}
+                        // value={releseInfoformData?.AppleId}
                         required="true"
                         onChange={(event) =>
                           setReleseInfosetformData((prev) => ({
@@ -419,7 +463,7 @@ const ReleseInfo = () => {
                       <Form.Label>Primary Artist Spotify Id</Form.Label>
                       &nbsp;&nbsp;
                       <Form.Control
-                        // value={releseInfoformData.SpotifyId}
+                        // value={releseInfoformData?.SpotifyId}
                         required="true"
                         onChange={(event) =>
                           setReleseInfosetformData((prev) => ({
@@ -454,7 +498,7 @@ const ReleseInfo = () => {
                 }}
                 className="btn btn-outline-success"
                 onClick={handleShow1}
-              // onClick={addInputField}
+                // onClick={addInputField}
               >
                 +
               </button>
@@ -463,7 +507,9 @@ const ReleseInfo = () => {
                 <select
                   className="form-select"
                   required="true"
-                  onClick={handleFeacturingGet}
+                  // onClick={handleFeacturingGet}
+                  id="FeaturingArtist"
+                  value={releseInfoformData?.FeaturingArtist}
                   onChange={(event) =>
                     setReleseInfosetformData((prev) => ({
                       ...prev,
@@ -471,7 +517,7 @@ const ReleseInfo = () => {
                     }))
                   }
                 >
-                  <option value="">Select an option</option>
+                  <option>Select an option</option>
                   {featuringArtistGet?.map((option) => (
                     <option key={option?._id} value={option?.FeaturingArtist}>
                       {option?.FeaturingArtist}
@@ -488,7 +534,7 @@ const ReleseInfo = () => {
                     <Form>
                       <Form.Label>Featuring Artist Name</Form.Label>
                       <Form.Control
-                        value={releseInfoformData.FeaturingArtist}
+                        // value={releseInfoformData?.FeaturingArtist}
                         required="true"
                         onChange={(event) =>
                           setReleseInfosetformData((prev) => ({
@@ -503,7 +549,7 @@ const ReleseInfo = () => {
                       <Form.Label>Featuring Artist Apple Id</Form.Label>
                       &nbsp;&nbsp;
                       <Form.Control
-                        // value={releseInfoformData.AppleId}
+                        // value={releseInfoformData?.AppleId}
                         required="true"
                         onChange={(event) =>
                           setReleseInfosetformData((prev) => ({
@@ -518,7 +564,7 @@ const ReleseInfo = () => {
                       <Form.Label>Featuring Artist Spotify Id</Form.Label>
                       &nbsp;&nbsp;
                       <Form.Control
-                        // value={releseInfoformData.SpotifyId}
+                        // value={releseInfoformData?.SpotifyId}
                         required="true"
                         onChange={(event) =>
                           setReleseInfosetformData((prev) => ({
@@ -562,7 +608,7 @@ const ReleseInfo = () => {
                 className="form-select"
                 placeholder="Genre"
                 id="Genre"
-                // value={Genre}
+                value={releseInfoformData?.Genre}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
@@ -570,7 +616,7 @@ const ReleseInfo = () => {
                   }))
                 }
               >
-                <option >Select an option</option>
+                <option>Select an option</option>
                 {genreGet?.map((option) => (
                   <option key={option?._id} value={option?.genre}>
                     {option?.genre}
@@ -584,7 +630,7 @@ const ReleseInfo = () => {
                 className="form-control"
                 placeholder="Sub Genre"
                 id="SubGenre"
-                value={releseInfoformData.SubGenre}
+                value={releseInfoformData?.SubGenre}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
@@ -601,7 +647,7 @@ const ReleseInfo = () => {
                 className="form-control"
                 placeholder="Label Name"
                 id="LabelName"
-                value={releseInfoformData.LabelName}
+                value={releseInfoformData?.LabelName}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
@@ -617,7 +663,7 @@ const ReleseInfo = () => {
                 placeholder="Release Date"
                 id="ReleaseDate"
                 min={maxDate}
-                value={releseInfoformData.ReleaseDate}
+                value={releseInfoformData?.ReleaseDate}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
@@ -632,7 +678,7 @@ const ReleseInfo = () => {
                 className="form-control"
                 placeholder="P line"
                 id="PLine"
-                value={releseInfoformData.PLine}
+                value={releseInfoformData?.PLine}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
@@ -647,7 +693,7 @@ const ReleseInfo = () => {
                 className="form-control"
                 placeholder="C line"
                 id="CLine"
-                value={releseInfoformData.CLine}
+                value={releseInfoformData?.CLine}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,
@@ -662,7 +708,7 @@ const ReleseInfo = () => {
                 className="form-control"
                 placeholder="000000000001"
                 id="UPCEAN"
-                value={releseInfoformData.UPCEAN}
+                value={releseInfoformData?.UPCEAN}
                 onChange={(event) =>
                   setReleseInfosetformData((prev) => ({
                     ...prev,

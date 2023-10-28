@@ -44,6 +44,7 @@ function App() {
             <Route path="Tools/ProfileLinking" element={<ProfileLinking />} />
             <Route path="FAQ" element={<FAQ />} />
             <Route path="ReleseInfo" element={<ReleseInfo />} />
+            <Route path="ReleseInfoUpdate/:id" element={<ReleseInfo />} />
           </Route>
           {/* Add other routes here */}
           <Route path="sign-in" element={<PublicRoute><Login /></PublicRoute>} />
