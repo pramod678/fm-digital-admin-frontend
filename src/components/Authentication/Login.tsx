@@ -54,7 +54,7 @@ export default function Index() {
                         </div>
 
                         <div className="w-full mb-4">
-                            <Label text="Email" htmlFor="grid-password" />
+                            <Label text="Password" htmlFor="grid-password" />
                             <InputField
                                 type="password"
                                 name="password"
