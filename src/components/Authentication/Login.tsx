@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { LoginWithMail } from "../../api/authentication";
+import { LoginWithMailApi } from "../../api/authentication";
 import { ClipLoader } from "react-spinners";
 import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
@@ -25,22 +25,23 @@ export default function Index() {
     const navigate = useNavigate();
 
     //Login Api Call
-    const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMail(reset, navigate)
+    const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMailApi(reset, navigate)
 
     const onSubmit = handleSubmit(async (data: any) => {
-        const newData: any = { ...data };   
+        const newData: any = { ...data };
+        console.log("newData", newData)
         LoginMail(newData)
     });
 
     return (
         <>
-            {/* Container */}
-            <div className="flex justify-center items-center h-screen bg-gray-100">
+            <div className="flex justify-center items-center h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
                 {/* Card */}
-                <div className="bg-white w-[30%] p-10 rounded-lg shadow-lg ">
+                <div className="bg-white w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[30%] p-4 sm:p-8 md:p-10 rounded-lg shadow-lg">
                     <form onSubmit={(e: any) => {
-                        onSubmit(e);
+                        onSubmit(e); e.preventDefault();
                     }}>
+                        <h3 className="text-center text-black font-semibold text-lg tracking-wider">Log In</h3>
                         <div className="w-full mb-4">
                             <Label text="Email" htmlFor="grid-email" />
                             <InputField
@@ -86,7 +87,7 @@ export default function Index() {
 
                         <button
                             type={isLoadingLoginWithMail ? "button" : "submit"}
-                            className={`w-full mr-auto bg-blue-600 text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-blue-700 font-semibold mt-3`}
+                            className={`w-full mr-auto bg-blue-600 text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-blue-700 tracking-wider font-semibold mt-3`}
                             disabled={isLoadingLoginWithMail}
                         >
                             {isLoadingLoginWithMail ? (
@@ -97,6 +98,10 @@ export default function Index() {
                         </button>
 
                     </form>
+
+                    <p className="cursor-pointer font-semibold mt-2 text-right">
+                        Don't have an account ? <a href="/sign-up" className="text-blue-500"> Sign up</a>
+                    </p>
                 </div>
             </div>
         </>

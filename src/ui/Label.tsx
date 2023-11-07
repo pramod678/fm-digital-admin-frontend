@@ -10,7 +10,7 @@ interface LabelProps {
 const Label: FC<LabelProps> = ({ text, htmlFor, additionalClasses = '' }) => {
     return (
         <label
-            className={`text-mainColor text-md my-2 font-semibold mb-2 sm:text-sm sm:my-1 lg:text-lg lg:my-3 ${additionalClasses}`}
+            className={`text-mainColor my-2 font-semibold mb-2 sm:text-sm sm:my-1 lg:text-sm lg:my-3 ${additionalClasses}`}
             htmlFor={htmlFor}
         >
             {text}

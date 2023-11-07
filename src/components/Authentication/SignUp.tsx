@@ -1,117 +1,168 @@
 import * as React from "react";
+import { RegisterWithMailApi } from "../../api/authentication";
 import { useForm } from "react-hook-form";
-import { LoginWithMail } from "../../api/authentication";
 import { useNavigate } from "react-router-dom";
+import Label from "../../ui/Label";
+import InputField from "../../ui/InputField";
+import { ClipLoader } from "react-spinners";
+import cogoToast from "cogo-toast";
 
 
 type FormValues = {
-    email: string;
+    fname: string;
+    lname:string;
+    email:string;
     password: string;
-    checkbox: boolean;
+    UserType:string;
+    secretKey:string;
 }
 
-export default function Index(){
-
+export default function SignUp() {
 
     const {
         register,
         handleSubmit,
+        watch,
         reset,
         formState: { errors }
-    } = useForm<FormValues>({ defaultValues: { email: "", password: "" } })
-
+    } = useForm<FormValues>()
     const navigate = useNavigate();
 
-    //Sign Up Api Call
-    const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMail(reset, navigate)
+    const userType = watch("UserType")
+
+    //Register Api Call
+    const { mutate: RegisterWithMail, isLoading: isLoadingRegisterWithMail } = RegisterWithMailApi(reset, navigate)
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
+        console.log("newData", newData)
+        if (newData?.UserType === "Admin" && newData?.secretKey !== "Admin123") { 
+            cogoToast.error("Invalid Admin");
+        } else {
+            RegisterWithMail(newData)
+        }
     });
 
     return (
         <>
-            {/* Container */}
-            <div className="flex justify-center items-center h-screen bg-gray-100">
+
+            <div className="flex justify-center items-center h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
                 {/* Card */}
-                <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm">
-                    <form onSubmit={(e:any) => {
-                        onSubmit(e);
+                <div className="bg-white w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[30%] p-4 sm:p-6 md:p-8 rounded-lg shadow-lg">
+                    <form onSubmit={(e: any) => {
+                        onSubmit(e); 
                     }}>
-                        <div className="w-full mb-4">
-                            <label
-                                className="text-black text-sm my-2 font-semibold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Email 
-                            </label>
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                className={`border border-[#384152] mt-2 px-3 py-2 placeholder-[#656d7a] text-[#98a0ab] bg-primary rounded text-sm  focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${errors.email ? 'border-orange-700' : ''}`}
-                                {...register('email', {
-                                    required: 'email is required.',
+                        <h3 className="text-center text-black font-semibold text-lg tracking-wider">Sign Up</h3>
 
-                                })}
-                            />
-                            {errors.email && <p className="text-xs text-orange-700">{errors.email.message}</p>}
-                        </div>
+                        <div className="flex gap-2 items-center my-2">
+                            <span className="text-gray-700 font-medium mr-4">Register As</span>
 
-                        <div className="w-full mb-4">
-                            <label
-                                className="left-2 -top-2 text-[#e6e7eb] text-sm my-2 font-semibold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                placeholder="Enter your password"
-                                className={`border border-[#384152] mt-2 px-3 py-2 placeholder-[#656d7a] text-[#98a0ab] bg-primary rounded text-sm  focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${errors.password ? 'border-orange-700' : ''}`}
-                                {...register('password', {
-                                    required: 'password is required.',
-                                    minLength: {
-                                        value: 8,
-                                        message: 'minimum length of password must be 8'
-                                    }
-                                })}
-                            />
-                            {errors.password && <p className="text-xs text-orange-700">{errors.password.message}</p>}
-                        </div>
-
-                        <div className="flex justify-between mt-2">
-                            <label className="inline-flex items-center cursor-pointer">
+                            <label className="inline-flex items-center gap-2">
                                 <input
-                                    {...register('checkbox', {
-                                        required: 'text is required.',
-                                    })}
-                                    id="customCheckLogin"
-                                    type="checkbox"
-                                    className={`form-checkbox rounded-lg border-gray-300 bg-transparent text-[#9aa0ac] ml-1 w-5 h-5 ease-linear transition-all duration-150 ${errors.checkbox ? 'border-orange-700' : ''} `}
+                                    className="form-radio h-5 w-5 text-blue-600 transition-colors duration-200 ease-in-out"
+                                    type="radio"
+                                    required={true}
+                                    name="UserType"
+                                    {...register("UserType", { required: `UserType is required ` })}
+                                    value="User"
                                 />
-
-                                <span className="ml-2 text-sm font-semibold text-blueGray-600"></span>
-                                <span
-                                    className={`ml-2 text-sm font-normal text-[#9aa0ac] ${errors.checkbox ? 'text-orange-700' : ''}`}
-                                >
-                                    Remember me
-                                </span>
+                                <span className="text-gray-700">User</span>
                             </label>
+
+                            <label className="inline-flex items-center gap-2">
+                                <input
+                                    className="form-radio h-5 w-5 text-blue-600 transition-colors duration-200 ease-in-out"
+                                    type="radio"
+                                    required={true}
+                                    name="UserType"
+                                    value="Admin"
+                                    {...register("UserType", { required: `UserType is required ` })}
+                                />
+                                <span className="text-gray-700">Admin</span>
+                            </label>
+                        </div>
+
+
+                        <div className="w-full mb-2">
+                            <Label text="First name" htmlFor="grid-firstName" />
+                            <InputField
+                                type="text"
+                                name="fname"
+                                placeholder="Enter First name"
+                                register={register}
+                                errors={errors}
+                                requiredMessage="First name is required."
+                            />
+                        </div>
+
+                        <div className="w-full mb-2">
+                            <Label text="Last name" htmlFor="grid-lastName" />
+                            <InputField
+                                type="text"
+                                name="lname"
+                                placeholder="Enter Last name"
+                                register={register}
+                                errors={errors}
+                                requiredMessage="Last name is required."
+                            />
+                        </div>
+
+                        <div className="w-full mb-2">
+                            <Label text="Email" htmlFor="grid-email" />
+                            <InputField
+                                type="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                register={register}
+                                errors={errors}
+                                requiredMessage="Email is required."
+                            />
+                        </div>
+
+                        <div className="w-full mb-2">
+                            <Label text="Password" htmlFor="grid-password" />
+                            <InputField
+                                type="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                register={register}
+                                errors={errors}
+                                requiredMessage="password is required."
+                            />
                         </div>
 
                         {
-                            isLoadingLoginWithMail ?
-                                <button className="w-full py-2 rounded-lg mt-5 bg-blue text-white book-a-call flex justify-center items-center" disabled>
-                                    {/* <BeatLoader color='white' /> */}
-                                </button>
-                                :
-                                <button className="w-full py-2 rounded-lg mt-5 bg-[#2f73f0] text-white">
-                                    Log in
-                                </button>
+                            userType === "Admin" && <div className="w-full mb-2">
+                                <Label text="Secret Key" htmlFor="grid-secretKey" />
+                                <InputField
+                                    type="text"
+                                    name="secretKey"
+                                    placeholder="Enter your secretKey"
+                                    register={register}
+                                    errors={errors}
+                                    requiredMessage="secretKey is required."
+                                />
+                            </div>
                         }
+
+                        <button
+                            type={isLoadingRegisterWithMail ? "button" : "submit"}
+                            className={`w-full mr-auto bg-blue-600 text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-blue-700 tracking-wider font-semibold mt-3`}
+                            disabled={isLoadingRegisterWithMail}
+                        >
+                            {isLoadingRegisterWithMail ? (
+                                <ClipLoader color="white" size={25} />
+                            ) : (
+                                "Sign Up"
+                            )}
+                        </button>
                     </form>
+
+                    <p className="cursor-pointer font-semibold mt-4 text-right">
+                        Already registered ? <a href="/sign-in" className="text-blue-500">Sign in here</a>
+                    </p>
                 </div>
             </div>
         </>
-    )
+    );
 }
