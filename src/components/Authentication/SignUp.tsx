@@ -1,11 +1,11 @@
 import * as React from "react";
-import { RegisterWithMailApi } from "../../api/authentication";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
 import { ClipLoader } from "react-spinners";
 import cogoToast from "cogo-toast";
+import { RegisterWithMailApi } from "../../api/authentication"
 
 
 type FormValues = {
@@ -147,7 +147,7 @@ export default function SignUp() {
 
                         <button
                             type={isLoadingRegisterWithMail ? "button" : "submit"}
-                            className={`w-full mr-auto bg-blue-600 text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-blue-700 tracking-wider font-semibold mt-3`}
+                            className={`w-full mr-auto bg-[#E97451] text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-[#F28C28] tracking-wider font-semibold mt-3`}
                             disabled={isLoadingRegisterWithMail}
                         >
                             {isLoadingRegisterWithMail ? (
@@ -159,7 +159,7 @@ export default function SignUp() {
                     </form>
 
                     <p className="cursor-pointer font-semibold mt-4 text-right">
-                        Already registered ? <a href="/sign-in" className="text-blue-500">Sign in here</a>
+                        Already registered ? <a href="/sign-in" className="text-[#E97451]">Sign in here</a>
                     </p>
                 </div>
             </div>

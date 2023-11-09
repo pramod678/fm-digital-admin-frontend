@@ -1,0 +1,202 @@
+import * as React from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { FaUserCircle } from 'react-icons/fa';
+import { MdOutlineMenu, MdClear } from 'react-icons/md'
+import { FaBars, FaHome, FaLinkedin, FaQuora } from "react-icons/fa";
+import { FiChevronDown, FiChevronUp, FiLink, FiYoutube } from "react-icons/fi";
+import { AiFillTag, AiOutlinePlusCircle, AiTwotoneHome } from "react-icons/ai";
+import { TbTool } from "react-icons/tb";
+import { BsTicketPerforated } from "react-icons/bs";
+import { ImFileMusic } from "react-icons/im";
+import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
+
+export default function Index() {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const size = useResponsiveIconSize();
+    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [openDropdownIndex, setOpenDropdownIndex] = React.useState<number | null>(null);
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+    const logOut = () => {
+        localStorage.clear();
+        navigate('/sign-in');
+    };
+
+    const routes = [
+        {
+            path: "/",
+            name: "Dashboard",
+            icon: <FaHome color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/ReleseInfo",
+            name: "Create Relese",
+            icon: <AiOutlinePlusCircle color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/Catalogs",
+            name: "Catalogs",
+            icon: <ImFileMusic color={'#ffffff'} size={size} />,
+        },
+
+        {
+            path: "/Tools",
+            name: "Tools",
+            icon: <TbTool color={'#ffffff'} size={size} />,
+            exact: true,
+            subRoutes: [
+                {
+                    path: "/Tools/YoutubeClaims",
+                    name: "Youtube Claims",
+                    icon: <FiYoutube color={'#ffffff'} size={size} />,
+                },
+                {
+                    path: "/Tools/ProfileLinking",
+                    name: "Profile Linking",
+                    icon: <FiLink color={'#ffffff'} size={size} />,
+                },
+            ],
+        },
+        {
+            path: "/Label",
+            name: "Label",
+            icon: <AiFillTag color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/Tickets",
+            name: "Tickets",
+            icon: <BsTicketPerforated color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/FAQ",
+            name: "FAQ",
+            icon: <FaQuora color={'#ffffff'} size={size} />,
+        },
+    ];
+    return (
+        <>
+            <div className="bg-neutral-800">
+                <div className="flex justify-between h-[8vh] items-center px-4 py-3 sm:px-5 md:px-6 lg:px-8">
+                    <div className="flex items-center gap-2">
+                        {
+                            isMenuOpen ? <MdClear color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} /> : <MdOutlineMenu color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} />
+                        }
+                        <p className="text-white font-semibold tracking-wider leading-none text-base sm:text-lg md:text-xl lg:text-2xl ">
+                            FM DIGITAL
+                        </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 ">
+                        <Link to="/userDetails" className="no-underline text-black">
+                            <FaUserCircle color={'#ffffff'} className="text-xl sm:text-2xl md:text-3xl" />
+                        </Link>
+                        <div>
+                            <span className="text-sm text-white cursor-pointer sm:text-base md:text-lg " onClick={logOut}>
+                                Logout
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div className={`flex flex-col gap-1 transition-all ease-in-out duration-100 ${isMenuOpen ? 'block' : 'hidden'} block  sm:hidden justify-center items-center z-10`}>
+                    <div className=" flex flex-col">
+                        {
+                            routes.map((link, index) => {
+                                const { path, icon, name, subRoutes } = link;
+                                const toggleDropdown = () => {
+                                    setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+                                };
+                                return (
+                                    <>
+                                        {
+                                            subRoutes ? (
+                                                <>
+                                                    <div onClick={toggleDropdown} className='cursor-pointer flex items-center font-semibold text-gray-400 py-3 capitalize transition-all duration-300'>
+                                                        <span className=' mr-2 grid place-items-center transition-all duration-300 '>{icon}</span>
+                                                        {name}
+                                                        <span className='ml-2 mt-1'>
+                                                            {openDropdownIndex === index ? <FiChevronUp /> : <FiChevronDown />}
+                                                        </span>
+                                                    </div>
+                                                    {openDropdownIndex === index && subRoutes && subRoutes.map((subLink) => {
+                                                        const { path, icon, name } = subLink;
+                                                        return (
+                                                            <NavLink to={path}
+                                                                className={({ isActive }) => isActive ? 'flex items-center text-gray-100 py-3 capitalize transition-all duration-300 font-semibold' : 'flex items-center font-semibold text-gray-400 py-3 capitalize transition-all duration-300 '} end>
+                                                                <span className=' mr-2 grid place-items-center transition-all duration-300 '>{icon}</span>
+                                                                {name}
+                                                            </NavLink>
+                                                        );
+                                                    })}
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div onClick={toggleDropdown} className='cursor-pointer'>
+                                                        <NavLink to={path}
+                                                            className={({ isActive }) => isActive ? 'flex items-center text-gray-100 py-3 capitalize transition-all duration-300 font-semibold' : 'flex items-center font-semibold text-gray-400 py-3 capitalize transition-all duration-300 '} end>
+                                                            <span className=' mr-2 grid place-items-center transition-all duration-300 '>{icon}</span>
+                                                            {name}
+                                                        </NavLink>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+
+                                    </>
+                                );
+                            })
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+        </>
+    )
+}
+
+// {
+//     routes?.map((r, index) => {
+//         const toggleDropdown = () => {
+//             setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+//         };
+//         return (
+//             <>
+//                 {
+//                     r?.subRoutes ? (
+//                         <div className="w-full flex justify-center items-center gap-2 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
+//                             {r.icon}
+//                             <div className={`flex justify-between items-center`} onClick={toggleDropdown}>
+//                                 <p className={`text-sm text-white`}>{r.name}</p>
+//                                 <button className="text-icons text-xl ml-2">
+//                                     {openDropdownIndex === index ? <FiChevronUp color={'#ffffff'} size={16} /> : <FiChevronDown color={'#ffffff'} size={16} />}
+//                                 </button>
+//                             </div>
+//                         </div>
+//                     ) : (
+//                         <NavLink to={r.path} key={r.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""}>
+//                             <div className="w-full flex justify-center items-center gap-2 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
+//                                 {r.icon}
+//                                 <p className={`text-sm text-white`}>{r.name}</p>
+//                             </div>
+//                         </NavLink>
+//                     )
+//                 }
+//                 {openDropdownIndex === index && (
+//                     <div className="flex flex-col gap-2">
+//                         {r?.subRoutes?.map((s, i) => (
+//                             <NavLink to={s.path} key={s.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""} >
+//                                 <div className="w-full flex justify-center items-center gap-2 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
+//                                     {s.icon}
+//                                     <p className={`text-sm text-white`}>{s.name}</p>
+//                                 </div>
+//                             </NavLink>
+//                         ))}
+//                     </div>
+//                 )}
+//             </>
+//         )
+//     })
+// }

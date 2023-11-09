@@ -87,7 +87,7 @@ export default function Index() {
 
                         <button
                             type={isLoadingLoginWithMail ? "button" : "submit"}
-                            className={`w-full mr-auto bg-blue-600 text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-blue-700 tracking-wider font-semibold mt-3`}
+                            className={`w-full mr-auto bg-[#E97451] text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-[#F28C28] tracking-wider font-semibold mt-3`}
                             disabled={isLoadingLoginWithMail}
                         >
                             {isLoadingLoginWithMail ? (
@@ -100,7 +100,7 @@ export default function Index() {
                     </form>
 
                     <p className="cursor-pointer font-semibold mt-2 text-right">
-                        Don't have an account ? <a href="/sign-up" className="text-blue-500"> Sign up</a>
+                        Don't have an account ? <a href="/sign-up" className="text-[#E97451]"> Sign up</a>
                     </p>
                 </div>
             </div>
