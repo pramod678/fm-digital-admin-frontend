@@ -9,15 +9,6 @@ import * as React from "react"
 
 export default function UserHome({ userData }: { userData: any }) {
 
-    const logOut = () => {
-        window.localStorage.clear();
-        window.location.href = "./sign-in";
-    };
-
-    const Spotifycards = [1];
-
-    const YoutubeCards = [1];
-
 
     return (
         <>

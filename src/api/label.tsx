@@ -1,0 +1,18 @@
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import api from "../lib/api";
+import cogoToast from "cogo-toast";
+
+
+export const LabelPostApi = (setIsOpen: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.post("createRelease/labelPost", data), {
+        onSuccess: (res) => {
+            cogoToast.success("Label Added");
+            queryClient.refetchQueries([`GetPrimaryArtist`]);
+            setIsOpen(false)
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

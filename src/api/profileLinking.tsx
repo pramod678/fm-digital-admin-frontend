@@ -1,0 +1,35 @@
+
+
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import api from "../lib/api";
+import cogoToast from "cogo-toast";
+
+
+export const ProfileLinkingGetAllApi = (id: any) =>
+    useQuery(
+        [`profileLinkingGetAll`],
+        async () => await api.get(`tools/profileLinkingGetAll/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+            onSuccess: (res) => {
+                console.log(res.data)
+            },
+        }
+    );
+
+export const ProfileLinkingPostApi = (reset: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.post("tools/profileLinkingPost", data), {
+        onSuccess: (res) => {
+            cogoToast.success("Profile Linking Created");
+            queryClient.refetchQueries([`profileLinkingGetAll`]);
+            reset()
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

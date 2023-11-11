@@ -13,6 +13,8 @@ interface SelectProps {
 
 const SelectGenre: React.FC<SelectProps> = ({ control, name, options, errors, required }) => {
     return (
+        <>
+        
         <Controller
             control={control}
             name={name}
@@ -29,7 +31,7 @@ const SelectGenre: React.FC<SelectProps> = ({ control, name, options, errors, re
                     <option value="" >
                         Select a Option
                     </option>
-                    {options.map((option: any) => (
+                    {options?.map((option: any) => (
                         <option key={option._id} className="text-black" value={option.genre}>
                             {option.genre}
                         </option>
@@ -37,6 +39,14 @@ const SelectGenre: React.FC<SelectProps> = ({ control, name, options, errors, re
                 </select>
             )}
         />
+            {
+                errors[name] && (
+                    <p className="text-red-500 text-sm mt-1">
+                        {errors[name].message}
+                    </p>
+                )
+            }
+        </>
     );
 };
 

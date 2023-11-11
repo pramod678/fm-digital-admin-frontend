@@ -1,0 +1,198 @@
+import * as React from "react";
+import { BounceLoader } from "react-spinners";
+import InputField from "../../../ui/InputField";
+import Label from "../../../ui/Label";
+import { useForm } from "react-hook-form";
+import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../types/tools";
+import { useNavigate } from "react-router-dom";
+import { UserDataApi } from "../../../api/releaseInfo";
+import { ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../api/youtubeClaims";
+import SelectRelease from "../../../ui/SelectRelease";
+import SelectAudio from "../../../ui/SelectAudio";
+import SelectPlatform from "../../../ui/SelectPlatform";
+import SelectPolicy from "../../../ui/SelectPolicy";
+import { AiFillSave } from "react-icons/ai";
+import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../api/profileLinking";
+import ListRow from "./ListRow";
+
+
+
+export default function Index() {
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        reset,
+        control,
+        formState: { errors }
+    } = useForm<ProfileLinkingDto>()
+
+    const navigate = useNavigate();
+    const [userData, setUserData] = React.useState<any>("")
+    const token = localStorage.getItem("token")
+    const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
+    //Api calls
+    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+    const { data: releseInfoGet, isLoading: isLoadingreleseInfoGetOne } = ReleseInfoGetOneApi(userData.users_id, setReleseInfoGetOne)
+    const { data: ProfileLinkingGetAll, isLoading: isLoadingProfileLinkingGetAll, isFetching } = ProfileLinkingGetAllApi(userData.users_id)
+    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, releseInfoGetOne[0]?.releseInfo_id)
+    const { mutate: ProfileLinkingPost, isLoading: isLoadingProfileLinkingPost } = ProfileLinkingPostApi(reset)
+
+
+
+    React.useEffect(() => {
+        getUserData({ token: token })
+    }, []);
+
+    const onSubmit = handleSubmit(async (data: any) => {
+        const newData: any = { ...data };
+        console.log("newData", newData)
+        newData.users_id = parseInt(userData.users_id);
+        ProfileLinkingPost(newData)
+    });
+
+
+    return (
+        <>
+            {(isLoadingProfileLinkingGetAll || isFetching) && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+                    <BounceLoader size={150} color={"#000000"} />
+                </div>
+            )}
+            <div className="p-4">
+                <div className="w-1/2 bg-neutral-800 p-2">
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Profile Linking</p>
+                </div>
+                <form onSubmit={(e: any) => {
+                    onSubmit(e); e.preventDefault();
+                }}>
+                    <div className="flex flex-col p-4 justify-center">
+                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
+                            <div className="w-full mb-2">
+                                <Label text="Select Release" htmlFor="grid-Selectrelease" required={true} />
+                                <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} />
+                            </div>
+
+                            <div className="w-full mb-2">
+                                <Label text="Select Audio" htmlFor="grid-SelectAudio" required={true} />
+                                <SelectAudio control={control} name="SelectAudio" options={ProfileLinkinAdudiogGet?.data?.data} errors={errors} required={true} />
+                            </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
+                            <div className="w-full mb-2">
+                                <Label text="Select platform" htmlFor="grid-Selectplatform" required={true} />
+                                <InputField
+                                    type="text"
+                                    name="Selectplatform"
+                                    placeholder="Make sure to enter the exact name of artistL"
+                                    register={register}
+                                    errors={errors}
+                                    requiredMessage="Selectplatform is required."
+                                />
+                            </div>
+
+                            <div className="w-full mb-2">
+                                <Label text="Facebook Link" htmlFor="grid-FecebookLink" required={true} />
+                                <InputField
+                                    type="text"
+                                    name="FecebookLink"
+                                    placeholder="Enter Facebook Link"
+                                    register={register}
+                                    errors={errors}
+                                    requiredMessage="Facebook Link is required."
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
+                            <div className="w-full mb-2">
+                                <Label text="Instagram Link" htmlFor="grid-InstagramLink" required={true} />
+                                <InputField
+                                    type="text"
+                                    name="InstagramLink"
+                                    placeholder="Enter Instagram Link"
+                                    register={register}
+                                    errors={errors}
+                                    requiredMessage="Instagram Link is required."
+                                />
+                            </div>
+
+                            <div className="mt-4 w-full flex justify-center items-center">
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center"
+                                    disabled={isLoadingProfileLinkingPost}
+                                >
+                                    <span className="mr-2">Save</span>
+                                    <AiFillSave />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <p className="text-base sm:text-lg font-semibold ">Your Profile Linking History</p>
+
+                <div className="flex flex-col">
+                    <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                No.
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Release Title
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Audio Title
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Artist
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Fb
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Ig
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Status
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Date
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {
+                                            ProfileLinkingGetAll?.data?.data?.length === 0 ? (
+                                                <tr className="w-full">
+                                                    <td className="text-center py-4" colSpan={8}>
+                                                        No records found.
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                ProfileLinkingGetAll?.data?.data?.map((link: any, index: any) => {
+                                                    return (
+                                                        <React.Fragment key={index}>
+                                                            <ListRow link={link} index={index} />
+                                                        </React.Fragment>
+                                                    )
+                                                })
+                                            )
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </>
+    )
+}
