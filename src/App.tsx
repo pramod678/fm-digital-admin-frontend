@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import PublicRoute from "./components/Routes/PublicRoute";
 import Home from "./components/Home";
 import SharedLayout from "./components/SharedLayout";
+import CreateRelease from "./components/CreateRelease";
 
 
 function App() {
@@ -14,9 +15,9 @@ function App() {
       <Router>
         <div className="App">
           <Routes>  
-            <Route path="/" >
-              <Route index element={<SharedLayout> <Home /></SharedLayout>}
-              />
+            <Route path="/" element={<ProtectedRoute> <SharedLayout /></ProtectedRoute>} >
+              <Route index element={<Home />} />
+              <Route path="ReleseInfo" element={< CreateRelease />} />
             </Route>
             {/* Add other routes here */}
             <Route path="sign-in" element={<PublicRoute><Login /></PublicRoute>} />

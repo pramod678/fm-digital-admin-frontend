@@ -1,20 +1,19 @@
 import * as React from "react";
-import { Link, NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaLinkedin, FaQuora } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import { FaFacebook, FaHome, FaInstagram, FaLinkedin, FaQuora, FaTwitter, FaYoutube } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp, FiLink, FiYoutube } from "react-icons/fi";
-import { AiFillTag, AiOutlinePlusCircle, AiTwotoneHome } from "react-icons/ai";
+import { AiFillTag, AiOutlinePlusCircle } from "react-icons/ai";
 import { TbTool } from "react-icons/tb";
 import { BsTicketPerforated } from "react-icons/bs";
 import { ImFileMusic } from "react-icons/im";
-import { LuMenu } from "react-icons/lu"
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 
 interface props {
-    isOpen:boolean;
-    setIsOpen:any
+    isOpen: boolean;
+    setIsOpen: any
 }
 
-export default function Index({ isOpen, setIsOpen }:props) {
+export default function Index({ isOpen, setIsOpen }: props) {
 
     const size = useResponsiveIconSize();
     const [openDropdownIndex, setOpenDropdownIndex] = React.useState<number | null>(null);
@@ -27,7 +26,7 @@ export default function Index({ isOpen, setIsOpen }:props) {
         },
         {
             path: "/ReleseInfo",
-            name: "Create Relese",
+            name: "Create Release",
             icon: <AiOutlinePlusCircle color={'#ffffff'} size={size} />,
         },
         {
@@ -73,11 +72,8 @@ export default function Index({ isOpen, setIsOpen }:props) {
 
     return (
         <>
-            <div className={`h-[92vh] hidden sm:block bg-neutral-800 ${isOpen ? 'sm:w-[13%] md:w-[15%] lg:w-[14%] ' : 'w-[50px]'}  py-4`}>
+            <div className={`h-[92vh] hidden sm:block bg-neutral-800 ${isOpen ? 'sm:w-[18%] md:w-[18%] lg:w-[15%] ' : 'w-[50px]'}  py-4`}>
                 <div className="flex flex-col gap-1">
-                    <div className="w-full items-center flex md:gap-2 px-4 py-1 cursor-pointer " onClick={() => setIsOpen((prev: any) => !prev)}>
-                        <LuMenu color={'#ffffff'} size={size} />
-                    </div>
                     {
                         routes?.map((r, index) => {
                             const isOpenDropdown = isOpen && r?.subRoutes;
@@ -90,7 +86,7 @@ export default function Index({ isOpen, setIsOpen }:props) {
                                     {
                                         r?.subRoutes ? (
                                             <>
-                                                <div className="w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
+                                                <div className={`w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-2"} `} >
                                                     {r.icon}
                                                     <div className={`flex justify-between items-center ${isOpen ? "" : "hidden"} `} onClick={toggleDropdown}>
                                                         <p className={`md:text-sm lg:text-base text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
@@ -104,7 +100,7 @@ export default function Index({ isOpen, setIsOpen }:props) {
                                             <>
                                                 <NavLink to={r.path} key={r.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""
                                                 }>
-                                                    <div className="w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
+                                                    <div className={`w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-1"} `}>
                                                         {r.icon}
                                                         <p className={`md:text-sm lg:text-base text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
                                                     </div>
@@ -129,6 +125,17 @@ export default function Index({ isOpen, setIsOpen }:props) {
                             )
                         })
                     }
+                </div>
+
+                <div className={` ${!isOpen ? 'hidden' : 'block'} mt-60 bg-[#00CED1] h-14 flex flex-col items-center justify-center`}>
+                    <p className="text-white text-center mb-0">Connect with us</p>
+                    <div className="flex gap-3 mt-2">
+                        <FaFacebook className="text-white cursor-pointer" />
+                        <FaLinkedin className="text-white cursor-pointer" />
+                        <FaYoutube className="text-white cursor-pointer" />
+                        <FaInstagram className="text-white cursor-pointer" />
+                        <FaTwitter className="text-white cursor-pointer" />
+                    </div>
                 </div>
             </div>
         </>

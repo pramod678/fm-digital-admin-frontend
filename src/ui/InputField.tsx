@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { UseFormRegister, FieldErrors } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 
 interface InputFieldProps {
     type: string;

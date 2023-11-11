@@ -10,7 +10,14 @@ import { BsTicketPerforated } from "react-icons/bs";
 import { ImFileMusic } from "react-icons/im";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 
-export default function Index() {
+
+interface props {
+    isOpen: boolean;
+    setIsOpen: any
+}
+
+
+export default function Index({ isOpen, setIsOpen }: props) {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -18,7 +25,7 @@ export default function Index() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const [openDropdownIndex, setOpenDropdownIndex] = React.useState<number | null>(null);
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+        setIsOpen(!isOpen);
     };
     const logOut = () => {
         localStorage.clear();
@@ -33,7 +40,7 @@ export default function Index() {
         },
         {
             path: "/ReleseInfo",
-            name: "Create Relese",
+            name: "Create Release",
             icon: <AiOutlinePlusCircle color={'#ffffff'} size={size} />,
         },
         {
@@ -79,11 +86,12 @@ export default function Index() {
     return (
         <>
             <div className="bg-neutral-800">
-                <div className="flex justify-between h-[8vh] items-center px-4 py-3 sm:px-5 md:px-6 lg:px-8">
+                <div className="flex justify-between h-[8vh] items-center px-4 py-1 sm:py-2 md:py-3 sm:px-4">
                     <div className="flex items-center gap-2">
-                        {
-                            isMenuOpen ? <MdClear color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} /> : <MdOutlineMenu color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} />
-                        }
+                        {/* {
+                            isOpen ? <MdClear color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} /> : <MdOutlineMenu color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} />
+                        } */}
+                        <MdOutlineMenu color={'#ffffff'} className=" cursor-pointer" size={size}  onClick={toggleMenu} />
                         <p className="text-white font-semibold tracking-wider leading-none text-base sm:text-lg md:text-xl lg:text-2xl ">
                             FM DIGITAL
                         </p>
@@ -100,7 +108,7 @@ export default function Index() {
                         </div>
                     </div>
                 </div>
-                <div className={`flex flex-col gap-1 transition-all ease-in-out duration-100 ${isMenuOpen ? 'block' : 'hidden'} block  sm:hidden justify-center items-center z-10`}>
+                <div className={`flex flex-col gap-1 transition-all ease-in-out duration-100 ${isOpen ? 'block' : 'hidden'} block  sm:hidden justify-center items-center z-10`}>
                     <div className=" flex flex-col">
                         {
                             routes.map((link, index) => {
