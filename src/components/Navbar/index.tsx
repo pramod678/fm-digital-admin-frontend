@@ -88,10 +88,10 @@ export default function Index({ isOpen, setIsOpen }: props) {
             <div className="bg-neutral-800">
                 <div className="flex justify-between h-[8vh] items-center px-4 py-1 sm:py-2 md:py-3 sm:px-4">
                     <div className="flex items-center gap-2">
-                        {/* {
-                            isOpen ? <MdClear color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} /> : <MdOutlineMenu color={'#ffffff'} className="text-xl sm:hidden" onClick={toggleMenu} />
-                        } */}
-                        <MdOutlineMenu color={'#ffffff'} className=" cursor-pointer" size={size}  onClick={toggleMenu} />
+                        {
+                            isOpen ? <MdClear color={'#ffffff'} size={size} className=" cursor-pointer" onClick={toggleMenu} /> : <MdOutlineMenu color={'#ffffff'} size={size} className=" cursor-pointer"  onClick={toggleMenu} />
+                        }
+                        {/* <MdOutlineMenu color={'#ffffff'} className=" cursor-pointer" size={size}  onClick={toggleMenu} /> */}
                         <p className="text-white font-semibold tracking-wider leading-none text-base sm:text-lg md:text-xl lg:text-2xl ">
                             FM DIGITAL
                         </p>

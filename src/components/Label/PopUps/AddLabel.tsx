@@ -145,7 +145,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                                     />
                                                 </label>
                                                 {ImageDocument.preview && (
-                                                    <AiOutlineCloseCircle onClick={clearImage} className="absolute top-0 right-0 m-1 text-red-500 cursor-pointer" />
+                                                    <AiOutlineCloseCircle size={20} onClick={clearImage} className="absolute top-0 right-0 m-1 text-red-500 cursor-pointer" />
                                                 )}
                                             </div>
                                         </div>

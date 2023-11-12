@@ -10,7 +10,7 @@ import SelectGenre from "../../ui/SelectGenre";
 import SelectFeatureArtist from "../../ui/SelectFeatureArtist";
 import PrimaryArtist from "./PopUps/PrimaryArtist";
 import SelectPrimaryArtist from "../../ui/SelectPrimaryArtist";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 
 export default function ReleaseInfo() {
@@ -32,6 +32,7 @@ export default function ReleaseInfo() {
         control,
         formState: { errors }
     } = useForm<ReleaseInfoDto>()
+    const [activeTab, setActiveTab] = React.useState("Release Info");
 
     const token = localStorage.getItem("token")
 
@@ -41,6 +42,13 @@ export default function ReleaseInfo() {
     const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id, setfeaturingArtistGet)
     const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id, setprimaryArtistGet)
     const { mutate: ReleaseInfoPost, isLoading: isLoadingReleaseInfoPost } = ReleaseInfoPostApi()
+
+    const tabs = [
+        { name: 'Release Info', route: 'ReleseInfo' },
+        { name: 'Song Info', route: 'Songsinfo' },
+        { name: 'Platform', route: 'Platform' },
+        { name: 'Submission', route: 'Submission' },
+    ]
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -87,33 +95,55 @@ export default function ReleaseInfo() {
     }
     )
 
+    
+
     return (
         <>
+            <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
+                <div className="flex items-center">
+                    {tabs?.map((r, index) => (
+                        <Link to={`/${r.route}`}>
+                            <button
+                                key={index}
+                                type="button"
+                                className={`text-left text-sm md:text-base pl-1 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Release Info" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
+                            >
+                                {r.name}
+                            </button>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+
             <form onSubmit={(e: any) => {
                 onSubmit(e);
             }}>
                 <div className="flex flex-col md:flex-row gap-4 p-8">
                     {/* Image */}
                     <div className="flex flex-col items-center mt-4 space-y-4">
-                        <label className="relative w-32 h-32 border-2 border-gray-400 flex items-center justify-center text-gray-500 cursor-pointer">
-                            {ImageDocument.preview ? (
-                                <>
+                        <div className="relative w-32 h-32">
+                            <label className="border-2 border-gray-400 flex items-center justify-center text-gray-500 cursor-pointer w-full h-full">
+                                {ImageDocument.preview ? (
                                     <img src={ImageDocument.preview} alt="Selected" className="w-full h-full object-cover" />
-                                    <AiOutlineCloseCircle onClick={clearImage} className="absolute top-0 right-0 m-1 text-red-500 cursor-pointer" />
-                                </>
-                            ) : (
-                                <span className="text-center">Upload album artwork</span>
+                                ) : (
+                                    <div className="flex items-center justify-center w-full h-full">
+                                        <span className="text-center">Upload</span>
+                                    </div>
+                                )}
+                                <input
+                                    id="fileInput"
+                                    accept="image/*"
+                                    type="file"
+                                    name="ImageDocument"
+                                    onChange={handleFileChange}
+                                    required={true}
+                                    className="w-full h-full opacity-0 cursor-pointer"
+                                />
+                            </label>
+                            {ImageDocument.preview && (
+                                <AiOutlineCloseCircle size={20} onClick={clearImage} className="absolute top-0 right-0 m-1 text-red-500 cursor-pointer" />
                             )}
-                            <input
-                                id="fileInput"
-                                accept="image/*"
-                                type="file"
-                                name="ImageDocument"
-                                onChange={handleFileChange}
-                                required={true}
-                                className="w-full h-full opacity-0 cursor-pointer"
-                            />
-                        </label>
+                        </div>
                         <div className="text-left">
                             <h6 className="font-bold text-center text-teal-500">Artwork Guidelines</h6>
                             <ul className="list-disc list-inside text-xs">

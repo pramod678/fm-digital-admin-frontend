@@ -16,3 +16,15 @@ export const LabelPostApi = (setIsOpen: any) => {
         }
     })
 }
+
+export const GetAllLabelsApi = () =>
+    useQuery(
+        [`GetAllLabels`],
+        async () => await api.get(`createRelease/labelgetAll`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+

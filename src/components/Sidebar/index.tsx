@@ -4,9 +4,10 @@ import { FaFacebook, FaHome, FaInstagram, FaLinkedin, FaQuora, FaTwitter, FaYout
 import { FiChevronDown, FiChevronUp, FiLink, FiYoutube } from "react-icons/fi";
 import { AiFillTag, AiOutlinePlusCircle } from "react-icons/ai";
 import { TbTool } from "react-icons/tb";
-import { BsTicketPerforated } from "react-icons/bs";
+import { BsPersonFillGear, BsTicketPerforated } from "react-icons/bs";
 import { ImFileMusic } from "react-icons/im";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
+import { IoMdWallet } from "react-icons/io";
 
 interface props {
     isOpen: boolean;
@@ -54,6 +55,16 @@ export default function Index({ isOpen, setIsOpen }: props) {
             ],
         },
         {
+            path: "/Financial",
+            name: "Financial",
+            icon: <IoMdWallet color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/ManageArtist",
+            name: "Manage Artist",
+            icon: <BsPersonFillGear color={'#ffffff'} size={size} />,
+        },
+        {
             path: "/Label",
             name: "Label",
             icon: <AiFillTag color={'#ffffff'} size={size} />,
@@ -72,7 +83,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
     return (
         <>
-            <div className={`h-[92vh] hidden sm:block bg-neutral-800 ${isOpen ? 'sm:w-[18%] md:w-[18%] lg:w-[15%] ' : 'w-[50px]'}  py-4`}>
+            <div className={`h-[92vh] hidden overflow-y-auto sm:block bg-neutral-800 ${isOpen ? 'sm:w-[18%] md:w-[18%] lg:w-[15%] ' : 'w-[50px]'}  py-4`}>
                 <div className="flex flex-col gap-1">
                     {
                         routes?.map((r, index) => {
@@ -89,7 +100,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                                 <div className={`w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-2"} `} >
                                                     {r.icon}
                                                     <div className={`flex justify-between items-center ${isOpen ? "" : "hidden"} `} onClick={toggleDropdown}>
-                                                        <p className={`md:text-sm lg:text-base text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
+                                                        <p className={`md:text-sm text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
                                                         <button className="text-icons text-xl ml-2">
                                                             {openDropdownIndex === index ? <FiChevronUp color={'#ffffff'} /> : <FiChevronDown color={'#ffffff'} />}
                                                         </button>
@@ -102,7 +113,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                                 }>
                                                     <div className={`w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-1"} `}>
                                                         {r.icon}
-                                                        <p className={`md:text-sm lg:text-base text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
+                                                        <p className={`md:text-sm text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
                                                     </div>
                                                 </NavLink>
                                             </>
@@ -115,7 +126,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                                 } >
                                                     <div className="w-full items-center flex md:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
                                                         {s.icon}
-                                                        <p className={`md:text-sm lg:text-base text-white ${isOpen ? "" : "hidden"}`}>{s.name}</p>
+                                                        <p className={`md:text-sm text-white ${isOpen ? "" : "hidden"}`}>{s.name}</p>
                                                     </div>
                                                 </NavLink>
                                             ))}
