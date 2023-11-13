@@ -6,10 +6,11 @@ import { BiRefresh } from "react-icons/bi"
 import { TbDatabaseDollar } from 'react-icons/tb'
 import { BsCurrencyDollar } from 'react-icons/bs'
 import * as React from "react"
+import useResponsiveIconSize from "../../hooks/useResponsiveIconSize"
 
 export default function UserHome({ userData }: { userData: any }) {
 
-
+    const size = useResponsiveIconSize();
     return (
         <>
             <div className="flex flex-col sm:flex-row h-[90%] p-4 gap-6">
@@ -42,7 +43,7 @@ export default function UserHome({ userData }: { userData: any }) {
                                 <FaCircleInfo size={20} />
                             </div>
                             <div className="flex items-center">
-                                <p className="mb-0">Connection requested</p>
+                                <p className="mb-0">Correction requested</p>
                             </div>
                         </div>
 
@@ -59,7 +60,7 @@ export default function UserHome({ userData }: { userData: any }) {
                                     </div>
 
                                     <div className="flex items-center">
-                                        <GrEdit size={18} />
+                                        <GrEdit size={size} />
                                     </div>
                                 </div>
                             ))}
@@ -92,7 +93,7 @@ export default function UserHome({ userData }: { userData: any }) {
                                     </div>
 
                                     <div className="flex items-center">
-                                        <GrEdit size={18} />
+                                        <GrEdit size={size} />
                                     </div>
                                 </div>
                             ))}

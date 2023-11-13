@@ -33,6 +33,7 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
     return (
         <>
             <button
+                type="button"
                 className="flex items-center justify-center ml-2 py-1 px-1 bg-blue-500 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
                 onClick={() => setIsOpen(true)}
             >

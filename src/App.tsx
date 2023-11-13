@@ -13,9 +13,10 @@ import Label from "./components/Label";
 import Platform from "./components/CreateRelease/Platform";
 import SongInfo from "./components/CreateRelease/SongInfo";
 import ReleaseInfo from "./components/CreateRelease/ReleaseInfo";
-import Financial from "./components/Financial";
 import ManageArtist from "./components/ManageArtist";
 import EditManageArtist from "./components/ManageArtist/EditManageArtist";
+import Submission from "./components/CreateRelease/Submission";
+import Financial from "./components/Financial";
 
 
 
@@ -32,6 +33,7 @@ function App() {
               {/* <Route path="Submission" element={<Submission />} /> */}
               <Route path="Songsinfo" element={<SongInfo />} />
               <Route path="Catalogs" element={<Catalogs />} />
+              <Route path="Submission" element={<Submission />} />
               <Route path="Tools/YoutubeClaims" element={<YouTubeClaims />} />
               <Route path="Tools/ProfileLinking" element={<ProfileLinking />} />
               <Route path="Label" element={<Label />} />

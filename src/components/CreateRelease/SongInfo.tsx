@@ -3,23 +3,31 @@ import SongDetails from "./PopUps/SongDetails";
 import { MdClear } from "react-icons/md"
 import { AiOutlinePlus } from "react-icons/ai";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { UserDataApi } from "../../api/releaseInfo";
+import { ImCross } from "react-icons/im";
 
 
 export default function SongInfo() {
 
     const [AudioDocument, setAudioDocument] = React.useState({ preview: "", data: "" });
     const size = useResponsiveIconSize();
-    const { tab } = useParams();
+    const [userData, setUserData] = React.useState<any>("");
+    const navigate = useNavigate()
+    const token = localStorage.getItem("token")
     const handleFileChange = (e: any) => {
-        // console.log("handleFileChange");
         const Audio = {
             preview: URL.createObjectURL(e.target.files[0]),
             data: e.target.files[0],
         };
         setAudioDocument(Audio);
-        // console.log(img,"img");
     };
+
+    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+
+    React.useEffect(() => {
+        getUserData({ token: token })
+    }, []);
 
     const [divs, setDivs] = React.useState([{}]); // Initialize with one div
 
@@ -28,6 +36,10 @@ export default function SongInfo() {
     };
 
     const removeDiv = (index: number) => {
+        // Ensure that the first div is not removable
+        if (index === 0) {
+            return;
+        }
         setDivs(divs.filter((_, i) => i !== index)); // Remove the div at the specified index
     };
 
@@ -61,30 +73,34 @@ export default function SongInfo() {
             <p className="text-center font-semibold mt-4">Upload Assets</p>
             <p className="text-left font-semibold mt-4 text-teal-400 ml-4">Audio File GuideLines</p>
             <div className="p-4">
-                {divs.map((_, index) => (
-                    <div key={index} className="flex items-center justify-center w-full border-2 border-teal-500 h-40">
-                        <input
-                            accept="audio/*"
-                            type="file"
-                            name="AudioDocument"
-                            onChange={(event) => handleFileChange(event)}
-                            multiple
-                        />
-                        <button
-                            className="flex items-center justify-center ml-2 py-1 px-1 bg-blue-500 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-                            onClick={addDiv}
-                        >
-                            <AiOutlinePlus size={size} />
-                        </button>
-                        <SongDetails />
-                        <button
-                            className="flex items-center justify-center ml-2 py-1 px-1 bg-red-500 text-white rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50"
-                            onClick={() => removeDiv(index)}
-                        >
-                            <MdClear size={size} />
-                        </button>
-                    </div>
-                ))}
+                <div className="flex flex-col gap-4 w-full border-2 border-teal-500 p-4">
+                    {divs.map((_, index) => (
+                        <>
+                            <div className="flex items-center justify-center gap-4">
+                                <input
+                                    accept="audio/*"
+                                    type="file"
+                                    name="AudioDocument"
+                                    onChange={(event) => handleFileChange(event)}
+                                    multiple
+                                />
+                                <button
+                                    className="flex items-center justify-center ml-2 py-1 px-1 bg-blue-500 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+                                    onClick={addDiv}
+                                >
+                                    <AiOutlinePlus size={size} />
+                                </button>
+                                <SongDetails userData={userData} />
+                                <button
+                                    className="flex items-center justify-center ml-2 py-1 px-1 text-black rounded-full focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                                    onClick={() => removeDiv(index)}
+                                >
+                                    <ImCross size={size} />
+                                </button>
+                            </div>
+                        </>
+                    ))}
+                </div>
             </div>
         </>
     )

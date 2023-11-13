@@ -92,7 +92,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Modal Title
+                                    Add Label
                                 </Dialog.Title>
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
@@ -100,7 +100,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                     <div className="mt-2">
 
                                         <div className="w-full mb-2">
-                                            <Label text="Title" htmlFor="grid-title" />
+                                            <Label text="Channel Name" htmlFor="grid-title" />
                                             <InputField
                                                 type="text"
                                                 name="title"
@@ -144,6 +144,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                                         className="w-full h-full opacity-0 cursor-pointer"
                                                     />
                                                 </label>
+                                                <p>pdf, doc, txt</p>
                                                 {ImageDocument.preview && (
                                                     <AiOutlineCloseCircle size={20} onClick={clearImage} className="absolute top-0 right-0 m-1 text-red-500 cursor-pointer" />
                                                 )}

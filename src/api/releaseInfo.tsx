@@ -104,3 +104,27 @@ export const ReleaseInfoPostApi = () => {
         }
     })
 }
+
+export const GetLanguagesApi = () =>
+    useQuery(
+        [` GetLanguages`],
+        async () => await api.get(`createRelease/languageGet`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+
+export const GetSubmissionsApi = (id: any) =>
+    useQuery(
+        [`GetSubmissions`],
+        async () => await api.get(`createRelease/submissionGet/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+        }
+    );

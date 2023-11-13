@@ -81,14 +81,14 @@ export default function Index() {
                         </div>
                         <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
                             <div className="w-full mb-2">
-                                <Label text="Select platform" htmlFor="grid-Selectplatform" required={true} />
+                                <Label text="Artist Name" htmlFor="grid-Artist" required={true} />
                                 <InputField
                                     type="text"
-                                    name="Selectplatform"
-                                    placeholder="Make sure to enter the exact name of artistL"
+                                    name="Artist"
+                                    placeholder="Make sure to enter the exact name of artist"
                                     register={register}
                                     errors={errors}
-                                    requiredMessage="Selectplatform is required."
+                                    requiredMessage="Artist is required."
                                 />
                             </div>
 

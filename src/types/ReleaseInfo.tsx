@@ -33,6 +33,7 @@ export type SongDetailsDto = {
     AudioDocument: string
     Trackversion: string
     Instrumental: string
+    Title:string
     VersionSubtitle: string
     Primaryartist: string
     FeaturingArtist: string

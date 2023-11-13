@@ -3,6 +3,7 @@ import GetDate from "../../utility/GetDate";
 import { RiDraftFill } from "react-icons/ri";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { Link } from "react-router-dom";
+import { FaUserEdit } from "react-icons/fa";
 
 
 export default function ListRow({ data, index }: { data: any, index: any }) {
@@ -31,7 +32,7 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     <Link to={`/ManageArtist/${data.artistId}`}>
-                        <RiDraftFill className="cursor-pointer" color="brown" size={size} />
+                        <FaUserEdit className="cursor-pointer"  size={size} />
                     </Link>
                 </td>
             </tr>

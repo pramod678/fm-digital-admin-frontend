@@ -54,7 +54,7 @@ export const YoutubeClaimsPostApi = (reset: any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("tools/youtubeClaimsPost", data), {
         onSuccess: (res) => {
-            cogoToast.success("Primary Artist Created");
+            cogoToast.success("UGC Claim Created");
             queryClient.refetchQueries([`youtubeClaimsGetAll`]);
             reset()
         },
