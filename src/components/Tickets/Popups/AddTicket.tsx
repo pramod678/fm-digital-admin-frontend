@@ -9,8 +9,11 @@ import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
 import { LabelDto } from "../../../types/label";
 import { LabelPostApi } from "../../../api/label";
+import { TicketDto } from "../../../types/ticket";
+import SelectReason from "../../../ui/SelectReason";
+import CustomTextArea from "../../../ui/CustomTextArea";
 
-export default function AddLabel({ userData }: { userData: any }) {
+export default function AddTicket({ userData }: { userData: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
     const [ImageDocument, setImageDocument] = useState({ preview: "", data: "" });
@@ -19,8 +22,9 @@ export default function AddLabel({ userData }: { userData: any }) {
         handleSubmit,
         watch,
         reset,
+        control,
         formState: { errors }
-    } = useForm<LabelDto>()
+    } = useForm<TicketDto>()
 
     const handleFileChange = (e: any) => {
         if (e.target.files[0]) {
@@ -41,6 +45,15 @@ export default function AddLabel({ userData }: { userData: any }) {
         setImageDocument({ preview: "", data: "" });
     };
 
+    const options = [
+        { value: "Artist Digital Presence", label: "Artist Digital Presence" },
+        { value: "Change in Release", label: "Change in Release" },
+        { value: "Callertune Codes", label: "Callertune Codes" },
+        { value: "Delivery Status", label: "Delivery Status" },
+        { value: "Takedown Request", label: "Takedown Request" },
+        { value: "Others", label: "Others" },
+    ];
+
 
     //featuringArtisttPost Api Call
     const { mutate: LabelPost, isLoading: isLoadingLabelPost } = LabelPostApi(setIsOpen)
@@ -55,11 +68,11 @@ export default function AddLabel({ userData }: { userData: any }) {
     return (
         <>
             <button
-                className="flex items-center justify-center ml-2 py-1 px-1 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50"
+                className="flex items-center justify-center ml-2 py-2 px-4 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50"
                 onClick={() => setIsOpen(true)}
             >
                 <AiOutlinePlus size={size} />
-                AddLabel
+                Add Ticket
             </button>
 
             <Transition appear show={isOpen} as={Fragment}>
@@ -92,7 +105,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Add Label
+                                    Add Ticket
                                 </Dialog.Title>
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
@@ -100,26 +113,21 @@ export default function AddLabel({ userData }: { userData: any }) {
                                     <div className="mt-2">
 
                                         <div className="w-full mb-2">
-                                            <Label text="Channel Name" htmlFor="grid-title" />
-                                            <InputField
-                                                type="text"
-                                                name="title"
-                                                placeholder="Enter title"
-                                                register={register}
-                                                errors={errors}
-                                                requiredMessage="title is required."
-                                            />
+                                            <Label text="Reason" htmlFor="grid-reason" />
+                                            <SelectReason control={control} name="reason" options={options} errors={errors} required={true} />
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Youtube Url" htmlFor="grid-youtubeURL" />
-                                            <InputField
-                                                type="text"
-                                                name="youtubeURL"
-                                                placeholder="Enter youtubeURL "
+                                            <Label text="Tell us more about it" htmlFor="grid-description" />
+                                            <CustomTextArea
+                                                name="description"
+                                                placeholder="Enter description"
                                                 register={register}
-                                                errors={errors}
-                                                requiredMessage="youtubeURL is required."
+                                                error={errors.description}
+                                                validationRules={{
+                                                    required: "description is required.",
+                                                }}
+                                                rows={3}
                                             />
                                         </div>
 

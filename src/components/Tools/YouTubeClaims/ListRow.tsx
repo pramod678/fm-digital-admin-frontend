@@ -3,13 +3,13 @@ import GetDate from "../../../utility/GetDate";
 
 
 
-export default function ListRow({ claim, index }: { claim: any, index: any }) {
-   
+export default function ListRow({ claim, index, currentPage, PAGE_SIZE }: { claim: any, index: any,currentPage:any, PAGE_SIZE :any}) {
+    const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
     return (
         <>
             <tr>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {index + 1}
+                    {actualIndex}
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

@@ -128,3 +128,15 @@ export const GetSubmissionsApi = (id: any) =>
             enabled: id ? true : false,
         }
     );
+
+export const SubmissionPostApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.post("createRelease/submissionPost", data), {
+        onSuccess: (res) => {
+            cogoToast.success("submitted");
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

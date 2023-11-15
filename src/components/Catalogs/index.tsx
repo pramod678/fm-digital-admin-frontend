@@ -5,6 +5,7 @@ import { GetCatalogsApi } from "../../api/catalogs";
 import { MdError } from "react-icons/md";
 import ListRow from "./ListRow";
 import { BounceLoader } from "react-spinners";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 
 
@@ -19,28 +20,48 @@ export default function Index() {
     const { data: getCatalogs, isLoading: isLoadinggetCatalogs, isFetching } = GetCatalogsApi(userData.users_id, setcatalogsGet)
 
     const [records, setRecords] = React.useState(catalogsGet || []);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const PAGE_SIZE = 2; // Number of items per page
 
     React.useEffect(() => {
-        getUserData({ token: token })
+        getUserData({ token: token });
     }, []);
 
     React.useEffect(() => {
         setRecords(catalogsGet);
+        setCurrentPage(1); // Reset to first page when data changes
     }, [catalogsGet]);
 
+    const getCurrentPageData = () => {
+        const filteredRecords = filterRecords(records, searchTerm);
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        return filteredRecords.slice(startIndex, endIndex);
+    };
 
-    function handleFilter(event: any) {
-        const inputValue = event.target.value || "";
-        const filtered = catalogsGet?.filter(
-            (row: any) =>
-                row.Title.toLowerCase().includes(inputValue) ||
-                row.ArtistName.toLowerCase().includes(inputValue) ||
-                row.Label.toLowerCase().includes(inputValue)
-            // ||row.action.toLowerCase().includes(inputValue)
+    const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handleFilter = (event:any) => {
+        const inputValue = event.target.value.toLowerCase();
+        setSearchTerm(inputValue);
+        setCurrentPage(1); // Reset to first page when filter changes
+    };
+
+    const filterRecords = (data: any[], term: string) => {
+        return data.filter(
+            (row) =>
+                row.Title.toLowerCase().includes(term) ||
+                row.ArtistName.toLowerCase().includes(term) ||
+                row.Label.toLowerCase().includes(term)
         );
-        setRecords(filtered);
-    }
+    };
 
+    const currentData = getCurrentPageData();
+    const filteredRecords = filterRecords(records, searchTerm);
+    const totalPages = Math.ceil(filteredRecords.length / PAGE_SIZE);
 
     return (
         <>
@@ -120,14 +141,14 @@ export default function Index() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {
-                                            records?.length === 0 ? (
+                                            currentData?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No records found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                records?.map((catalog: any, index: any) => {
+                                                    currentData?.map((catalog: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow catalog={catalog} index={index} />
@@ -143,6 +164,25 @@ export default function Index() {
                     </div>
                 </div>
 
+                {totalPages > 1 && (
+                    <div className="flex justify-end items-center mt-4">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronLeft color="white" />
+                        </button>
+                        <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronRight color="white" />
+                        </button>
+                    </div>
+                )}
             </div>
 
         </>

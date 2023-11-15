@@ -13,6 +13,7 @@ import SelectPlatform from "../../../ui/SelectPlatform";
 import SelectPolicy from "../../../ui/SelectPolicy";
 import { AiFillSave } from "react-icons/ai";
 import ListRow from "./ListRow";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 
 
@@ -37,7 +38,50 @@ export default function Index() {
     const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll, isFetching } = YoutubeClaimsGetAllApi(userData.users_id)
     const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, releseInfoGetOne[0]?.releseInfo_id)
     const { mutate: YoutubeClaimsPost, isLoading: isLoadingYoutubeClaimsPost } = YoutubeClaimsPostApi(reset)
+    
+    const [records, setRecords] = React.useState(youtubeClaimsGetAll?.data?.data || []);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const PAGE_SIZE = 2; // Number of items per page
 
+    React.useEffect(() => {
+        getUserData({ token: token });
+    }, []);
+
+    React.useEffect(() => {
+        setRecords(youtubeClaimsGetAll?.data?.data);
+        setCurrentPage(1); // Reset to first page when data changes
+    }, [youtubeClaimsGetAll]);
+
+    const getCurrentPageData = () => {
+        const filteredRecords = filterRecords(records, searchTerm);
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        return filteredRecords.slice(startIndex, endIndex);
+    };
+
+    const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handleFilter = (event: any) => {
+        const inputValue = event.target.value.toLowerCase();
+        setSearchTerm(inputValue);
+        setCurrentPage(1); // Reset to first page when filter changes
+    };
+
+    const filterRecords = (data: any[], term: string) => {
+        return data.filter(
+            (row) =>
+                row?.Selectrelease?.toLowerCase().includes(term) ||
+                row?.SelectAudio?.toLowerCase().includes(term) ||
+                row?.SelectPolicy?.toLowerCase().includes(term) 
+        );
+    };
+
+    const currentData = getCurrentPageData();
+    const filteredRecords = filterRecords(records, searchTerm);
+    const totalPages = Math.ceil(filteredRecords.length / PAGE_SIZE);
 
 
     React.useEffect(() => {
@@ -50,6 +94,7 @@ export default function Index() {
         newData.users_id= parseInt(userData.users_id);
         YoutubeClaimsPost(newData)
     });
+
 
 
     return (
@@ -117,7 +162,30 @@ export default function Index() {
                     </div>
                 </form>
 
-                <p className="text-base sm:text-lg font-semibold ">Your UGC Claims History</p>
+                {/* Filters */}
+                <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
+                    <div className="flex items-center gap-4">
+                        <input
+                            type="text"
+                            className="px-4 py-2  rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            id="search"
+                            placeholder="Search Title"
+                            defaultValue={""}
+                            onChange={handleFilter}
+                        />
+                        <select className=" px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option defaultValue="All">All</option>
+                            <option value="true">approved</option>
+                            <option value="false">Draft</option>
+                            <option value="false">corrections</option>
+                        </select>
+                    </div>
+                    <div className="">
+                        <p className="font-semibold text-gray-700">Total Releases : {youtubeClaimsGetAll?.data?.data?.length || 0}</p>
+                    </div>
+                </div>
+
+                <p className="text-base sm:text-lg font-semibold my-2">Your UGC Claims History</p>
 
                 <div className="flex flex-col">
                     <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -151,17 +219,19 @@ export default function Index() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {
-                                            youtubeClaimsGetAll?.data?.data?.length === 0 ? (
+                                            currentData?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No records found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                youtubeClaimsGetAll?.data?.data?.map((claim: any, index: any) => {
+                                                    currentData?.map((claim: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
-                                                            <ListRow claim={claim} index={index} />
+                                                            <ListRow claim={claim} index={index}
+                                                                currentPage={currentPage}
+                                                                PAGE_SIZE={PAGE_SIZE} />
                                                         </React.Fragment>
                                                     )
                                                 })
@@ -173,6 +243,26 @@ export default function Index() {
                         </div>
                     </div>
                 </div>
+
+                {totalPages > 1 && (
+                    <div className="flex justify-end items-center mt-4">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronLeft color="white" />
+                        </button>
+                        <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronRight color="white" />
+                        </button>
+                    </div>
+                )}
 
             </div>
         </>

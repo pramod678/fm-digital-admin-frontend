@@ -108,7 +108,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                         </div>
                     </div>
                 </div>
-                <div className={`flex flex-col gap-1 transition-all ease-in-out duration-100 ${isOpen ? 'block' : 'hidden'} block  sm:hidden justify-center items-center z-10`}>
+                <div className={`flex flex-col gap-1 transition-all ease-in-out duration-500 ${isOpen ? 'block' : 'hidden'} block sm:hidden justify-center items-center z-10`}>
                     <div className=" flex flex-col">
                         {
                             routes.map((link, index) => {
@@ -165,46 +165,3 @@ export default function Index({ isOpen, setIsOpen }: props) {
     )
 }
 
-// {
-//     routes?.map((r, index) => {
-//         const toggleDropdown = () => {
-//             setOpenDropdownIndex(openDropdownIndex === index ? null : index);
-//         };
-//         return (
-//             <>
-//                 {
-//                     r?.subRoutes ? (
-//                         <div className="w-full flex justify-center items-center gap-2 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
-//                             {r.icon}
-//                             <div className={`flex justify-between items-center`} onClick={toggleDropdown}>
-//                                 <p className={`text-sm text-white`}>{r.name}</p>
-//                                 <button className="text-icons text-xl ml-2">
-//                                     {openDropdownIndex === index ? <FiChevronUp color={'#ffffff'} size={16} /> : <FiChevronDown color={'#ffffff'} size={16} />}
-//                                 </button>
-//                             </div>
-//                         </div>
-//                     ) : (
-//                         <NavLink to={r.path} key={r.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""}>
-//                             <div className="w-full flex justify-center items-center gap-2 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
-//                                 {r.icon}
-//                                 <p className={`text-sm text-white`}>{r.name}</p>
-//                             </div>
-//                         </NavLink>
-//                     )
-//                 }
-//                 {openDropdownIndex === index && (
-//                     <div className="flex flex-col gap-2">
-//                         {r?.subRoutes?.map((s, i) => (
-//                             <NavLink to={s.path} key={s.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""} >
-//                                 <div className="w-full flex justify-center items-center gap-2 px-4 py-1 cursor-pointer hover:bg-zinc-500 ">
-//                                     {s.icon}
-//                                     <p className={`text-sm text-white`}>{s.name}</p>
-//                                 </div>
-//                             </NavLink>
-//                         ))}
-//                     </div>
-//                 )}
-//             </>
-//         )
-//     })
-// }

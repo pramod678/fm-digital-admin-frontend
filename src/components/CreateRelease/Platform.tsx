@@ -17,67 +17,55 @@ export default function Platform() {
     }, []);
 
     const data = [
-        [
-            { name: "Adaptr", imgSrc: "images/adaptr.png" },
-            { name: "Amazon", imgSrc: "images/amazon.jpg" },
-            { name: "Anghami", imgSrc: "images/anghami.png" },
-            { name: "Boomplay", imgSrc: "images/boomplay.png" },
-            { name: "ClaroMúsica", imgSrc: "images/claromusica.png" },
-            { name: "Deezer", imgSrc: "images/deezer.png" },
-            { name: "FM Digital Stor maximizer", imgSrc: "images/fmdigitalstoremaximizer.png" },
-            { name: "Flo", imgSrc: "images/flo.png" },
-            { name: "Ganna", imgSrc: "images/ganna.png" },
-            { name: "Instagram & Facebook", imgSrc: "images/instagramfacebook.jpg" },
-        ],
-        [
-            { name: "iTunes/Apple music", imgSrc: "images/itunesapplemusic.png" },
-            { name: "iHeartRadio", imgSrc: "images/iheartradio.png" },
-            { name: "Joox", imgSrc: "images/joox.png" },
-            { name: "Joox", imgSrc: "images/joox.png" },
-            { name: "KKBox", imgSrc: "images/kkbox.png" },
-            { name: "Kuack Media", imgSrc: "images/kuackmedia.png" },
-            { name: "MediaNet & many smaller outlets", imgSrc: "images/medianetmanysmalleroutlets.png" },
-            { name: "NetEase", imgSrc: "images/netease.jpg" },
-            { name: "Pandora", imgSrc: "images/pandora.jpg" },
-            { name: "Saavn", imgSrc: "images/saavn.png" },
-        ],
-        [
-            { name: "Shazam", imgSrc: "images/shazam.png" },
-            { name: "Snapchat", imgSrc: "images/snapchat.jpg" },
-            { name: "Soundcloud", imgSrc: "images/soundcloud.png" },
-            { name: "Spotify", imgSrc: "images/spotify.png" },
-            { name: "Tencent", imgSrc: "images/tencent.png" },
-            { name: "Tidal", imgSrc: "images/tidal.png" },
-            { name: "TikTok, Resso, Luna", imgSrc: "images/tiktokressoluna.png" },
-            { name: "Wynk", imgSrc: "images/wynk.png" },
-            { name: "Yandex Music (beta)", imgSrc: "images/yandexmusicbeta.png" },
-            { name: "YouTube Music", imgSrc: "images/youtubemusic.png" },
-        ],
+        { name: "Adaptr" },
+        { name: "Amazon" },
+        { name: "Anghami" },
+        { name: "Boomplay" },
+        { name: "ClaroMúsica" },
+        { name: "Deezer" },
+        { name: "FM Digital Stores maximizer" },
+        { name: "Flo" },
+        { name: "Ganna" },
+        { name: "Instagram & Facebook" },
+        { name: "iTunes/Apple music" },
+        { name: "iHeartRadio" },
+        { name: "Joox" },
+        { name: "Joox" },
+        { name: "KKBox" },
+        { name: "Kuack Media" },
+        { name: "MediaNet & many smaller outlets" },
+        { name: "NetEase" },
+        { name: "Pandora" },
+        { name: "Saavn" },
+        { name: "Shazam" },
+        { name: "Snapchat" },
+        { name: "Soundcloud" },
+        { name: "Spotify" },
+        { name: "Tencent" },
+        { name: "Tidal" },
+        { name: "TikTok, Resso, Luna" },
+        { name: "Wynk" },
+        { name: "Yandex Music (beta)" },
+        { name: "YouTube Music" },
     ];
 
     const data1 = [
-        [
-            { name: "BSNL", imgSrc: "images/bsnl.png" },
-            { name: "AIRTEL", imgSrc: "images/airtel.png" },
-            { name: "VI", imgSrc: "images/vi.png" },
-        ],
+        { name: "BSNL" },
+        { name: "AIRTEL" },
+        { name: "VI" },
     ];
 
     const data2 = [
-        [
-            { name: "MX Player", imgSrc: "images/mxplayer.png" },
-            { name: "HungamA", imgSrc: "images/hungama.png" },
-            { name: "Amazon", imgSrc: "images/amazon.jpg" },
-            { name: "Tidal", imgSrc: "images/tidal.png" },
-            { name: "Apple music", imgSrc: "images/apple.png" },
-        ],
-        [
-            { name: "Boomplay", imgSrc: "images/boomplay.png" },
-            { name: "VI", imgSrc: "images/vi.png" },
-            { name: "Tencent", imgSrc: "images/tencent.png" },
-            { name: "Facebook PMV", imgSrc: "images/facebook.png" },
-            { name: "Vimeo", imgSrc: "images/vimeo.png" },
-        ],
+        { name: "MX Player" },
+        { name: "Hungama" },
+        { name: "Amazon" },
+        { name: "Tidal" },
+        { name: "Apple music" },
+        { name: "Boomplay" },
+        { name: "VI" },
+        { name: "Tencent" },
+        { name: "Facebook PMV" },
+        { name: "Vimeo" },
     ];
 
     const tabs = [
@@ -87,7 +75,7 @@ export default function Platform() {
         { name: 'Submission', route: 'Submission' },
     ]
 
-    const handleSubmit = async (e:any) => {
+    const handleSubmit = async (e: any) => {
         let formdata = {
             Audio: data,
             CRBT: data1,
@@ -122,20 +110,19 @@ export default function Platform() {
                     <h3 className="text-lg sm:text-2xl font-bold">Audio(190+)</h3>
                     <input type="checkbox" checked className="mr-2 w-6 h-6" />
                 </div>
-                <div className="flex flex-wrap md:flex-no-wrap justify-between p-6">
-                    {data.map((column, columnIndex) => (
-                        <div key={columnIndex} className=" mb-4">
-                            {column.map((item, index) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+                    {
+                        data?.map((item: any, index) => {
+                            return (
                                 <div key={index} className="flex items-center mb-4">
-                                    <img src={item.imgSrc} alt={item.name} className="w-16 h-16 mb-4 mr-4" />
                                     <label className="cursor-pointer">
                                         <input type="checkbox" checked className="mr-2" />
                                         {item.name}
                                     </label>
                                 </div>
-                            ))}
-                        </div>
-                    ))}
+                            )
+                        })
+                    }
                 </div>
             </div>
             <div className="p-10">
@@ -143,50 +130,41 @@ export default function Platform() {
                     <h3 className="text-lg sm:text-2xl font-bold">CRBT(3+)</h3>
                     <input type="checkbox" checked className="mr-2 w-6 h-6" />
                 </div>
-                <table className="table-auto">
-                    <tbody>
-                        {data1.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {row.map((item, columnIndex) => (
-                                    <td key={columnIndex} className="px-4 py-2">
-                                        <div className="flex items-center">
-                                            <img src={item.imgSrc} alt={item.name} className="w-16 h-16 mb-4 mr-4" />
-                                            <label className="cursor-pointer">
-                                                <input type="checkbox"  checked className="mr-2" />
-                                                {item.name}
-                                            </label>
-                                        </div>
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+                    {
+                        data1?.map((item: any, index) => {
+                            return (
+                                <div key={index} className="flex items-center mb-4">
+                                    <label className="cursor-pointer">
+                                        <input type="checkbox" checked className="mr-2" />
+                                        {item.name}
+                                    </label>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
+
             <div className="p-10">
                 <div className="flex items-center gap-4">
                     <h3 className="text-lg sm:text-2xl font-bold">Video Platform(3+)</h3>
                     <input type="checkbox" checked className="mr-2 w-6 h-6" />
                 </div>
-                <table className="table-auto">
-                    <tbody>
-                        {data2.map((row, rowIndex) => (
-                            <tr key={rowIndex} className="mb-4">
-                                {row.map((item, columnIndex) => (
-                                    <td key={columnIndex} className="px-4 py-2 mr-4">
-                                        <div className="flex items-center">
-                                            <img src={item.imgSrc} alt={item.name} className="w-16 h-16 mr-2" />
-                                            <label className="cursor-pointer">
-                                                <input type="checkbox" checked className="mr-2" />
-                                                {item.name}
-                                            </label>
-                                        </div>
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+                    {
+                        data2?.map((item: any, index) => {
+                            return (
+                                <div key={index} className="flex items-center mb-4">
+                                    <label className="cursor-pointer">
+                                        <input type="checkbox" checked className="mr-2" />
+                                        {item.name}
+                                    </label>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
 
             <div className="flex justify-end items-center p-4">

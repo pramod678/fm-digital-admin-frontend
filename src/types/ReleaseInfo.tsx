@@ -13,6 +13,7 @@ export type ReleaseInfoDto = {
     users_id: number
     Status: number
     releseInfo_id: number
+    ImageDocument:string
 }
 
 export type FeatureArtistDto = {

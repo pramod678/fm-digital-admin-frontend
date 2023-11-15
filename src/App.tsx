@@ -17,6 +17,7 @@ import ManageArtist from "./components/ManageArtist";
 import EditManageArtist from "./components/ManageArtist/EditManageArtist";
 import Submission from "./components/CreateRelease/Submission";
 import Financial from "./components/Financial";
+import Tickets from "./components/Tickets";
 
 
 
@@ -40,6 +41,7 @@ function App() {
               <Route path="Financial" element={<Financial />} />
               <Route path="ManageArtist" element={<ManageArtist />} />
               <Route path="ManageArtist/:id" element={<EditManageArtist />} />
+              <Route path="Tickets" element={<Tickets />} />
             </Route>
             {/* Add other routes here */}
             <Route path="sign-in" element={<PublicRoute><Login /></PublicRoute>} />
