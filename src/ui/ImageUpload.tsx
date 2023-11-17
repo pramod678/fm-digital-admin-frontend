@@ -9,7 +9,6 @@ const FileUpload = ({ file, setFile }: { file: any, setFile: any }) => {
 
     const onDrop = useCallback((acceptedFiles: any[]) => {
         const uploadedFile = acceptedFiles[0];
-        console.log(acceptedFiles[0], "acceptedFiles")
 
         // File type validation
         const allowedTypes = ['image/jpeg', 'image/png'];

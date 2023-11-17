@@ -32,7 +32,7 @@ export default function ReleaseInfo() {
         control,
         formState: { errors }
     } = useForm<ReleaseInfoDto>()
-    const [file, setFile] = React.useState(null);
+    const [file, setFile] = React.useState<File>(null);
     const token = localStorage.getItem("token")
 
     //Api calls
@@ -101,7 +101,7 @@ export default function ReleaseInfo() {
         newData.Status = 0;
         newData.users_id = parseInt(userData.users_id);
         newData.releseInfo_id = id;
-        console.log(newData.ImageDocument?.path, "newData.ImageDocument")
+        console.log(newData.ImageDocument, "newData.ImageDocument")
         ReleaseInfoPost(newData)
     }
     )

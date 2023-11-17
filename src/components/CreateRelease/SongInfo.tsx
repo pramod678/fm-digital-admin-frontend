@@ -82,7 +82,7 @@ export default function SongInfo() {
                                         <div className="flex items-center space-x-4 w-full">
                                             <span className="text-neutral-800 mr-4">{index + 1}.</span>
                                             <p className="text-neutral-800 text-base sm:text-lg font-semibold">{field.Title}</p>
-                                            <audio src={URL.createObjectURL(field.AudioDocument)} controls className="w-42 h-8"></audio>
+                                            <audio src={URL.createObjectURL(field.AudioDocument)} controls className="w-42 h-8 flex-grow"></audio>
                                         </div>
                                         <button onClick={() => handleRemove(index)} className="text-neutral-700 hover:text-neutral-900 ml-4">
                                             <ImCross size={size} />
@@ -97,6 +97,8 @@ export default function SongInfo() {
                 )}
 
                 <SongDetails userData={userData} append={append} />
+
+                {/* <button onClick={}></button> */}
 
             </div>
 
