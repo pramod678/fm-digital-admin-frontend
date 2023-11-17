@@ -57,7 +57,7 @@ export default function Index() {
         const filteredRecords = filterRecords(records, searchTerm);
         const startIndex = (currentPage - 1) * PAGE_SIZE;
         const endIndex = startIndex + PAGE_SIZE;
-        return filteredRecords.slice(startIndex, endIndex);
+        return filteredRecords?.slice(startIndex, endIndex);
     };
 
     const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
@@ -71,7 +71,7 @@ export default function Index() {
     };
 
     const filterRecords = (data: any[], term: string) => {
-        return data.filter(
+        return data?.filter(
             (row) =>
                 row?.Selectrelease?.toLowerCase().includes(term) ||
                 row?.SelectAudio?.toLowerCase().includes(term) ||
@@ -81,7 +81,7 @@ export default function Index() {
 
     const currentData = getCurrentPageData();
     const filteredRecords = filterRecords(records, searchTerm);
-    const totalPages = Math.ceil(filteredRecords.length / PAGE_SIZE);
+    const totalPages = Math.ceil(filteredRecords?.length / PAGE_SIZE);
 
 
     React.useEffect(() => {

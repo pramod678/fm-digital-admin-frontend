@@ -38,8 +38,8 @@ export default function ReleaseInfo() {
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: genre } = GetGenreApi()
-    const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id, setfeaturingArtistGet)
-    const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id, setprimaryArtistGet)
+    const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id)
+    const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id)
     const { mutate: ReleaseInfoPost, isLoading: isLoadingReleaseInfoPost } = ReleaseInfoPostApi()
 
     const tabs = [
@@ -61,12 +61,10 @@ export default function ReleaseInfo() {
     var targetDate = new Date(today);
     targetDate.setDate(today.getDate() + 6); // Adding 5 days
 
-    // Function to check if the current date is past the target date
     function isPastTargetDate() {
         var currentDate = new Date();
         return currentDate >= targetDate;
     }
-    // Check if the current date is past the target date
     if (isPastTargetDate()) {
         // Perform your action or hide the content here
         let month:any = targetDate.getMonth() + 1;
@@ -103,8 +101,7 @@ export default function ReleaseInfo() {
         newData.Status = 0;
         newData.users_id = parseInt(userData.users_id);
         newData.releseInfo_id = id;
-
-        console.log(newData.ImageDocument, "newData.ImageDocument")
+        console.log(newData.ImageDocument?.path, "newData.ImageDocument")
         ReleaseInfoPost(newData)
     }
     )
@@ -204,7 +201,7 @@ export default function ReleaseInfo() {
                             <div className="w-full mb-2">
                                 <Label text="Primary Artist" htmlFor="grid-PrimaryArtist" required={true} />
                                 <div className="flex gap-2 items-center">
-                                    <SelectPrimaryArtist control={control} name="PrimaryArtist" options={primaryArtistGet} errors={errors} required={true} />
+                                    <SelectPrimaryArtist control={control} name="PrimaryArtist" errors={errors} required={true} id={userData?.users_id} />
                                     <PrimaryArtist userData={userData} />
                                 </div>
                             </div>
@@ -225,7 +222,7 @@ export default function ReleaseInfo() {
                             <div className="w-full mb-2">
                                 <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={true} />
                                 <div className="flex gap-2 items-center">
-                                    <SelectFeatureArtist control={control} name="FeaturingArtist" options={featuringArtistGet} errors={errors} required={true} />
+                                    <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={true} id={userData?.users_id} />
                                     <FeatureArtist userData={userData} />
                                 </div>
                             </div>

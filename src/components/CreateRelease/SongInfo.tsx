@@ -6,6 +6,9 @@ import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserDataApi } from "../../api/releaseInfo";
 import { ImCross } from "react-icons/im";
+import SongsUpload from "../../ui/SongsUpload";
+import { useFieldArray, useForm } from "react-hook-form";
+import { SongDetailsDto } from "../../types/ReleaseInfo";
 
 
 export default function SongInfo() {
@@ -15,13 +18,8 @@ export default function SongInfo() {
     const [userData, setUserData] = React.useState<any>("");
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
-    const handleFileChange = (e: any) => {
-        const Audio = {
-            preview: URL.createObjectURL(e.target.files[0]),
-            data: e.target.files[0],
-        };
-        setAudioDocument(Audio);
-    };
+    const { control, register, handleSubmit, getValues } = useForm();
+
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
 
@@ -29,19 +27,18 @@ export default function SongInfo() {
         getUserData({ token: token })
     }, []);
 
-    const [divs, setDivs] = React.useState([{}]); // Initialize with one div
+    const { fields, append, remove, } = useFieldArray({
+        control,
+        name: "songs",
+    });
 
-    const addDiv = () => {
-        setDivs([...divs, {}]); // Add a new div
-    };
+    const handleRemove = (i: number) => {
+        remove(i)
+        // setedit(true)
+        // seteditIndex(i)
+    }
 
-    const removeDiv = (index: number) => {
-        // Ensure that the first div is not removable
-        if (index === 0) {
-            return;
-        }
-        setDivs(divs.filter((_, i) => i !== index)); // Remove the div at the specified index
-    };
+    console.log(fields, "fields")
 
     const tabs = [
         { name: 'Release Info', route: 'ReleseInfo' },
@@ -71,37 +68,39 @@ export default function SongInfo() {
             </div>
 
             <p className="text-center font-semibold mt-4">Upload Assets</p>
-            <p className="text-left font-semibold mt-4 text-teal-400 ml-4">Audio File GuideLines</p>
-            <div className="p-4">
-                <div className="flex flex-col gap-4 w-full border-2 border-teal-500 p-4">
-                    {divs.map((_, index) => (
-                        <>
-                            <div className="flex items-center justify-center gap-4">
-                                <input
-                                    accept="audio/*"
-                                    type="file"
-                                    name="AudioDocument"
-                                    onChange={(event) => handleFileChange(event)}
-                                    multiple
-                                />
-                                <button
-                                    className="flex items-center justify-center ml-2 py-1 px-1 bg-blue-500 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-                                    onClick={addDiv}
-                                >
-                                    <AiOutlinePlus size={size} />
-                                </button>
-                                <SongDetails userData={userData} />
-                                <button
-                                    className="flex items-center justify-center ml-2 py-1 px-1 text-black rounded-full focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                                    onClick={() => removeDiv(index)}
-                                >
-                                    <ImCross size={size} />
-                                </button>
+            <div className="p-4 space-y-4">
+
+                {fields?.length === 0 ? (
+                    <p className="text-gray-600 text-center text-sm font-semibold">
+                        You haven't selected any songs yet
+                    </p>
+                ) : (
+                    <>
+                            <div className="flex flex-col items-center">
+                                {fields?.map((field: any, index) => (
+                                    <div key={index} className="flex items-center justify-between p-2 rounded-md w-full max-w-md">
+                                        <div className="flex items-center space-x-4 w-full">
+                                            <span className="text-neutral-800 mr-4">{index + 1}.</span>
+                                            <p className="text-neutral-800 text-base sm:text-lg font-semibold">{field.Title}</p>
+                                            <audio src={URL.createObjectURL(field.AudioDocument)} controls className="w-42 h-8"></audio>
+                                        </div>
+                                        <button onClick={() => handleRemove(index)} className="text-neutral-700 hover:text-neutral-900 ml-4">
+                                            <ImCross size={size} />
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
-                        </>
-                    ))}
-                </div>
+
+
+                    </>
+
+                )}
+
+                <SongDetails userData={userData} append={append} />
+
             </div>
+
+
         </>
     )
 }

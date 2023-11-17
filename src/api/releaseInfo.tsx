@@ -46,7 +46,7 @@ export const PrimaryArtisttPostApi = (setIsOpen: any) => {
 }
 
 
-export const GetFeaturingArtistApi = (id: any, setfeaturingArtistGet:any) =>
+export const GetFeaturingArtistApi = (id: any) =>
     useQuery(
         [`getFeaturingArtist`],
         async () => await api.get(`createRelease/featuringArtisttGet/${id}`),
@@ -55,13 +55,10 @@ export const GetFeaturingArtistApi = (id: any, setfeaturingArtistGet:any) =>
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
             enabled: id ? true : false,
-            onSuccess: (res) => {
-                setfeaturingArtistGet(res.data.data);
-            },
         }
     );
 
-export const GetPrimaryArtistApi = (id: any, setprimaryArtistGet: any) =>
+export const GetPrimaryArtistApi = (id: any) =>
     useQuery(
         [`GetPrimaryArtist`],
         async () => await api.get(`createRelease/primaryArtistGet/${id}`),
@@ -71,7 +68,6 @@ export const GetPrimaryArtistApi = (id: any, setprimaryArtistGet: any) =>
             refetchOnWindowFocus: false,
             enabled: id ? true : false,
             onSuccess: (res) => {
-                setprimaryArtistGet(res.data.data);
             },
         }
     );

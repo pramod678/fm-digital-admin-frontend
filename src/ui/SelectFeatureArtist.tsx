@@ -1,17 +1,20 @@
 import { Controller } from 'react-hook-form';
 import * as React from 'react';
+import { GetFeaturingArtistApi } from '../api/releaseInfo';
 
 
 
 interface SelectProps {
     control: any;
     name: string;
-    options: any;
     errors: any;
-    required: boolean
+    required: boolean;
+    id:any
 }
 
-const SelectFeatureArtist: React.FC<SelectProps> = ({ control, name, options, errors, required }) => {
+const SelectFeatureArtist: React.FC<SelectProps> = ({ control, name, errors, required, id }) => {
+
+    const { data: GetFeaturingArtist } = GetFeaturingArtistApi(id)
     return (
         <>
             <Controller
@@ -30,7 +33,7 @@ const SelectFeatureArtist: React.FC<SelectProps> = ({ control, name, options, er
                         <option value="" >
                             Select a Option
                         </option>
-                        {options?.map((option: any) => (
+                        {GetFeaturingArtist?.data?.data?.map((option: any) => (
                             <option key={option._id} className="text-black" value={option.FeaturingArtist}>
                                 {option.FeaturingArtist}
                             </option>

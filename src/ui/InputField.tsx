@@ -9,7 +9,7 @@ interface InputFieldProps {
     register: UseFormRegister<any>; // specify the correct type for your form values
     errors?: any; // specify the correct type based on your validation schema
     requiredMessage?: string;
-    min?:any
+    min?: any
 }
 
 const InputField: FC<InputFieldProps> = ({

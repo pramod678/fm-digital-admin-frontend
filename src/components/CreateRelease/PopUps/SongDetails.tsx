@@ -14,12 +14,14 @@ import SelectFeatureArtist from "../../../ui/SelectFeatureArtist";
 import SelectGenre from "../../../ui/SelectGenre";
 import SelectLanguage from "../../../ui/SelectLanguage";
 import SelectPriceTier from "../../../ui/SelectPriceTier";
+import SongsUpload from "../../../ui/SongsUpload";
 
 
-export default function SongDetails({ userData }: { userData :any}) {
+export default function SongDetails({ userData, append }: { userData: any, append: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [featuringArtistGet, setfeaturingArtistGet] = React.useState([]);
+    const [file, setFile] = useState(null);
     const {
         register,
         handleSubmit,
@@ -30,10 +32,10 @@ export default function SongDetails({ userData }: { userData :any}) {
     } = useForm<SongDetailsDto>()
 
 
-    const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id, setprimaryArtistGet)
-    const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id, setfeaturingArtistGet)
+    const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id)
+    const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id)
     const { data: genre } = GetGenreApi()
-    
+
     const Trackoptions = [
         { value: "Original", label: "Original" },
         { value: "Karaoke", label: "Karaoke" },
@@ -51,7 +53,7 @@ export default function SongDetails({ userData }: { userData :any}) {
         { value: "Digital 45 ( $1.49 )", label: "Digital 45 ( $1.49 )" },
     ];
 
-    const ExplicitVersion= [
+    const ExplicitVersion = [
         { value: "Yes", label: "Yes" },
         { value: "No", label: "No" },
         { value: "Cleaned", label: "Cleaned" },
@@ -60,16 +62,33 @@ export default function SongDetails({ userData }: { userData :any}) {
 
     //featuringArtisttPost Api Call
     const { mutate: PrimaryArtisttPost, isLoading: isLoadingPrimaryArtisttPost } = PrimaryArtisttPostApi(setIsOpen)
-    const onSubmit = handleSubmit(async (data: any) => {
+    const onSubmit = (async (data: any, e: any) => {
+        e.preventDefault()
         const newData: any = { ...data };
-        // newData.users_id = Number(userData?.users_id)
-        PrimaryArtisttPost(newData)
+        newData.AudioDocument = file
+        append(newData);
+        reset()
+        setIsOpen(false)
+        setFile(null)
     });
+
+    // const onSubmit = handleSubmit(async (data: any) => {
+    //     const newData: any = { ...data };
+    //     // newData.users_id = Number(userData?.users_id)
+    //     // PrimaryArtisttPost(newData)
+
+    // });
 
 
     return (
         <>
-            <button type="button" className="bg-black text-white px-2 py-2 " onClick={() => setIsOpen(true)}>Add Song Details</button>
+            {
+                !isOpen &&
+                <div className="flex justify-center items-center">
+                    <button type="button" className="bg-black text-white px-2 py-2 " onClick={() => setIsOpen(true)}>Add Song Details</button>
+                </div>
+            }
+
 
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
@@ -103,10 +122,11 @@ export default function SongDetails({ userData }: { userData :any}) {
                                 >
                                     Add songs Details
                                 </Dialog.Title>
-                                <form onSubmit={(e: any) => {
-                                    onSubmit(e);
-                                }}>
+                                <form >
                                     <div className="mt-2">
+
+                                        <SongsUpload file={file} setFile={setFile} />
+
                                         <div className="w-full mb-2">
                                             <Label text={"Track Version"} htmlFor={""} required={true} />
                                             <div className="flex space-y-2 gap-4">
@@ -170,7 +190,7 @@ export default function SongDetails({ userData }: { userData :any}) {
                                         <div className="w-full mb-2">
                                             <Label text="Primary Artist" htmlFor="grid-Primaryartist" required={true} />
                                             <div className="flex gap-2 items-center">
-                                                <SelectPrimaryArtist control={control} name="Primaryartist" options={primaryArtistGet} errors={errors} required={true} />
+                                                <SelectPrimaryArtist control={control} name="Primaryartist" errors={errors} required={true} id={userData?.users_id} />
                                                 <PrimaryArtist userData={userData} />
                                             </div>
                                         </div>
@@ -178,7 +198,7 @@ export default function SongDetails({ userData }: { userData :any}) {
                                         <div className="w-full mb-2">
                                             <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={true} />
                                             <div className="flex gap-2 items-center">
-                                                <SelectFeatureArtist control={control} name="FeaturingArtist" options={featuringArtistGet} errors={errors} required={true} />
+                                                <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={true} id={userData?.users_id} />
                                                 <FeatureArtist userData={userData} />
                                             </div>
                                         </div>
@@ -229,7 +249,7 @@ export default function SongDetails({ userData }: { userData :any}) {
                                                 errors={errors}
                                                 requiredMessage="Publisher  is required."
                                             />
-                                        </div>  
+                                        </div>
 
                                         <div className="w-full mb-2">
                                             <Label text="ISRC" htmlFor="grid-ISRC" />
@@ -241,8 +261,8 @@ export default function SongDetails({ userData }: { userData :any}) {
                                                 errors={errors}
                                                 requiredMessage="ISRC  is required."
                                             />
-                                        </div>  
- 
+                                        </div>
+
 
                                         <div className="w-full mb-2">
                                             <Label text="Genre" htmlFor="grid-Genre" required={true} />
@@ -264,7 +284,7 @@ export default function SongDetails({ userData }: { userData :any}) {
                                         <div className="w-full mb-2">
                                             <Label text="Price Tier" htmlFor="grid-ISRC" />
                                             <SelectPriceTier control={control} name={""} options={PriceOptions} errors={errors} required={false} />
-                                        </div> 
+                                        </div>
 
                                         <div className="w-full mb-2">
                                             <Label text={"Explicit Version"} htmlFor={""} required={true} />
@@ -304,7 +324,7 @@ export default function SongDetails({ userData }: { userData :any}) {
                                                 errors={errors}
                                                 requiredMessage="Lyrics  is required."
                                             />
-                                        </div>  
+                                        </div>
 
                                         <div className="w-full mb-2">
                                             <Label text="Caller Tune Timing" htmlFor="grid-CallerTuneTiming" />
@@ -316,7 +336,7 @@ export default function SongDetails({ userData }: { userData :any}) {
                                                 errors={errors}
                                                 requiredMessage="CallerTuneTiming  is required."
                                             />
-                                        </div>  
+                                        </div>
 
                                         <div className="w-full mb-2">
                                             <Label text="Distribute Music video" htmlFor="grid-DistributeMusicvideo" />
@@ -328,7 +348,7 @@ export default function SongDetails({ userData }: { userData :any}) {
                                                 errors={errors}
                                                 requiredMessage="DistributeMusicvideo  is required."
                                             />
-                                        </div>  
+                                        </div>
 
                                     </div>
 
@@ -342,10 +362,10 @@ export default function SongDetails({ userData }: { userData :any}) {
                                         </button>
                                         <button
                                             type="submit"
-                                            disabled={isLoadingPrimaryArtisttPost}
+                                            onClick={handleSubmit(onSubmit)}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            {isLoadingPrimaryArtisttPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
+                                            Submit
                                         </button>
                                     </div>
 
