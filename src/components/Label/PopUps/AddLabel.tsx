@@ -55,7 +55,7 @@ export default function AddLabel({ userData }: { userData: any }) {
     return (
         <>
             <button
-                className="flex items-center justify-center ml-2 py-1 px-1 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50"
+                className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
                 onClick={() => setIsOpen(true)}
             >
                 <AiOutlinePlus size={size} />

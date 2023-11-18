@@ -42,7 +42,7 @@ export default function Index() {
     const [records, setRecords] = React.useState(youtubeClaimsGetAll?.data?.data || []);
     const [currentPage, setCurrentPage] = React.useState(1);
     const [searchTerm, setSearchTerm] = React.useState('');
-    const PAGE_SIZE = 2; // Number of items per page
+    const PAGE_SIZE = 10; // Number of items per page
 
     React.useEffect(() => {
         getUserData({ token: token });

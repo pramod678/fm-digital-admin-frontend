@@ -60,7 +60,7 @@ const FileUpload = ({ file, setFile }: { file: any, setFile: any }) => {
                         </>
                     ) : (
                         <>
-                            {file.type.startsWith('image/') ? (
+                            {file?.type?.startsWith('image/') ? (
                                 <img
                                     src={URL.createObjectURL(file)}
                                     alt="Preview"

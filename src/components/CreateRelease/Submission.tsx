@@ -60,48 +60,50 @@ export default function Submission() {
 
             </div>
 
-            <p className="text-left font-semibold mt-4 text-lg ml-4">Release Information</p>
-            <div className="flex flex-wrap">
-                <div className="flex flex-col w-full sm:w-1/2 p-4">
-                    <div className="flex item-center justify-between sm:w-1/2">
-                        <p className="font-semibold sm:text-base">Title</p>
-                        <p className=" text-sm">{getSubmissions?.data?.data?.Title}</p>
+            <p className="text-left font-semibold mt-4 text-lg ml-8">Release Information</p>
+            <div className="flex flex-col sm:flex-row items-center justify-between ml-8">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-8 w-full sm:w-1/2">
+                    <div className="flex flex-col w-full sm:mr-4">
+                        <div className="flex items-center justify-between">
+                            <p className="font-semibold  sm:text-md">Title</p>
+                            <p className="text-sm">{getSubmissions?.data?.data?.Title}</p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <p className="font-semibold  sm:text-md">Artist</p>
+                            <p className="text-sm">{getSubmissions?.data?.data?.Artist}</p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <p className="font-semibold  sm:text-md">Label</p>
+                            <p className="text-sm">{getSubmissions?.data?.data?.Label}</p>
+                        </div>
                     </div>
-                    <div className="flex item-center justify-between sm:w-1/2">
-                        <p className="font-semibold sm:text-base text-sm">Artist</p>
-                        <p className=" text-sm">{getSubmissions?.data?.data?.Artist}</p>
-                    </div>
-                    <div className="flex item-center justify-between sm:w-1/2">
-                        <p className="font-semibold sm:text-base text-sm">Label</p>
-                        <p className=" text-sm">{getSubmissions?.data?.data?.Label}</p>
+                    <div className="flex flex-col w-full sm:ml-4">
+                        <div className="flex items-center justify-between">
+                            <p className="font-semibold  sm:text-md">Genre</p>
+                            <p className="text-sm">{getSubmissions?.data?.data?.Genre}</p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <p className="font-semibold  sm:text-md">Subgenre</p>
+                            <p className="text-sm">{getSubmissions?.data?.data?.SubGenre}</p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <p className="font-semibold  sm:text-md"># of songs</p>
+                            <p className="text-sm">{getSubmissions?.data?.data?.Songs}</p>
+                        </div>
                     </div>
                 </div>
-                <div className="flex flex-col w-full sm:w-1/2 p-4">
-                    <div className="flex item-center justify-between sm:w-1/2">
-                        <p className="font-semibold sm:text-base text-sm">Genre</p>
-                        <p className="  text-sm">{getSubmissions?.data?.data?.Genre}</p>
-                    </div>
-                    <div className="flex item-center justify-between sm:w-1/2">
-                        <p className="font-semibold sm:text-base text-sm">Subgenre</p>
-                        <p className=" text-sm">{getSubmissions?.data?.data?.SubGenre}</p>
-                    </div>
-                    <div className="flex item-center justify-between sm:w-1/2">
-                        <p className="font-semibold sm:text-base text-sm"># of songs</p>
-                        <p className=" text-sm">{getSubmissions?.data?.data?.Songs}</p>
-                    </div>
+                <div className="w-full sm:w-1/2 flex justify-center mt-8 sm:mt-0">
+                    <img
+                        className="w-32 h-32 object-cover rounded"
+                        src={`https://fmdigitalofficial.in/${getSubmissions?.data?.data?.ImageDocument}`}
+                        alt="Art Work"
+                    />
                 </div>
-                <img
-                    className="w-full sm:w-auto"
-                    style={{ height: 146, width: 145 }}
-                    src={`https://fmdigitalofficial.in/${getSubmissions?.data?.data?.ImageDocument}`}
-                    alt="Art Work"
-                />
-
-
             </div>
 
 
-            <div className="flex flex-wrap items-center justify-center gap-2">
+
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-24">
                 <input
                     type="checkbox"
                     onChange={(event) => setUserIagery(event.target.checked)}

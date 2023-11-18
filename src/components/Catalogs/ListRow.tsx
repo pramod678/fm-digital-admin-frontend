@@ -6,7 +6,7 @@ import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { BiCheck } from "react-icons/bi";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import GetDate from "../../utility/GetDate";
-
+import { MdBookmarks, MdDelete } from "react-icons/md";
 
 export default function ListRow({ catalog, index }: { catalog: any, index: any }) {
     const size = useResponsiveIconSize();
@@ -14,8 +14,8 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
         switch (status) {
             case 0:
                 return (
-                    <p style={{ color: "brown" }}>
-                        <RiDraftFill size={size} />
+                    <p style={{ color: "black" }}>
+                        <MdBookmarks size={size} />
                     </p>
                 );
             case 1:
@@ -46,6 +46,47 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 return <></>;
         }
     };
+
+    const statusButton = (status: any) => {
+        switch (status) {
+            case 0:
+                return (
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-red-500 text-xs text-white text-base rounded hover:bg-red-600 focus:outline-none flex items-center"
+                    >
+                        <span className="mr-2 text-white font-semibold">Delete</span>
+                    </button>  
+                );
+            case 1:
+                return (
+                   '--'
+                );
+            case 2:
+                return (
+                    <p style={{ color: "#add8e6" }}>
+                        <FcCancel size={size} />
+                    </p>
+                );
+            case 3:
+                return (
+                    <p style={{ color: "#0000cd" }}>
+                        <VscGitPullRequestNewChanges size={size} />
+                    </p>
+                );
+            case 4:
+                return (
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-cyan-500 text-xs text-white text-base rounded hover:bg-cyan-600 focus:outline-none flex items-center"
+                    >
+                        <span className="mr-2 text-white font-semibold">Stores</span>
+                    </button>
+                );
+            default:
+                return <></>;
+        }
+    };
     return (
         <>
             <tr>
@@ -61,7 +102,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                     {catalog.ImageDocument ? (
                         <div className="w-full flex justify-center">
                             <img
-                                src="./images/12thFail.jpeg"
+                                src={`https://fmdigitalofficial.in/${catalog.ImageDocument}`}
                                 alt="Catalog"
                                 className="w-8 h-8 object-cover rounded"
                             />
@@ -89,7 +130,8 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                     {catalog.ReleaseDate ? GetDate(catalog.ReleaseDate) : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {catalog.actions || '--'}
+                    {/* {catalog.actions || '--'} */}
+                    {statusButton(catalog.Status)}
                 </td>
             </tr>
         </>

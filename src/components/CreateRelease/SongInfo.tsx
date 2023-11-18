@@ -1,14 +1,12 @@
 import * as React from "react";
 import SongDetails from "./PopUps/SongDetails";
-import { MdClear } from "react-icons/md"
-import { AiOutlinePlus } from "react-icons/ai";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { UserDataApi } from "../../api/releaseInfo";
-import { ImCross } from "react-icons/im";
-import SongsUpload from "../../ui/SongsUpload";
-import { useFieldArray, useForm } from "react-hook-form";
-import { SongDetailsDto } from "../../types/ReleaseInfo";
+import { GetReleaseInfoApi, GetSongsApi, UserDataApi } from "../../api/releaseInfo";
+import { RiEditLine } from "react-icons/ri";
+import { MdDelete } from "react-icons/md";
+import EditSongDetails from "./PopUps/EditSongDetails";
+import cogoToast from "cogo-toast";
 
 
 export default function SongInfo() {
@@ -18,27 +16,16 @@ export default function SongInfo() {
     const [userData, setUserData] = React.useState<any>("");
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
-    const { control, register, handleSubmit, getValues } = useForm();
-
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+    const { data: getReleaseInfo } = GetReleaseInfoApi(userData?.users_id)
+    const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
+
+    console.log(GetSongs?.data?.data)
 
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
-
-    const { fields, append, remove, } = useFieldArray({
-        control,
-        name: "songs",
-    });
-
-    const handleRemove = (i: number) => {
-        remove(i)
-        // setedit(true)
-        // seteditIndex(i)
-    }
-
-    console.log(fields, "fields")
 
     const tabs = [
         { name: 'Release Info', route: 'ReleseInfo' },
@@ -46,6 +33,18 @@ export default function SongInfo() {
         { name: 'Platform', route: 'Platform' },
         { name: 'Submission', route: 'Submission' },
     ]
+
+    const handleCheckSongs = ()=>{
+        if (getReleaseInfo?.data?.data?.ReleaseType == "Single" && GetSongs?.data?.data?.length == 0){
+            cogoToast.info("please upload atleast one song")
+            return 
+        }
+        if ((getReleaseInfo?.data?.data?.ReleaseType == "EP" || getReleaseInfo?.data?.data?.ReleaseType == "Album" || getReleaseInfo?.data?.data?.ReleaseType == "Compilation") && GetSongs?.data?.data?.length < 2) {
+            cogoToast.info("please upload atleast two songs")
+            return 
+        }
+        navigate('/Platform');
+    }
 
 
     return (
@@ -64,43 +63,47 @@ export default function SongInfo() {
                         </Link>
                     ))}
                 </div>
-
             </div>
+
+            <div className="flex flex-col items-center justify-center w-full mt-4">
+                {
+                    GetSongs?.data?.data?.map((song: any, i: any) => {
+                        return (
+                            <div key={i} className="flex items-center w-[90%] md:w-[60%] justify-between bg-gray-200 p-2 mb-2 rounded-md">
+                                <div className="flex items-center w-[80%] justify-between">
+                                    <div className="flex gap-2 md:gap-4 items-center mr-2 md:mr-0">
+                                        <p className="font-semibold">{i + 1}.</p>
+                                        <p className="font-semibold text-lg">{song?.Title}</p>
+                                    </div>
+                                        
+                                    <audio controls className="outline-none h-8 w-full md:w-64">
+                                        <source src={`https://fmdigitalofficial.in/${song?.AudioDocument}`} />
+                                        Your browser does not support the audio tag.
+                                    </audio>
+                                </div>
+                                <div className="flex items-center gap-2 md:gap-4   md:w-[20%] justify-center">
+                                    <EditSongDetails userData={userData} getReleaseInfo={getReleaseInfo} song={song} />
+                                    <button className="text-red-500 hover:text-red-700 focus:outline-none">
+                                        <MdDelete size={size} />
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+
 
             <p className="text-center font-semibold mt-4">Upload Assets</p>
             <div className="p-4 space-y-4">
 
-                {fields?.length === 0 ? (
-                    <p className="text-gray-600 text-center text-sm font-semibold">
-                        You haven't selected any songs yet
-                    </p>
-                ) : (
-                    <>
-                            <div className="flex flex-col items-center">
-                                {fields?.map((field: any, index) => (
-                                    <div key={index} className="flex items-center justify-between p-2 rounded-md w-full max-w-md">
-                                        <div className="flex items-center space-x-4 w-full">
-                                            <span className="text-neutral-800 mr-4">{index + 1}.</span>
-                                            <p className="text-neutral-800 text-base sm:text-lg font-semibold">{field.Title}</p>
-                                            <audio src={URL.createObjectURL(field.AudioDocument)} controls className="w-42 h-8 flex-grow"></audio>
-                                        </div>
-                                        <button onClick={() => handleRemove(index)} className="text-neutral-700 hover:text-neutral-900 ml-4">
-                                            <ImCross size={size} />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-
-
-                    </>
-
-                )}
-
-                <SongDetails userData={userData} append={append} />
-
-                {/* <button onClick={}></button> */}
-
+                <SongDetails userData={userData} getReleaseInfo={getReleaseInfo} GetSongs={GetSongs} />
             </div>
+
+            <button onClick={handleCheckSongs} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded absolute bottom-4 right-4">
+                Save and Next
+            </button>
+
 
 
         </>

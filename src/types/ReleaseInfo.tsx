@@ -44,6 +44,7 @@ export type SongDetailsDto = {
     Publisher: string
     ISRC: string
     Genre: string
+    PriceTier:string
     Subgenre: string
     ExplicitVersion: string
     TrackTitleLanguage: string

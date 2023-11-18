@@ -15,13 +15,16 @@ import SelectGenre from "../../../ui/SelectGenre";
 import SelectLanguage from "../../../ui/SelectLanguage";
 import SelectPriceTier from "../../../ui/SelectPriceTier";
 import SongsUpload from "../../../ui/SongsUpload";
+import { RiEditLine } from "react-icons/ri";
+import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 
 
-export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { userData: any, getReleaseInfo: any, GetSongs:any }) {
+export default function EditSongDetails({ userData, getReleaseInfo, song }: { userData: any, getReleaseInfo: any, song: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [featuringArtistGet, setfeaturingArtistGet] = React.useState([]);
     const [file, setFile] = useState(null);
+    const size = useResponsiveIconSize();
     const {
         register,
         handleSubmit,
@@ -29,8 +32,14 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
         reset,
         control,
         formState: { errors }
-    } = useForm<SongDetailsDto>()
+    } = useForm<SongDetailsDto>({ defaultValues: song })
 
+    console.log(`https://fmdigitalofficial.in/${song?.AudioDocument}`)
+
+
+
+    React.useEffect(() => {
+    }, []);
 
     const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id)
     const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id)
@@ -58,16 +67,13 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
         { value: "No", label: "No" },
         { value: "Cleaned", label: "Cleaned" },
     ]
-    console.log(getReleaseInfo?.data?.data?.ReleaseType)
 
-
-
-    //featuringArtisttPost Api Call
+    //edit song Api Call
     const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi(setIsOpen)
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        let formData:any = new FormData();
+        let formData: any = new FormData();
         formData.append("AudioDocument", file);
         formData.append("Trackversion", newData.Trackversion);
         formData.append("Instrumental", newData.Instrumental);
@@ -93,7 +99,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
         formData.append("users_id", parseInt(userData?.users_id));
         // @ts-ignore
         formData.append("releseInfo_id", parseInt(getReleaseInfo?.data?.data?.releseInfo_id));
-        
+
 
         SongsPost(formData)
 
@@ -102,12 +108,10 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
 
     return (
         <>
-            {
-                !isOpen && (getReleaseInfo?.data?.data?.ReleaseType !== 'Single' || GetSongs?.data?.data?.length !== 1) &&
-                <div className="flex justify-center items-center">
-                    <button type="button" className="bg-black text-white px-2 py-2 " onClick={() => setIsOpen(true)}>Add Song Details</button>
-                </div>
-            }
+
+            <button type="button" className="text-blue-500 hover:text-blue-700 focus:outline-none" onClick={() => setIsOpen(true)}>
+                <RiEditLine size={size} />
+            </button>
 
 
             <Transition appear show={isOpen} as={Fragment}>
@@ -293,7 +297,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
                                             <Label text="Sub Genre" htmlFor="grid-SubGenre" required={false} />
                                             <InputField
                                                 type="text"
-                                                name="Subgenre"
+                                                name="SubGenre"
                                                 placeholder="Enter SubGenre"
                                                 register={register}
                                                 errors={errors}

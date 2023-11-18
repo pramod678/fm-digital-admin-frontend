@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
+import { GetReleaseInfoApi, GetSongsApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
 import { Link, useNavigate } from "react-router-dom";
 import { PlatformPostApi } from "../../api/platform";
 
@@ -11,6 +11,11 @@ export default function Platform() {
     const navigate = useNavigate()
     const { mutate: PlatformPost, isLoading: isLoadingPlatformPost } = PlatformPostApi()
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+
+
+    const { data: getReleaseInfo } = GetReleaseInfoApi(userData?.users_id)
+    const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
+
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -125,47 +130,55 @@ export default function Platform() {
                     }
                 </div>
             </div>
+
             <div className="p-10">
                 <div className="flex items-center gap-4">
                     <h3 className="text-lg sm:text-2xl font-bold">CRBT(3+)</h3>
-                    <input type="checkbox" checked className="mr-2 w-6 h-6" />
+                    <input
+                        type="checkbox"
+                        checked={GetSongs?.data?.data[0]?.CallerTuneTiming ? true : false}
+                        className="mr-2 w-6 h-6"
+                        readOnly
+                    />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-                    {
-                        data1?.map((item: any, index) => {
-                            return (
-                                <div key={index} className="flex items-center mb-4">
-                                    <label className="cursor-pointer">
-                                        <input type="checkbox" checked className="mr-2" />
-                                        {item.name}
-                                    </label>
-                                </div>
-                            )
-                        })
-                    }
+                    {data1?.map((item: any, index) => {
+                        return (
+                            <div key={index} className="flex items-center mb-4">
+                                <label className="cursor-pointer">
+                                    <input type="checkbox" checked={GetSongs?.data?.data[0]?.CallerTuneTiming ? true : false} className="mr-2" />
+                                    {item.name}
+                                </label>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
             <div className="p-10">
                 <div className="flex items-center gap-4">
                     <h3 className="text-lg sm:text-2xl font-bold">Video Platform(3+)</h3>
-                    <input type="checkbox" checked className="mr-2 w-6 h-6" />
+                    <input
+                        type="checkbox"
+                        checked={GetSongs?.data?.data[0]?.DistributeMusicvideo ? true : false}
+                        className="mr-2 w-6 h-6"
+                        readOnly
+                    />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-                    {
-                        data2?.map((item: any, index) => {
-                            return (
-                                <div key={index} className="flex items-center mb-4">
-                                    <label className="cursor-pointer">
-                                        <input type="checkbox" checked className="mr-2" />
-                                        {item.name}
-                                    </label>
-                                </div>
-                            )
-                        })
-                    }
+                    {data2?.map((item: any, index) => {
+                        return (
+                            <div key={index} className="flex items-center mb-4">
+                                <label className="cursor-pointer">
+                                    <input type="checkbox" checked={GetSongs?.data?.data[0]?.DistributeMusicvideo ? true : false} className="mr-2" />
+                                    {item.name}
+                                </label>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
+
 
             <div className="flex justify-end items-center p-4">
                 <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

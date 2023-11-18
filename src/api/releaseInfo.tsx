@@ -13,11 +13,11 @@ export const GetGenreApi = () =>
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
-            keepPreviousData:true,
+            keepPreviousData: true,
         }
     );
 
-export const FeaturingArtisttPostApi = (setIsOpen:any) => {
+export const FeaturingArtisttPostApi = (setIsOpen: any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/featuringArtisttPost", data), {
         onSuccess: (res) => {
@@ -45,6 +45,20 @@ export const PrimaryArtisttPostApi = (setIsOpen: any) => {
     })
 }
 
+
+export const SongsPostApi = (setIsOpen: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.post("createRelease/songsInfoPost", data), {
+        onSuccess: (res) => {
+            cogoToast.success("Song Added");
+            // queryClient.refetchQueries([`GetPrimaryArtist`]);
+            setIsOpen(false)
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
 
 export const GetFeaturingArtistApi = (id: any) =>
     useQuery(
@@ -74,7 +88,7 @@ export const GetPrimaryArtistApi = (id: any) =>
 
 
 export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
-    return useMutation((data:any) => api.post("user/userData", data), {
+    return useMutation((data: any) => api.post("user/userData", data), {
         onSuccess: (res) => {
             setUserData(res?.data?.data)
             if (res.data?.data === "token expired") {
@@ -89,11 +103,12 @@ export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
     })
 }
 
-export const ReleaseInfoPostApi = () => {
+export const ReleaseInfoPostApi = (navigate: NavigateFunction) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/releseInfoPost", data), {
         onSuccess: (res) => {
             cogoToast.success("Created Successfully");
+            navigate('/Songsinfo');
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
@@ -125,6 +140,18 @@ export const GetSubmissionsApi = (id: any) =>
         }
     );
 
+export const GetReleaseInfoApi = (id: any) =>
+    useQuery(
+        [`GetReleaseInfo`],
+        async () => await api.get(`createRelease/releseInfoGetOne/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+        }
+    );
+
 export const SubmissionPostApi = () => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/submissionPost", data), {
@@ -136,3 +163,15 @@ export const SubmissionPostApi = () => {
         }
     })
 }
+
+export const GetSongsApi = (id: any) =>
+    useQuery(
+        [` GetSongs`],
+        async () => await api.get(`createRelease/songsInfoGetEdit/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+        }
+    );

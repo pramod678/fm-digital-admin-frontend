@@ -32,7 +32,7 @@ export default function ReleaseInfo() {
         control,
         formState: { errors }
     } = useForm<ReleaseInfoDto>()
-    const [file, setFile] = React.useState<File>(null);
+    const [file, setFile] = React.useState(null);
     const token = localStorage.getItem("token")
 
     //Api calls
@@ -40,7 +40,7 @@ export default function ReleaseInfo() {
     const { data: genre } = GetGenreApi()
     const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id)
     const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id)
-    const { mutate: ReleaseInfoPost, isLoading: isLoadingReleaseInfoPost } = ReleaseInfoPostApi()
+    const { mutate: ReleaseInfoPost, isLoading: isLoadingReleaseInfoPost } = ReleaseInfoPostApi(navigate)
 
     const tabs = [
         { name: 'Release Info', route: 'ReleseInfo' },
@@ -96,13 +96,25 @@ export default function ReleaseInfo() {
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        newData.ImageDocument = file;
-        newData.ReleaseType = selectedItems;
-        newData.Status = 0;
-        newData.users_id = parseInt(userData.users_id);
-        newData.releseInfo_id = id;
+        let formData:any = new FormData();
+        formData.append("ImageDocument", file);
+        formData.append("ReleaseType", selectedItems);
+        formData.append("ReleaseTitle", newData.ReleaseTitle);
+        formData.append("PrimaryArtist", newData.PrimaryArtist);
+        formData.append("FeaturingArtist", newData.FeaturingArtist);
+        formData.append("Genre", newData.Genre);
+        formData.append("SubGenre", newData.SubGenre);
+        formData.append("LabelName", newData.LabelName);
+        formData.append("ReleaseDate", newData.ReleaseDate);
+        formData.append("PLine", newData.PLine);
+        formData.append("CLine", newData.CLine);
+        formData.append("UPCEAN", newData.UPCEAN);
+        // @ts-ignore
+        formData.append("users_id", parseInt(userData.users_id));
+        // @ts-ignore
+        formData.append("Status", parseInt(0));
         console.log(newData.ImageDocument, "newData.ImageDocument")
-        ReleaseInfoPost(newData)
+        ReleaseInfoPost(formData)
     }
     )
 
@@ -150,7 +162,7 @@ export default function ReleaseInfo() {
                                     {items.map((item, index) => (
                                         <p
                                             key={index}
-                                            className={`text-xs sm:text-sm p-2 font-semibold border-2 ${selectedItems === item ? 'border-blue-500' : 'border-gray-500'} rounded-md cursor-pointer`}
+                                            className={`text-xs sm:text-sm p-2 font-semibold border-2 ${selectedItems === item ? 'bg-neutral-800 text-white' : 'border-gray-500'} rounded-md cursor-pointer`}
                                             onClick={() => handleClick(item)}
                                         >
                                             {item}
@@ -220,9 +232,9 @@ export default function ReleaseInfo() {
                         </div>
                         <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
                             <div className="w-full mb-2">
-                                <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={true} />
+                                <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={false} />
                                 <div className="flex gap-2 items-center">
-                                    <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={true} id={userData?.users_id} />
+                                    <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={false} id={userData?.users_id} />
                                     <FeatureArtist userData={userData} />
                                 </div>
                             </div>
@@ -246,27 +258,25 @@ export default function ReleaseInfo() {
                             </div>
 
                             <div className="w-full mb-2">
-                                <Label text="UPC/EAN" htmlFor="grid-UPC/EAN" required={true} />
+                                <Label text="UPC/EAN" htmlFor="grid-UPC/EAN" required={false} />
                                 <InputField
                                     type="number"
-                                    name="UPC/EAN"
+                                    name="UPCEAN"
                                     placeholder="Enter UPC/EAN"
                                     register={register}
                                     errors={errors}
-                                    requiredMessage="UPC/EAN is required."
                                 />
                             </div>
                         </div>
                         <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
                             <div className="w-full mb-2">
-                                <Label text="Sub Genre" htmlFor="grid-SubGenre" required={true} />
+                                <Label text="Sub Genre" htmlFor="grid-SubGenre" required={false} />
                                 <InputField
                                     type="text"
                                     name="SubGenre"
                                     placeholder="Enter SubGenre"
                                     register={register}
                                     errors={errors}
-                                    requiredMessage="SubGenre is required."
                                 />
                             </div>
 
