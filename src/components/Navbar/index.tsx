@@ -108,7 +108,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                         </div>
                     </div>
                 </div>
-                <div className={`flex flex-col gap-1 transition-all ease-in-out duration-500 ${isOpen ? 'block' : 'hidden'} block sm:hidden justify-center items-center z-10`}>
+                <div className={`flex flex-col gap-1 transition-all ease-in-out duration-100 ${isOpen ? 'block' : 'hidden'} block sm:hidden justify-center items-center z-10`}>
                     <div className=" flex flex-col">
                         {
                             routes.map((link, index) => {

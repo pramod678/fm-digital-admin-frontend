@@ -4,17 +4,18 @@ import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
 import { Controller, useForm } from "react-hook-form";
 import { ReleaseInfoDto } from "../../types/ReleaseInfo";
-import { GetFeaturingArtistApi, GetGenreApi, GetPrimaryArtistApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
-import FeatureArtist from "./PopUps/FeatureArtist";
+import {  EditInfoReleaseApi, GetFeaturingArtistApi, GetGenreApi, GetPrimaryArtistApi, GetReleaseInfoApi, GetReleaseInfoByIdApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
 import SelectGenre from "../../ui/SelectGenre";
 import SelectFeatureArtist from "../../ui/SelectFeatureArtist";
-import PrimaryArtist from "./PopUps/PrimaryArtist";
 import SelectPrimaryArtist from "../../ui/SelectPrimaryArtist";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FileUpload from "../../ui/ImageUpload";
+import PrimaryArtist from "../CreateRelease/PopUps/PrimaryArtist";
+import FeatureArtist from "../CreateRelease/PopUps/FeatureArtist";
+import { BounceLoader } from "react-spinners";
 
 
-export default function ReleaseInfo() {
+export default function EditReleaseInfo() {
 
     const { id } = useParams();
     const [userData, setUserData] = React.useState<any>("");
@@ -22,25 +23,49 @@ export default function ReleaseInfo() {
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [selectedItems, setSelectedItems] = React.useState("");
     const items = ['EP', 'Single', 'Album', 'Compilation'];
-
     const navigate = useNavigate()
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        control,
-        formState: { errors }
-    } = useForm<ReleaseInfoDto>()
-    const [file, setFile] = React.useState(null);
-    const token = localStorage.getItem("token")
 
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: genre } = GetGenreApi()
     const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id)
     const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id)
-    const { mutate: ReleaseInfoPost, isLoading: isLoadingReleaseInfoPost } = ReleaseInfoPostApi(navigate)
+    const { mutate: ReleaseInfoEdit, isLoading: isLoadingReleaseInfoEdit } = EditInfoReleaseApi(navigate, id)
+    const { data: getReleaseInfo, isLoading, isFetching } = GetReleaseInfoByIdApi(id)
+    const [preview, setPreview] = React.useState(true)
+
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        reset,
+        setValue,
+        control,
+        formState: { errors }
+    } = useForm<ReleaseInfoDto>({ defaultValues: getReleaseInfo?.data?.data })
+
+
+    React.useEffect(()=>{
+        if(!isLoading){
+            // @ts-ignore
+            setValue("ReleaseType", setSelectedItems(getReleaseInfo?.data?.data?.ReleaseType))
+            setValue("ReleaseTitle", getReleaseInfo?.data?.data?.ReleaseTitle)
+            setValue("PrimaryArtist", getReleaseInfo?.data?.data?.PrimaryArtist)
+            setValue("FeaturingArtist", getReleaseInfo?.data?.data?.FeaturingArtist)
+            setValue("Genre", getReleaseInfo?.data?.data?.Genre)
+            setValue("SubGenre", getReleaseInfo?.data?.data?.SubGenre)
+            setValue("LabelName", getReleaseInfo?.data?.data?.LabelName)
+            setValue("ReleaseDate", getReleaseInfo?.data?.data?.ReleaseDate)
+            setValue("PLine", getReleaseInfo?.data?.data?.PLine)
+            setValue("CLine", getReleaseInfo?.data?.data?.CLine)
+            setValue("UPCEAN", getReleaseInfo?.data?.data?.UPCEAN)
+        }
+    }, [isLoading])
+
+
+    const [file, setFile] = React.useState(null);
+    const token = localStorage.getItem("token")
 
     const tabs = [
         { name: 'Release Info', route: 'ReleseInfo' },
@@ -67,7 +92,7 @@ export default function ReleaseInfo() {
     }
     if (isPastTargetDate()) {
         // Perform your action or hide the content here
-        let month:any = targetDate.getMonth() + 1;
+        let month: any = targetDate.getMonth() + 1;
         let year = targetDate.getUTCFullYear() - 0;
         let tdate: any = targetDate.getDate();
         if (month < 10) {
@@ -92,11 +117,12 @@ export default function ReleaseInfo() {
         var maxDate1 = year + "-" + month + "-" + tdate;
 
     }
-    
+
+    console.log("selectedItems", selectedItems)
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        let formData:any = new FormData();
+        let formData: any = new FormData();
         formData.append("ImageDocument", file);
         formData.append("ReleaseType", selectedItems);
         formData.append("ReleaseTitle", newData.ReleaseTitle);
@@ -114,7 +140,7 @@ export default function ReleaseInfo() {
         // @ts-ignore
         formData.append("Status", parseInt(0));
         console.log(newData.ImageDocument, "newData.ImageDocument")
-        ReleaseInfoPost(formData)
+        ReleaseInfoEdit(formData)
     }
     )
 
@@ -122,17 +148,22 @@ export default function ReleaseInfo() {
 
     return (
         <>
+            {(isLoading || isFetching) && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+                    <BounceLoader size={150} color={"#000000"} />
+                </div>
+            )}
             <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
                 <div className="flex items-center">
                     {tabs?.map((r, index) => (
                         // <Link to={`/${r.route}`}>
-                            <button
-                                key={index}
-                                type="button"
-                                className={`text-left text-sm md:text-base pl-2 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Release Info" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
-                            >
-                                {r.name}
-                            </button>
+                        <button
+                            key={index}
+                            type="button"
+                            className={`text-left text-sm md:text-base pl-2 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Release Info" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
+                        >
+                            {r.name}
+                        </button>
                         // </Link>
                     ))}
                 </div>
@@ -144,7 +175,7 @@ export default function ReleaseInfo() {
                 <div className="flex flex-col md:flex-row gap-4 p-8">
                     {/* Image */}
                     <div className="flex flex-col items-center mt-4 space-y-4">
-                        <FileUpload file={file} setFile={setFile}/>
+                        <FileUpload file={file} setFile={setFile} previewFile={getReleaseInfo?.data?.data?.ImageDocument} preview={preview} setPreview={setPreview} />
                         <div className="text-left">
                             <h6 className="font-bold text-center text-teal-500">Artwork Guidelines</h6>
                             <ul className="list-disc list-inside text-xs">
@@ -284,9 +315,9 @@ export default function ReleaseInfo() {
                                 <button
                                     type="submit"
                                     className="px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center"
-                                    disabled={isLoadingReleaseInfoPost}
+                                    disabled={isLoadingReleaseInfoEdit}
                                 >
-                                    <span className="mr-2">Save</span>
+                                    <span className="mr-2">Update</span>
                                     <AiFillSave />
                                 </button>
                             </div>

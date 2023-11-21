@@ -1,29 +1,26 @@
 import * as React from "react";
-import SongDetails from "./PopUps/SongDetails";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { DeleteSongApi, GetReleaseInfoApi, GetSongsApi, UserDataApi } from "../../api/releaseInfo";
-import { RiEditLine } from "react-icons/ri";
+import { DeleteSongApi, GetReleaseInfoApi, GetReleaseInfoByIdApi, GetSongsApi, UserDataApi } from "../../api/releaseInfo";
 import { MdDelete } from "react-icons/md";
-import EditSongDetails from "./PopUps/EditSongDetails";
 import cogoToast from "cogo-toast";
 import { BounceLoader } from "react-spinners";
+import EditSongDetails from "../CreateRelease/PopUps/EditSongDetails";
+import SongDetails from "../CreateRelease/PopUps/SongDetails";
 
 
-export default function SongInfo() {
+export default function EditSongsInfo() {
 
-    const [AudioDocument, setAudioDocument] = React.useState({ preview: "", data: "" });
     const size = useResponsiveIconSize();
+    const { id } = useParams();
     const [userData, setUserData] = React.useState<any>("");
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: getReleaseInfo } = GetReleaseInfoApi(userData?.users_id)
+    const { data: getReleaseInfo, isLoading: isLoadingReleaseInfo } = GetReleaseInfoByIdApi(id)
     const { data: GetSongs, isLoading, isFetching, refetch } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
     const { mutate: DeleteSong, isLoading: isLoadingDeleteSong } = DeleteSongApi(navigate, refetch)
-
-    console.log(GetSongs?.data?.data)
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -45,13 +42,13 @@ export default function SongInfo() {
             cogoToast.info("please upload atleast two songs")
             return
         }
-        navigate('/Platform');
+        navigate(`/Platform/${getReleaseInfo?.data?.data.releseInfo_id}`);
     }
 
 
     return (
         <>
-            {(isLoading || isFetching) && (
+            {(isLoading || isFetching || isLoadingReleaseInfo) && (
                 <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
                     <BounceLoader size={150} color={"#000000"} />
                 </div>
@@ -82,14 +79,13 @@ export default function SongInfo() {
                                         <p className="font-semibold">{i + 1}.</p>
                                         <p className="font-semibold text-lg">{song?.Title}</p>
                                     </div>
-
                                     <audio controls className="outline-none h-8 w-full md:w-64">
                                         <source src={`https://fmdigitalofficial.in/${song?.AudioDocument}`} />
                                         Your browser does not support the audio tag.
                                     </audio>
                                 </div>
                                 <div className="flex items-center gap-2 md:gap-4   md:w-[20%] justify-center">
-                                    <EditSongDetails userData={userData} getReleaseInfo={getReleaseInfo} song={song} refetch={refetch} />
+                                    <EditSongDetails userData={userData} getReleaseInfo={getReleaseInfo} song={song} refetch={refetch}  />
                                     <button type="button" className="text-red-500 hover:text-red-700 focus:outline-none" onClick={() => DeleteSong(song?.songsInfo_id)}>
                                         <MdDelete size={size} />
                                     </button>
@@ -99,6 +95,7 @@ export default function SongInfo() {
                     })
                 }
             </div>
+
 
             <div className="p-4 space-y-4">
 

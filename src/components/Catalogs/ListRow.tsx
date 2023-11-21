@@ -7,9 +7,18 @@ import { BiCheck } from "react-icons/bi";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import GetDate from "../../utility/GetDate";
 import { MdBookmarks, MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { DeleteCatalogApi } from "../../api/catalogs";
 
 export default function ListRow({ catalog, index }: { catalog: any, index: any }) {
     const size = useResponsiveIconSize();
+    const navigate = useNavigate()
+
+    console.log(catalog?.releseInfo_id, "catalog?.releseInfo_id ")
+
+    const { mutate: DeleteCatalog, isLoading: isLoadingDeleteCatalog } = DeleteCatalogApi({ id: catalog?.releseInfo_id })
+
+
     const iconSelector = (status: any) => {
         switch (status) {
             case 0:
@@ -47,32 +56,51 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
         }
     };
 
+
     const statusButton = (status: any) => {
         switch (status) {
             case 0:
                 return (
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-red-500 text-xs text-white text-base rounded hover:bg-red-600 focus:outline-none flex items-center"
-                    >
-                        <span className="mr-2 text-white font-semibold">Delete</span>
-                    </button>  
+                    <>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="submit"
+                                className="px-4 py-2 bg-[#0000cd] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                            >
+                                <span className="mr-2 text-white font-semibold">Draft</span>
+                            </button>
+                            <span onClick={DeleteCatalog} className="cursor-pointer">
+                                <MdDelete color="red" size={20} />
+                            </span>
+                        </div>
+                    </>
                 );
             case 1:
                 return (
-                   '--'
+                    <button type="button" className="px-4 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-700 focus:outline-none flex items-center">
+                        ........
+                    </button>
                 );
             case 2:
                 return (
-                    <p style={{ color: "#add8e6" }}>
-                        <FcCancel size={size} />
-                    </p>
+                    <button type="button" className="px-4 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center">
+                        Reject
+                    </button>
                 );
             case 3:
                 return (
-                    <p style={{ color: "#0000cd" }}>
-                        <VscGitPullRequestNewChanges size={size} />
-                    </p>
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-[#0000cd] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                        >
+                            <span className="mr-2 text-white font-semibold">Draft</span>
+                        </button>
+                        <span onClick={DeleteCatalog} className="cursor-pointer">
+                            <MdDelete color="red" size={20} />
+                        </span>
+
+                    </div>
                 );
             case 4:
                 return (
@@ -90,15 +118,15 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
     return (
         <>
             <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {index+1}
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                    {index + 1}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     <div className="w-full flex justify-center">
                         {iconSelector(catalog.Status)}
                     </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ImageDocument ? (
                         <div className="w-full flex justify-center">
                             <img
@@ -111,22 +139,22 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                         '--'
                     )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.Title || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ArtistName || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.Genre || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.Label || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {catalog.Tracks || '--' }
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                    {catalog.Tracks || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ReleaseDate ? GetDate(catalog.ReleaseDate) : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

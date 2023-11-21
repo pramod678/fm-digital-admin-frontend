@@ -3,9 +3,12 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import cogoToast from 'cogo-toast';
+import useResponsiveIconSize from '../hooks/useResponsiveIconSize';
 
 
-const SongsUpload = ({ file, setFile }: { file: any, setFile: any }) => {
+const SongPreview = ({ file, setFile, previewFile, preview, setPreview }: { file: any, setFile: any, previewFile?: any, preview?: any, setPreview?: any }) => {
+
+    const size = useResponsiveIconSize();
 
     const onDrop = useCallback((acceptedFiles: any[]) => {
         const selectedFile = acceptedFiles[0];
@@ -33,6 +36,10 @@ const SongsUpload = ({ file, setFile }: { file: any, setFile: any }) => {
         setFile(null);
     };
 
+    const handlePreview = () => {
+        setPreview(false);
+    };
+
     return (
         <div className="space-y-2">
             {file && (
@@ -49,7 +56,20 @@ const SongsUpload = ({ file, setFile }: { file: any, setFile: any }) => {
                     </button>
                 </div>
             )}
-            {!file && (
+            {
+                !file && preview && <div className="flex items-center justify-between bg-gray-200 p-2 rounded-md">
+                    <div className="flex">
+                        <audio controls className="outline-none h-8 w-full md:w-64">
+                            <source src={`https://fmdigitalofficial.in/${previewFile}`} />
+                            Your browser does not support the audio tag.
+                        </audio>
+                    </div>
+                    <button onClick={handlePreview} className="text-red-500 hover:text-red-700">
+                        <AiOutlineCloseCircle size={size} />
+                    </button>
+                </div>
+            }
+            {!file && !preview && (
                 <div {...getRootProps()} className="flex items-center justify-center h-20 border-2 border-dashed border-gray-400 rounded-md p-2">
                     <input {...getInputProps()} />
                     <p className="text-gray-600 text-sm">Drag 'n' drop a file here, or click to select a file</p>
@@ -59,4 +79,4 @@ const SongsUpload = ({ file, setFile }: { file: any, setFile: any }) => {
     );
 };
 
-export default SongsUpload;
+export default SongPreview;

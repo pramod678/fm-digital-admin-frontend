@@ -46,12 +46,29 @@ export const PrimaryArtisttPostApi = (setIsOpen: any) => {
 }
 
 
-export const SongsPostApi = (setIsOpen: any) => {
+export const SongsPostApi = ({ setIsOpen, refetch, reset }: { setIsOpen: any, refetch?: any, reset?:any }) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/songsInfoPost", data), {
         onSuccess: (res) => {
             cogoToast.success("Song Added");
-            // queryClient.refetchQueries([`GetPrimaryArtist`]);
+            refetch()
+            reset()
+            queryClient.refetchQueries([`GetSongs`]);
+            setIsOpen(false)
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+export const EditSongsApi = ({ setIsOpen, refetch, id }: { setIsOpen: any, refetch?: any, id?:any }) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.put(`createRelease/songsInfoUpdate/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Song Updated");
+            refetch()
+            queryClient.refetchQueries([`GetSongs`]);
             setIsOpen(false)
         },
         onError: ({ response }) => {
@@ -116,6 +133,19 @@ export const ReleaseInfoPostApi = (navigate: NavigateFunction) => {
     })
 }
 
+export const EditInfoReleaseApi = (navigate: NavigateFunction, id:any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.put(`createRelease/releseInfoUpdate/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("updated Successfully");
+            navigate(`/Songsinfo/${id}`);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
 export const GetLanguagesApi = () =>
     useQuery(
         [` GetLanguages`],
@@ -127,10 +157,22 @@ export const GetLanguagesApi = () =>
         }
     );
 
+export const GetPlatformApi = (id: any) =>
+    useQuery(
+        [`GetPlatform`, id],
+        async () => await api.get(`createRelease/platformGetOne/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+        }
+    );
+
 
 export const GetSubmissionsApi = (id: any) =>
     useQuery(
-        [`GetSubmissions`],
+        [`GetSubmissions`, id],
         async () => await api.get(`createRelease/submissionGet/${id}`),
         {
             refetchOnMount: false,
@@ -142,7 +184,7 @@ export const GetSubmissionsApi = (id: any) =>
 
 export const GetReleaseInfoApi = (id: any) =>
     useQuery(
-        [`GetReleaseInfo`],
+        [`GetReleaseInfo`, id],
         async () => await api.get(`createRelease/releseInfoGetOne/${id}`),
         {
             refetchOnMount: false,
@@ -152,13 +194,27 @@ export const GetReleaseInfoApi = (id: any) =>
         }
     );
 
-export const SubmissionPostApi = () => {
+export const GetReleaseInfoByIdApi = (id: any) =>
+    useQuery(
+        [`GetReleaseInfoById`, id],
+        async () => await api.get(`createRelease/getByReleseInfoId/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+        }
+    );
+
+
+export const SubmissionPostApi = (navigate: NavigateFunction) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/submissionPost", data), {
         onSuccess: (res) => {
             cogoToast.success("submitted");
+            navigate('/Catalogs')
         },
-        onError: ({ response }) => {
+        onError: ({ response }: { response?: any }) => {
             cogoToast.error(response?.data?.message);
         }
     })
@@ -166,7 +222,7 @@ export const SubmissionPostApi = () => {
 
 export const GetSongsApi = (id: any) =>
     useQuery(
-        [` GetSongs`],
+        [` GetSongs`, id],
         async () => await api.get(`createRelease/songsInfoGetEdit/${id}`),
         {
             refetchOnMount: false,
@@ -175,3 +231,17 @@ export const GetSongsApi = (id: any) =>
             enabled: id ? true : false,
         }
     );
+
+
+export const DeleteSongApi = ( navigate: NavigateFunction, refetch: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data:any) => api.delete(`createRelease/songsInfoDelete/${data}`), {
+        onSuccess: (res) => {
+            cogoToast.success("deleted");
+            refetch()
+        },
+        onError: ({ response }: { response?: any }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

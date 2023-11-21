@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiOutlineUpload, AiOutlineCloseCircle } from 'react-icons/ai';
 
-const FileUpload = ({ file, setFile }: { file: any, setFile: any }) => {
+const FileUpload = ({ file, setFile, previewFile, preview, setPreview }: { file: any, setFile: any, previewFile?: any, preview?: any, setPreview?: any }) => {
 
     const onDrop = useCallback((acceptedFiles: any[]) => {
         const uploadedFile = acceptedFiles[0];
@@ -40,8 +40,14 @@ const FileUpload = ({ file, setFile }: { file: any, setFile: any }) => {
     }, []);
 
     const removeFile = () => {
-        setFile(null);
+        if (preview) {
+            setPreview(false);
+        } else {
+            setFile(null);
+        }
+
     };
+
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -53,28 +59,44 @@ const FileUpload = ({ file, setFile }: { file: any, setFile: any }) => {
                     className="w-40 h-40 flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-md"
                 >
                     <input {...getInputProps()} />
-                    {!file ? (
+                    {(!file && !preview) ? (
                         <>
                             <AiOutlineUpload className="text-4xl text-gray-400" />
                             <p className="text-gray-400 mt-1 text-center">Drag & drop a file here or click to upload</p>
                         </>
                     ) : (
                         <>
-                            {file?.type?.startsWith('image/') ? (
-                                <img
-                                    src={URL.createObjectURL(file)}
-                                    alt="Preview"
-                                    className="h-32 w-full object-contain rounded-md"
-                                />
-                            ) : (
-                                <div className="h-32 flex items-center justify-center">
-                                    <p className="text-gray-400">File type not supported</p>
-                                </div>
-                            )}
+                            {
+                                preview ? (
+                                    <>
+                                        <img
+                                            src={`https://fmdigitalofficial.in/${previewFile}`}
+                                            alt="Preview"
+                                            className="h-32 w-full object-contain rounded-md"
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        {file?.type?.startsWith('image/') ? (
+                                            <img
+                                                src={preview ? `https://fmdigitalofficial.in/${previewFile}` : URL.createObjectURL(file)}
+                                                alt="Preview"
+                                                className="h-32 w-full object-contain rounded-md"
+                                            />
+                                        ) : (
+                                            <div className="h-32 flex items-center justify-center">
+                                                <p className="text-gray-400">File type not supported</p>
+                                            </div>
+                                        )}
+                                    </>
+                                )
+                            }
+
                         </>
                     )}
                 </div>
-                {file && (
+
+                {(file || preview) && (
                     <button
                         onClick={removeFile}
                         className="absolute top-0 right-0 -mt-2 -mr-2 bg-white rounded-full p-1 shadow-md hover:bg-gray-200"

@@ -1,21 +1,24 @@
 import * as React from "react";
-import { GetReleaseInfoApi, GetSongsApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
-import { Link, useNavigate } from "react-router-dom";
-import { PlatformPostApi } from "../../api/platform";
+import { GetPlatformApi, GetReleaseInfoApi, GetReleaseInfoByIdApi, GetSongsApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { PlatformPostApi, UpdatePlatformApi } from "../../api/platform";
 
 
-export default function Platform() {
+export default function EditPlatform() {
 
     const [userData, setUserData] = React.useState<any>("");
     const token = localStorage.getItem("token")
     const navigate = useNavigate()
-    const { mutate: PlatformPost, isLoading: isLoadingPlatformPost } = PlatformPostApi(navigate)
+    const { id } = useParams()
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
 
-
-    const { data: getReleaseInfo } = GetReleaseInfoApi(userData?.users_id)
+    const { data: getReleaseInfo, isLoading, isFetching } = GetReleaseInfoByIdApi(id)
+    const { data: getPlatfOrm } = GetPlatformApi(getReleaseInfo?.data?.data?.releseInfo_id)
     const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
 
+    console.log(getPlatfOrm?.data?.data[0]?.platform_id)
+
+    const { mutate: UpdatePlatform, isLoading: isLoadingUpdatePlatform } = UpdatePlatformApi({ navigate, id: getPlatfOrm?.data?.data[0]?.platform_id, releaseId: getReleaseInfo?.data?.data?.releseInfo_id })
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -88,7 +91,7 @@ export default function Platform() {
             releseInfo_id: getReleaseInfo?.data?.data?.releseInfo_id,
             users_id: parseInt(userData.users_id),
         }
-        PlatformPost(formdata)
+        UpdatePlatform(formdata)
     };
 
 
@@ -183,7 +186,7 @@ export default function Platform() {
 
             <div className="flex justify-end items-center p-4">
                 <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Save
+                    Update
                 </button>
             </div>
 

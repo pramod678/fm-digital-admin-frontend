@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { PrimaryArtistDto, SongDetailsDto } from "../../../types/ReleaseInfo";
-import { GetFeaturingArtistApi, GetGenreApi, GetLanguagesApi, GetPrimaryArtistApi, GetReleaseInfoApi, PrimaryArtisttPostApi, SongsPostApi } from "../../../api/releaseInfo";
+import { EditSongsApi, GetFeaturingArtistApi, GetGenreApi, GetLanguagesApi, GetPrimaryArtistApi, GetReleaseInfoApi, PrimaryArtisttPostApi, SongsPostApi } from "../../../api/releaseInfo";
 import { BeatLoader } from "react-spinners";
 import Label from "../../../ui/Label";
 import InputField from "../../../ui/InputField";
@@ -17,13 +17,16 @@ import SelectPriceTier from "../../../ui/SelectPriceTier";
 import SongsUpload from "../../../ui/SongsUpload";
 import { RiEditLine } from "react-icons/ri";
 import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
+import axios from "axios";
+import SongPreview from "../../../ui/SongPreview";
 
 
-export default function EditSongDetails({ userData, getReleaseInfo, song }: { userData: any, getReleaseInfo: any, song: any }) {
+export default function EditSongDetails({ userData, getReleaseInfo, song, refetch }: { userData: any, getReleaseInfo: any, song: any, refetch: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [featuringArtistGet, setfeaturingArtistGet] = React.useState([]);
     const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState(true)
     const size = useResponsiveIconSize();
     const {
         register,
@@ -33,13 +36,6 @@ export default function EditSongDetails({ userData, getReleaseInfo, song }: { us
         control,
         formState: { errors }
     } = useForm<SongDetailsDto>({ defaultValues: song })
-
-    console.log(`https://fmdigitalofficial.in/${song?.AudioDocument}`)
-
-
-
-    React.useEffect(() => {
-    }, []);
 
     const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id)
     const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id)
@@ -68,8 +64,10 @@ export default function EditSongDetails({ userData, getReleaseInfo, song }: { us
         { value: "Cleaned", label: "Cleaned" },
     ]
 
+ 
+
     //edit song Api Call
-    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi(setIsOpen)
+    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = EditSongsApi({ setIsOpen, refetch, id:song?.songsInfo_id })
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
@@ -99,8 +97,6 @@ export default function EditSongDetails({ userData, getReleaseInfo, song }: { us
         formData.append("users_id", parseInt(userData?.users_id));
         // @ts-ignore
         formData.append("releseInfo_id", parseInt(getReleaseInfo?.data?.data?.releseInfo_id));
-
-
         SongsPost(formData)
 
     });
@@ -144,12 +140,13 @@ export default function EditSongDetails({ userData, getReleaseInfo, song }: { us
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Add songs Details
+                                    Edit songs Details
                                 </Dialog.Title>
                                 <form >
                                     <div className="mt-2">
+                                        
 
-                                        <SongsUpload file={file} setFile={setFile} />
+                                        <SongPreview file={file} setFile={setFile} previewFile={song?.AudioDocument} preview={preview} setPreview={setPreview} />
 
                                         <div className="w-full mb-2">
                                             <Label text={"Track Version"} htmlFor={""} required={true} />
@@ -209,7 +206,6 @@ export default function EditSongDetails({ userData, getReleaseInfo, song }: { us
                                                 placeholder="Enter Version/Subtitle "
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="VersionSubtitle  is required."
                                             />
                                         </div>
 

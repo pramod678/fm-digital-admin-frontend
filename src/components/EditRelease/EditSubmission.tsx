@@ -1,22 +1,21 @@
 import * as React from "react";
-import SongDetails from "./PopUps/SongDetails";
-import { MdClear } from "react-icons/md"
 import { AiFillSave, AiOutlinePlus } from "react-icons/ai";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { GetSubmissionsApi, SubmissionPostApi, UserDataApi } from "../../api/releaseInfo";
 
 
-export default function Submission() {
+export default function EditSubmission() {
 
     const [userIagery, setUserIagery] = React.useState(false);
     const size = useResponsiveIconSize();
     const [userData, setUserData] = React.useState<any>("");
     const navigate = useNavigate()
+    const { id } = useParams();
     const token = localStorage.getItem("token")
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: getSubmissions } = GetSubmissionsApi(userData?.users_id)
+    const { data: getSubmissions } = GetSubmissionsApi(id)
     const { mutate: SubmissionPost, isLoading: isLoadingSubmissionPost } = SubmissionPostApi(navigate)
 
     React.useEffect(() => {
@@ -30,8 +29,8 @@ export default function Submission() {
         { name: 'Submission', route: 'Submission' },
     ]
 
-    const handleSubmit = ()=>{
-        let formData:any = {
+    const handleSubmit = () => {
+        let formData: any = {
             releseInfo_id: getSubmissions?.data?.data?.releseInfo_id,
             Status: 1,
             users_id: parseInt(getSubmissions?.data?.data?.users_id),
@@ -47,13 +46,13 @@ export default function Submission() {
                 <div className="flex items-center">
                     {tabs?.map((r, index) => (
                         // <Link to={`/${r.route}`}>
-                            <button
-                                key={index}
-                                type="button"
-                                className={`text-left text-sm md:text-base pl-1 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Submission" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
-                            >
-                                {r.name}
-                            </button>
+                        <button
+                            key={index}
+                            type="button"
+                            className={`text-left text-sm md:text-base pl-1 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Submission" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
+                        >
+                            {r.name}
+                        </button>
                         // </Link>
                     ))}
                 </div>
@@ -124,7 +123,7 @@ export default function Submission() {
                 </button>
             </div>
 
-            
+
         </>
     )
 }

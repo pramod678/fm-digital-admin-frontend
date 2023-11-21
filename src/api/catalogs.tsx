@@ -1,8 +1,9 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import api from "../lib/api";
+import cogoToast from "cogo-toast";
 
 
-export const GetCatalogsApi = (id: any, setcatalogsGet:any) =>
+export const GetCatalogsApi = (id: any, setcatalogsGet: any) =>
     useQuery(
         [`GetCatalogs`],
         async () => await api.get(`createRelease/catalogsGet/${id}`),
@@ -17,3 +18,16 @@ export const GetCatalogsApi = (id: any, setcatalogsGet:any) =>
             },
         }
     );
+
+export const DeleteCatalogApi = ({ id }: { id: any }) => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.delete(`createRelease/catalogsDelete/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Catalogue Deleted");
+            queryClient.refetchQueries([`GetCatalogs`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

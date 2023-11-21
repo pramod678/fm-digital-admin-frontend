@@ -17,7 +17,7 @@ import SelectPriceTier from "../../../ui/SelectPriceTier";
 import SongsUpload from "../../../ui/SongsUpload";
 
 
-export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { userData: any, getReleaseInfo: any, GetSongs:any }) {
+export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetch }: { userData: any, getReleaseInfo: any, GetSongs: any, refetch:any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [featuringArtistGet, setfeaturingArtistGet] = React.useState([]);
@@ -58,16 +58,15 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
         { value: "No", label: "No" },
         { value: "Cleaned", label: "Cleaned" },
     ]
-    console.log(getReleaseInfo?.data?.data?.ReleaseType)
 
 
 
     //featuringArtisttPost Api Call
-    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi(setIsOpen)
+    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi({ setIsOpen, refetch, reset })
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        let formData:any = new FormData();
+        let formData: any = new FormData();
         formData.append("AudioDocument", file);
         formData.append("Trackversion", newData.Trackversion);
         formData.append("Instrumental", newData.Instrumental);
@@ -93,7 +92,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
         formData.append("users_id", parseInt(userData?.users_id));
         // @ts-ignore
         formData.append("releseInfo_id", parseInt(getReleaseInfo?.data?.data?.releseInfo_id));
-        
+
 
         SongsPost(formData)
 
@@ -205,7 +204,6 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
                                                 placeholder="Enter Version/Subtitle "
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="VersionSubtitle  is required."
                                             />
                                         </div>
 
@@ -384,7 +382,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs }: { us
                                             disabled={isLoadingSongsPost}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            Submit
+                                            {isLoadingSongsPost ? <BeatLoader color="white" /> : "Submit"}
                                         </button>
                                     </div>
 
