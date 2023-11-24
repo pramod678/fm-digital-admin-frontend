@@ -7,9 +7,10 @@ interface SelectProps {
     options: any;
     errors: any;
     required: boolean
+    setSelectRelease?:any
 }
 
-const SelectRelease: React.FC<SelectProps> = ({ control, name, options, errors, required }) => {
+const SelectRelease: React.FC<SelectProps> = ({ control, name, options, errors, required, setSelectRelease }) => {
     return (
         <>
             <Controller
@@ -21,6 +22,7 @@ const SelectRelease: React.FC<SelectProps> = ({ control, name, options, errors, 
                         value={value}
                         onChange={(e) => {
                             onChange(e.target.value);
+                            setSelectRelease(e.target.value)
                         }}
                         className={`border-2 mt-2 px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full transition ease-in-out duration-150 ${errors[name] ? 'border-red-500' : 'border-gray-300'
                             }`}
@@ -28,7 +30,7 @@ const SelectRelease: React.FC<SelectProps> = ({ control, name, options, errors, 
                         <option value="" >
                             Select a Option
                         </option>
-                        {options?.map((option: any) => (
+                        {options?.length >0 && options?.map((option: any) => (
                             <option key={option._id} className="text-black" value={option.ReleaseTitle}>
                                 {option.ReleaseTitle}
                             </option>

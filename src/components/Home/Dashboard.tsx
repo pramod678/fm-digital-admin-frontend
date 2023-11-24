@@ -7,10 +7,13 @@ import { TbDatabaseDollar } from 'react-icons/tb'
 import { BsCurrencyDollar } from 'react-icons/bs'
 import * as React from "react"
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function UserHome({ userData }: { userData: any }) {
 
     const size = useResponsiveIconSize();
+    const navigate = useNavigate();
+    
     return (
         <>
             <div className="flex flex-col sm:flex-row h-[90%] p-4 gap-6">
@@ -119,10 +122,10 @@ export default function UserHome({ userData }: { userData: any }) {
 
                         </div>
 
-
-
                         <button className="items-start text-white border bg-green-400 border-gray-500 mt-2  mx-auto px-2">
-                            <span className="flex items-center gap-1 py-1"><BsCurrencyDollar color={'#ffffff'} /> 0.00  </span>
+                            <span className="flex items-center gap-1 py-1" onClick={() => navigate('/Financial')}>
+                                <BsCurrencyDollar color={'#ffffff'} /> 0.00
+                            </span>
                         </button>
                     </div>
                 </div>

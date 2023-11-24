@@ -4,7 +4,7 @@ import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
 import { Controller, useForm } from "react-hook-form";
 import { ReleaseInfoDto } from "../../types/ReleaseInfo";
-import {  EditInfoReleaseApi, GetFeaturingArtistApi, GetGenreApi, GetPrimaryArtistApi, GetReleaseInfoApi, GetReleaseInfoByIdApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
+import { EditInfoReleaseApi, GetFeaturingArtistApi, GetGenreApi, GetPrimaryArtistApi, GetReleaseInfoApi, GetReleaseInfoByIdApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
 import SelectGenre from "../../ui/SelectGenre";
 import SelectFeatureArtist from "../../ui/SelectFeatureArtist";
 import SelectPrimaryArtist from "../../ui/SelectPrimaryArtist";
@@ -46,8 +46,8 @@ export default function EditReleaseInfo() {
     } = useForm<ReleaseInfoDto>({ defaultValues: getReleaseInfo?.data?.data })
 
 
-    React.useEffect(()=>{
-        if(!isLoading){
+    React.useEffect(() => {
+        if (!isLoading) {
             // @ts-ignore
             setValue("ReleaseType", setSelectedItems(getReleaseInfo?.data?.data?.ReleaseType))
             setValue("ReleaseTitle", getReleaseInfo?.data?.data?.ReleaseTitle)
@@ -68,10 +68,10 @@ export default function EditReleaseInfo() {
     const token = localStorage.getItem("token")
 
     const tabs = [
-        { name: 'Release Info', route: 'ReleseInfo' },
-        { name: 'Song Info', route: 'Songsinfo' },
-        { name: 'Platform', route: 'Platform' },
-        { name: 'Submission', route: 'Submission' },
+        { name: 'Release Info', route: `/ReleseInfoUpdate/${id}` },
+        { name: 'Song Info', route: `/Songsinfo/${id}` },
+        { name: 'Platform', route: `/Platform/${id}` },
+        { name: 'Submission', route: `/Submission/${id}` },
     ]
 
     React.useEffect(() => {
@@ -118,8 +118,6 @@ export default function EditReleaseInfo() {
 
     }
 
-    console.log("selectedItems", selectedItems)
-
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         let formData: any = new FormData();
@@ -156,10 +154,11 @@ export default function EditReleaseInfo() {
             <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
                 <div className="flex items-center">
                     {tabs?.map((r, index) => (
-                        // <Link to={`/${r.route}`}>
+                        // <Link to={`${r?.route}`}>
                         <button
                             key={index}
                             type="button"
+                            onClick={() => navigate(`${r.route}`)}
                             className={`text-left text-sm md:text-base pl-2 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Release Info" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
                         >
                             {r.name}

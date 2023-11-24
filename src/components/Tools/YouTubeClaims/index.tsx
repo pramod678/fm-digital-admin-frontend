@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { YouTubeClaimsDto, policyOptions } from "../../../types/tools";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../api/releaseInfo";
-import { ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../api/youtubeClaims";
+import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../api/youtubeClaims";
 import SelectRelease from "../../../ui/SelectRelease";
 import SelectAudio from "../../../ui/SelectAudio";
 import SelectPlatform from "../../../ui/SelectPlatform";
@@ -14,6 +14,7 @@ import SelectPolicy from "../../../ui/SelectPolicy";
 import { AiFillSave } from "react-icons/ai";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import Edit from "./Edit";
 
 
 
@@ -32,13 +33,17 @@ export default function Index() {
     const [userData, setUserData] = React.useState<any>("")
     const token = localStorage.getItem("token")
     const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
+    const [selectRelease, setSelectRelease] = React.useState<any>([]);
+    const [selectedId, setSelectedId] = React.useState<any>();
+
+
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: releseInfoGet, isLoading: isLoadingreleseInfoGetOne } = ReleseInfoGetOneApi(userData.users_id, setReleseInfoGetOne)
+    const { data: GetAllReleseInfo, isLoading: isLoadingGetAllReleseInfo } = GetAllReleseInfoApi(userData.users_id, setReleseInfoGetOne)
     const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll, isFetching } = YoutubeClaimsGetAllApi(userData.users_id)
-    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, releseInfoGetOne[0]?.releseInfo_id)
+    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)
     const { mutate: YoutubeClaimsPost, isLoading: isLoadingYoutubeClaimsPost } = YoutubeClaimsPostApi(reset)
-    
+
     const [records, setRecords] = React.useState(youtubeClaimsGetAll?.data?.data || []);
     const [currentPage, setCurrentPage] = React.useState(1);
     const [searchTerm, setSearchTerm] = React.useState('');
@@ -75,7 +80,7 @@ export default function Index() {
             (row) =>
                 row?.Selectrelease?.toLowerCase().includes(term) ||
                 row?.SelectAudio?.toLowerCase().includes(term) ||
-                row?.SelectPolicy?.toLowerCase().includes(term) 
+                row?.SelectPolicy?.toLowerCase().includes(term)
         );
     };
 
@@ -88,10 +93,15 @@ export default function Index() {
         getUserData({ token: token })
     }, []);
 
+    React.useEffect(() => {
+        const selectedObj = releseInfoGetOne?.filter((r:any) => r?.ReleaseTitle === selectRelease)
+        setSelectedId(selectedObj[0]?.releseInfo_id)
+    }, [selectRelease]);
+
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         console.log("newData", newData)
-        newData.users_id= parseInt(userData.users_id);
+        newData.users_id = parseInt(userData.users_id);
         YoutubeClaimsPost(newData)
     });
 
@@ -115,7 +125,7 @@ export default function Index() {
                         <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
                             <div className="w-full mb-2">
                                 <Label text="Select Release" htmlFor="grid-Selectrelease" required={true} />
-                                <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} />
+                                <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} setSelectRelease={setSelectRelease} />
                             </div>
 
                             <div className="w-full mb-2">
@@ -162,6 +172,8 @@ export default function Index() {
                     </div>
                 </form>
 
+                {/* <Edit  /> */}
+
                 {/* Filters */}
                 <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
                     <div className="flex items-center gap-4">
@@ -201,7 +213,7 @@ export default function Index() {
                                                 Release Title
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Audio Title	
+                                                Audio Title
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Policy
@@ -226,7 +238,7 @@ export default function Index() {
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                    currentData?.map((claim: any, index: any) => {
+                                                currentData?.map((claim: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow claim={claim} index={index}

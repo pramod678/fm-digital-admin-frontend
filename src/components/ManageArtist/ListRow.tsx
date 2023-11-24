@@ -1,9 +1,6 @@
 import * as React from "react";
-import GetDate from "../../utility/GetDate";
-import { RiDraftFill } from "react-icons/ri";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
-import { Link } from "react-router-dom";
-import { FaUserEdit } from "react-icons/fa";
+import Edit from "./PopUps/EditManageArtist";
 
 
 export default function ListRow({ data, index }: { data: any, index: any }) {
@@ -13,28 +10,25 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
         <>
             <tr>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.artistId || '--'}
+                    {/* {data.artistId || '--'} */}
+                    {index + 1}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.name || '--'}
+                    {data.PrimaryArtist || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.instagramId || '--'}
+                    {data.InstagramId || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.facebookId || '--'}
+                    {data.FacebookId || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.spotifyId || '--'}
+                    {data.SpotifyId || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.appleId || '--'}
+                    {data.AppleId || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    <Link to={`/ManageArtist/${data.artistId}`}>
-                        <FaUserEdit className="cursor-pointer"  size={size} />
-                    </Link>
-                </td>
+                <Edit data={data} />
             </tr>
         </>
     )

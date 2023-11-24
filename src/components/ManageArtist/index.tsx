@@ -1,11 +1,12 @@
 import * as React from "react";
 import ListRow from "./ListRow";
 import { useNavigate } from "react-router-dom";
-import { UserDataApi } from "../../api/releaseInfo";
+import { GetPrimaryArtistApi, UserDataApi } from "../../api/releaseInfo";
 
 
 
 export default function Index() {
+
     const tableData = [
         {
             artistId: '1',
@@ -30,6 +31,7 @@ export default function Index() {
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+    const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData.users_id)
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -73,14 +75,14 @@ export default function Index() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 mt-2">
                                         {
-                                            tableData.length === 0 ? (
+                                            GetPrimaryArtist?.data?.data.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No labels found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                tableData.map((data: any, index: any) => {
+                                                    GetPrimaryArtist?.data?.data.map((data: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow data={data} index={index} />

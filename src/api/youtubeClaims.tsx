@@ -19,6 +19,22 @@ export const ReleseInfoGetOneApi = (id: any, setReleseInfoGetOne:any) =>
         }
     );
 
+export const GetAllReleseInfoApi = (id: any, setReleseInfoGetOne: any) =>
+    useQuery(
+        [`releseInfoGetOne`],
+        async () => await api.get(`tools/releseInfoGetAll/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+            onSuccess: (res) => {
+                console.log(res.data, "jshs")
+                setReleseInfoGetOne(res.data.data)
+            },
+        }
+    );
+
 export const ProfileLinkinAdudiogGetApi = (userId: any, releaseId: any) =>
     useQuery(
         [`ProfileLinkinAdudiogGet`, userId, releaseId],
@@ -30,7 +46,7 @@ export const ProfileLinkinAdudiogGetApi = (userId: any, releaseId: any) =>
             keepPreviousData:true,
             enabled: userId && releaseId ? true : false,
             onSuccess: (res) => {
-                console.log(res.data)
+                // console.log(res.data)
             },
         }
     );

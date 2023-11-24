@@ -1,52 +1,74 @@
 import * as React from "react";
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
-import { AiOutlineCloseCircle, AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus } from 'react-icons/ai';
 import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 import Label from "../../../ui/Label";
 import InputField from "../../../ui/InputField";
 import { useForm } from "react-hook-form";
+import { PrimaryArtistDto } from "../../../types/ReleaseInfo";
+import { PrimaryArtisttPostApi, UserDataApi } from "../../../api/releaseInfo";
 import { BeatLoader } from "react-spinners";
-import { LabelDto } from "../../../types/label";
-import { LabelPostApi } from "../../../api/label";
-import FileUpload from "../../../ui/fileupload";
+import { YouTubeClaimsDto, policyOptions } from "../../../types/tools";
+import { useNavigate } from "react-router-dom";
+import SelectRelease from "../../../ui/SelectRelease";
+import SelectAudio from "../../../ui/SelectAudio";
+import SelectPlatform from "../../../ui/SelectPlatform";
+import SelectPolicy from "../../../ui/SelectPolicy";
+import { ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi } from "../../../api/youtubeClaims";
+import { FaEdit } from "react-icons/fa";
 
-export default function AddLabel({ userData }: { userData: any }) {
+
+export default function Edit({ claim }: { claim: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
-    const [file, setFile] = useState([])
-    const [ImageDocument, setImageDocument] = useState({ preview: "", data: "" });
+    const [userData, setUserData] = React.useState<any>("")
     const {
         register,
         handleSubmit,
         watch,
         reset,
+        setValue,
+        control,
         formState: { errors }
-    } = useForm<LabelDto>()
+    } = useForm<YouTubeClaimsDto>({ defaultValues: claim })
 
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token")
+    const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
+    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+    const { data: releseInfoGet, isLoading: isLoadingreleseInfoGetOne } = ReleseInfoGetOneApi(userData.users_id, setReleseInfoGetOne)
 
+    //Api calls
+    React.useEffect(() => {
+        getUserData({ token: token })
+    }, []);
 
+    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, releseInfoGetOne[0]?.releseInfo_id)
     //featuringArtisttPost Api Call
-    const { mutate: LabelPost, isLoading: isLoadingLabelPost } = LabelPostApi(setIsOpen, reset)
+    const { mutate: PrimaryArtisttPost, isLoading: isLoadingPrimaryArtisttPost } = PrimaryArtisttPostApi(setIsOpen)
+
+    console.log(claim, ProfileLinkinAdudiogGet?.data?.data)
+
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        let formData: any = new FormData();
-        formData.append("labelDocument", file);
-        formData.append("title", newData.title);
-        formData.append("youtubeURL", newData.ReleaseTitle);
-        LabelPost(formData)
-    });
+        console.log("newData", newData)
+        newData.users_id = parseInt(userData.users_id);
+    })
 
     return (
         <>
-            <button
-                className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
-                onClick={() => setIsOpen(true)}
-            >
-                <AiOutlinePlus size={size} />
-                AddLabel
-            </button>
+        <div className="flex justify-end w-full">
+                <button
+                    className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md mt-2"
+                    onClick={() => setIsOpen(true)}
+                >
+                    <AiOutlinePlus size={size} />
+                    Add Youtube Claim
+                </button>
+        </div>
+            
 
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
@@ -78,7 +100,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Add Label
+                                    Edit Title
                                 </Dialog.Title>
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
@@ -86,32 +108,35 @@ export default function AddLabel({ userData }: { userData: any }) {
                                     <div className="mt-2">
 
                                         <div className="w-full mb-2">
-                                            <Label text="Channel Name" htmlFor="grid-title" />
-                                            <InputField
-                                                type="text"
-                                                name="title"
-                                                placeholder="Enter title"
-                                                register={register}
-                                                errors={errors}
-                                                requiredMessage="title is required."
-                                            />
+                                            <Label text="Select Release" htmlFor="grid-Selectrelease" required={true} />
+                                            <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} />
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Youtube Url" htmlFor="grid-youtubeURL" />
-                                            <InputField
-                                                type="text"
-                                                name="youtubeURL"
-                                                placeholder="Enter youtubeURL "
-                                                register={register}
-                                                errors={errors}
-                                                requiredMessage="youtubeURL is required."
-                                            />
+                                            <Label text="Select Audio" htmlFor="grid-SelectAudio" required={true} />
+                                            <SelectAudio control={control} name="SelectAudio" options={ProfileLinkinAdudiogGet?.data?.data} errors={errors} required={true} />
                                         </div>
 
-                                        <FileUpload file={file} setFile={setFile} />
+                                        <div className="w-full mb-2">
+                                            <Label text="Select platform" htmlFor="grid-Selectplatform" required={true} />
+                                            <SelectPlatform control={control} name={"Selectplatform"} errors={errors} required={true} />
+                                        </div>
+                                        <div className="w-full mb-2">
+                                            <Label text="Select policy" htmlFor="grid-SelectPolicy" required={true} />
+                                            <SelectPolicy control={control} name={"SelectPolicy"} options={policyOptions} errors={errors} required={true} />
+                                        </div>
 
-
+                                        <div className="w-full mb-2">
+                                            <Label text="Paste URL" htmlFor="grid-PasteURL" required={true} />
+                                            <InputField
+                                                type="text"
+                                                name="PasteURL"
+                                                placeholder="Paste URL"
+                                                register={register}
+                                                errors={errors}
+                                                requiredMessage="PasteURL is required."
+                                            />
+                                        </div>
                                     </div>
 
                                     <div className="mt-4 flex justify-end space-x-2">
@@ -124,10 +149,10 @@ export default function AddLabel({ userData }: { userData: any }) {
                                         </button>
                                         <button
                                             type="submit"
-                                            disabled={isLoadingLabelPost}
+                                            disabled={isLoadingPrimaryArtisttPost}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            {isLoadingLabelPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
+                                            {isLoadingPrimaryArtisttPost ? <BeatLoader color="#ffffff" /> : 'Update'}
                                         </button>
                                     </div>
 

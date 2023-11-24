@@ -146,6 +146,20 @@ export const EditInfoReleaseApi = (navigate: NavigateFunction, id:any) => {
     })
 }
 
+export const UpdatePrimaryArtistApi = (id: any, setIsOpen:any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.put(`createRelease/primaryArtistUpdate/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("updated Successfully");
+            setIsOpen(false)
+            queryClient.refetchQueries([`GetPrimaryArtist`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
 export const GetLanguagesApi = () =>
     useQuery(
         [` GetLanguages`],

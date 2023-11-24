@@ -1,10 +1,14 @@
 import * as React from "react";
 import GetDate from "../../../utility/GetDate";
+import { FaEdit } from "react-icons/fa";
+import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
+import Edit from "./Edit";
 
 
 
-export default function ListRow({ claim, index, currentPage, PAGE_SIZE }: { claim: any, index: any,currentPage:any, PAGE_SIZE :any}) {
+export default function ListRow({ claim, index, currentPage, PAGE_SIZE }: { claim: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+
     return (
         <>
             <tr>

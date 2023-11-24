@@ -115,18 +115,25 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 return <></>;
         }
     };
+
+    const handleNavigation = () =>{
+        if (catalog.Status === 0 || catalog.Status == 3){
+            navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)
+        }
+
+    }
     return (
         <>
             <tr>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {index + 1}
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     <div className="w-full flex justify-center">
                         {iconSelector(catalog.Status)}
                     </div>
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ImageDocument ? (
                         <div className="w-full flex justify-center">
                             <img
@@ -139,22 +146,22 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                         '--'
                     )}
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.Title || '--'}
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ArtistName || '--'}
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.Genre || '--'}
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.Label || '--'}
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.Tracks || '--'}
                 </td>
-                <td onClick={() => navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ReleaseDate ? GetDate(catalog.ReleaseDate) : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

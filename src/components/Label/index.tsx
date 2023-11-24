@@ -18,6 +18,7 @@ export default function Index() {
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
+    
 
     return (
         <>

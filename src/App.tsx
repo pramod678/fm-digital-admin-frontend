@@ -14,7 +14,6 @@ import Platform from "./components/CreateRelease/Platform";
 import SongInfo from "./components/CreateRelease/SongInfo";
 import ReleaseInfo from "./components/CreateRelease/ReleaseInfo";
 import ManageArtist from "./components/ManageArtist";
-import EditManageArtist from "./components/ManageArtist/EditManageArtist";
 import Submission from "./components/CreateRelease/Submission";
 import Financial from "./components/Financial";
 import Tickets from "./components/Tickets";
@@ -22,6 +21,7 @@ import EditReleaseInfo from "./components/EditRelease/EditReleaseInfo";
 import EditSongsInfo from "./components/EditRelease/EditSongsInfo";
 import EditPlatform from "./components/EditRelease/EditPlatform";
 import EditSubmission from "./components/EditRelease/EditSubmission";
+import UserDetails from "./components/UserDetails";
 
 
 
@@ -35,6 +35,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="ReleseInfo" element={< ReleaseInfo />} />
               <Route path="Platform" element={<Platform />} />
+              <Route path="userDetails" element={<UserDetails />} />
               {/* <Route path="Submission" element={<Submission />} /> */}
               <Route path="Songsinfo" element={<SongInfo />} />
               <Route path="Catalogs" element={<Catalogs />} />
@@ -44,7 +45,6 @@ function App() {
               <Route path="Label" element={<Label />} />
               <Route path="Financial" element={<Financial />} />
               <Route path="ManageArtist" element={<ManageArtist />} />
-              <Route path="ManageArtist/:id" element={<EditManageArtist />} />
               <Route path="Tickets" element={<Tickets />} />
               <Route path="ReleseInfoUpdate/:id" element={<EditReleaseInfo />} />
               <Route path="Songsinfo/:id" element={<EditSongsInfo />} />

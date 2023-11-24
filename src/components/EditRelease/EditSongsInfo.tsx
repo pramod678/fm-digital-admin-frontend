@@ -27,10 +27,10 @@ export default function EditSongsInfo() {
     }, []);
 
     const tabs = [
-        { name: 'Release Info', route: 'ReleseInfo' },
-        { name: 'Song Info', route: 'Songsinfo' },
-        { name: 'Platform', route: 'Platform' },
-        { name: 'Submission', route: 'Submission' },
+        { name: 'Release Info', route: `/ReleseInfoUpdate/${id}` },
+        { name: 'Song Info', route: `/Songsinfo/${id}` },
+        { name: 'Platform', route: `/Platform/${id}` },
+        { name: 'Submission', route: `/Submission/${id}` },
     ]
 
     const handleCheckSongs = () => {
@@ -56,10 +56,11 @@ export default function EditSongsInfo() {
             <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
                 <div className="flex items-center">
                     {tabs?.map((r, index) => (
-                        // <Link to={`/${r.route}`}>
+                        // <Link to={`${r?.route}`}>
                         <button
                             key={index}
                             type="button"
+                            onClick={() => navigate(`${r.route}`)}
                             className={`text-left text-sm md:text-base pl-1 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Song Info" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
                         >
                             {r.name}
@@ -85,7 +86,7 @@ export default function EditSongsInfo() {
                                     </audio>
                                 </div>
                                 <div className="flex items-center gap-2 md:gap-4   md:w-[20%] justify-center">
-                                    <EditSongDetails userData={userData} getReleaseInfo={getReleaseInfo} song={song} refetch={refetch}  />
+                                    <EditSongDetails userData={userData} getReleaseInfo={getReleaseInfo} song={song} refetch={refetch} />
                                     <button type="button" className="text-red-500 hover:text-red-700 focus:outline-none" onClick={() => DeleteSong(song?.songsInfo_id)}>
                                         <MdDelete size={size} />
                                     </button>

@@ -1,9 +1,10 @@
 import * as React from "react";
 import GetDate from "../../utility/GetDate";
+import { FaEdit } from "react-icons/fa";
 
 
 export default function ListRow({ label, index }: { label: any, index: any }) {
-    
+
 
     return (
         <>
@@ -29,7 +30,7 @@ export default function ListRow({ label, index }: { label: any, index: any }) {
                     {label.status || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {label.youtubeURL || '--'}
+                    <FaEdit />
                 </td>
             </tr>
         </>

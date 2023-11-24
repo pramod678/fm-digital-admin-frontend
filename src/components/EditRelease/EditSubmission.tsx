@@ -23,10 +23,10 @@ export default function EditSubmission() {
     }, []);
 
     const tabs = [
-        { name: 'Release Info', route: 'ReleseInfo' },
-        { name: 'Song Info', route: 'Songsinfo' },
-        { name: 'Platform', route: 'Platform' },
-        { name: 'Submission', route: 'Submission' },
+        { name: 'Release Info', route: `/ReleseInfoUpdate/${id}` },
+        { name: 'Song Info', route: `/Songsinfo/${id}` },
+        { name: 'Platform', route: `/Platform/${id}` },
+        { name: 'Submission', route: `/Submission/${id}` },
     ]
 
     const handleSubmit = () => {
@@ -45,15 +45,16 @@ export default function EditSubmission() {
             <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
                 <div className="flex items-center">
                     {tabs?.map((r, index) => (
-                        // <Link to={`/${r.route}`}>
+                        // <Link to={`${r.route}`}>
                         <button
                             key={index}
                             type="button"
+                            onClick={() => navigate(`${r.route}`)}
                             className={`text-left text-sm md:text-base pl-1 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Submission" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
                         >
                             {r.name}
                         </button>
-                        // </Link>
+                        // {/* </Link> */ }
                     ))}
                 </div>
 

@@ -6,16 +6,17 @@ import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 import Label from "../../../ui/Label";
 import InputField from "../../../ui/InputField";
 import { useForm } from "react-hook-form";
-import { BeatLoader } from "react-spinners";
-import { LabelDto } from "../../../types/label";
-import { LabelPostApi } from "../../../api/label";
 import { TicketDto } from "../../../types/ticket";
 import SelectReason from "../../../ui/SelectReason";
 import CustomTextArea from "../../../ui/CustomTextArea";
+import { TicketPostApi } from "../../../api/ticket";
+import FileUpload from "../../../ui/fileupload";
+import { BeatLoader } from "react-spinners";
 
 export default function AddTicket({ userData }: { userData: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
+    const [file, setFile] = useState([])
     const [ImageDocument, setImageDocument] = useState({ preview: "", data: "" });
     const {
         register,
@@ -56,13 +57,14 @@ export default function AddTicket({ userData }: { userData: any }) {
 
 
     //featuringArtisttPost Api Call
-    const { mutate: LabelPost, isLoading: isLoadingLabelPost } = LabelPostApi(setIsOpen)
+    const { mutate: TicketPost, isLoading: isLoadingTicketPost } = TicketPostApi(setIsOpen, reset)
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        console.log(ImageDocument.data, "ImageDocument")
-        newData.labelDocument = ImageDocument.data
-        console.log(newData, "newData")
-        // LabelPost(newData)
+        let formData: any = new FormData();
+        formData.append("ticketDocument", file);
+        formData.append("reason", newData.reason);
+        formData.append("discreption", newData.discreption);
+        TicketPost(formData)
     });
 
     return (
@@ -118,46 +120,21 @@ export default function AddTicket({ userData }: { userData: any }) {
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Tell us more about it" htmlFor="grid-description" />
+                                            <Label text="Tell us more about it" htmlFor="grid-discreption" />
                                             <CustomTextArea
-                                                name="description"
+                                                name="discreption"
                                                 placeholder="Enter description"
                                                 register={register}
-                                                error={errors.description}
+                                                error={errors.discreption}
                                                 validationRules={{
-                                                    required: "description is required.",
+                                                    required: "discreption is required.",
                                                 }}
                                                 rows={3}
                                             />
                                         </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="File" htmlFor="grid-File" />
-                                            <div className="relative w-32 h-32">
-                                                <label className="border-2 border-gray-400 flex items-center justify-center text-gray-500 cursor-pointer w-full h-full">
-                                                    {ImageDocument.preview ? (
-                                                        <img src={ImageDocument.preview} alt="Selected" className="w-full h-full object-cover" />
-                                                    ) : (
-                                                        <div className="flex items-center justify-center w-full h-full">
-                                                            <span className="text-center">Upload</span>
-                                                        </div>
-                                                    )}
-                                                    <input
-                                                        id="fileInput"
-                                                        accept="image/*"
-                                                        type="file"
-                                                        name="ImageDocument"
-                                                        onChange={handleFileChange}
-                                                        required={true}
-                                                        className="w-full h-full opacity-0 cursor-pointer"
-                                                    />
-                                                </label>
-                                                <p>pdf, doc, txt</p>
-                                                {ImageDocument.preview && (
-                                                    <AiOutlineCloseCircle size={20} onClick={clearImage} className="absolute top-0 right-0 m-1 text-red-500 cursor-pointer" />
-                                                )}
-                                            </div>
-                                        </div>
+                                        <FileUpload file={file} setFile={setFile} />
+
                                     </div>
 
                                     <div className="mt-4 flex justify-end space-x-2">
@@ -170,10 +147,10 @@ export default function AddTicket({ userData }: { userData: any }) {
                                         </button>
                                         <button
                                             type="submit"
-                                            disabled={isLoadingLabelPost}
+                                            disabled={isLoadingTicketPost}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            {isLoadingLabelPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
+                                            {isLoadingTicketPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
                                         </button>
                                     </div>
 

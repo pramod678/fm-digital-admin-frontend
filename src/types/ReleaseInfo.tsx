@@ -30,6 +30,7 @@ export type PrimaryArtistDto = {
     users_id: Number
 }
 
+
 export type SongDetailsDto = {
     AudioDocument: string
     Trackversion: string

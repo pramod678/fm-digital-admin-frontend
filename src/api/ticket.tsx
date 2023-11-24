@@ -3,12 +3,12 @@ import api from "../lib/api";
 import cogoToast from "cogo-toast";
 
 
-export const LabelPostApi = (setIsOpen: any, reset:any) => {
+export const TicketPostApi = (setIsOpen: any, reset: any) => {
     const queryClient = useQueryClient();
-    return useMutation((data) => api.post("createRelease/labelPost", data), {
+    return useMutation((data) => api.post("createRelease/ticketPost", data), {
         onSuccess: (res) => {
-            cogoToast.success("Label Added");
-            queryClient.refetchQueries([`GetAllLabels`]);
+            cogoToast.success("Ticket Added");
+            queryClient.refetchQueries([` GetAllTicket`]);
             reset()
             setIsOpen(false)
         },
@@ -18,14 +18,13 @@ export const LabelPostApi = (setIsOpen: any, reset:any) => {
     })
 }
 
-export const GetAllLabelsApi = () =>
+export const GetAllTicketApi = () =>
     useQuery(
-        [`GetAllLabels`],
-        async () => await api.get(`createRelease/labelgetAll`),
+        [` GetAllTicket`],
+        async () => await api.get(`createRelease/ticketgetAll`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
         }
     );
-

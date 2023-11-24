@@ -3,6 +3,8 @@ import ListRow from "./ListRow";
 import AddTicket from "./Popups/AddTicket";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../api/releaseInfo";
+import { GetAllTicketApi } from "../../api/ticket";
+import { BounceLoader } from "react-spinners";
 
 
 
@@ -26,6 +28,7 @@ export default function Index() {
     const navigate = useNavigate()
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi()
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -33,6 +36,11 @@ export default function Index() {
 
     return (
         <>
+            {(isLoadingGetAllTicket || isFetching) && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+                    <BounceLoader size={150} color={"#000000"} />
+                </div>
+            )}
             <div className="p-4">
                 <div className="flex items-center justify-between">
                     <select className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -42,7 +50,7 @@ export default function Index() {
                     </select>
                     <AddTicket userData={userData} />
                 </div>
-                <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :100</p>
+                <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :{GetAllTicket?.data?.data?.length}</p>
                 <div className="p-2 bg-neutral-500 my-4">
                     <p className="text-center text-white">Due to high traffic of tickets, the response may vary from 24 hours to 1 week</p>
                 </div>
@@ -60,7 +68,7 @@ export default function Index() {
                                                 Reason
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Created At
+                                                Description
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Status
@@ -69,14 +77,14 @@ export default function Index() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 mt-2">
                                         {
-                                            tableData.length === 0 ? (
+                                            GetAllTicket?.data?.data?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No tickets found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                tableData.map((data: any, index: any) => {
+                                                GetAllTicket?.data?.data?.map((data: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow data={data} index={index} />
