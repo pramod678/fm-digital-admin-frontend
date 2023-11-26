@@ -9,6 +9,7 @@ import GetDate from "../../utility/GetDate";
 import { MdBookmarks, MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { DeleteCatalogApi } from "../../api/catalogs";
+import Stores from "./PopUp/Stores";
 
 export default function ListRow({ catalog, index }: { catalog: any, index: any }) {
     const size = useResponsiveIconSize();
@@ -66,7 +67,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                         <div className="flex items-center gap-2">
                             <button
                                 type="submit"
-                                className="px-4 w-16 text-center py-2 bg-[#0000cd] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                                className="px-4 w-16 text-center py-2 bg-[#9dd3fc] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
                             >
                                 <span className="mr-2 text-white font-semibold">Draft</span>
                             </button>
@@ -78,22 +79,22 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 );
             case 1:
                 return (
-                    <button type="button" className="px-4 w-16 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-700 focus:outline-none flex items-center">
-                        ........
-                    </button>
+                    <>
+                        --
+                    </>
                 );
             case 2:
                 return (
-                    <button type="button" className="px-4 w-16 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center">
-                        Reject
-                    </button>
+                    <>
+                        --
+                    </>
                 );
             case 3:
                 return (
                     <div className="flex items-center gap-2">
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-[#0000cd] w-16 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                            className="px-4 py-2 bg-[#9dd3fc] w-16 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
                         >
                             <span className="mr-2 text-white font-semibold">Draft</span>
                         </button>
@@ -105,20 +106,17 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 );
             case 4:
                 return (
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-cyan-500 w-16 text-xs text-white text-base rounded hover:bg-cyan-600 focus:outline-none flex items-center"
-                    >
-                        <span className="mr-2 text-white font-semibold">Stores</span>
-                    </button>
+                    <>
+                        <Stores />
+                    </>
                 );
             default:
                 return <></>;
         }
     };
 
-    const handleNavigation = () =>{
-        if (catalog.Status === 0 || catalog.Status == 3){
+    const handleNavigation = () => {
+        if (catalog.Status === 0 || catalog.Status == 3) {
             navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)
         }
 

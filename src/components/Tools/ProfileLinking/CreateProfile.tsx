@@ -13,7 +13,7 @@ import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../typ
 import { useNavigate } from "react-router-dom";
 import SelectRelease from "../../../ui/SelectRelease";
 import SelectAudio from "../../../ui/SelectAudio";
-import { ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi } from "../../../api/youtubeClaims";
+import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi } from "../../../api/youtubeClaims";
 import { FaEdit } from "react-icons/fa";
 import { ProfileLinkingPostApi } from "../../../api/profileLinking";
 
@@ -38,14 +38,14 @@ export default function CreateProfile() {
     const token = localStorage.getItem("token")
     const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: releseInfoGet, isLoading: isLoadingreleseInfoGetOne } = ReleseInfoGetOneApi(userData.users_id, setReleseInfoGetOne)
+    const { data: releseInfoGet, isLoading: isLoadingreleseInfoGetOne } = GetAllReleseInfoApi(userData.users_id, setReleseInfoGetOne)
     const { mutate: ProfileLinkingPost, isLoading: isLoadingProfileLinkingPost } = ProfileLinkingPostApi(reset, setIsOpen)
     //Api calls
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
 
-    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, releseInfoGetOne[0]?.releseInfo_id)
+    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)
     //featuringArtisttPost Api Call
     const { mutate: PrimaryArtisttPost, isLoading: isLoadingPrimaryArtisttPost } = PrimaryArtisttPostApi(setIsOpen)
 
@@ -104,7 +104,7 @@ export default function CreateProfile() {
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Edit Title
+                                    Add Profile Linking
                                 </Dialog.Title>
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);

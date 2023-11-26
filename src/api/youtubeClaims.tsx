@@ -5,7 +5,7 @@ import cogoToast from "@successtar/cogo-toast";
 
 export const ReleseInfoGetOneApi = (id: any, setReleseInfoGetOne:any) =>
     useQuery(
-        [`releseInfoGetOne`],
+        [`releseInfoGetOne`, id],
         async () => await api.get(`createRelease/releseInfoGetOne/${id}`),
         {
             refetchOnMount: false,
@@ -13,7 +13,6 @@ export const ReleseInfoGetOneApi = (id: any, setReleseInfoGetOne:any) =>
             refetchOnWindowFocus: false,
             enabled: id ? true : false,
             onSuccess: (res) => {
-                console.log(res.data.data)
                 setReleseInfoGetOne([res.data.data])
             },
         }
@@ -66,12 +65,13 @@ export const YoutubeClaimsGetAllApi = (id: any) =>
         }
     );
 
-export const YoutubeClaimsPostApi = (reset: any, setIsOpen:any) => {
+export const YoutubeClaimsPostApi = (reset: any, setIsOpen: any, setReleseInfoGetOne:any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("tools/youtubeClaimsPost", data), {
         onSuccess: (res) => {
             cogoToast.success("UGC Claim Created");
             setIsOpen(false)
+            setReleseInfoGetOne([])
             queryClient.refetchQueries([`youtubeClaimsGetAll`]);
             reset()
         },
