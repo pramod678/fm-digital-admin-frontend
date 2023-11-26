@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import api from "../lib/api";
-import cogoToast from "cogo-toast";
+import cogoToast from "@successtar/cogo-toast";
 
 
 export const ProfileLinkingGetAllApi = (id: any) =>

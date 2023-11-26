@@ -1,6 +1,6 @@
 import * as React from "react";
 import InputField from "../../ui/InputField";
-import cogoToast from "cogo-toast";
+import cogoToast from "@successtar/cogo-toast";
 import ListRow from "./ListRow";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../api/releaseInfo";
