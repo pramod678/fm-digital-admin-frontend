@@ -5,27 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../api/releaseInfo";
 import { GetAllTicketApi } from "../../api/ticket";
 import { BounceLoader } from "react-spinners";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 
 
 export default function Index() {
 
-    const tableData = [
-        {
-            reason: 'Change in Release',
-            createdAt: '12/11/2023',
-            status:'Done'
-        },
-        {
-            reason: 'Artist Digital Presence',
-            createdAt: '12/11/2023',
-            status: 'Pending'
-        },
-        // Add more objects as needed
-    ]; 
 
     const [userData, setUserData] = React.useState<any>("");
     const navigate = useNavigate()
+    const [currentPage, setCurrentPage] = React.useState<number>(1);
+    const [totalPages, setTotalPages] = React.useState<number>(1);
+    const pageSize = 4; // Number of items per page
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi()
@@ -33,6 +24,22 @@ export default function Index() {
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
+
+    React.useEffect(() => {
+        if (GetAllTicket?.data?.data) {
+            const totalItems = GetAllTicket?.data?.data.length;
+            setTotalPages(Math.ceil(totalItems / pageSize));
+        }
+    }, [GetAllTicket, pageSize]);
+
+    const handlePageChange = (pageNumber: number) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
+    };
+
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, GetAllTicket?.data?.data.length);
 
     return (
         <>
@@ -84,7 +91,7 @@ export default function Index() {
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                GetAllTicket?.data?.data?.map((data: any, index: any) => {
+                                                    GetAllTicket?.data?.data?.slice(startIndex, endIndex)?.map((data: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow data={data} index={index} />
@@ -99,6 +106,25 @@ export default function Index() {
                         </div>
                     </div>
                 </div>
+                {totalPages > 1 && (
+                    <div className="flex justify-end items-center mt-4">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronLeft color="white" />
+                        </button>
+                        <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronRight color="white" />
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     )

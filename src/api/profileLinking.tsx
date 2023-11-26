@@ -20,11 +20,12 @@ export const ProfileLinkingGetAllApi = (id: any) =>
         }
     );
 
-export const ProfileLinkingPostApi = (reset: any) => {
+export const ProfileLinkingPostApi = (reset: any, setIsOpen:any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("tools/profileLinkingPost", data), {
         onSuccess: (res) => {
             cogoToast.success("Profile Linking Created");
+            setIsOpen(false)
             queryClient.refetchQueries([`profileLinkingGetAll`]);
             reset()
         },

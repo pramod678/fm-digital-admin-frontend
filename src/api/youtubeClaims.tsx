@@ -66,11 +66,12 @@ export const YoutubeClaimsGetAllApi = (id: any) =>
         }
     );
 
-export const YoutubeClaimsPostApi = (reset: any) => {
+export const YoutubeClaimsPostApi = (reset: any, setIsOpen:any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("tools/youtubeClaimsPost", data), {
         onSuccess: (res) => {
             cogoToast.success("UGC Claim Created");
+            setIsOpen(false)
             queryClient.refetchQueries([`youtubeClaimsGetAll`]);
             reset()
         },

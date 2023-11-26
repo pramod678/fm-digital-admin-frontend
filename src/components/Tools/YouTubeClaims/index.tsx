@@ -14,7 +14,8 @@ import SelectPolicy from "../../../ui/SelectPolicy";
 import { AiFillSave } from "react-icons/ai";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import Edit from "./Edit";
+import Edit from "./CreatePopup";
+import CreatePopup from "./CreatePopup";
 
 
 
@@ -42,7 +43,7 @@ export default function Index() {
     const { data: GetAllReleseInfo, isLoading: isLoadingGetAllReleseInfo } = GetAllReleseInfoApi(userData.users_id, setReleseInfoGetOne)
     const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll, isFetching } = YoutubeClaimsGetAllApi(userData.users_id)
     const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)
-    const { mutate: YoutubeClaimsPost, isLoading: isLoadingYoutubeClaimsPost } = YoutubeClaimsPostApi(reset)
+    // const { mutate: YoutubeClaimsPost, isLoading: isLoadingYoutubeClaimsPost } = YoutubeClaimsPostApi(reset)
 
     const [records, setRecords] = React.useState(youtubeClaimsGetAll?.data?.data || []);
     const [currentPage, setCurrentPage] = React.useState(1);
@@ -93,17 +94,6 @@ export default function Index() {
         getUserData({ token: token })
     }, []);
 
-    React.useEffect(() => {
-        const selectedObj = releseInfoGetOne?.filter((r:any) => r?.ReleaseTitle === selectRelease)
-        setSelectedId(selectedObj[0]?.releseInfo_id)
-    }, [selectRelease]);
-
-    const onSubmit = handleSubmit(async (data: any) => {
-        const newData: any = { ...data };
-        console.log("newData", newData)
-        newData.users_id = parseInt(userData.users_id);
-        YoutubeClaimsPost(newData)
-    });
 
 
 
@@ -118,64 +108,11 @@ export default function Index() {
                 <div className="w-1/2 bg-neutral-800 p-2">
                     <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Youtube Claims</p>
                 </div>
-                <form onSubmit={(e: any) => {
-                    onSubmit(e); e.preventDefault();
-                }}>
-                    <div className="flex flex-col p-4 justify-center">
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Select Release" htmlFor="grid-Selectrelease" required={true} />
-                                <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} setSelectRelease={setSelectRelease} />
-                            </div>
-
-                            <div className="w-full mb-2">
-                                <Label text="Select Audio" htmlFor="grid-SelectAudio" required={true} />
-                                <SelectAudio control={control} name="SelectAudio" options={ProfileLinkinAdudiogGet?.data?.data} errors={errors} required={true} />
-                            </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Select platform" htmlFor="grid-Selectplatform" required={true} />
-                                <SelectPlatform control={control} name={"Selectplatform"} errors={errors} required={true} />
-                            </div>
-
-                            <div className="w-full mb-2">
-                                <Label text="Select policy" htmlFor="grid-SelectPolicy" required={true} />
-                                <SelectPolicy control={control} name={"SelectPolicy"} options={policyOptions} errors={errors} required={true} />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Paste URL" htmlFor="grid-PasteURL" required={true} />
-                                <InputField
-                                    type="text"
-                                    name="PasteURL"
-                                    placeholder="Paste URL"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="PasteURL is required."
-                                />
-                            </div>
-
-                            <div className="mt-4 w-full flex justify-center items-center">
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center"
-                                    disabled={isLoadingYoutubeClaimsPost}
-                                >
-                                    <span className="mr-2">Save</span>
-                                    <AiFillSave />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
+                <CreatePopup/>
                 {/* <Edit  /> */}
 
                 {/* Filters */}
-                <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
+                {/* <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
                     <div className="flex items-center gap-4">
                         <input
                             type="text"
@@ -185,17 +122,11 @@ export default function Index() {
                             defaultValue={""}
                             onChange={handleFilter}
                         />
-                        <select className=" px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option defaultValue="All">All</option>
-                            <option value="true">approved</option>
-                            <option value="false">Draft</option>
-                            <option value="false">corrections</option>
-                        </select>
                     </div>
                     <div className="">
                         <p className="font-semibold text-gray-700">Total Releases : {youtubeClaimsGetAll?.data?.data?.length || 0}</p>
                     </div>
-                </div>
+                </div> */}
 
                 <p className="text-base sm:text-lg font-semibold my-2">Your UGC Claims History</p>
 

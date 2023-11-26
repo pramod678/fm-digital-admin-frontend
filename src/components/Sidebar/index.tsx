@@ -81,6 +81,14 @@ export default function Index({ isOpen, setIsOpen }: props) {
         },
     ];
 
+    const handleClick = (r: any, e: React.MouseEvent) => {
+        if (r?.subRoutes) {
+            setIsOpen(true); // Expand the sidebar
+        }
+    };
+
+
+
     return (
         <>
             <div className={`h-[92vh] hidden overflow-y-auto sm:block bg-neutral-800 ${isOpen ? 'sm:w-[18%] md:w-[18%] lg:w-[15%] ' : 'w-[50px]'}  py-4`}>
@@ -97,7 +105,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                     {
                                         r?.subRoutes ? (
                                             <>
-                                                <div className={`w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-2"} `} >
+                                                <div className={`w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-2"} `} onClick={(e) => handleClick(r, e)}>
                                                     {r.icon}
                                                     <div className={`flex justify-between items-center ${isOpen ? "" : "hidden"} `} onClick={toggleDropdown}>
                                                         <p className={`md:text-sm text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
@@ -110,7 +118,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                         ) : (
                                             <>
                                                 <NavLink to={r.path} key={r.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""
-                                                }>
+                                                } >
                                                     <div className={`w-full items-center flex sm:gap-2 lg:gap-4 px-4 py-1 cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-1"} `}>
                                                         {r.icon}
                                                         <p className={`md:text-sm text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>

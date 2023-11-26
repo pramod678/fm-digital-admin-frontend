@@ -1,16 +1,16 @@
 import * as React from "react";
 import GetDate from "../../../utility/GetDate";
-import Edit from "./Edit";
 
 
 
 export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+    
     return (
         <>
             <tr>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {index + 1}
+                    {actualIndex + 1}
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -34,7 +34,6 @@ export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link:
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {link.createdAt ? GetDate(link.createdAt) : '--'}
                 </td>
-                <Edit link={link} />
             </tr>
         </>
     )

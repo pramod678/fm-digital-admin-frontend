@@ -15,9 +15,10 @@ export default function Index() {
     const [userData, setUserData] = React.useState<any>("")
     const token = localStorage.getItem("token")
     const [catalogsGet, setcatalogsGet] = React.useState([]);
+    const [selectedOption, setSelectedOption] = React.useState('All');
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: getCatalogs, isLoading: isLoadinggetCatalogs, isFetching } = GetCatalogsApi(userData.users_id, setcatalogsGet)
+    const { data: getCatalogs, isLoading: isLoadinggetCatalogs, isFetching } = GetCatalogsApi(userData.users_id, setcatalogsGet, selectedOption)
 
     const [records, setRecords] = React.useState(catalogsGet || []);
     const [currentPage, setCurrentPage] = React.useState(1);
@@ -44,7 +45,7 @@ export default function Index() {
         setCurrentPage(pageNumber);
     };
 
-    const handleFilter = (event:any) => {
+    const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
         setSearchTerm(inputValue);
         setCurrentPage(1); // Reset to first page when filter changes
@@ -63,6 +64,7 @@ export default function Index() {
     const filteredRecords = filterRecords(records, searchTerm);
     const totalPages = Math.ceil(filteredRecords.length / PAGE_SIZE);
 
+
     return (
         <>
             {(isLoadinggetCatalogs || isFetching) && (
@@ -76,7 +78,7 @@ export default function Index() {
                 </div>
 
                 {/* Filters */}
-                <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
+                <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full mb-2">
                     <div className="flex items-center gap-4">
                         <input
                             type="text"
@@ -86,18 +88,21 @@ export default function Index() {
                             defaultValue={""}
                             onChange={handleFilter}
                         />
-                        <select className=" px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option defaultValue="All">All</option>
-                            <option value="true">approved</option>
-                            <option value="false">Draft</option>
-                            <option value="false">corrections</option>
+                        <select
+                            className="px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => setSelectedOption(e.target.value)}
+                            value={selectedOption}
+                        >
+                            <option value="All">All</option>
+                            <option value={4}>Approved</option>
+                            <option value={0}>Draft</option>
+                            <option value={3}>Corrections</option>
                         </select>
                     </div>
                     <div className="">
                         <p className="font-semibold text-gray-700">Total Releases : {getCatalogs?.data?.result?.length || 0}</p>
                     </div>
                 </div>
-
 
 
                 <div className="flex flex-col">
@@ -148,7 +153,7 @@ export default function Index() {
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                    currentData?.map((catalog: any, index: any) => {
+                                                currentData?.map((catalog: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow catalog={catalog} index={index} />

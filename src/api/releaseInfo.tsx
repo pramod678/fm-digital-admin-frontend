@@ -133,12 +133,13 @@ export const ReleaseInfoPostApi = (navigate: NavigateFunction) => {
     })
 }
 
-export const EditInfoReleaseApi = (navigate: NavigateFunction, id:any) => {
+export const EditInfoReleaseApi = (navigate: NavigateFunction, id: any, refetch:any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/releseInfoUpdate/${id}`, data), {
         onSuccess: (res) => {
             cogoToast.success("updated Successfully");
             navigate(`/Songsinfo/${id}`);
+            refetch()
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
@@ -259,3 +260,30 @@ export const DeleteSongApi = ( navigate: NavigateFunction, refetch: any) => {
         }
     })
 }
+
+
+export const GetLatestDraftsApi = () =>
+    useQuery(
+        [`GetLatestDrafts`],
+        async () => await api.get(`createRelease/dasboardDraftgetAll/Status/${0}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            onSuccess: (res) => {
+            },
+        }
+    );
+
+export const GetLatestCoorectionsApi = () =>
+    useQuery(
+        [`GetLatestCoorections`],
+        async () => await api.get(`createRelease/dasboardDraftgetAll/Status/${3}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            onSuccess: (res) => {
+            },
+        }
+    );

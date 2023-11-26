@@ -11,7 +11,6 @@ export default function Index(){
     const [admin, setAdmin] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
-
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setAdmin, setUserData, navigate)
 
     useEffect(() => {

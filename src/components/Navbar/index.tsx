@@ -9,6 +9,7 @@ import { TbTool } from "react-icons/tb";
 import { BsTicketPerforated } from "react-icons/bs";
 import { ImFileMusic } from "react-icons/im";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
+import { UserDataApi } from "../../api/releaseInfo";
 
 
 interface props {
@@ -31,6 +32,15 @@ export default function Index({ isOpen, setIsOpen }: props) {
         localStorage.clear();
         navigate('/sign-in');
     };
+
+    const [userData, setUserData] = React.useState<any>("");
+    const token = localStorage.getItem("token")
+
+    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+
+    React.useEffect(() => {
+        getUserData({ token: token })
+    }, [])
 
     const routes = [
         {
@@ -98,7 +108,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                     </div>
 
                     <div className="flex items-center gap-2 ">
-                        <Link to="/userDetails" className="no-underline text-black">
+                        <Link to={`/userDetails/${userData?.users_id}`} className="no-underline text-black">
                             <FaUserCircle color={'#ffffff'} className="text-xl sm:text-2xl md:text-3xl" />
                         </Link>
                         <div>

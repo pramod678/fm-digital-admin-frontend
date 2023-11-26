@@ -1,20 +1,14 @@
 import * as React from "react";
 import { BounceLoader } from "react-spinners";
-import InputField from "../../../ui/InputField";
-import Label from "../../../ui/Label";
 import { useForm } from "react-hook-form";
 import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../types/tools";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../api/releaseInfo";
 import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../api/youtubeClaims";
-import SelectRelease from "../../../ui/SelectRelease";
-import SelectAudio from "../../../ui/SelectAudio";
-import SelectPlatform from "../../../ui/SelectPlatform";
-import SelectPolicy from "../../../ui/SelectPolicy";
-import { AiFillSave } from "react-icons/ai";
 import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../api/profileLinking";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import CreateProfile from "./CreateProfile";
 
 
 
@@ -43,7 +37,6 @@ export default function Index() {
     const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll } = YoutubeClaimsGetAllApi(userData.users_id)
     const { data: ProfileLinkingGetAll, isLoading: isLoadingProfileLinkingGetAll, isFetching } = ProfileLinkingGetAllApi(userData.users_id)
     const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)
-    const { mutate: ProfileLinkingPost, isLoading: isLoadingProfileLinkingPost } = ProfileLinkingPostApi(reset)
 
     const [records, setRecords] = React.useState(ProfileLinkingGetAll?.data?.data || []);
     const [currentPage, setCurrentPage] = React.useState(1);
@@ -92,22 +85,9 @@ export default function Index() {
     const totalPages = Math.ceil(filteredRecords?.length / PAGE_SIZE);
 
     React.useEffect(() => {
-        const selectedObj = releseInfoGetOne?.filter((r: any) => r?.ReleaseTitle === selectRelease)
-        setSelectedId(selectedObj[0]?.releseInfo_id)
-    }, [selectRelease]);
-
-    React.useEffect(() => {
         getUserData({ token: token })
     }, []);
 
-    const onSubmit = handleSubmit(async (data: any) => {
-        const newData: any = { ...data };
-        console.log("newData", newData)
-        newData.users_id = parseInt(userData.users_id);
-        ProfileLinkingPost(newData)
-    });
-
-    console.log(releseInfoGetOne, "releseInfoGetOne")
 
 
     return (
@@ -121,76 +101,10 @@ export default function Index() {
                 <div className="w-1/2 bg-neutral-800 p-2">
                     <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Profile Linking</p>
                 </div>
-                <form onSubmit={(e: any) => {
-                    onSubmit(e); e.preventDefault();
-                }}>
-                    <div className="flex flex-col p-4 justify-center">
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Select Release" htmlFor="grid-Selectrelease" required={true} />
-                                <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} setSelectRelease={setSelectRelease}  />
-                            </div>
-
-                            <div className="w-full mb-2">
-                                <Label text="Select Audio" htmlFor="grid-SelectAudio" required={true} />
-                                <SelectAudio control={control} name="SelectAudio" options={ProfileLinkinAdudiogGet?.data?.data} errors={errors} required={true} />
-                            </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Artist Name" htmlFor="grid-Artist" required={true} />
-                                <InputField
-                                    type="text"
-                                    name="Artist"
-                                    placeholder="Make sure to enter the exact name of artist"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="Artist is required."
-                                />
-                            </div>
-
-                            <div className="w-full mb-2">
-                                <Label text="Facebook Link" htmlFor="grid-FecebookLink" required={true} />
-                                <InputField
-                                    type="text"
-                                    name="FecebookLink"
-                                    placeholder="Enter Facebook Link"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="Facebook Link is required."
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Instagram Link" htmlFor="grid-InstagramLink" required={true} />
-                                <InputField
-                                    type="text"
-                                    name="InstagramLink"
-                                    placeholder="Enter Instagram Link"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="Instagram Link is required."
-                                />
-                            </div>
-
-                            <div className="mt-4 w-full flex justify-center items-center">
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center"
-                                    disabled={isLoadingProfileLinkingPost}
-                                >
-                                    <span className="mr-2">Save</span>
-                                    <AiFillSave />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <CreateProfile />
 
                 {/* Filters */}
-                <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
+                {/* <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
                     <div className="flex items-center gap-4">
                         <input
                             type="text"
@@ -200,17 +114,12 @@ export default function Index() {
                             defaultValue={""}
                             onChange={handleFilter}
                         />
-                        <select className=" px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option defaultValue="All">All</option>
-                            <option value="true">approved</option>
-                            <option value="false">Draft</option>
-                            <option value="false">corrections</option>
-                        </select>
+
                     </div>
                     <div className="">
                         <p className="font-semibold text-gray-700">Total Releases : {ProfileLinkingGetAll?.data?.data?.length || 0}</p>
                     </div>
-                </div>
+                </div> */}
 
                 <p className="text-base sm:text-lg font-semibold my-4 ">Your Profile Linking History</p>
 
@@ -256,7 +165,7 @@ export default function Index() {
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                    currentData?.map((link: any, index: any) => {
+                                                currentData?.map((link: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow link={link} index={index}

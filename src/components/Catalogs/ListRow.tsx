@@ -65,7 +65,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                         <div className="flex items-center gap-2">
                             <button
                                 type="submit"
-                                className="px-4 py-2 bg-[#0000cd] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                                className="px-4 w-16 text-center py-2 bg-[#0000cd] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
                             >
                                 <span className="mr-2 text-white font-semibold">Draft</span>
                             </button>
@@ -77,13 +77,13 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 );
             case 1:
                 return (
-                    <button type="button" className="px-4 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-700 focus:outline-none flex items-center">
+                    <button type="button" className="px-4 w-16 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-700 focus:outline-none flex items-center">
                         ........
                     </button>
                 );
             case 2:
                 return (
-                    <button type="button" className="px-4 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center">
+                    <button type="button" className="px-4 w-16 py-2 bg-neutral-600 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center">
                         Reject
                     </button>
                 );
@@ -92,7 +92,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                     <div className="flex items-center gap-2">
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-[#0000cd] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                            className="px-4 py-2 bg-[#0000cd] w-16 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
                         >
                             <span className="mr-2 text-white font-semibold">Draft</span>
                         </button>
@@ -106,7 +106,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 return (
                     <button
                         type="submit"
-                        className="px-4 py-2 bg-cyan-500 text-xs text-white text-base rounded hover:bg-cyan-600 focus:outline-none flex items-center"
+                        className="px-4 py-2 bg-cyan-500 w-16 text-xs text-white text-base rounded hover:bg-cyan-600 focus:outline-none flex items-center"
                     >
                         <span className="mr-2 text-white font-semibold">Stores</span>
                     </button>
@@ -162,7 +162,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                     {catalog.Tracks || '--'}
                 </td>
                 <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.ReleaseDate ? GetDate(catalog.ReleaseDate) : '--'}
+                    {catalog.createdAt ? GetDate(catalog.createdAt) : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {/* {catalog.actions || '--'} */}

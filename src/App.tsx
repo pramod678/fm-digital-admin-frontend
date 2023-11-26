@@ -35,7 +35,7 @@ function App() {
               <Route index element={<Home />} />
               <Route path="ReleseInfo" element={< ReleaseInfo />} />
               <Route path="Platform" element={<Platform />} />
-              <Route path="userDetails" element={<UserDetails />} />
+              <Route path="userDetails/:id" element={<UserDetails />} />
               {/* <Route path="Submission" element={<Submission />} /> */}
               <Route path="Songsinfo" element={<SongInfo />} />
               <Route path="Catalogs" element={<Catalogs />} />

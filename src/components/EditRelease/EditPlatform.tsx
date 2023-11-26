@@ -16,8 +16,6 @@ export default function EditPlatform() {
     const { data: getPlatfOrm } = GetPlatformApi(getReleaseInfo?.data?.data?.releseInfo_id)
     const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
 
-    console.log(getPlatfOrm?.data?.data[0]?.platform_id)
-
     const { mutate: UpdatePlatform, isLoading: isLoadingUpdatePlatform } = UpdatePlatformApi({ navigate, id: getPlatfOrm?.data?.data[0]?.platform_id, releaseId: getReleaseInfo?.data?.data?.releseInfo_id })
 
     React.useEffect(() => {

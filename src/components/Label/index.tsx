@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GetAllLabelsApi } from "../../api/label";
 import { BounceLoader } from "react-spinners";
 import ListRow from "./ListRow";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 
 
@@ -12,13 +13,32 @@ export default function Index() {
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<any>("")
     const token = localStorage.getItem("token")
+    const [currentPage, setCurrentPage] = React.useState<number>(1);
+    const [totalPages, setTotalPages] = React.useState<number>(1);
+    const pageSize = 4; // Number of items per page
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: GetAllLabels, isLoading: isLoadingGetAllLabels, isFetching } = GetAllLabelsApi()
 
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
-    
+
+    React.useEffect(() => {
+        if (GetAllLabels?.data?.data) {
+            const totalItems = GetAllLabels?.data?.data.length;
+            setTotalPages(Math.ceil(totalItems / pageSize));
+        }
+    }, [GetAllLabels, pageSize]);
+
+    const handlePageChange = (pageNumber: number) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
+    };
+
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, GetAllLabels?.data?.data.length);
+
 
     return (
         <>
@@ -63,7 +83,7 @@ export default function Index() {
                                                         </td>
                                                     </tr>
                                                 ) : (
-                                                    GetAllLabels?.data?.data?.map((label: any, index: any) => {
+                                                    GetAllLabels?.data?.data?.slice(startIndex, endIndex)?.map((label: any, index: any) => {
                                                         return (
                                                             <React.Fragment key={index}>
                                                                 <ListRow label={label} index={index} />
@@ -79,6 +99,25 @@ export default function Index() {
                         </div>
                     </div>
                 </div>
+                {totalPages > 1 && (
+                    <div className="flex justify-end items-center mt-4">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronLeft color="white" />
+                        </button>
+                        <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronRight color="white" />
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     )

@@ -3,10 +3,10 @@ import api from "../lib/api";
 import cogoToast from "cogo-toast";
 
 
-export const GetCatalogsApi = (id: any, setcatalogsGet: any) =>
+export const GetCatalogsApi = (id: any, setcatalogsGet: any, selectedOption:any) =>
     useQuery(
-        [`GetCatalogs`],
-        async () => await api.get(`createRelease/catalogsGet/${id}`),
+        [`GetCatalogs`, selectedOption],
+        async () => await api.get(`createRelease/catalogsGet/${id}/Status/${selectedOption}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

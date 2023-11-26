@@ -68,9 +68,9 @@ export default function FeatureArtist({ userData }: { userData: any }) {
                             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
+                                    className="text-lg text-center font-medium leading-6 text-gray-900"
                                 >
-                                    Modal Title
+                                    Create Featuring Artist
                                 </Dialog.Title>
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
@@ -123,7 +123,8 @@ export default function FeatureArtist({ userData }: { userData: any }) {
                                             Close
                                         </button>
                                         <button
-                                            type="submit"
+                                            type="button"
+                                            onClick={onSubmit}
                                             disabled={isLoadingfeaturingArtisttPost}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >

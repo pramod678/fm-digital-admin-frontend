@@ -30,8 +30,8 @@ export default function EditReleaseInfo() {
     const { data: genre } = GetGenreApi()
     const { data: GetFeaturingArtist } = GetFeaturingArtistApi(userData?.users_id)
     const { data: GetPrimaryArtist } = GetPrimaryArtistApi(userData?.users_id)
-    const { mutate: ReleaseInfoEdit, isLoading: isLoadingReleaseInfoEdit } = EditInfoReleaseApi(navigate, id)
-    const { data: getReleaseInfo, isLoading, isFetching } = GetReleaseInfoByIdApi(id)
+    const { data: getReleaseInfo, isLoading, isFetching, refetch } = GetReleaseInfoByIdApi(id)
+    const { mutate: ReleaseInfoEdit, isLoading: isLoadingReleaseInfoEdit } = EditInfoReleaseApi(navigate, id, refetch)
     const [preview, setPreview] = React.useState(true)
 
 
@@ -117,7 +117,7 @@ export default function EditReleaseInfo() {
         var maxDate1 = year + "-" + month + "-" + tdate;
 
     }
-
+    console.log(getReleaseInfo?.data?.data?.ImageDocument)
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         let formData: any = new FormData();

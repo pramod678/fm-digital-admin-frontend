@@ -15,14 +15,18 @@ import SelectRelease from "../../../ui/SelectRelease";
 import SelectAudio from "../../../ui/SelectAudio";
 import SelectPlatform from "../../../ui/SelectPlatform";
 import SelectPolicy from "../../../ui/SelectPolicy";
-import { ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi } from "../../../api/youtubeClaims";
+import { ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsPostApi } from "../../../api/youtubeClaims";
 import { FaEdit } from "react-icons/fa";
 
 
-export default function Edit({ claim }: { claim: any }) {
+export default function CreatePopup() {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
     const [userData, setUserData] = React.useState<any>("")
+    const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
+    const [selectRelease, setSelectRelease] = React.useState<any>([]);
+    const [selectedId, setSelectedId] = React.useState<any>();
+
     const {
         register,
         handleSubmit,
@@ -31,31 +35,34 @@ export default function Edit({ claim }: { claim: any }) {
         setValue,
         control,
         formState: { errors }
-    } = useForm<YouTubeClaimsDto>({ defaultValues: claim })
+    } = useForm<YouTubeClaimsDto>({ })
 
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
-    const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: releseInfoGet, isLoading: isLoadingreleseInfoGetOne } = ReleseInfoGetOneApi(userData.users_id, setReleseInfoGetOne)
+    const { mutate: YoutubeClaimsPost, isLoading: isLoadingYoutubeClaimsPost } = YoutubeClaimsPostApi(reset, setIsOpen )
 
     //Api calls
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
 
+    React.useEffect(() => {
+        const selectedObj = releseInfoGetOne?.filter((r: any) => r?.ReleaseTitle === selectRelease)
+        setSelectedId(selectedObj[0]?.releseInfo_id)
+    }, [selectRelease]);
+
     const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, releseInfoGetOne[0]?.releseInfo_id)
     //featuringArtisttPost Api Call
     const { mutate: PrimaryArtisttPost, isLoading: isLoadingPrimaryArtisttPost } = PrimaryArtisttPostApi(setIsOpen)
-
-    console.log(claim, ProfileLinkinAdudiogGet?.data?.data)
-
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         console.log("newData", newData)
         newData.users_id = parseInt(userData.users_id);
-    })
+        YoutubeClaimsPost(newData)
+    });
 
     return (
         <>
@@ -109,7 +116,7 @@ export default function Edit({ claim }: { claim: any }) {
 
                                         <div className="w-full mb-2">
                                             <Label text="Select Release" htmlFor="grid-Selectrelease" required={true} />
-                                            <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} />
+                                            <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} setSelectRelease={setSelectRelease} />
                                         </div>
 
                                         <div className="w-full mb-2">
@@ -152,7 +159,7 @@ export default function Edit({ claim }: { claim: any }) {
                                             disabled={isLoadingPrimaryArtisttPost}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            {isLoadingPrimaryArtisttPost ? <BeatLoader color="#ffffff" /> : 'Update'}
+                                            {isLoadingPrimaryArtisttPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
                                         </button>
                                     </div>
 

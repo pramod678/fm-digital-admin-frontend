@@ -13,7 +13,7 @@ type FormValues = {
     lname:string;
     email:string;
     password: string;
-    UserType:string;
+    userType:string;
     secretKey:string;
 }
 
@@ -28,18 +28,24 @@ export default function SignUp() {
     } = useForm<FormValues>()
     const navigate = useNavigate();
 
-    const userType = watch("UserType")
+    const userType = watch("userType")
 
     //Register Api Call
     const { mutate: RegisterWithMail, isLoading: isLoadingRegisterWithMail } = RegisterWithMailApi(reset, navigate)
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        console.log("newData", newData)
-        if (newData?.UserType === "Admin" && newData?.secretKey !== "Admin123") { 
+        let objdata :any = {
+            fname: newData.fname,
+            lname: newData.lname,
+            email: newData.email,
+            password: newData.password,
+            userType: newData.userType
+        }
+        if (newData?.userType === "Admin" && newData?.secretKey !== "Admin123") { 
             cogoToast.error("Invalid Admin");
         } else {
-            RegisterWithMail(newData)
+            RegisterWithMail(objdata)
         }
     });
 
@@ -62,24 +68,25 @@ export default function SignUp() {
                                     className="form-radio h-5 w-5 text-blue-600 transition-colors duration-200 ease-in-out"
                                     type="radio"
                                     required={true}
-                                    name="UserType"
-                                    {...register("UserType", { required: `UserType is required ` })}
+                                    defaultChecked
+                                    name="userType"
+                                    {...register("userType", { required: `userType is required ` })}
                                     value="User"
                                 />
                                 <span className="text-gray-700">User</span>
                             </label>
 
-                            <label className="inline-flex items-center gap-2">
+                            {/* <label className="inline-flex items-center gap-2">
                                 <input
                                     className="form-radio h-5 w-5 text-blue-600 transition-colors duration-200 ease-in-out"
                                     type="radio"
                                     required={true}
                                     name="UserType"
                                     value="Admin"
-                                    {...register("UserType", { required: `UserType is required ` })}
+                                    {...register("userType", { required: `userType is required ` })}
                                 />
                                 <span className="text-gray-700">Admin</span>
-                            </label>
+                            </label> */}
                         </div>
 
 

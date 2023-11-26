@@ -8,6 +8,7 @@ export const LoginWithMailApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation((data) => api.post("/user/login", data), {
         onSuccess: (res) => {
             cogoToast.success("Login successfully");
+            console.log(res.data?.data, "res.data?.data")
             window.localStorage.setItem("token", res.data?.data);
             window.localStorage.setItem("loggedIn", "true");
             navigate('/');

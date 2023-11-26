@@ -13,13 +13,12 @@ import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../typ
 import { useNavigate } from "react-router-dom";
 import SelectRelease from "../../../ui/SelectRelease";
 import SelectAudio from "../../../ui/SelectAudio";
-import SelectPlatform from "../../../ui/SelectPlatform";
-import SelectPolicy from "../../../ui/SelectPolicy";
 import { ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi } from "../../../api/youtubeClaims";
 import { FaEdit } from "react-icons/fa";
+import { ProfileLinkingPostApi } from "../../../api/profileLinking";
 
 
-export default function Edit({ link }: { link: any }) {
+export default function CreateProfile() {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
     const [userData, setUserData] = React.useState<any>("")
@@ -33,14 +32,14 @@ export default function Edit({ link }: { link: any }) {
         setValue,
         control,
         formState: { errors }
-    } = useForm<ProfileLinkingDto>({ defaultValues: link })
+    } = useForm<ProfileLinkingDto>({})
 
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
     const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: releseInfoGet, isLoading: isLoadingreleseInfoGetOne } = ReleseInfoGetOneApi(userData.users_id, setReleseInfoGetOne)
-
+    const { mutate: ProfileLinkingPost, isLoading: isLoadingProfileLinkingPost } = ProfileLinkingPostApi(reset, setIsOpen)
     //Api calls
     React.useEffect(() => {
         getUserData({ token: token })
@@ -50,21 +49,30 @@ export default function Edit({ link }: { link: any }) {
     //featuringArtisttPost Api Call
     const { mutate: PrimaryArtisttPost, isLoading: isLoadingPrimaryArtisttPost } = PrimaryArtisttPostApi(setIsOpen)
 
-    console.log(link, ProfileLinkinAdudiogGet?.data?.data)
-
+    React.useEffect(() => {
+        const selectedObj = releseInfoGetOne?.filter((r: any) => r?.ReleaseTitle === selectRelease)
+        setSelectedId(selectedObj[0]?.releseInfo_id)
+    }, [selectRelease]);
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         console.log("newData", newData)
         newData.users_id = parseInt(userData.users_id);
+        ProfileLinkingPost(newData)
     })
 
     return (
         <>
 
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => setIsOpen(true)}>
-                <FaEdit size={size} className="cursor-pointer" />
-            </td>
+            <div className="flex justify-end w-full">
+                <button
+                    className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md mt-2"
+                    onClick={() => setIsOpen(true)}
+                >
+                    <AiOutlinePlus size={size} />
+                    Add Profile Linking
+                </button>
+            </div>
 
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
@@ -105,7 +113,7 @@ export default function Edit({ link }: { link: any }) {
 
                                         <div className="w-full mb-2">
                                             <Label text="Select Release" htmlFor="grid-Selectrelease" required={true} />
-                                            <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} />
+                                            <SelectRelease control={control} name="Selectrelease" options={releseInfoGetOne} errors={errors} required={true} setSelectRelease={setSelectRelease} />
                                         </div>
 
                                         <div className="w-full mb-2">
@@ -162,7 +170,7 @@ export default function Edit({ link }: { link: any }) {
                                             disabled={isLoadingPrimaryArtisttPost}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            {isLoadingPrimaryArtisttPost ? <BeatLoader color="#ffffff" /> : 'Update'}
+                                            {isLoadingPrimaryArtisttPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
                                         </button>
                                     </div>
 

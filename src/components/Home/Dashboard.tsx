@@ -8,11 +8,17 @@ import { BsCurrencyDollar } from 'react-icons/bs'
 import * as React from "react"
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize"
 import { Link, useNavigate } from "react-router-dom"
+import { GetLatestCoorectionsApi, GetLatestDraftsApi } from "../../api/releaseInfo"
 
 export default function UserHome({ userData }: { userData: any }) {
 
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
+
+    const { data: GetLatestDrafts, isLoading: isLoadingGetLatestDrafts } = GetLatestDraftsApi()
+
+    const { data: GetLatestCoorections, isLoading } = GetLatestCoorectionsApi()
+
     
     return (
         <>
@@ -51,23 +57,28 @@ export default function UserHome({ userData }: { userData: any }) {
                         </div>
 
                         <div className="h-60 overflow-y-auto">
-                            {['Raju Gangitla', 'Raju Gangitla', 'Raju Gangitla', 'Raju Gangitla', 'Raju Gangitla', 'Raju Gangitla', 'Raju Gangitla'].map(name => (
-                                <div className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full ">
-                                    <div className="flex items-center gap-4">
-                                        <FaRegCircleDot size={15} />
-
-                                        <div className="flex flex-col ">
-                                            <p className="text-blue-500 text-sm mb-0">{name}</p>
-                                            <p className="text-gray-500 text-xs mb-0">Date Created 17 Feb 1521</p>
+                            {GetLatestCoorections?.data?.data?.length === 0 ? (
+                                <div className="flex justify-center items-center h-full">
+                                    <p className="text-gray-500">No Corrections found.</p>
+                                </div>
+                            ) : (
+                                GetLatestCoorections?.data?.data?.map((name: any) => (
+                                    <div key={name.releseInfo_id} className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full">
+                                        <div className="flex items-center gap-4">
+                                            <FaRegCircleDot size={15} />
+                                            <div className="flex flex-col">
+                                                <p className="text-blue-500 text-sm mb-0">{name.ReleaseTitle}</p>
+                                                <p className="text-gray-500 text-xs mb-0">Date Created {name.ReleaseDate}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center cursor-pointer" onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}>
+                                            <GrEdit size={size} />
                                         </div>
                                     </div>
-
-                                    <div className="flex items-center">
-                                        <GrEdit size={size} />
-                                    </div>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
+
                     </div>
 
                     {/* Drafts */}
@@ -84,29 +95,34 @@ export default function UserHome({ userData }: { userData: any }) {
                         </div>
 
                         <div className="h-32 overflow-y-auto">
-                            {['Raju Gangitla', 'Raju Gangitla',].map(name => (
-                                <div className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full">
-                                    <div className="flex items-center gap-4">
-                                        <FaRegCircleDot size={15} />
-
-                                        <div className="flex flex-col ">
-                                            <p className="text-blue-500 text-sm mb-0">{name}</p>
-                                            <p className="text-gray-500 text-xs mb-0">Date Created 17 Feb 1521</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center">
-                                        <GrEdit size={size} />
-                                    </div>
+                            {GetLatestDrafts?.data?.data?.length === 0 ? (
+                                <div className="flex justify-center items-center h-full">
+                                    <p className="text-gray-500">No drafts available.</p>
                                 </div>
-                            ))}
-
-
-                            <button className="items-start border border-gray-500 mt-2 mx-auto px-2">
-                                <span>+</span>
-                                More
-                            </button>
+                            ) : (
+                                <>
+                                    {GetLatestDrafts?.data?.data?.map((name: any) => (
+                                        <div key={name.releseInfo_id} className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full">
+                                            <div className="flex items-center gap-4">
+                                                <FaRegCircleDot size={15} />
+                                                <div className="flex flex-col">
+                                                    <p className="text-blue-500 text-sm mb-0">{name.ReleaseTitle}</p>
+                                                    <p className="text-gray-500 text-xs mb-0">Date Created {name.ReleaseDate}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center cursor-pointer" onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}>
+                                                <GrEdit size={size} />
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <button className="items-start border border-gray-500 mt-2 mx-auto px-2">
+                                        <span>+</span>
+                                        More
+                                    </button>
+                                </>
+                            )}
                         </div>
+
                     </div>
 
                     {/* Payments */}
