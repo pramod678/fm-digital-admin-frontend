@@ -1,4 +1,4 @@
-import cogoToast from "cogo-toast";
+import cogoToast from "@successtar/cogo-toast";
 import { useMutation } from "react-query";
 import api from "../lib/api";
 import { NavigateFunction } from "react-router-dom";

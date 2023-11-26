@@ -3,7 +3,7 @@ import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { DeleteSongApi, GetReleaseInfoApi, GetReleaseInfoByIdApi, GetSongsApi, UserDataApi } from "../../api/releaseInfo";
 import { MdDelete } from "react-icons/md";
-import cogoToast from "cogo-toast";
+import cogoToast from "@successtar/cogo-toast";
 import { BounceLoader } from "react-spinners";
 import EditSongDetails from "../CreateRelease/PopUps/EditSongDetails";
 import SongDetails from "../CreateRelease/PopUps/SongDetails";

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
 import { ClipLoader } from "react-spinners";
-import cogoToast from "cogo-toast";
+import cogoToast from "@successtar/cogo-toast";
 import { RegisterWithMailApi } from "../../api/authentication"
 
 

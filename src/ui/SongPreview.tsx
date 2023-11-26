@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import cogoToast from 'cogo-toast';
+import cogoToast from '@successtar/cogo-toast';
 import useResponsiveIconSize from '../hooks/useResponsiveIconSize';
 
 

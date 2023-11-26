@@ -6,7 +6,7 @@ import { DeleteSongApi, GetReleaseInfoApi, GetSongsApi, UserDataApi } from "../.
 import { RiEditLine } from "react-icons/ri";
 import { MdDelete } from "react-icons/md";
 import EditSongDetails from "./PopUps/EditSongDetails";
-import cogoToast from "cogo-toast";
+import cogoToast from "@successtar/cogo-toast";
 import { BounceLoader } from "react-spinners";
 
 

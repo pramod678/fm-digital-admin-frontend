@@ -1,5 +1,5 @@
 // FileUpload.js
-import cogoToast from 'cogo-toast';
+import cogoToast from '@successtar/cogo-toast';
 import * as React from 'react';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
