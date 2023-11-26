@@ -78,7 +78,7 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
                                     <div className="mt-2">
 
                                         <div className="w-full mb-2">
-                                            <Label text="Primary Artist Name" htmlFor="grid-firstName" />
+                                            <Label text="Primary Artist Name" htmlFor="grid-firstName" required={true} />
                                             <InputField
                                                 type="text"
                                                 name="PrimaryArtist"
@@ -90,26 +90,24 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Primary Artist Apple Id " htmlFor="grid-lastName" />
+                                            <Label text="Primary Artist Apple Id " htmlFor="grid-lastName" required={false}  />
                                             <InputField
                                                 type="text"
                                                 name="AppleId"
                                                 placeholder="Enter Primary Artist Apple Id "
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="Primary Artist Apple Id  is required."
                                             />
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Primary Artist Spotify Id " htmlFor="grid-lastName" />
+                                            <Label text="Primary Artist Spotify Id " htmlFor="grid-lastName" required={false} />
                                             <InputField
                                                 type="text"
                                                 name="SpotifyId"
                                                 placeholder="Enter Primary Artist Spotify Id "
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="Primary Artist Spotify Id  is required."
                                             />
                                         </div>
                                     </div>

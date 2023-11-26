@@ -115,12 +115,12 @@ export default function AddTicket({ userData }: { userData: any }) {
                                     <div className="mt-2">
 
                                         <div className="w-full mb-2">
-                                            <Label text="Reason" htmlFor="grid-reason" />
+                                            <Label text="Reason" htmlFor="grid-reason" required={true} />
                                             <SelectReason control={control} name="reason" options={options} errors={errors} required={true} />
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Tell us more about it" htmlFor="grid-discreption" />
+                                            <Label text="Tell us more about it" htmlFor="grid-discreption" required={true} />
                                             <CustomTextArea
                                                 name="discreption"
                                                 placeholder="Enter description"
@@ -130,6 +130,8 @@ export default function AddTicket({ userData }: { userData: any }) {
                                                     required: "discreption is required.",
                                                 }}
                                                 rows={3}
+                                                errors={errors}
+                                                requiredMessage="discreption is required."
                                             />
                                         </div>
 

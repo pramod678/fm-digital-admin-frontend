@@ -16,7 +16,7 @@ export default function Index() {
     const navigate = useNavigate()
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [totalPages, setTotalPages] = React.useState<number>(1);
-    const pageSize = 4; // Number of items per page
+    const pageSize = 10; // Number of items per page
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi()

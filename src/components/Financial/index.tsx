@@ -27,11 +27,8 @@ export default function Index() {
         //api call
     }
 
-    const data = [
-        { report: 'All Stores', Date: '12-12-2023', totalAmount: '$20', status: 'Received' },
-        { report: 'All Stores', Date: '10-12-2023', totalAmount: '$10', status: 'Received' },
-        { report: 'All Stores', Date: '08-12-2023', totalAmount: '$15', status: 'Received' },
-        { report: 'All Stores', Date: '18-12-2023', totalAmount: '$25', status: 'Received' },
+    const data: any[] = [
+
     ]
 
     return (
@@ -40,11 +37,11 @@ export default function Index() {
                 <div className="shadow-lg w-[60%] md:w-1/3 p-2">
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Earning Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">$80</p>
+                        <p className="font-semibold text-sm sm:text-base">$00</p>
                     </div>
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Approved Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">$70</p>
+                        <p className="font-semibold text-sm sm:text-base">$00</p>
                     </div>
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Requested Amount</p>
@@ -52,7 +49,7 @@ export default function Index() {
                     </div>
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Available Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">$10</p>
+                        <p className="font-semibold text-sm sm:text-base">$00</p>
                     </div>
                 </div>
 

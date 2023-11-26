@@ -9,14 +9,14 @@ const SongsUpload = ({ file, setFile }: { file: any, setFile: any }) => {
 
     const onDrop = useCallback((acceptedFiles: any[]) => {
         const selectedFile = acceptedFiles[0];
-        const fileSizeLimit = 95 * 1024 * 1024; // 95 MB in bytes
+        const fileSizeLimit = 100 * 1024 * 1024; // 95 MB in bytes
         const allowedExtensions = ['.mp3', '.wav']; // Allowed file extensions
 
 
         const fileExtension = selectedFile.name.substring(selectedFile.name.lastIndexOf('.')).toLowerCase();
 
         if (selectedFile.size > fileSizeLimit) {
-            cogoToast.error('File size exceeds 95 MB limit.');
+            cogoToast.error('File size exceeds 100 MB limit.');
             setFile(null);
         } else if (!allowedExtensions.includes(fileExtension)) {
             cogoToast.error('Invalid file format. Please upload an MP3 or WAV file.');

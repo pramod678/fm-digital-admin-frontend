@@ -15,15 +15,9 @@ export default function ListRow({ label, index }: { label: any, index: any }) {
         switch (status) {
             case 0:
                 return (
-                    <p style={{ color: "black" }}>
-                        <MdBookmarks size={size} />
-                    </p>
-                );
-            case 1:
-                return (
-                    <p style={{ color: "#808080" }}>
-                        <BsClock size={size} />
-                    </p>
+                    <>
+                        --
+                    </>
                 );
             case 2:
                 return (
@@ -31,13 +25,7 @@ export default function ListRow({ label, index }: { label: any, index: any }) {
                         <FcCancel size={size} />
                     </p>
                 );
-            case 3:
-                return (
-                    <p style={{ color: "#0000cd" }}>
-                        <VscGitPullRequestNewChanges size={size} />
-                    </p>
-                );
-            case 4:
+            case 1:
                 return (
                     <p style={{ color: "green" }}>
                         <BsCheckCircle size={size} />
@@ -47,7 +35,7 @@ export default function ListRow({ label, index }: { label: any, index: any }) {
                 return <></>;
         }
     };
-    
+
     return (
         <>
             <tr>
@@ -71,9 +59,18 @@ export default function ListRow({ label, index }: { label: any, index: any }) {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {iconSelector(label.Status) || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    <FaEdit />
-                </td>
+                {
+                    (label.Status == 0 || label.Status == 2) && <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        --
+                    </td>
+                }
+                {
+                    label.Status == 1 && <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                        <FaEdit />
+                    </td>
+
+                }
+
             </tr>
         </>
     )

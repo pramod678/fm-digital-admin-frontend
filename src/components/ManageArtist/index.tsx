@@ -11,7 +11,7 @@ const Index = () => {
     const [userData, setUserData] = React.useState<any>("");
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [totalPages, setTotalPages] = React.useState<number>(1);
-    const pageSize = 4; // Number of items per page
+    const pageSize = 10; // Number of items per page
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate);
