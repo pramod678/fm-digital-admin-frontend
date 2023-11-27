@@ -109,8 +109,7 @@ export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
         onSuccess: (res) => {
             setUserData(res?.data?.data)
             if (res.data?.data === "token expired") {
-                alert("Token expired login again");
-                window.localStorage.clear();
+                cogoToast.success("Token Expired");
                 navigate('/sign-in');
             }
         },

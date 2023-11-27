@@ -65,24 +65,6 @@ export default function Index() {
                             />
                         </div>
 
-                        <div className="flex justify-between mt-2">
-                            <label className="inline-flex items-center cursor-pointer">
-                                <input
-                                    {...register('checkbox', {
-                                        required: 'text is required.',
-                                    })}
-                                    id="customCheckLogin"
-                                    type="checkbox"
-                                    className={`form-checkbox rounded-lg border-gray-300 bg-transparent text-[#9aa0ac] ml-1 w-5 h-5 ease-linear transition-all duration-150 ${errors.checkbox ? 'border-orange-700' : ''} `}
-                                />
-                                <span className="ml-2 text-sm font-semibold text-blueGray-600"></span>
-                                <span
-                                    className={`ml-2 text-sm font-normal font-semibold text-[#9aa0ac] ${errors.checkbox ? 'text-orange-700' : ''}`}
-                                >
-                                    Remember me
-                                </span>
-                            </label>
-                        </div>
 
                         <button
                             type={isLoadingLoginWithMail ? "button" : "submit"}

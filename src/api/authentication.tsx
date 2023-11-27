@@ -7,14 +7,18 @@ import { NavigateFunction } from "react-router-dom";
 export const LoginWithMailApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation((data) => api.post("/user/login", data), {
         onSuccess: (res) => {
-            cogoToast.success("Login successfully");
-            window.localStorage.setItem("token", res.data?.data);
-            window.localStorage.setItem("loggedIn", "true");
-            navigate('/');
-            reset()
+            if (res?.data?.status === "error"){
+                cogoToast.success(res?.data?.error);
+            }else{
+                cogoToast.success("Login successfully");
+                window.localStorage.setItem("token", res.data?.data);
+                window.localStorage.setItem("loggedIn", "true");
+                navigate('/');
+                reset()
+            }    
         },
-        onError: ({ response }) => {
-            cogoToast.error(response?.data?.message);
+        onError: (res:any) => {
+            cogoToast.error(res?.data?.error);
         }
     })
 }
@@ -40,8 +44,7 @@ export const GetUserDataApi = (setAdmin: any, setUserData: any, navigate: Naviga
             }
             setUserData(res.data.data);
             if (res.data?.data === "token expired") {
-                alert("Token expired login again");
-                window.localStorage.clear();
+                cogoToast.success("Token Expired");
                 navigate('/sign-in');
             }
         },
