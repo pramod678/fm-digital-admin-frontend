@@ -94,7 +94,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                             type="submit"
                             className="px-4 py-2 bg-[#9dd3fc] w-16 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
                         >
-                            <span className="mr-2 text-white font-semibold">Draft</span>
+                            <span className="mr-2 text-white font-semibold">Correction</span>
                         </button>
                         <span onClick={DeleteCatalog} className="cursor-pointer">
                             <MdDelete color="red" size={20} />
