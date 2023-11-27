@@ -16,7 +16,7 @@ import { BeatLoader } from "react-spinners";
 export default function AddTicket({ userData }: { userData: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
-    const [file, setFile] = useState([])
+    const [file, setFile] = useState(null)
     const [ImageDocument, setImageDocument] = useState({ preview: "", data: "" });
     const {
         register,

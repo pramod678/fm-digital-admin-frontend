@@ -14,7 +14,7 @@ import FileUpload from "../../../ui/fileupload";
 export default function AddLabel({ userData }: { userData: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
-    const [file, setFile] = useState([])
+    const [file, setFile] = useState(null)
     const [ImageDocument, setImageDocument] = useState({ preview: "", data: "" });
     const {
         register,

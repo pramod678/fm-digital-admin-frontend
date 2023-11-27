@@ -29,15 +29,15 @@ export default function UserHome({ userData }: { userData: any }) {
                     <div className="bg-black px-4 py-2">
                         <p className="text-white mb-0 text-lg font-semibold">Latest Playlists</p>
                     </div>
-                    <div className="flex flex-col sm:flex-row h-full bg-gray-500">
-                        <div className="w-[40%] sm:w-[30%]  overflow-y-auto">
+                    <div className="flex flex-col sm:flex-row gap-2 h-full bg-gray-500">
+                        <div className="w-full sm:w-[30%] overflow-y-auto">
                             <iframe src="https://open.spotify.com/embed/track/4Q1pRLjLK7PQeCV3DQ9P6A?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
                             <iframe src="https://open.spotify.com/embed/track/4GeHXCwcvz1LKszU3TnQvf?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
                             <iframe src="https://open.spotify.com/embed/track/1JUbvTiGqLUgrPj5vMOlKU?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
                             <iframe src="https://open.spotify.com/embed/track/7yLqwZe6gvG0Lr1Tdbojw7?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
                             <iframe src="https://open.spotify.com/embed/track/3PkxDIO67YHMYRdJv7bf9V?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
                         </div>
-                        <div className="w-[60%] sm:w-[70%] overflow-y-auto">
+                        <div className="w-full sm:w-[70%] overflow-y-auto">
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/MW6XMllF6Ww?si=CaYyAfL7eLb_5wL7" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/LT7_vVEuk40?si=W0_9Gyut22Q0Gpqj" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/MOItMO8pOIs?si=fE6JGXx6pK7f3EEU" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
@@ -101,7 +101,7 @@ export default function UserHome({ userData }: { userData: any }) {
                         <div className="h-32 overflow-y-auto">
                             {GetLatestDrafts?.data?.data?.length === 0 ? (
                                 <div className="flex justify-center items-center h-full">
-                                    <p className="text-gray-500">No drafts available.</p>
+                                    <p className="text-black">No drafts available.</p>
                                 </div>
                             ) : (
                                 <>
