@@ -29,7 +29,6 @@ export default function Index() {
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        console.log("newData", newData)
         LoginMail(newData)
     });
 

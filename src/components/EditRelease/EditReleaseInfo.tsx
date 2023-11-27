@@ -137,7 +137,6 @@ export default function EditReleaseInfo() {
         formData.append("users_id", parseInt(userData.users_id));
         // @ts-ignore
         formData.append("Status", parseInt(0));
-        console.log(newData.ImageDocument, "newData.ImageDocument")
         ReleaseInfoEdit(formData)
     }
     )

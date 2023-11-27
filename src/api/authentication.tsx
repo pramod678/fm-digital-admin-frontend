@@ -8,7 +8,6 @@ export const LoginWithMailApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation((data) => api.post("/user/login", data), {
         onSuccess: (res) => {
             cogoToast.success("Login successfully");
-            console.log(res.data?.data, "res.data?.data")
             window.localStorage.setItem("token", res.data?.data);
             window.localStorage.setItem("loggedIn", "true");
             navigate('/');
@@ -36,7 +35,6 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
 export const GetUserDataApi = (setAdmin: any, setUserData: any, navigate: NavigateFunction) => {
     return useMutation((data: any) => api.post("/user/userData", data), {
         onSuccess: (res) => {
-            console.log("res", res?.data)
             if (res.data?.data.userType === "Admin") {
                 setAdmin(true);
             }

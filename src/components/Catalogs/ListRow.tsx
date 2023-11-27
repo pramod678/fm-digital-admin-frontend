@@ -56,8 +56,6 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 return <></>;
         }
     };
-
- console.log("push");
  
     const statusButton = (status: any) => {
         switch (status) {

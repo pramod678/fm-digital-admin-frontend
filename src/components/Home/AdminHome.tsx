@@ -28,7 +28,6 @@ export default function AdminHome() {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data, "userData");
                 setData(data.data);
             });
     };
@@ -67,12 +66,10 @@ export default function AdminHome() {
 
     //pagination
     function handlePageClick(e:any) {
-        console.log(e);
         currentPage.current = e.selected + 1;
         getPaginatedUsers();
-
-
     }
+
     function changeLimit() {
         currentPage.current = 1;
         getPaginatedUsers();

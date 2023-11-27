@@ -56,7 +56,6 @@ export default function CreateProfile() {
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        console.log("newData", newData)
         newData.users_id = parseInt(userData.users_id);
         ProfileLinkingPost(newData)
     })

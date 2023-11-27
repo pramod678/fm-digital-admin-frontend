@@ -28,7 +28,6 @@ export const GetAllReleseInfoApi = (id: any, setReleseInfoGetOne: any) =>
             refetchOnWindowFocus: false,
             enabled: id ? true : false,
             onSuccess: (res) => {
-                console.log(res.data, "jshs")
                 setReleseInfoGetOne(res.data.data)
             },
         }
@@ -60,7 +59,6 @@ export const YoutubeClaimsGetAllApi = (id: any) =>
             refetchOnWindowFocus: false,
             enabled: id ? true : false,
             onSuccess: (res) => {
-                console.log(res.data)
             },
         }
     );

@@ -17,7 +17,6 @@ export default function Index() {
     const { data: UserData, isLoading, refetch } = GetSingleUserDataApi(id)
     const { mutate: UpdateUserData, isLoading: isLoadingSongsPost } = UpdateUserDataApi({ setReadMode, refetch, id: id, setIsEditing })
 
-    console.log(UserData?.data?.data)
     const {
         register,
         handleSubmit,

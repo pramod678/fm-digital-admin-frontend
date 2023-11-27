@@ -13,7 +13,6 @@ export const GetCatalogsApi = (id: any, setcatalogsGet: any, selectedOption:any)
             refetchOnWindowFocus: false,
             enabled: id ? true : false,
             onSuccess: (res) => {
-                console.log(res.data.result)
                 setcatalogsGet(res.data.result);
             },
         }
