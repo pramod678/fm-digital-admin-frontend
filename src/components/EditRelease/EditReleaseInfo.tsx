@@ -82,14 +82,41 @@ export default function EditReleaseInfo() {
         setSelectedItems(item);
     };
 
+
+    const onSubmit = handleSubmit(async (data: any) => {
+        const newData: any = { ...data };
+        let formData: any = new FormData();
+        formData.append("ImageDocument", file);
+        formData.append("ReleaseType", selectedItems);
+        formData.append("ReleaseTitle", newData.ReleaseTitle);
+        formData.append("PrimaryArtist", newData.PrimaryArtist);
+        formData.append("FeaturingArtist", newData.FeaturingArtist);
+        formData.append("Genre", newData.Genre);
+        formData.append("SubGenre", newData.SubGenre);
+        formData.append("LabelName", newData.LabelName);
+        formData.append("ReleaseDate", newData.ReleaseDate);
+        formData.append("PLine", newData.PLine);
+        formData.append("CLine", newData.CLine);
+        formData.append("UPCEAN", newData.UPCEAN);
+        // @ts-ignore
+        formData.append("users_id", parseInt(userData.users_id));
+        // @ts-ignore
+        formData.append("Status", parseInt(0));
+        ReleaseInfoEdit(formData)
+    }
+    )
+
+
     var today = new Date();
     var targetDate = new Date(today);
     targetDate.setDate(today.getDate() + 6); // Adding 5 days
 
+    // @ts-ignore
     function isPastTargetDate() {
         var currentDate = new Date();
         return currentDate >= targetDate;
     }
+
     if (isPastTargetDate()) {
         // Perform your action or hide the content here
         let month: any = targetDate.getMonth() + 1;
@@ -117,30 +144,6 @@ export default function EditReleaseInfo() {
         var maxDate1 = year + "-" + month + "-" + tdate;
 
     }
-    console.log(getReleaseInfo?.data?.data?.ImageDocument)
-    const onSubmit = handleSubmit(async (data: any) => {
-        const newData: any = { ...data };
-        let formData: any = new FormData();
-        formData.append("ImageDocument", file);
-        formData.append("ReleaseType", selectedItems);
-        formData.append("ReleaseTitle", newData.ReleaseTitle);
-        formData.append("PrimaryArtist", newData.PrimaryArtist);
-        formData.append("FeaturingArtist", newData.FeaturingArtist);
-        formData.append("Genre", newData.Genre);
-        formData.append("SubGenre", newData.SubGenre);
-        formData.append("LabelName", newData.LabelName);
-        formData.append("ReleaseDate", newData.ReleaseDate);
-        formData.append("PLine", newData.PLine);
-        formData.append("CLine", newData.CLine);
-        formData.append("UPCEAN", newData.UPCEAN);
-        // @ts-ignore
-        formData.append("users_id", parseInt(userData.users_id));
-        // @ts-ignore
-        formData.append("Status", parseInt(0));
-        ReleaseInfoEdit(formData)
-    }
-    )
-
 
 
     return (
@@ -227,14 +230,17 @@ export default function EditReleaseInfo() {
 
                             <div className="w-full mb-2">
                                 <Label text="Release Date" htmlFor="grid-ReleaseDate" required={true} />
-                                <InputField
+                                <input
                                     type="date"
                                     name="ReleaseDate"
                                     placeholder="Enter Release Date"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="ReleaseDate is required."
+                                    onKeyDown={(e) => e.preventDefault()}
                                     min={maxDate || maxDate1}
+                                    className={`border-2 mt-2 px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full transition ease-in-out duration-150 ${errors?.ReleaseDate ? 'border-red-500' : 'border-gray-300'
+                                        }`}
+                                    {...register("ReleaseDate", {
+                                        required: "ReleaseDate is required.",
+                                    })}
                                 />
                             </div>
                         </div>

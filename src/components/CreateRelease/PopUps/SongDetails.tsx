@@ -62,7 +62,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
 
 
     //featuringArtisttPost Api Call
-    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi({ setIsOpen, refetch, reset })
+    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi({ setIsOpen, refetch, reset, setFile })
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
@@ -351,7 +351,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
                                                 placeholder="Enter hh:mm:ss "
                                                 register={register}
                                                 errors={errors}
-
+                                                onKeyDown={(e:any) => e.preventDefault()}
                                             />
                                         </div>
 

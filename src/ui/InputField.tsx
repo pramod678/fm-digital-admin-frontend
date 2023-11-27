@@ -10,7 +10,8 @@ interface InputFieldProps {
     errors?: any; // specify the correct type based on your validation schema
     requiredMessage?: string;
     min?: any
-    disabled?:any
+    disabled?: any
+    onKeyDown?: any
 }
 
 const InputField: FC<InputFieldProps> = ({
@@ -21,7 +22,8 @@ const InputField: FC<InputFieldProps> = ({
     errors,
     requiredMessage = '',
     min,
-    disabled
+    disabled,
+    onKeyDown
 }) => {
     return (
         <>
@@ -30,6 +32,7 @@ const InputField: FC<InputFieldProps> = ({
                 placeholder={placeholder}
                 min={min}
                 disabled={disabled}
+                onKeyDown={onKeyDown}
                 className={`border-2 mt-2 px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full transition ease-in-out duration-150 ${errors[name] ? 'border-red-500' : 'border-gray-300'
                     }`}
                 {...register(name, {

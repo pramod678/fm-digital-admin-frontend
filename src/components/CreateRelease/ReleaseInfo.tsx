@@ -67,7 +67,7 @@ export default function ReleaseInfo() {
     }
     if (isPastTargetDate()) {
         // Perform your action or hide the content here
-        let month:any = targetDate.getMonth() + 1;
+        let month: any = targetDate.getMonth() + 1;
         let year = targetDate.getUTCFullYear() - 0;
         let tdate: any = targetDate.getDate();
         if (month < 10) {
@@ -92,11 +92,11 @@ export default function ReleaseInfo() {
         var maxDate1 = year + "-" + month + "-" + tdate;
 
     }
-    
+
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        let formData:any = new FormData();
+        let formData: any = new FormData();
         formData.append("ImageDocument", file);
         formData.append("ReleaseType", selectedItems);
         formData.append("ReleaseTitle", newData.ReleaseTitle);
@@ -125,13 +125,13 @@ export default function ReleaseInfo() {
                 <div className="flex items-center">
                     {tabs?.map((r, index) => (
                         // <Link to={`/${r.route}`}>
-                            <button
-                                key={index}
-                                type="button"
-                                className={`text-left text-sm md:text-base pl-2 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Release Info" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
-                            >
-                                {r.name}
-                            </button>
+                        <button
+                            key={index}
+                            type="button"
+                            className={`text-left text-sm md:text-base pl-2 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Release Info" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
+                        >
+                            {r.name}
+                        </button>
                         // </Link>
                     ))}
                 </div>
@@ -143,7 +143,7 @@ export default function ReleaseInfo() {
                 <div className="flex flex-col md:flex-row gap-4 p-8">
                     {/* Image */}
                     <div className="flex flex-col items-center mt-4 space-y-4">
-                        <FileUpload file={file} setFile={setFile}/>
+                        <FileUpload file={file} setFile={setFile} />
                         <div className="text-left">
                             <h6 className="font-bold text-center text-teal-500">Artwork Guidelines</h6>
                             <ul className="list-disc list-inside text-xs">
@@ -197,14 +197,17 @@ export default function ReleaseInfo() {
 
                             <div className="w-full mb-2">
                                 <Label text="Release Date" htmlFor="grid-ReleaseDate" required={true} />
-                                <InputField
+                                <input
                                     type="date"
                                     name="ReleaseDate"
                                     placeholder="Enter Release Date"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="ReleaseDate is required."
+                                    onKeyDown={(e) => e.preventDefault()}
                                     min={maxDate || maxDate1}
+                                    className={`border-2 mt-2 px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full transition ease-in-out duration-150 ${errors?.ReleaseDate ? 'border-red-500' : 'border-gray-300'
+                                        }`}
+                                    {...register("ReleaseDate", {
+                                        required: "ReleaseDate is required.",
+                                    })}
                                 />
                             </div>
                         </div>

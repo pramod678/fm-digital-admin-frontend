@@ -46,11 +46,12 @@ export const PrimaryArtisttPostApi = (setIsOpen: any) => {
 }
 
 
-export const SongsPostApi = ({ setIsOpen, refetch, reset }: { setIsOpen: any, refetch?: any, reset?:any }) => {
+export const SongsPostApi = ({ setIsOpen, refetch, reset, setFile }: { setIsOpen: any, refetch?: any, reset?: any, setFile?:any }) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/songsInfoPost", data), {
         onSuccess: (res) => {
             cogoToast.success("Song Added");
+            setFile(null)
             refetch()
             reset()
             queryClient.refetchQueries([`GetSongs`]);
@@ -62,11 +63,12 @@ export const SongsPostApi = ({ setIsOpen, refetch, reset }: { setIsOpen: any, re
     })
 }
 
-export const EditSongsApi = ({ setIsOpen, refetch, id }: { setIsOpen: any, refetch?: any, id?:any }) => {
+export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: any, refetch?: any, id?: any, setFile?:any }) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/songsInfoUpdate/${id}`, data), {
         onSuccess: (res) => {
             cogoToast.success("Song Updated");
+            setFile(null)
             refetch()
             queryClient.refetchQueries([`GetSongs`]);
             setIsOpen(false)

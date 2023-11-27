@@ -67,7 +67,7 @@ export default function EditSongDetails({ userData, getReleaseInfo, song, refetc
  
 
     //edit song Api Call
-    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = EditSongsApi({ setIsOpen, refetch, id:song?.songsInfo_id })
+    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = EditSongsApi({ setIsOpen, refetch, id: song?.songsInfo_id, setFile })
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
@@ -353,7 +353,7 @@ export default function EditSongDetails({ userData, getReleaseInfo, song, refetc
                                                 placeholder="Enter hh:mm:ss "
                                                 register={register}
                                                 errors={errors}
-
+                                                onKeyDown={(e: any) => e.preventDefault()}
                                             />
                                         </div>
 

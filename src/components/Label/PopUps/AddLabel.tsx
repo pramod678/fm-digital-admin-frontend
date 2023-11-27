@@ -35,6 +35,7 @@ export default function AddLabel({ userData }: { userData: any }) {
         formData.append("labelDocument", file);
         formData.append("title", newData.title);
         formData.append("youtubeURL", newData.ReleaseTitle);
+        formData.append("users_id", parseInt(userData?.users_id));
         LabelPost(formData)
     });
 
