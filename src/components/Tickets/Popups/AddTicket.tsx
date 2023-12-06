@@ -57,7 +57,7 @@ export default function AddTicket({ userData }: { userData: any }) {
 
 
     //featuringArtisttPost Api Call
-    const { mutate: TicketPost, isLoading: isLoadingTicketPost } = TicketPostApi(setIsOpen, reset)
+    const { mutate: TicketPost, isLoading: isLoadingTicketPost } = TicketPostApi(setIsOpen, reset, setFile)
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         let formData: any = new FormData();

@@ -54,7 +54,7 @@ export default function Index() {
                 </div>
 
                 <p className="text-sm sm:text-base font-semibold mt-4">Request Amount</p>
-                <div className="flex items-center justify-between gap-4 mt-2 bg-gray-100 w-1/2">
+                <div className="flex items-center justify-between gap-4 mt-2 bg-gray-100 sm:w-1/2">
                     <input
                         type="number"
                         value={amount}

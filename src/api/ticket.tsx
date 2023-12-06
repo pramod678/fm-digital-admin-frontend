@@ -3,13 +3,14 @@ import api from "../lib/api";
 import cogoToast from "@successtar/cogo-toast";
 
 
-export const TicketPostApi = (setIsOpen: any, reset: any) => {
+export const TicketPostApi = (setIsOpen: any, reset: any, setFile:any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/ticketPost", data), {
         onSuccess: (res) => {
             cogoToast.success("Ticket Added");
             queryClient.refetchQueries([` GetAllTicket`]);
             reset()
+            setFile(null)
             setIsOpen(false)
         },
         onError: ({ response }) => {

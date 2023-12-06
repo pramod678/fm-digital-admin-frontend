@@ -153,7 +153,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                                     {openDropdownIndex === index && subRoutes && subRoutes.map((subLink) => {
                                                         const { path, icon, name } = subLink;
                                                         return (
-                                                            <NavLink to={path}
+                                                            <NavLink to={path} onClick={() => setIsOpen(!isOpen)}
                                                                 className={({ isActive }) => isActive ? 'flex items-center text-gray-100 py-3 capitalize transition-all duration-300 font-semibold' : 'flex items-center font-semibold text-gray-400 py-3 capitalize transition-all duration-300 '} end>
                                                                 <span className=' mr-2 grid place-items-center transition-all duration-300 '>{icon}</span>
                                                                 {name}
@@ -164,7 +164,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                             ) : (
                                                 <>
                                                     <div onClick={toggleDropdown} className='cursor-pointer'>
-                                                        <NavLink to={path}
+                                                            <NavLink to={path} onClick={() => setIsOpen(!isOpen)}
                                                             className={({ isActive }) => isActive ? 'flex items-center text-gray-100 py-3 capitalize transition-all duration-300 font-semibold' : 'flex items-center font-semibold text-gray-400 py-3 capitalize transition-all duration-300 '} end>
                                                             <span className=' mr-2 grid place-items-center transition-all duration-300 '>{icon}</span>
                                                             {name}
