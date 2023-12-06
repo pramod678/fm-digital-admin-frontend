@@ -116,9 +116,6 @@ export default function ReleaseInfo() {
         ReleaseInfoPost(formData)
     }
     )
-
-
-
     return (
         <>
             <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
