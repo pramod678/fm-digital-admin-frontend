@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {  Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export default function ProtectedRoute({ children }: { children: any }) {
-    const isLoggedIn = window.localStorage.getItem("loggedIn");
-    return isLoggedIn ? children : <Navigate to="/sign-in" />;
-}
+    // const isLoggedIn = window.localStorage.getItem("loggedIn");
+    const token = localStorage.getItem("token")
+    return token ? children : <Navigate to="/sign-in" />;
+}   
