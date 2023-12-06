@@ -12,7 +12,6 @@ export const LoginWithMailApi = (reset: any, navigate: NavigateFunction) => {
             }else{
                 cogoToast.success("Login successfully");
                 window.localStorage.setItem("token", res.data?.data);
-                window.localStorage.setItem("loggedIn", "true");
                 navigate('/');
                 reset()
             }    
@@ -48,6 +47,7 @@ export const GetUserDataApi = (setAdmin: any, setUserData: any, navigate: Naviga
                 navigate('/sign-in');
             }
         },
+        retry:1,
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
         }

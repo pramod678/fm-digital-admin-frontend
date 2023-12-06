@@ -117,7 +117,8 @@ export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
-        }
+        },
+        retry:1000
     })
 }
 
