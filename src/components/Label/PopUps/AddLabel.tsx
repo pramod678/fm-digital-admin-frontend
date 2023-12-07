@@ -27,7 +27,7 @@ export default function AddLabel({ userData }: { userData: any }) {
 
 
     //featuringArtisttPost Api Call
-    const { mutate: LabelPost, isLoading: isLoadingLabelPost } = LabelPostApi(setIsOpen, reset)
+    const { mutate: LabelPost, isLoading: isLoadingLabelPost } = LabelPostApi(setIsOpen, reset, setFile)
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
