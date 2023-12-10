@@ -19,6 +19,20 @@ export const LabelPostApi = (setIsOpen: any, reset: any, setFile:any) => {
     })
 }
 
+export const UpdateLabelApi = (id: any, setIsOpen: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.put(`createRelease/labelUpdate/label_id/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("updated Successfully");
+            setIsOpen(false)
+            queryClient.refetchQueries([`GetAllLabels`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
 export const GetAllLabelsApi = (id: any) =>
     useQuery(
         [`GetAllLabels`],

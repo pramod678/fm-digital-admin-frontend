@@ -86,7 +86,7 @@ export default function Index() {
                                                     GetAllLabels?.data?.data?.slice(startIndex, endIndex)?.map((label: any, index: any) => {
                                                         return (
                                                             <React.Fragment key={index}>
-                                                                <ListRow label={label} index={index} />
+                                                                <ListRow label={label} index={index} userData={userData} />
                                                             </React.Fragment>
                                                         )
                                                     })

@@ -19,8 +19,9 @@ export default function Index() {
     const pageSize = 10; // Number of items per page
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi()
+    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi(userData?.users_id)
 
+    console.log(userData?.users_id, "userData?.users_id")
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);

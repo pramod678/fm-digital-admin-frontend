@@ -6,9 +6,10 @@ import { BsCheckCircle, BsClock } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
+import UpdateLabel from "./PopUps/UpdateLabel";
 
 
-export default function ListRow({ label, index }: { label: any, index: any }) {
+export default function ListRow({ label, index, userData }: { label: any, index: any, userData :any}) {
     const size = useResponsiveIconSize();
 
     const iconSelector = (status: any) => {
@@ -19,16 +20,16 @@ export default function ListRow({ label, index }: { label: any, index: any }) {
                         --
                     </>
                 );
-            case 2:
-                return (
-                    <p style={{ color: "#add8e6" }}>
-                        <FcCancel size={size} />
-                    </p>
-                );
             case 1:
                 return (
                     <p style={{ color: "green" }}>
                         <BsCheckCircle size={size} />
+                    </p>
+                );
+            case 2:
+                return (
+                    <p style={{ color: "#add8e6" }}>
+                        <FcCancel size={size} />
                     </p>
                 );
             default:
@@ -60,14 +61,12 @@ export default function ListRow({ label, index }: { label: any, index: any }) {
                     {iconSelector(label.Status) || '--'}
                 </td>
                 {
-                    (label.Status == 0 || label.Status == 2) && <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    (label.Status == 0 || label.Status == 1) && <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                         --
                     </td>
                 }
                 {
-                    label.Status == 1 && <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                        <FaEdit />
-                    </td>
+                    label.Status == 2 && <UpdateLabel userData={userData} labelData={label} />
 
                 }
 

@@ -64,6 +64,7 @@ export default function AddTicket({ userData }: { userData: any }) {
         formData.append("ticketDocument", file);
         formData.append("reason", newData.reason);
         formData.append("discreption", newData.discreption);
+        formData.append("users_id", parseInt(userData?.users_id));
         TicketPost(formData)
     });
 
