@@ -8,10 +8,14 @@ import InputField from "../../../ui/InputField";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
 import { LabelDto } from "../../../types/label";
-import { LabelPostApi } from "../../../api/label";
+import { LabelPostApi, UpdateLabelApi } from "../../../api/label";
 import FileUpload from "../../../ui/fileupload";
+import { FaEdit } from "react-icons/fa";
 
-export default function AddLabel({ userData }: { userData: any }) {
+
+
+
+export default function UpdateLabel({ userData, labelData }: { userData: any, labelData:any }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
     const [file, setFile] = useState(null)
@@ -22,12 +26,10 @@ export default function AddLabel({ userData }: { userData: any }) {
         watch,
         reset,
         formState: { errors }
-    } = useForm<LabelDto>()
+    } = useForm<LabelDto>({ defaultValues: labelData })
 
 
-
-    //featuringArtisttPost Api Call
-    const { mutate: LabelPost, isLoading: isLoadingLabelPost } = LabelPostApi(setIsOpen, reset, setFile)
+    const { mutate: UpdateLabel, isLoading } = UpdateLabelApi(labelData?.label_id, setIsOpen)
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
@@ -36,18 +38,14 @@ export default function AddLabel({ userData }: { userData: any }) {
         formData.append("title", newData.title);
         formData.append("youtubeURL", newData.youtubeURL);
         formData.append("users_id", parseInt(userData?.users_id));
-        LabelPost(formData)
+        UpdateLabel(formData)
     });
 
     return (
         <>
-            <button
-                className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
-                onClick={() => setIsOpen(true)}
-            >
-                <AiOutlinePlus size={size} />
-                AddLabel
-            </button>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => setIsOpen(true)}>
+                <FaEdit />
+            </td>
 
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
@@ -79,7 +77,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Add Label
+                                    Update Label
                                 </Dialog.Title>
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
@@ -125,10 +123,10 @@ export default function AddLabel({ userData }: { userData: any }) {
                                         </button>
                                         <button
                                             type="submit"
-                                            disabled={isLoadingLabelPost}
+                                            disabled={isLoading}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            {isLoadingLabelPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
+                                            {isLoading ? <BeatLoader color="#ffffff" /> : 'Update'}
                                         </button>
                                     </div>
 

@@ -3,7 +3,7 @@ import api from "../lib/api";
 import cogoToast from "@successtar/cogo-toast";
 
 
-export const TicketPostApi = (setIsOpen: any, reset: any, setFile:any) => {
+export const TicketPostApi = (setIsOpen: any, reset: any, setFile: any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/ticketPost", data), {
         onSuccess: (res) => {
@@ -19,10 +19,10 @@ export const TicketPostApi = (setIsOpen: any, reset: any, setFile:any) => {
     })
 }
 
-export const GetAllTicketApi = () =>
+export const GetAllTicketApi = (userId: any) =>
     useQuery(
-        [` GetAllTicket`],
-        async () => await api.get(`createRelease/ticketgetAll`),
+        [` GetAllTicket`, userId],
+        async () => await api.get(`createRelease/ticketgetAll/users_id/${userId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

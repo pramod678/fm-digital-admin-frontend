@@ -46,7 +46,7 @@ export const PrimaryArtisttPostApi = (setIsOpen: any) => {
 }
 
 
-export const SongsPostApi = ({ setIsOpen, refetch, reset, setFile }: { setIsOpen: any, refetch?: any, reset?: any, setFile?:any }) => {
+export const SongsPostApi = ({ setIsOpen, refetch, reset, setFile }: { setIsOpen: any, refetch?: any, reset?: any, setFile?: any }) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/songsInfoPost", data), {
         onSuccess: (res) => {
@@ -63,7 +63,7 @@ export const SongsPostApi = ({ setIsOpen, refetch, reset, setFile }: { setIsOpen
     })
 }
 
-export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: any, refetch?: any, id?: any, setFile?:any }) => {
+export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: any, refetch?: any, id?: any, setFile?: any }) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/songsInfoUpdate/${id}`, data), {
         onSuccess: (res) => {
@@ -118,7 +118,7 @@ export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
         },
-        retry:1000
+        retry: 1000
     })
 }
 
@@ -135,7 +135,7 @@ export const ReleaseInfoPostApi = (navigate: NavigateFunction) => {
     })
 }
 
-export const EditInfoReleaseApi = (navigate: NavigateFunction, id: any, refetch:any) => {
+export const EditInfoReleaseApi = (navigate: NavigateFunction, id: any, refetch: any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/releseInfoUpdate/${id}`, data), {
         onSuccess: (res) => {
@@ -149,7 +149,7 @@ export const EditInfoReleaseApi = (navigate: NavigateFunction, id: any, refetch:
     })
 }
 
-export const UpdatePrimaryArtistApi = (id: any, setIsOpen:any) => {
+export const UpdatePrimaryArtistApi = (id: any, setIsOpen: any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/primaryArtistUpdate/${id}`, data), {
         onSuccess: (res) => {
@@ -250,9 +250,9 @@ export const GetSongsApi = (id: any) =>
     );
 
 
-export const DeleteSongApi = ( navigate: NavigateFunction, refetch: any) => {
+export const DeleteSongApi = (navigate: NavigateFunction, refetch: any) => {
     const queryClient = useQueryClient();
-    return useMutation((data:any) => api.delete(`createRelease/songsInfoDelete/${data}`), {
+    return useMutation((data: any) => api.delete(`createRelease/songsInfoDelete/${data}`), {
         onSuccess: (res) => {
             cogoToast.success("deleted");
             refetch()
@@ -264,10 +264,10 @@ export const DeleteSongApi = ( navigate: NavigateFunction, refetch: any) => {
 }
 
 
-export const GetLatestDraftsApi = () =>
+export const GetLatestDraftsApi = (userId: any) =>
     useQuery(
-        [`GetLatestDrafts`],
-        async () => await api.get(`createRelease/dasboardDraftgetAll/Status/${0}`),
+        [`GetLatestDrafts`, userId],
+        async () => await api.get(`createRelease/dasboardDraftgetAll/Status/${0}/users_id/${userId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
@@ -277,10 +277,10 @@ export const GetLatestDraftsApi = () =>
         }
     );
 
-export const GetLatestCoorectionsApi = () =>
+export const GetLatestCoorectionsApi = (userId: any) =>
     useQuery(
-        [`GetLatestCoorections`],
-        async () => await api.get(`createRelease/dasboardDraftgetAll/Status/${3}`),
+        [`GetLatestCoorections`, userId],
+        async () => await api.get(`createRelease/dasboardDraftgetAll/Status/${3}/users_id/${userId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

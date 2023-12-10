@@ -62,10 +62,10 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
             case 0:
                 return (
                     <>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 w-full">
                             <button
                                 type="submit"
-                                className="px-4 w-16 text-center py-2 bg-[#9dd3fc] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                                className="px-4 w-20 text-center py-2 bg-[#9dd3fc] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none "
                             >
                                 <span className="mr-2 text-white font-semibold">Draft</span>
                             </button>
@@ -92,9 +92,9 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                     <div className="flex items-center gap-2">
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-[#9dd3fc] w-16 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none flex items-center"
+                            className="px-4 py-2 bg-[#0000cd] w-20 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none"
                         >
-                            <span className="mr-2 text-white font-semibold">Correction</span>
+                            <span className=" text-white text-xs font-semibold">Correct..</span>
                         </button>
                         <span onClick={DeleteCatalog} className="cursor-pointer">
                             <MdDelete color="red" size={20} />

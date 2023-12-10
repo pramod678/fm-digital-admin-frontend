@@ -47,10 +47,10 @@ export default function Stores() {
         <>
             <button
                 type="submit"
-                className="px-4 py-2 bg-cyan-500 w-16 text-xs text-white text-base rounded hover:bg-cyan-600 focus:outline-none flex items-center"
+                className="px-4 py-2 w-20 bg-cyan-500 text-xs text-white text-base rounded hover:bg-cyan-600 focus:outline-none "
                 onClick={() => setIsOpen(true)}
             >
-                <span className="mr-2 text-white font-semibold">Stores</span>
+                <span className=" text-white font-semibold">Stores</span>
             </button>
 
             <Transition appear show={isOpen} as={Fragment}>

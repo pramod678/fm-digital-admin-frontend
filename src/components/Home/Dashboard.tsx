@@ -15,9 +15,9 @@ export default function UserHome({ userData }: { userData: any }) {
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
 
-    const { data: GetLatestDrafts, isLoading: isLoadingGetLatestDrafts } = GetLatestDraftsApi()
+    const { data: GetLatestDrafts, isLoading: isLoadingGetLatestDrafts } = GetLatestDraftsApi(userData?.users_id)
 
-    const { data: GetLatestCoorections, isLoading } = GetLatestCoorectionsApi()
+    const { data: GetLatestCoorections, isLoading } = GetLatestCoorectionsApi(userData?.users_id)
 
     
     return (
