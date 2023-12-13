@@ -113,31 +113,31 @@ export default function Index() {
                                 <table className="min-w-full divide-y divide-gray-200">
                                     <thead className="bg-gray-50">
                                         <tr>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 No.
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Status
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Album Artwork
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Title
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Artist Name
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Genre
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Label
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 # of tracks
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Release Date
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">

@@ -44,7 +44,7 @@ export default function Index({ data }: { data: any }) {
     return (
         <>
             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => setIsOpen(true)}>
-                <FaUserEdit className="cursor-pointer" size={size} />
+                <FaUserEdit className="cursor-pointer ml-4" size={size} />
             </td>
 
 

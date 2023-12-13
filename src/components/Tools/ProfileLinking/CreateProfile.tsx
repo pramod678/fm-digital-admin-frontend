@@ -134,7 +134,7 @@ export default function CreateProfile() {
                                         <div className="w-full mb-2">
                                             <Label text="Facebook Link" htmlFor="grid-FecebookLink" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="FecebookLink"
                                                 placeholder="Enter Facebook Link"
                                                 register={register}
@@ -146,7 +146,7 @@ export default function CreateProfile() {
                                         <div className="w-full mb-2">
                                             <Label text="Instagram Link" htmlFor="grid-InstagramLink" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="InstagramLink"
                                                 placeholder="Enter Instagram Link"
                                                 register={register}

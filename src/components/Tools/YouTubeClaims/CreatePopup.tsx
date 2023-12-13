@@ -135,7 +135,7 @@ export default function CreatePopup() {
                                         <div className="w-full mb-2">
                                             <Label text="Paste URL" htmlFor="grid-PasteURL" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="PasteURL"
                                                 placeholder="Paste URL"
                                                 register={register}

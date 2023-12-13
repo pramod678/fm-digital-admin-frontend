@@ -125,14 +125,14 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                 <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {index + 1}
                 </td>
-                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    <div className="w-full flex justify-center">
+                <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer ">
+                    <div className="flex justify-center sm:mr-2 lg:mr-4">
                         {iconSelector(catalog.Status)}
                     </div>
                 </td>
                 <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ImageDocument ? (
-                        <div className="w-full flex justify-center">
+                        <div className="flex justify-center sm:mr-3 lg:mr-6">
                             <img
                                 src={`https://fmdigitalofficial.in/${catalog.ImageDocument}`}
                                 alt="Catalog"
@@ -159,7 +159,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
                     {catalog.Tracks || '--'}
                 </td>
                 <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.createdAt ? GetDate(catalog.createdAt) : '--'}
+                    {catalog.ReleaseDate ? catalog.ReleaseDate : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {/* {catalog.actions || '--'} */}
