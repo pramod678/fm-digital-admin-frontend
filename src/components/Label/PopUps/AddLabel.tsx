@@ -101,7 +101,7 @@ export default function AddLabel({ userData }: { userData: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Youtube Url" htmlFor="grid-youtubeURL" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="youtubeURL"
                                                 placeholder="Enter youtubeURL "
                                                 register={register}
