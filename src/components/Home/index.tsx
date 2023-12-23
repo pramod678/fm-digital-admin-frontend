@@ -13,11 +13,10 @@ export default function Index(){
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setAdmin, setUserData, navigate)
 
-    console.log(userData, "userData")
 
     useEffect(() => {
         getUserData({ token: token })
     }, []);
 
-    return (<>{admin ? <AdminHome /> : <Dashboard userData={userData} />}</>);
+    return (<>{true ? <AdminHome /> : <Dashboard userData={userData} />}</>);
 }

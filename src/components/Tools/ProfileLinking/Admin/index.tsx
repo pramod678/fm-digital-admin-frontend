@@ -1,18 +1,18 @@
 import * as React from "react";
 import { BounceLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
-import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../types/tools";
+import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../../types/tools";
 import { useNavigate } from "react-router-dom";
-import { UserDataApi } from "../../../api/releaseInfo";
-import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../api/youtubeClaims";
-import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../api/profileLinking";
+import { UserDataApi } from "../../../../api/releaseInfo";
+import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../../api/youtubeClaims";
+import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../../api/profileLinking";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import CreateProfile from "./CreateProfile";
 
 
 
-export default function Index() {
+
+export default function AdminProfileLinkingIndex() {
 
     const {
         register,
@@ -29,6 +29,32 @@ export default function Index() {
     const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
     const [selectRelease, setSelectRelease] = React.useState<any>([]);
     const [selectedId, setSelectedId] = React.useState<any>();
+
+    const data = [
+        {
+            userId: 'user_002',
+            userName: 'Jane Smith',
+            email: 'janesmith@example.com',
+            Selectrelease: 'Release 1',
+            SelectAudio: 'Audio 1',
+            Selectplatform: 'Platform 1',
+            FecebookLink: 'https://www.facebook.com/page1',
+            InstagramLink: 'https://www.instagram.com/page1',
+            createdAt: '2023-12-18T08:30:00.000Z'
+        },
+        {
+            userId: 'user_002',
+            userName: 'Jane Smith',
+            email: 'janesmith@example.com',
+            Selectrelease: 'Release 2',
+            SelectAudio: 'Audio 2',
+            Selectplatform: 'Platform 2',
+            FecebookLink: 'https://www.facebook.com/page2',
+            InstagramLink: 'https://www.instagram.com/page2',
+            createdAt: '2023-12-17T12:45:00.000Z'
+        },
+        // Add more dummy data objects as needed...
+    ];
 
 
     //Api calls
@@ -102,25 +128,34 @@ export default function Index() {
                 <div className="w-1/2 bg-neutral-800 p-2">
                     <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Profile Linking</p>
                 </div>
-                <CreateProfile />
 
-                {/* Filters */}
-                {/* <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
-                    <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full mb-2">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                         <input
                             type="text"
-                            className="px-4 py-2  rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             id="search"
                             placeholder="Search Title"
                             defaultValue={""}
-                            onChange={handleFilter}
+                        // onChange={handleFilter}
                         />
+                        <select
+                            className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        // onChange={(e) => setSelectedOption(e.target.value)}
+                        // value={selectedOption}
+                        >
+                            <option value="All">UserId</option>
+                            <option value={4}>Approved</option>
+                            <option value={0}>Draft</option>
+                            <option value={2}>Rejected</option>
+                            <option value={3}>Corrections</option>
+                        </select>
+                    </div>
 
+                    <div className="mt-4 sm:mt-0">
+                        <p className="font-semibold text-gray-700">Total : 20</p>
                     </div>
-                    <div className="">
-                        <p className="font-semibold text-gray-700">Total Releases : {ProfileLinkingGetAll?.data?.data?.length || 0}</p>
-                    </div>
-                </div> */}
+                </div>
 
                 <p className="text-base sm:text-lg font-semibold my-4 ">Your Profile Linking History</p>
 
@@ -133,6 +168,15 @@ export default function Index() {
                                         <tr>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 No.
+                                            </th>
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                User ID
+                                            </th>
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                User Name
+                                            </th>
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                Email
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Release Title
@@ -150,23 +194,23 @@ export default function Index() {
                                                 Ig
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Status
+                                                Date
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Date
+                                                Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {
-                                            currentData?.length === 0 ? (
+                                            data?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No records found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                currentData?.map((link: any, index: any) => {
+                                                data?.map((link: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow link={link} index={index}

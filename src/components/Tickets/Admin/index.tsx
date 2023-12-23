@@ -1,15 +1,14 @@
 import * as React from "react";
 import ListRow from "./ListRow";
-import AddTicket from "./Popups/AddTicket";
 import { useNavigate } from "react-router-dom";
-import { UserDataApi } from "../../api/releaseInfo";
-import { GetAllTicketApi } from "../../api/ticket";
+import { UserDataApi } from "../../../api/releaseInfo";
+import { GetAllTicketApi } from "../../../api/ticket";
 import { BounceLoader } from "react-spinners";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 
 
-export default function Index() {
+export default function AdminTicketsIndex() {
 
 
     const [userData, setUserData] = React.useState<any>("");
@@ -42,6 +41,27 @@ export default function Index() {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, GetAllTicket?.data?.data.length);
 
+    const data = [
+        {
+            reason: 'Reason 1',
+            discreption: 'Description 1',
+            Status: 0, // 0 for Pending, 1 for Done,
+             userId: 'user_002',
+            userName: 'Jane Smith',
+            email: 'janesmith@example.com',
+        },
+        {
+            reason: 'Reason 2',
+            discreption: 'Description 2',
+            Status: 1, // 0 for Pending, 1 for Done
+            userId: 'user_002',
+            userName: 'Jane Smith',
+            email: 'janesmith@example.com',
+        },
+        // Add more dummy data objects as needed...
+    ];
+
+
     //search 
     // user id filter for admin
 
@@ -59,26 +79,37 @@ export default function Index() {
                 </div>
             )}
             <div className="p-4">
-                <div className="flex items-center justify-between">
-                    <select className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option defaultValue="All">All</option>
-                        <option value="true">Done</option>
-                        <option value="false">Pending</option>
-                    </select>
-                    <select
-                        className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    // onChange={(e) => setSelectedOption(e.target.value)}
-                    // value={selectedOption}
-                    >
-                        <option value="All">UserId</option>
-                        <option value={4}>Approved</option>
-                        <option value={0}>Draft</option>
-                        <option value={2}>Rejected</option>
-                        <option value={3}>Corrections</option>
-                    </select>
-                    <AddTicket userData={userData} />
+                <div className="w-1/2 mb-4 bg-neutral-800 p-2">
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Tickets</p>
                 </div>
-                <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :{GetAllTicket?.data?.data?.length}</p>
+                <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full mb-2">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                        <input
+                            type="text"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            id="search"
+                            placeholder="Search Title"
+                            defaultValue={""}
+                        // onChange={handleFilter}
+                        />
+                        <select
+                            className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        // onChange={(e) => setSelectedOption(e.target.value)}
+                        // value={selectedOption}
+                        >
+                            <option value="All">UserId</option>
+                            <option value={4}>Approved</option>
+                            <option value={0}>Draft</option>
+                            <option value={2}>Rejected</option>
+                            <option value={3}>Corrections</option>
+                        </select>
+                    </div>
+
+                    <div className="mt-4 sm:mt-0">
+                        <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :{GetAllTicket?.data?.data?.length}</p>
+
+                    </div>
+                </div>
                 <div className="flex flex-col">
                     <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -107,19 +138,21 @@ export default function Index() {
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Status
                                             </th>
-
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 mt-2">
                                         {
-                                            GetAllTicket?.data?.data?.length === 0 ? (
+                                            data?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No tickets found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                GetAllTicket?.data?.data?.slice(startIndex, endIndex)?.map((data: any, index: any) => {
+                                                data?.map((data: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow data={data} index={index} />
