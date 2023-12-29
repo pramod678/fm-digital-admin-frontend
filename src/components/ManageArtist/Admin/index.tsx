@@ -73,7 +73,7 @@ const AdminManageArtistIndex = () => {
                     </div>
 
                     <div className="mt-4 sm:mt-0">
-                        <p className="text-right text-lg font-semibold text-black mt-2">Total :10</p>
+                        <p className="text-right text-lg font-semibold text-black mt-2">Total Artists:100</p>
 
                     </div>
                 </div>

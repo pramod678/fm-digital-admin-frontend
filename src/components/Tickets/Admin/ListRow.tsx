@@ -58,6 +58,9 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                     {data.discreption || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    Download
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(data.Status)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

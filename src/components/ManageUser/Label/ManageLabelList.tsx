@@ -53,17 +53,6 @@ export default function ManageLabelList() {
                         // onChange={(e) => setSelectedOption(e.target.value)}
                         // value={selectedOption}
                         >
-                            <option value="All">UserId</option>
-                            <option value={4}>Approved</option>
-                            <option value={0}>Draft</option>
-                            <option value={2}>Rejected</option>
-                            <option value={3}>Corrections</option>
-                        </select>
-                        <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
-                        >
                             <option value="All">Label</option>
                             <option value={4}>Approved</option>
                             <option value={0}>Draft</option>

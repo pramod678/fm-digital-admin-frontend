@@ -1,8 +1,15 @@
 import * as React from "react";
 import Edit from "../PopUps/EditManageArtist";
+import { FaFacebookSquare } from "react-icons/fa";
+import { GrInstagram } from "react-icons/gr";
+import { FaSpotify } from "react-icons/fa6";
+import { SiApplemusic } from "react-icons/si";
+import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 
 
 export default function ListRow({ data, index }: { data: any, index: any }) {
+
+    const size = useResponsiveIconSize()
 
     return (
         <>
@@ -24,16 +31,20 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                     {data.PrimaryArtist || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.InstagramId || '--'}
+                    {/* {data.InstagramId || '--'} */}
+                    <GrInstagram size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.FacebookId || '--'}
+                    {/* {data.FacebookId || '--'} */}
+                    <FaFacebookSquare size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.SpotifyId || '--'}
+                    {/* {data.SpotifyId || '--'} */}
+                    <FaSpotify size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.AppleId || '--'}
+                    {/* {data.AppleId || '--'} */}
+                    <SiApplemusic size={size} />
                 </td>
                 <Edit data={data} />
             </tr>

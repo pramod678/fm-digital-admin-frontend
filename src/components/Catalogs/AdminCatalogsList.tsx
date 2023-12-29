@@ -53,7 +53,8 @@ export default function AdminCatalogsList() {
                             <option value="All">All</option>
                             <option value={4}>Approved</option>
                             <option value={0}>Draft</option>
-                            <option value={2}>Takedown</option>
+                            <option value={1}>Pending</option>
+                            <option value={2}>Rejected</option>
                             <option value={3}>Corrections</option>
                         </select>
                         <select

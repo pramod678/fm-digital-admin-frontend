@@ -1,4 +1,6 @@
 import * as React from "react";
+import { SlOptionsVertical } from "react-icons/sl";
+import useResponsiveIconSize from "../hooks/useResponsiveIconSize";
 
 
 
@@ -7,9 +9,11 @@ export default function InputUrl(){
     const [isEditing, setIsEditing] = React.useState(false);
     const [readMode, setReadMode] = React.useState(true);
 
+    const size = useResponsiveIconSize()
+
     return (
         <>
-            <div className="bg-gradient-to-br from-[#06b6d4] to-[#34d399] p-4 flex items-center rounded-md">
+            <div className="bg-gradient-to-br from-[#06b6d4] to-[#34d399] p-4 flex items-center justify-between rounded-md">
                 {
                     isEditing ? (
                         <>
@@ -21,23 +25,15 @@ export default function InputUrl(){
                     ) : (
                         <>
                             <p className="text-white text-start">www.hdjdhd.com</p>
+                                <SlOptionsVertical className="cursor-pointer text-white" size={size} onClick={() => {
+                                    setIsEditing(true)
+                                    setReadMode(false)
+                                }} />
                         </>
                     )
                 }
             </div>
             <div className="flex justify-end">
-                {!isEditing && readMode && (
-                    <button
-                        type="button"
-                        className="bg-neutral-700 hover:bg-neutral-900 text-white  font-bold py-2 px-4 rounded sm:text-xs md:text-sm lg:text-base"
-                        onClick={() => {
-                            setIsEditing(true)
-                            setReadMode(false)
-                        }}
-                    >
-                        Edit
-                    </button>
-                )}
                 {isEditing && !readMode && (
                     <>
                         <button

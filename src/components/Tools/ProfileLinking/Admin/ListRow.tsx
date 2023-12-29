@@ -1,10 +1,15 @@
 import * as React from "react";
 import GetDate from "../../../../utility/GetDate";
+import { FaFacebookSquare } from "react-icons/fa";
+import { GrInstagram } from "react-icons/gr";
+import useResponsiveIconSize from "../../../../hooks/useResponsiveIconSize";
 
 
 
 export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+
+    const size = useResponsiveIconSize()
 
     return (
         <>
@@ -31,10 +36,12 @@ export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link:
                     {link.Selectplatform || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {link.FecebookLink || '--'}
+                    {/* {link.FecebookLink || '--'} */}
+                    <FaFacebookSquare size={size}/>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {link.InstagramLink || '--'}
+                    {/* {link.InstagramLink || '--'} */}
+                    <GrInstagram size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {link.createdAt ? GetDate(link.createdAt) : '--'}

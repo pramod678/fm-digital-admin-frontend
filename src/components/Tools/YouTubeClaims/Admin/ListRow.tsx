@@ -1,5 +1,7 @@
 import * as React from "react";
 import GetDate from "../../../../utility/GetDate";
+import { IoLogoYoutube } from "react-icons/io5";
+import useResponsiveIconSize from "../../../../hooks/useResponsiveIconSize";
 
 
 
@@ -7,6 +9,7 @@ import GetDate from "../../../../utility/GetDate";
 export default function ListRow({ claim, index, currentPage, PAGE_SIZE }: { claim: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
 
+    const size = useResponsiveIconSize()
     return (
         <>
             <tr>
@@ -35,7 +38,8 @@ export default function ListRow({ claim, index, currentPage, PAGE_SIZE }: { clai
                     {claim.createdAt ? GetDate(claim.createdAt) : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {claim.PasteURL || '--'}
+                    {/* {claim.PasteURL || '--'} */}
+                    <IoLogoYoutube size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     <div className="flex gap-3 p-1">
