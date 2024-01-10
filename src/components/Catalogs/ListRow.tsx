@@ -15,8 +15,6 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
     const size = useResponsiveIconSize();
     const navigate = useNavigate()
 
-    console.log(catalog?.releseInfo_id, "catalog?.releseInfo_id ")
-
     const { mutate: DeleteCatalog, isLoading: isLoadingDeleteCatalog } = DeleteCatalogApi({ id: catalog?.releseInfo_id })
 
 

@@ -6,7 +6,6 @@ import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import PublicRoute from "./components/Routes/PublicRoute";
 import Home from "./components/Home";
 import SharedLayout from "./components/SharedLayout";
-import Catalogs from "./components/Catalogs";
 import ProfileLinking from "./components/Tools/ProfileLinking";
 import YouTubeClaims from "./components/Tools/YouTubeClaims";
 import Label from "./components/Label";
@@ -16,12 +15,20 @@ import ReleaseInfo from "./components/CreateRelease/ReleaseInfo";
 import ManageArtist from "./components/ManageArtist";
 import Submission from "./components/CreateRelease/Submission";
 import Financial from "./components/Financial";
-import Tickets from "./components/Tickets";
 import EditReleaseInfo from "./components/EditRelease/EditReleaseInfo";
 import EditSongsInfo from "./components/EditRelease/EditSongsInfo";
 import EditPlatform from "./components/EditRelease/EditPlatform";
 import EditSubmission from "./components/EditRelease/EditSubmission";
 import UserDetails from "./components/UserDetails";
+import CatalogsPage from "./components/Catalogs/CatalogPage";
+import ManageUserList from "./components/ManageUser/ManageUserList";
+import ManageLabelList from "./components/ManageUser/Label/ManageLabelList";
+import ManageCatalogsList from "./components/ManageUser/Catalogs/ManageCatalogsList";
+import ProfileLinkingPage from "./components/Tools/ProfileLinking/page";
+import YouTubeClaimsPage from "./components/Tools/YouTubeClaims/page";
+import TicketsPage from "./components/Tickets/page";
+import ManageArtistPage from "./components/ManageArtist/page";
+import LabelPage from "./components/Label/page";
 
 
 
@@ -38,14 +45,18 @@ function App() {
               <Route path="userDetails/:id" element={<UserDetails />} />
               {/* <Route path="Submission" element={<Submission />} /> */}
               <Route path="Songsinfo" element={<SongInfo />} />
-              <Route path="Catalogs" element={<Catalogs />} />
+              <Route path="ManageUser/" element={<ManageUserList />} />
+              <Route path="ManageUser/Labels" element={<ManageLabelList />} />
+              <Route path="ManageUser/Catalogs" element={<ManageCatalogsList />} />
+              <Route path="Songsinfo" element={<SongInfo />} />
+              <Route path="Catalogs" element={<CatalogsPage />} />
               <Route path="Submission" element={<Submission />} />
-              <Route path="Tools/YoutubeClaims" element={<YouTubeClaims />} />
-              <Route path="Tools/ProfileLinking" element={<ProfileLinking />} />
-              <Route path="Label" element={<Label />} />
+              <Route path="Tools/YoutubeClaims" element={<YouTubeClaimsPage />} />
+              <Route path="Tools/ProfileLinking" element={<ProfileLinkingPage />} />
+              <Route path="Label" element={<LabelPage />} />
               <Route path="Financial" element={<Financial />} />
-              <Route path="ManageArtist" element={<ManageArtist />} />
-              <Route path="Tickets" element={<Tickets />} />
+              <Route path="ManageArtist" element={<ManageArtistPage />} />
+              <Route path="Tickets" element={<TicketsPage />} />
               <Route path="ReleseInfoUpdate/:id" element={<EditReleaseInfo />} />
               <Route path="Songsinfo/:id" element={<EditSongsInfo />} />
               <Route path="Platform/:id" element={<EditPlatform />} />

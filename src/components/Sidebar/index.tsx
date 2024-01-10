@@ -19,7 +19,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
     const size = useResponsiveIconSize();
     const [openDropdownIndex, setOpenDropdownIndex] = React.useState<number | null>(null);
 
-    const routes = [
+    const Userroutes = [
         {
             path: "/",
             name: "Dashboard",
@@ -80,6 +80,73 @@ export default function Index({ isOpen, setIsOpen }: props) {
             icon: <FaQuora color={'#ffffff'} size={size} />,
         },
     ];
+
+    const AdminRoutes = [
+        {
+            path: "/",
+            name: "Dashboard",
+            icon: <FaHome color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/Catalogs",
+            name: "Catalogs",
+            icon: <ImFileMusic color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/ManageUser",
+            name: "Manage User",
+            icon: <BsPersonFillGear color={'#ffffff'} size={size} />,
+            exact: true,
+        },
+        {
+            path: "/Tools",
+            name: "Tools",
+            icon: <TbTool color={'#ffffff'} size={size} />,
+            exact: true,
+            subRoutes: [
+                {
+                    path: "/Tools/YoutubeClaims",
+                    name: "Youtube Claims",
+                    icon: <FiYoutube color={'#ffffff'} size={size} />,
+                },
+                {
+                    path: "/Tools/ProfileLinking",
+                    name: "Profile Linking",
+                    icon: <FiLink color={'#ffffff'} size={size} />,
+                },
+            ],
+        },
+        {
+            path: "/Label",
+            name: "Label",
+            icon: <AiFillTag color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/Financial",
+            name: "Financial",
+            icon: <IoMdWallet color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/ManageArtist",
+            name: "Manage Artist",
+            icon: <BsPersonFillGear color={'#ffffff'} size={size} />,
+        },
+        {
+            path: "/Tickets",
+            name: "Tickets",
+            icon: <BsTicketPerforated color={'#ffffff'} size={size} />,
+        },
+    ]
+
+
+    const routes = getRoutes();
+
+    function getRoutes() {
+        // Choose routes based on the user's role
+        const routes = true ? AdminRoutes : Userroutes;
+
+        return routes;
+    }
 
     const handleClick = (r: any, e: React.MouseEvent) => {
         if (r?.subRoutes) {

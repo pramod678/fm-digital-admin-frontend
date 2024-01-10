@@ -37,6 +37,7 @@ const Index = () => {
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, GetPrimaryArtist?.data?.data.length);
 
+
     return (
         <>
             {(isLoading || isFetching) && (

@@ -1,37 +1,32 @@
 import * as React from "react";
 import ListRow from "./ListRow";
-import AddTicket from "./Popups/AddTicket";
 import { useNavigate } from "react-router-dom";
-import { UserDataApi } from "../../api/releaseInfo";
-import { GetAllTicketApi } from "../../api/ticket";
-import { BounceLoader } from "react-spinners";
+import { GetPrimaryArtistApi, UserDataApi } from "../../../api/releaseInfo";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { BounceLoader } from "react-spinners";
 
 
 
-export default function Index() {
-
-
+const AdminManageArtistIndex = () => {
     const [userData, setUserData] = React.useState<any>("");
-    const navigate = useNavigate()
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [totalPages, setTotalPages] = React.useState<number>(1);
     const pageSize = 10; // Number of items per page
-    const token = localStorage.getItem("token")
-    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi(userData?.users_id)
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate);
+    const { data: GetPrimaryArtist, isLoading, isFetching } = GetPrimaryArtistApi(userData.users_id);
 
-    console.log(userData?.users_id, "userData?.users_id")
     React.useEffect(() => {
-        getUserData({ token: token })
+        getUserData({ token: token });
     }, []);
 
     React.useEffect(() => {
-        if (GetAllTicket?.data?.data) {
-            const totalItems = GetAllTicket?.data?.data.length;
+        if (GetPrimaryArtist?.data?.data) {
+            const totalItems = GetPrimaryArtist?.data?.data.length;
             setTotalPages(Math.ceil(totalItems / pageSize));
         }
-    }, [GetAllTicket, pageSize]);
+    }, [GetPrimaryArtist, pageSize]);
 
     const handlePageChange = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -40,45 +35,48 @@ export default function Index() {
     };
 
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = Math.min(startIndex + pageSize, GetAllTicket?.data?.data.length);
+    const endIndex = Math.min(startIndex + pageSize, GetPrimaryArtist?.data?.data.length);
 
-    //search 
-    // user id filter for admin
-
-    // remove add button
-
-    // approve and reject buttons
-
-    // Unique id for ticket and tools
 
     return (
         <>
-            {(isLoadingGetAllTicket || isFetching) && (
+            {(isLoading || isFetching) && (
                 <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
                     <BounceLoader size={150} color={"#000000"} />
                 </div>
             )}
             <div className="p-4">
-                <div className="flex items-center justify-between">
-                    <select className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option defaultValue="All">All</option>
-                        <option value="true">Done</option>
-                        <option value="false">Pending</option>
-                    </select>
-                    <select
-                        className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    // onChange={(e) => setSelectedOption(e.target.value)}
-                    // value={selectedOption}
-                    >
-                        <option value="All">UserId</option>
-                        <option value={4}>Approved</option>
-                        <option value={0}>Draft</option>
-                        <option value={2}>Rejected</option>
-                        <option value={3}>Corrections</option>
-                    </select>
-                    <AddTicket userData={userData} />
+                <div className="w-1/2 mb-4 bg-neutral-800 p-2">
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Manage Artist</p>
                 </div>
-                <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :{GetAllTicket?.data?.data?.length}</p>
+                <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full mb-2">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                        <input
+                            type="text"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            id="search"
+                            placeholder="Search Title"
+                            defaultValue={""}
+                        // onChange={handleFilter}
+                        />
+                        <select
+                            className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        // onChange={(e) => setSelectedOption(e.target.value)}
+                        // value={selectedOption}
+                        >
+                            <option value="All">UserId</option>
+                            <option value={4}>Approved</option>
+                            <option value={0}>Draft</option>
+                            <option value={2}>Rejected</option>
+                            <option value={3}>Corrections</option>
+                        </select>
+                    </div>
+
+                    <div className="mt-4 sm:mt-0">
+                        <p className="text-right text-lg font-semibold text-black mt-2">Total Artists:100</p>
+
+                    </div>
+                </div>
                 <div className="flex flex-col">
                     <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -87,39 +85,47 @@ export default function Index() {
                                     <thead className="bg-gray-50">
                                         <tr>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                No.
+                                                Artist Id
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                User Id
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                User ID
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 User Name
                                             </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 Email
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Reason
+                                                Artist Name
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Description
+                                                Instagram Id
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Status
+                                                Facebook Id
                                             </th>
-
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Spotify Id
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Apple Id
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 mt-2">
                                         {
-                                            GetAllTicket?.data?.data?.length === 0 ? (
+                                            GetPrimaryArtist?.data?.data.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
-                                                        No tickets found.
+                                                        No labels found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                GetAllTicket?.data?.data?.slice(startIndex, endIndex)?.map((data: any, index: any) => {
+                                                GetPrimaryArtist?.data?.data.slice(startIndex, endIndex)?.map((data: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow data={data} index={index} />
@@ -157,3 +163,4 @@ export default function Index() {
         </>
     )
 }
+export default AdminManageArtistIndex;

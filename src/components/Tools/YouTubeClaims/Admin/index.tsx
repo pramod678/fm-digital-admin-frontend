@@ -1,18 +1,16 @@
 import * as React from "react";
 import { BounceLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
-import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../types/tools";
+import { YouTubeClaimsDto, policyOptions } from "../../../../types/tools";
 import { useNavigate } from "react-router-dom";
-import { UserDataApi } from "../../../api/releaseInfo";
-import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../api/youtubeClaims";
-import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../api/profileLinking";
+import { UserDataApi } from "../../../../api/releaseInfo";
+import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../../api/youtubeClaims";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import CreateProfile from "./CreateProfile";
 
 
 
-export default function Index() {
+export default function AdminYouTubeClaimsIndex() {
 
     const {
         register,
@@ -21,7 +19,7 @@ export default function Index() {
         reset,
         control,
         formState: { errors }
-    } = useForm<ProfileLinkingDto>()
+    } = useForm<YouTubeClaimsDto>()
 
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<any>("")
@@ -34,11 +32,11 @@ export default function Index() {
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: GetAllReleseInfo, isLoading: isLoadingGetAllReleseInfo } = GetAllReleseInfoApi(userData.users_id, setReleseInfoGetOne)
-    const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll } = YoutubeClaimsGetAllApi(userData.users_id)
-    const { data: ProfileLinkingGetAll, isLoading: isLoadingProfileLinkingGetAll, isFetching } = ProfileLinkingGetAllApi(userData.users_id)
+    const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll, isFetching } = YoutubeClaimsGetAllApi(userData.users_id)
     const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)
+    // const { mutate: YoutubeClaimsPost, isLoading: isLoadingYoutubeClaimsPost } = YoutubeClaimsPostApi(reset)
 
-    const [records, setRecords] = React.useState(ProfileLinkingGetAll?.data?.data || []);
+    const [records, setRecords] = React.useState(youtubeClaimsGetAll?.data?.data || []);
     const [currentPage, setCurrentPage] = React.useState(1);
     const [searchTerm, setSearchTerm] = React.useState('');
     const PAGE_SIZE = 10; // Number of items per page
@@ -48,9 +46,9 @@ export default function Index() {
     }, []);
 
     React.useEffect(() => {
-        setRecords(ProfileLinkingGetAll?.data?.data);
+        setRecords(youtubeClaimsGetAll?.data?.data);
         setCurrentPage(1); // Reset to first page when data changes
-    }, [ProfileLinkingGetAll]);
+    }, [youtubeClaimsGetAll]);
 
     const getCurrentPageData = () => {
         const filteredRecords = filterRecords(records, searchTerm);
@@ -74,9 +72,7 @@ export default function Index() {
             (row) =>
                 row?.Selectrelease?.toLowerCase().includes(term) ||
                 row?.SelectAudio?.toLowerCase().includes(term) ||
-                row?.Selectplatform?.toLowerCase().includes(term) ||
-                row?.FecebookLink?.toLowerCase().includes(term) ||
-                row?.InstagramLink?.toLowerCase().includes(term)
+                row?.SelectPolicy?.toLowerCase().includes(term)
         );
     };
 
@@ -84,45 +80,78 @@ export default function Index() {
     const filteredRecords = filterRecords(records, searchTerm);
     const totalPages = Math.ceil(filteredRecords?.length / PAGE_SIZE);
 
+
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
 
+    const data = [
+        {
+            userId: 'user_001',
+            userName: 'John Doe',
+            email: 'johndoe@example.com',
+            Selectrelease: 'Release 1',
+            SelectAudio: 'Audio 1',
+            SelectPolicy: 'Policy 1',
+            createdAt: '2023-12-18T08:30:00.000Z',
+            PasteURL: 'https://www.example.com/page1'
+        },
+        {
+            userId: 'user_002',
+            userName: 'Jane Smith',
+            email: 'janesmith@example.com',
+            Selectrelease: 'Release 2',
+            SelectAudio: 'Audio 2',
+            SelectPolicy: 'Policy 2',
+            createdAt: '2023-12-17T12:45:00.000Z',
+            PasteURL: 'https://www.example.com/page2'
+        },
+        // Add more dummy data objects as needed...
+    ];
 
-    // instead of status action two buttons approve and reject 
-    // filters same as ticket and remove add button
+
+
     return (
         <>
-            {(isLoadingProfileLinkingGetAll || isFetching) && (
+            {(isLoadingyoutubeClaimsGetAll || isFetching) && (
                 <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
                     <BounceLoader size={150} color={"#000000"} />
                 </div>
             )}
             <div className="p-4">
                 <div className="w-1/2 bg-neutral-800 p-2">
-                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Profile Linking</p>
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Youtube Claims</p>
                 </div>
-                <CreateProfile />
-
-                {/* Filters */}
-                {/* <div className="flex justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full">
-                    <div className="flex items-center gap-4">
+                {/* <Edit  /> */}
+                <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full mb-2">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                         <input
                             type="text"
-                            className="px-4 py-2  rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             id="search"
                             placeholder="Search Title"
                             defaultValue={""}
-                            onChange={handleFilter}
+                        // onChange={handleFilter}
                         />
-
+                        <select
+                            className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        // onChange={(e) => setSelectedOption(e.target.value)}
+                        // value={selectedOption}
+                        >
+                            <option value="All">UserId</option>
+                            <option value={4}>Approved</option>
+                            <option value={0}>Draft</option>
+                            <option value={2}>Rejected</option>
+                            <option value={3}>Corrections</option>
+                        </select>
                     </div>
-                    <div className="">
-                        <p className="font-semibold text-gray-700">Total Releases : {ProfileLinkingGetAll?.data?.data?.length || 0}</p>
-                    </div>
-                </div> */}
 
-                <p className="text-base sm:text-lg font-semibold my-4 ">Your Profile Linking History</p>
+                    <div className="mt-4 sm:mt-0">
+                        <p className="font-semibold text-gray-700">Total : 20</p>
+                    </div>
+                </div>
+
+                <p className="text-base sm:text-lg font-semibold my-2">Your UGC Claims History</p>
 
                 <div className="flex flex-col">
                     <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -134,6 +163,15 @@ export default function Index() {
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 No.
                                             </th>
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                User ID
+                                            </th>
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                User Name
+                                            </th>
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                Email
+                                            </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Release Title
                                             </th>
@@ -141,35 +179,32 @@ export default function Index() {
                                                 Audio Title
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Artist
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Fb
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Ig
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Status
+                                                Policy
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Date
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                URLs
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {
-                                            currentData?.length === 0 ? (
+                                            data?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No records found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                currentData?.map((link: any, index: any) => {
+                                                data?.map((claim: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
-                                                            <ListRow link={link} index={index}
+                                                            <ListRow claim={claim} index={index}
                                                                 currentPage={currentPage}
                                                                 PAGE_SIZE={PAGE_SIZE} />
                                                         </React.Fragment>

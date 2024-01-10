@@ -1,147 +1,90 @@
-import { Component, useEffect, useState } from "react";
-import ReactPaginate from 'react-paginate';
-import { useRef } from "react";
-import * as React from "react";
+import { BsCardChecklist, BsFileEarmarkText, BsPeople, BsTicket } from 'react-icons/bs';
+import * as React from "react"
+import useResponsiveIconSize from "../../hooks/useResponsiveIconSize"
+import { Link, useNavigate } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import InputUrl from "../../ui/InputUrl"
+
+interface PlayListUrl {
+    url: string
+}
 
 
 export default function AdminHome() {
 
-    //setting state
-    const [data, setData] = useState([]);
-    const [limit, setLimit] = useState(5);
-    const [pageCount, setPageCount] = useState(1);
-    const currentPage:any = useRef();
+    const size = useResponsiveIconSize();
+    const navigate = useNavigate();
 
+    let catalogs: any[] = []
+    let labels: any[] = []
 
+    const {
+        register,
+        handleSubmit,
+        watch,
+        reset,
+        setValue,
+        control,
+        formState: { errors }
+    } = useForm<PlayListUrl>({})
 
-    useEffect(() => {
-        currentPage.current = 1;
-        // getAllUser();
-        getPaginatedUsers();
-    }, []);
-
-
-    //fetching all user
-    const getAllUser = () => {
-        fetch("https://fmdigitalofficial.in/getAllUser", {
-            method: "GET",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setData(data.data);
-            });
-    };
-
-
-
-    //logout
-    const logOut = () => {
-        window.localStorage.clear();
-        window.location.href = "./sign-in";
-    };
-
-
-    //deleting user
-    const deleteUser = (id: any, name: any) => {
-        if (window.confirm(`Are you sure you want to delete ${name}`)) {
-            fetch("https://fmdigitalofficial.in/deleteUser", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    "Access-Control-Allow-Origin": "*",
-                },
-                body: JSON.stringify({
-                    userid: id,
-                }),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert(data.data);
-                    getAllUser();
-                });
-        } else {
-        }
-    };
-
-    //pagination
-    function handlePageClick(e:any) {
-        currentPage.current = e.selected + 1;
-        getPaginatedUsers();
-    }
-
-    function changeLimit() {
-        currentPage.current = 1;
-        getPaginatedUsers();
-    }
-
-    function getPaginatedUsers() {
-        fetch(`http://3.108.3.213/paginatedUsers?page=${currentPage.current}&limit=${limit}`, {
-            method: "GET",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data, "userData");
-                setPageCount(data.pageCount);
-                setData(data.result)
-
-
-            });
-
-    }
+    const cardsData = [
+        { title: 'Pending Catalogs', count: 10, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue' },
+        { title: 'Pending Labels', count: 5, icon: < BsCardChecklist className="text-5xl text-green-500 mb-4" />, color: 'green' },
+        { title: 'Pending Artists', count: 8, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple' },
+        { title: 'Pending Tickets', count: 15, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red' },
+    ];
+    //pending catalogs
+    //pending labels
 
     return (
-        <div className="auth-wrapper" style={{ height: "auto" }}>
-            <div className="auth-inner" style={{ width: "auto" }}>
-                <h3>Welcom Admin</h3>
-                <table style={{ width: 500 }}>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>User Type</th>
-                        <th>Delete</th>
-                    </tr>
-                    {data.map((i) => {
-                        return (
-                            <tr>
-                                <td>{i.fname}</td>
-                                <td>{i.email}</td>
-                                <td>{i.userType}</td>
-                                <td>
-                                    {/* <FontAwesomeIcon
-                                        icon={faTrash}
-                                        onClick={() => deleteUser(i._id, i.fname)}
-                                    /> */}
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </table>
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel="next >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={5}
-                    pageCount={pageCount}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                    marginPagesDisplayed={2}
-                    containerClassName="pagination justify-content-center"
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
-                    activeClassName="active"
-                    forcePage={currentPage?.current - 1}
-                />
-                <input placeholder="Limit" onChange={(e:any) => setLimit(e.target.value)} />
-                <button onClick={changeLimit}>Set Limit</button>
-                <button onClick={logOut} className="btn btn-primary">
-                    Log Out
-                </button>
+        <>
+            <div className="flex flex-col sm:flex-row h-[90%] p-4 gap-6">
+
+                {/* Latest Playlists */}
+                <div className="flex flex-col gap-1 sm:w-[60%] h-2/3 sm:h-full">
+                    <div className="bg-black px-4 py-2">
+                        <p className="text-white mb-0 text-lg font-semibold">Latest Playlists</p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-2 h-full bg-zinc-500">
+                        <div className="w-full sm:w-[50%] overflow-y-auto">
+                            <div className="flex flex-col p-2 gap-3">
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                            </div>
+
+                        </div>
+                        <div className="w-full sm:w-[50%] overflow-y-auto">
+                            <div className="flex flex-col p-2 gap-3">
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                                <InputUrl />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* create 4 cards for pending catalogs, labels, artists, tickets, */}
+                <div className="grid grid-cols-2 gap-6 sm:w-[40%]">
+                    {cardsData.map((card, index) => (
+                        <div style={{ borderColor: `${card.color}`}} className={`bg-gray-100 border-b-4 cursor-pointer rounded-md p-6 shadow-full flex flex-col hover:bg-gray-200 justify-center items-center`}>
+                            {card.icon}
+                            <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
+                            <p style={{ color: `${card.color}` }} className={`text-${card.color}-600 text-3xl font-bold`}>{`${card.count} `}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>
+
+
+        </>
     );
 }
+

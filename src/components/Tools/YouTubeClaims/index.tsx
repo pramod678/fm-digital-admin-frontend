@@ -95,7 +95,8 @@ export default function Index() {
     }, []);
 
 
-
+    // instead of status action two buttons approve and reject   action should come at the end 
+    // filters same as ticket and remove add button
 
     return (
         <>
