@@ -11,6 +11,7 @@ interface PlayListUrl {
 
 
 export default function AdminHome() {
+    console.log("admin")
 
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function AdminHome() {
     const cardsData = [
         { title: 'Pending Catalogs', count: 10, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue' },
         { title: 'Pending Labels', count: 5, icon: < BsCardChecklist className="text-5xl text-green-500 mb-4" />, color: 'green' },
-        { title: 'Pending Artists', count: 8, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple' },
+        { title: 'Total Artists', count: 8, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple' },
         { title: 'Pending Tickets', count: 15, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red' },
     ];
     //pending catalogs

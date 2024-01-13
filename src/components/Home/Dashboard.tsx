@@ -18,6 +18,7 @@ export default function UserHome({ userData }: { userData: any }) {
     const { data: GetLatestDrafts, isLoading: isLoadingGetLatestDrafts } = GetLatestDraftsApi(userData?.users_id)
 
     const { data: GetLatestCoorections, isLoading } = GetLatestCoorectionsApi(userData?.users_id)
+        console.log("api hit")
 
     
     return (

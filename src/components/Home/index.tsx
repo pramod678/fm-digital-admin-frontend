@@ -6,13 +6,14 @@ import AdminHome from "./AdminHome";
 import { GetUserDataApi } from "../../api/authentication";
 
 
-export default function Index(){
+export default function Index() {
     const [userData, setUserData] = useState("");
     const [admin, setAdmin] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setAdmin, setUserData, navigate)
 
+    console.log("index")
 
     useEffect(() => {
         getUserData({ token: token })
