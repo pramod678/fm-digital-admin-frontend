@@ -4,14 +4,14 @@ import api from "../lib/api";
 import { NavigateFunction } from "react-router-dom";
 
 
-export const LoginWithMailApi = (reset: any, navigate: NavigateFunction, setToken:any) => {
+export const LoginWithMailApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation((data) => api.post("/user/login", data), {
         onSuccess: (res) => {
             if (res?.data?.status === "error"){
                 cogoToast.success(res?.data?.error);
             }else{
                 cogoToast.success("Login successfully");
-                setToken(res.data.data)
+                console.log(res.data.data, "token")
                 window.localStorage.setItem("token", res.data?.data);
                 navigate('/');
                 reset()
@@ -39,6 +39,7 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
 export const GetUserDataApi = (setAdmin: any, setUserData: any, navigate: NavigateFunction, setUserType:any) => {
     return useMutation((data: any) => api.post("/user/userData", data), {
         onSuccess: (res) => {
+         
             setUserType(res.data?.data.userType)
             setUserData(res.data.data);
             if (res.data?.data === "token expired") {

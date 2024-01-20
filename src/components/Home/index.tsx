@@ -17,9 +17,10 @@ export default function Index() {
 
     console.log(userType, "userType")
 
-    // useEffect(() => {
-    //     getUserData({ token: token })
-    // }, []);
+    useEffect(() => {
+        getUserData({ token: token })
+    }, []);
 
+    // return (<>{admin ? <AdminHome /> : <Dashboard userData={userData} />}</>);
     return (<>{userType !== "User" ? <AdminHome /> : <Dashboard userData={userData} />}</>);
 }
