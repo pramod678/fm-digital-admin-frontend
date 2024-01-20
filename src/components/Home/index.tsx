@@ -21,5 +21,10 @@ export default function Index() {
         getUserData({ token: token })
     }, []);
 
+    if (isLoadinggetUserData) {
+        // Render a loading indicator or a placeholder
+        return <div>Loading...</div>;
+    }
+
     return (<>{userType !== "User" ? <AdminHome /> : <Dashboard userData={userData} />}</>);
 }
