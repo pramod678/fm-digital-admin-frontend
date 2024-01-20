@@ -13,14 +13,9 @@ interface PlayListUrl {
 
 
 export default function AdminHome() {
-    console.log("admin")
-
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
     const { data: GetDashBoardStats, isLoading, isFetching } = GetDashBoardStatsApi()
-
-    console.log(GetDashBoardStats?.data)
-
 
     let catalogs: any[] = []
     let labels: any[] = []

@@ -12,10 +12,10 @@ export default function Index() {
     const [admin, setAdmin] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
-    console.log(token, "token")
     const { userType, setUserType } = useAuthStore()
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setAdmin, setUserData, navigate, setUserType)
 
+    console.log(userType, "userType")
 
     // useEffect(() => {
     //     getUserData({ token: token })

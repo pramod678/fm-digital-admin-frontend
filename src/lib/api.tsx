@@ -12,4 +12,24 @@ const api = axios.create({
     }
 });
 
+const setAuthToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+        delete api.defaults.headers.common['Authorization'];
+    }
+};
+
+// Interceptor to call setAuthToken before each request
+api.interceptors.request.use(
+    (config) => {
+        setAuthToken();
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 export default api;
