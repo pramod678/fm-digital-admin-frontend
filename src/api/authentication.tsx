@@ -36,12 +36,10 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
     })
 }
 
-export const GetUserDataApi = (setAdmin: any, setUserData: any, navigate: NavigateFunction) => {
+export const GetUserDataApi = (setAdmin: any, setUserData: any, navigate: NavigateFunction, setUserType:any) => {
     return useMutation((data: any) => api.post("/user/userData", data), {
         onSuccess: (res) => {
-            if (res.data?.data.userType === "Admin") {
-                setAdmin(true);
-            }
+            setUserType(res.data?.data.userType)
             setUserData(res.data.data);
             if (res.data?.data === "token expired") {
                 cogoToast.success("Token Expired");

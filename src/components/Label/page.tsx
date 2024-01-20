@@ -1,15 +1,16 @@
 import * as React from "react";
 import AdminLabelIndex from "./Admin";
 import Label from "./index";
+import useAuthStore from "../../store/userstore";
 
 
 
 export default function LabelPage() {
-    const [admin, setAdmin] = React.useState(false);
+    const { userType, setUserType } = useAuthStore()
 
     return (
         <>
-            {true ? <AdminLabelIndex /> : <Label />}
+            {userType !== "User"  ? <AdminLabelIndex /> : <Label />}
         </>
     )
 }

@@ -2,15 +2,16 @@ import * as React from "react";
 import Catalogs from "./index";
 import ProfileLinking from "./index";
 import AdminProfileLinkingIndex from "./Admin";
+import useAuthStore from "../../../store/userstore";
 
 
 
 export default function ProfileLinkingPage() {
-    const [admin, setAdmin] = React.useState(false);
+    const { userType, setUserType } = useAuthStore()
 
     return (
         <>
-            {true ? <AdminProfileLinkingIndex /> : <ProfileLinking />}
+            {userType !== "User" ? <AdminProfileLinkingIndex /> : <ProfileLinking />}
         </>
     )
 }

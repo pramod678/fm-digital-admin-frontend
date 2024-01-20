@@ -18,6 +18,32 @@ export const GetCatalogsApi = (id: any, setcatalogsGet: any, selectedOption:any)
         }
     );
 
+export const GetAdminAllCatalogsApi = (userId: string, statusId?: string) =>
+    useQuery(
+        [`GetAdminAllCatalogs`, userId, statusId],
+        async () => await api.get(`admin/catlogs-get-all?user_id=${userId}&status=${statusId}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            keepPreviousData:true,
+        }
+    );
+
+export const UpdateAdminCatalogApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put(`/admin/relese-info-update`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Catalogue updated");
+            queryClient.refetchQueries([`GetAdminAllCatalogs`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+
 export const DeleteCatalogApi = ({ id }: { id: any }) => {
     const queryClient = useQueryClient();
     return useMutation((data: any) => api.delete(`createRelease/catalogsDelete/${id}`, data), {

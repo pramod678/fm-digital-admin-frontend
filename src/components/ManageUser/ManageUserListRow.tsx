@@ -1,34 +1,38 @@
 import * as React from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { DeleteUserDataApi } from "../../api/user";
 
 
 
-export default function ManageUserListRow({ data, index }: { data: any, index: any }) {
+export default function ManageUserListRow({ data, index, currentPage, PAGE_SIZE }: { data: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+
+    const { mutate: DeleteUserData } = DeleteUserDataApi()
     return (
         <>
             <tr onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {index + 1}
+                    {actualIndex}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.userId || '--'}
+                    {data.users_id || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.userName || '--'}
+                    {data.fname + " " + data.lname || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {data.email || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.phone || '--'}
+                    {data.phoneNumber || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.numberOfTracks || '--'}
+                    {data.labelData?.length || 0}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.noofCatalogs ? data.noofCatalogs : '--'}
+                    {data.releseInfo?.length || 0}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 flex justify-end">
                     {isOpen ? (
@@ -46,99 +50,99 @@ export default function ManageUserListRow({ data, index }: { data: any, index: a
                             <div>
                                 <div className="flex items-center justify-between  mb-1 mb-1">
                                     <p className="font-semibold  sm:text-sm">Email:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.email}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Password:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.password}</p>
                                 </div>
                                 <div className="flex items-center justify-between mt-6 mb-1">
                                     <p className="font-semibold  sm:text-sm">First Name:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.fname}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Last Name:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.lname}</p>
                                 </div>
                                 <div className="flex items-center justify-between mt-6 mb-1">
                                     <p className="font-semibold  sm:text-sm">Address:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.address}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Phone Number:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.phoneNumber}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Country:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.country}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">State:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.state}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">City:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.city}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Post Code:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.postCode}</p>
                                 </div>
                             </div>
                             <div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Facebook</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.facebook}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Instagram:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.instagram}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Twitter:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.twitter}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Youtube:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.youtube}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Google Plus:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.islo}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">LinkedIn:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.islo}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Vevo:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.islo}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">SoundCloud:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.islo}</p>
                                 </div>
                             </div>
                             <div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Beneficiary Name:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.beneficiaryName}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Bank Name:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.bankName}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">IBAN/Account Number:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.islo}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">IFSC Code:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.IFSCcode}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">Swift Code:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="text-sm">{data?.islo}</p>
                                 </div>
                             </div>
                         </div>
@@ -152,11 +156,12 @@ export default function ManageUserListRow({ data, index }: { data: any, index: a
                             type="button"
                             className="bg-red-700 hover:bg-red-900 text-white py-2 px-4 rounded sm:text-xs "
                             onClick={() => {
+                                DeleteUserData(data.users_id)
                             }}
                         >
                             Delete User
                         </button>
-                        <Link to={`/ManageUser/Labels`}>
+                        <Link to={`/ManageUser/Labels/${data.users_id}`}>
                             <button
                                 type="button"
                                 className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
@@ -167,7 +172,7 @@ export default function ManageUserListRow({ data, index }: { data: any, index: a
                                 Go to Label
                             </button>
                         </Link>
-                        <Link to={`/ManageUser/Catalogs`}>
+                        <Link to={`/ManageUser/Catalogs/${data.users_id}`}>
                             <button
                                 type="button"
                                 className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "

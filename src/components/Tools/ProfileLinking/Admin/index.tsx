@@ -5,7 +5,7 @@ import { ProfileLinkingDto, YouTubeClaimsDto, policyOptions } from "../../../../
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../../api/releaseInfo";
 import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../../api/youtubeClaims";
-import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../../api/profileLinking";
+import { GetAllAdminProfileLinkingApi, ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../../api/profileLinking";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
@@ -26,100 +26,66 @@ export default function AdminProfileLinkingIndex() {
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<any>("")
     const token = localStorage.getItem("token")
-    const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
-    const [selectRelease, setSelectRelease] = React.useState<any>([]);
-    const [selectedId, setSelectedId] = React.useState<any>();
-
-    const data = [
-        {
-            userId: 'user_002',
-            userName: 'Jane Smith',
-            email: 'janesmith@example.com',
-            Selectrelease: 'Release 1',
-            SelectAudio: 'Audio 1',
-            Selectplatform: 'Platform 1',
-            FecebookLink: 'https://www.facebook.com/page1',
-            InstagramLink: 'https://www.instagram.com/page1',
-            createdAt: '2023-12-18T08:30:00.000Z'
-        },
-        {
-            userId: 'user_002',
-            userName: 'Jane Smith',
-            email: 'janesmith@example.com',
-            Selectrelease: 'Release 2',
-            SelectAudio: 'Audio 2',
-            Selectplatform: 'Platform 2',
-            FecebookLink: 'https://www.facebook.com/page2',
-            InstagramLink: 'https://www.instagram.com/page2',
-            createdAt: '2023-12-17T12:45:00.000Z'
-        },
-        // Add more dummy data objects as needed...
-    ];
+    const [userId, setUserId] = React.useState('');
+    const [statusId, setStatusId] = React.useState('');
+    const [catalogs, setCatalogs] = React.useState([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [currentPage, setCurrentPage] = React.useState(1);
 
 
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: GetAllReleseInfo, isLoading: isLoadingGetAllReleseInfo } = GetAllReleseInfoApi(userData.users_id, setReleseInfoGetOne)
-    const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll } = YoutubeClaimsGetAllApi(userData.users_id)
-    const { data: ProfileLinkingGetAll, isLoading: isLoadingProfileLinkingGetAll, isFetching } = ProfileLinkingGetAllApi(userData.users_id)
-    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)
 
-    const [records, setRecords] = React.useState(ProfileLinkingGetAll?.data?.data || []);
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [searchTerm, setSearchTerm] = React.useState('');
-    const PAGE_SIZE = 10; // Number of items per page
+    const { data: profilelinkings, isLoading: isLoadingprofilelinkingsPost, isFetching } = GetAllAdminProfileLinkingApi()
+
+    console.log(profilelinkings?.data?.data)
 
     React.useEffect(() => {
         getUserData({ token: token });
     }, []);
 
+
+    const PAGE_SIZE = 25
     React.useEffect(() => {
-        setRecords(ProfileLinkingGetAll?.data?.data);
-        setCurrentPage(1); // Reset to first page when data changes
-    }, [ProfileLinkingGetAll]);
-
-    const getCurrentPageData = () => {
-        const filteredRecords = filterRecords(records, searchTerm);
-        const startIndex = (currentPage - 1) * PAGE_SIZE;
-        const endIndex = startIndex + PAGE_SIZE;
-        return filteredRecords?.slice(startIndex, endIndex);
-    };
-
-    const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
-        setCurrentPage(pageNumber);
-    };
+        if (profilelinkings) {
+            setCatalogs(profilelinkings.data.data);
+            setCurrentPage(1);
+        }
+    }, [profilelinkings]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
         setSearchTerm(inputValue);
-        setCurrentPage(1); // Reset to first page when filter changes
+        setCurrentPage(1);
     };
 
-    const filterRecords = (data: any[], term: string) => {
-        return data?.filter(
-            (row) =>
-                row?.Selectrelease?.toLowerCase().includes(term) ||
-                row?.SelectAudio?.toLowerCase().includes(term) ||
-                row?.Selectplatform?.toLowerCase().includes(term) ||
-                row?.FecebookLink?.toLowerCase().includes(term) ||
-                row?.InstagramLink?.toLowerCase().includes(term)
-        );
+    const handlePageChange = (pageNumber: any) => {
+        setCurrentPage(pageNumber);
     };
 
-    const currentData = getCurrentPageData();
-    const filteredRecords = filterRecords(records, searchTerm);
-    const totalPages = Math.ceil(filteredRecords?.length / PAGE_SIZE);
+    const filterRecords = (data: any, term: any) => {
+        return data.filter(
+            (row: any) =>
+                row?.Selectrelease.toLowerCase().includes(term));
+    };
 
-    React.useEffect(() => {
-        getUserData({ token: token })
-    }, []);
+    const getCurrentPageData = () => {
+        const filteredRecords = filterRecords(catalogs, searchTerm);
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        const slicedRecords = filteredRecords.slice(startIndex, endIndex);
+        return { slicedRecords, totalFilteredRecords: filteredRecords.length };
+    };
+
+    const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
+    const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
 
 
     // instead of status action two buttons approve and reject 
     // filters same as ticket and remove add button
     return (
         <>
-            {(isLoadingProfileLinkingGetAll || isFetching) && (
+            {(isLoadingprofilelinkingsPost || isFetching) && (
                 <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
                     <BounceLoader size={150} color={"#000000"} />
                 </div>
@@ -137,7 +103,7 @@ export default function AdminProfileLinkingIndex() {
                             id="search"
                             placeholder="Search Title"
                             defaultValue={""}
-                        // onChange={handleFilter}
+                        onChange={handleFilter}
                         />
                         <select
                             className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -153,7 +119,7 @@ export default function AdminProfileLinkingIndex() {
                     </div>
 
                     <div className="mt-4 sm:mt-0">
-                        <p className="font-semibold text-gray-700">Total : 20</p>
+                        <p className="font-semibold text-gray-700">Total Profiles: {totalFilteredRecords || 0}</p>
                     </div>
                 </div>
 
@@ -197,20 +163,23 @@ export default function AdminProfileLinkingIndex() {
                                                 Date
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Status
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {
-                                            data?.length === 0 ? (
+                                            slicedRecords?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No records found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                data?.map((link: any, index: any) => {
+                                                slicedRecords?.map((link: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow link={link} index={index}

@@ -5,6 +5,7 @@ import { LoginWithMailApi } from "../../api/authentication";
 import { ClipLoader } from "react-spinners";
 import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
+import useAuthStore from "../../store/userstore";
 
 
 type FormValues = {
@@ -23,6 +24,7 @@ export default function Index() {
         formState: { errors }
     } = useForm<FormValues>({ defaultValues: { email: "", password: "" } })
     const navigate = useNavigate();
+    const { setToken } = useAuthStore()
 
     //Login Api Call
     const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMailApi(reset, navigate)

@@ -2,7 +2,7 @@ import * as React from "react";
 import ListRow from "./ListRow";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../api/releaseInfo";
-import { GetAllTicketApi } from "../../../api/ticket";
+import { GetAllAdminTicketApi, GetAllTicketApi } from "../../../api/ticket";
 import { BounceLoader } from "react-spinners";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
@@ -13,63 +13,56 @@ export default function AdminTicketsIndex() {
 
     const [userData, setUserData] = React.useState<any>("");
     const navigate = useNavigate()
-    const [currentPage, setCurrentPage] = React.useState<number>(1);
-    const [totalPages, setTotalPages] = React.useState<number>(1);
-    const pageSize = 10; // Number of items per page
+    const [userId, setUserId] = React.useState('');
+    const [statusId, setStatusId] = React.useState('');
+    const [tickets, settickets] = React.useState([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [currentPage, setCurrentPage] = React.useState(1);
     const token = localStorage.getItem("token")
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi(userData?.users_id)
+    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllAdminTicketApi()
 
-    console.log(userData?.users_id, "userData?.users_id")
+
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
 
+    const PAGE_SIZE = 25
     React.useEffect(() => {
-        if (GetAllTicket?.data?.data) {
-            const totalItems = GetAllTicket?.data?.data.length;
-            setTotalPages(Math.ceil(totalItems / pageSize));
+        if (GetAllTicket) {
+            settickets(GetAllTicket.data.data);
+            setCurrentPage(1);
         }
-    }, [GetAllTicket, pageSize]);
+    }, [GetAllTicket]);
 
-    const handlePageChange = (pageNumber: number) => {
-        if (pageNumber >= 1 && pageNumber <= totalPages) {
-            setCurrentPage(pageNumber);
-        }
+    const handleFilter = (event: any) => {
+        const inputValue = event.target.value.toLowerCase();
+        setSearchTerm(inputValue);
+        setCurrentPage(1);
     };
 
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = Math.min(startIndex + pageSize, GetAllTicket?.data?.data.length);
+    const handlePageChange = (pageNumber: any) => {
+        setCurrentPage(pageNumber);
+    };
 
-    const data = [
-        {
-            reason: 'Reason 1',
-            discreption: 'Description 1',
-            Status: 0, // 0 for Pending, 1 for Done,
-             userId: 'user_002',
-            userName: 'Jane Smith',
-            email: 'janesmith@example.com',
-        },
-        {
-            reason: 'Reason 2',
-            discreption: 'Description 2',
-            Status: 1, // 0 for Pending, 1 for Done
-            userId: 'user_002',
-            userName: 'Jane Smith',
-            email: 'janesmith@example.com',
-        },
-        // Add more dummy data objects as needed...
-    ];
+    const filterRecords = (data: any, term: any) => {
+        return data.filter(
+            (row: any) =>
+                row?.reason.toLowerCase().includes(term));
+    };
+
+    const getCurrentPageData = () => {
+        const filteredRecords = filterRecords(tickets, searchTerm);
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        const slicedRecords = filteredRecords.slice(startIndex, endIndex);
+        return { slicedRecords, totalFilteredRecords: filteredRecords.length };
+    };
+
+    const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
+    const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
 
 
-    //search 
-    // user id filter for admin
-
-    // remove add button
-
-    // approve and reject buttons
-
-    // Unique id for ticket and tools
 
     return (
         <>
@@ -88,9 +81,9 @@ export default function AdminTicketsIndex() {
                             type="text"
                             className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             id="search"
-                            placeholder="Search Title"
+                            placeholder="Search reason"
                             defaultValue={""}
-                        // onChange={handleFilter}
+                            onChange={handleFilter}
                         />
                         <select
                             className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -106,7 +99,7 @@ export default function AdminTicketsIndex() {
                     </div>
 
                     <div className="mt-4 sm:mt-0">
-                        <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :{GetAllTicket?.data?.data?.length}</p>
+                        <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :{totalFilteredRecords || 0}</p>
 
                     </div>
                 </div>
@@ -148,17 +141,18 @@ export default function AdminTicketsIndex() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 mt-2">
                                         {
-                                            data?.length === 0 ? (
+                                            slicedRecords?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No tickets found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                data?.map((data: any, index: any) => {
+                                                slicedRecords?.map((data: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
-                                                            <ListRow data={data} index={index} />
+                                                            <ListRow data={data} index={index} currentPage={currentPage}
+                                                                PAGE_SIZE={PAGE_SIZE} />
                                                         </React.Fragment>
                                                     )
                                                 })

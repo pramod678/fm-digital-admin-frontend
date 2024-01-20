@@ -45,3 +45,27 @@ export const GetAllLabelsApi = (id: any) =>
         }
     );
 
+export const GetAllAdminLabelsApi = () =>
+    useQuery(
+        [`GetAllAdminLabels`],
+        async () => await api.get(`admin/label-get-all`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+
+export const UpdateLabelAdminApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put("admin/label-update", data), {
+        onSuccess: (res) => {
+            cogoToast.success("label updated");
+            queryClient.refetchQueries([`GetAllAdminLabels`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

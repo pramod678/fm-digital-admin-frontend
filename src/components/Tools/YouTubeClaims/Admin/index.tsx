@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form";
 import { YouTubeClaimsDto, policyOptions } from "../../../../types/tools";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../../api/releaseInfo";
-import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../../api/youtubeClaims";
+import { GetAllAdminYoutubeClaimsApi, GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, YoutubeClaimsGetAllApi, YoutubeClaimsPostApi } from "../../../../api/youtubeClaims";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { GetAllUsersDataApi } from "../../../../api/user";
 
 
 
@@ -24,96 +25,61 @@ export default function AdminYouTubeClaimsIndex() {
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<any>("")
     const token = localStorage.getItem("token")
-    const [releseInfoGetOne, setReleseInfoGetOne] = React.useState<any>([]);
-    const [selectRelease, setSelectRelease] = React.useState<any>([]);
-    const [selectedId, setSelectedId] = React.useState<any>();
+    const [userId, setUserId] = React.useState('');
+    const [statusId, setStatusId] = React.useState('');
+    const [catalogs, setCatalogs] = React.useState([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [currentPage, setCurrentPage] = React.useState(1);
 
 
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: GetAllReleseInfo, isLoading: isLoadingGetAllReleseInfo } = GetAllReleseInfoApi(userData.users_id, setReleseInfoGetOne)
-    const { data: youtubeClaimsGetAll, isLoading: isLoadingyoutubeClaimsGetAll, isFetching } = YoutubeClaimsGetAllApi(userData.users_id)
-    const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)
-    // const { mutate: YoutubeClaimsPost, isLoading: isLoadingYoutubeClaimsPost } = YoutubeClaimsPostApi(reset)
-
-    const [records, setRecords] = React.useState(youtubeClaimsGetAll?.data?.data || []);
-    const [currentPage, setCurrentPage] = React.useState(1);
-    const [searchTerm, setSearchTerm] = React.useState('');
-    const PAGE_SIZE = 10; // Number of items per page
+    const { data: allUsersData } = GetAllUsersDataApi();
+    const { data: YoutubeClaims, isLoading: isLoadingYoutubeClaimsPost, isFetching } = GetAllAdminYoutubeClaimsApi()
 
     React.useEffect(() => {
         getUserData({ token: token });
     }, []);
 
+    const PAGE_SIZE = 3
     React.useEffect(() => {
-        setRecords(youtubeClaimsGetAll?.data?.data);
-        setCurrentPage(1); // Reset to first page when data changes
-    }, [youtubeClaimsGetAll]);
-
-    const getCurrentPageData = () => {
-        const filteredRecords = filterRecords(records, searchTerm);
-        const startIndex = (currentPage - 1) * PAGE_SIZE;
-        const endIndex = startIndex + PAGE_SIZE;
-        return filteredRecords?.slice(startIndex, endIndex);
-    };
-
-    const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
-        setCurrentPage(pageNumber);
-    };
+        if (YoutubeClaims) {
+            setCatalogs(YoutubeClaims.data.data);
+            setCurrentPage(1);
+        }
+    }, [YoutubeClaims]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
         setSearchTerm(inputValue);
-        setCurrentPage(1); // Reset to first page when filter changes
+        setCurrentPage(1);
     };
 
-    const filterRecords = (data: any[], term: string) => {
-        return data?.filter(
-            (row) =>
-                row?.Selectrelease?.toLowerCase().includes(term) ||
-                row?.SelectAudio?.toLowerCase().includes(term) ||
-                row?.SelectPolicy?.toLowerCase().includes(term)
-        );
+    const handlePageChange = (pageNumber: any) => {
+        setCurrentPage(pageNumber);
     };
 
-    const currentData = getCurrentPageData();
-    const filteredRecords = filterRecords(records, searchTerm);
-    const totalPages = Math.ceil(filteredRecords?.length / PAGE_SIZE);
+    const filterRecords = (data: any, term: any) => {
+        return data.filter(
+            (row: any) =>
+                row?.Selectrelease.toLowerCase().includes(term));
+    };
 
+    const getCurrentPageData = () => {
+        const filteredRecords = filterRecords(catalogs, searchTerm);
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        const slicedRecords = filteredRecords.slice(startIndex, endIndex);
+        return { slicedRecords, totalFilteredRecords: filteredRecords.length };
+    };
 
-    React.useEffect(() => {
-        getUserData({ token: token })
-    }, []);
-
-    const data = [
-        {
-            userId: 'user_001',
-            userName: 'John Doe',
-            email: 'johndoe@example.com',
-            Selectrelease: 'Release 1',
-            SelectAudio: 'Audio 1',
-            SelectPolicy: 'Policy 1',
-            createdAt: '2023-12-18T08:30:00.000Z',
-            PasteURL: 'https://www.example.com/page1'
-        },
-        {
-            userId: 'user_002',
-            userName: 'Jane Smith',
-            email: 'janesmith@example.com',
-            Selectrelease: 'Release 2',
-            SelectAudio: 'Audio 2',
-            SelectPolicy: 'Policy 2',
-            createdAt: '2023-12-17T12:45:00.000Z',
-            PasteURL: 'https://www.example.com/page2'
-        },
-        // Add more dummy data objects as needed...
-    ];
-
+    const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
+    const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
 
 
     return (
         <>
-            {(isLoadingyoutubeClaimsGetAll || isFetching) && (
+            {(isLoadingYoutubeClaimsPost || isFetching) && (
                 <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
                     <BounceLoader size={150} color={"#000000"} />
                 </div>
@@ -131,23 +97,28 @@ export default function AdminYouTubeClaimsIndex() {
                             id="search"
                             placeholder="Search Title"
                             defaultValue={""}
-                        // onChange={handleFilter}
+                            onChange={handleFilter}
                         />
                         <select
-                            className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
+                            onChange={(e: any) => setUserId(e.target.value)}
+                            value={userId}
                         >
-                            <option value="All">UserId</option>
-                            <option value={4}>Approved</option>
-                            <option value={0}>Draft</option>
-                            <option value={2}>Rejected</option>
-                            <option value={3}>Corrections</option>
+                            <option value="">UserId</option>
+                            {
+                                allUsersData?.data?.data?.map((user: any) => {
+                                    return (
+                                        <>
+                                            <option value={user?.users_id}>{user?.fname + " " + user?.lname}</option>
+                                        </>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
 
                     <div className="mt-4 sm:mt-0">
-                        <p className="font-semibold text-gray-700">Total : 20</p>
+                        <p className="font-semibold text-gray-700">Total Claims: {totalFilteredRecords || 0}</p>
                     </div>
                 </div>
 
@@ -188,20 +159,23 @@ export default function AdminYouTubeClaimsIndex() {
                                                 URLs
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                Status
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {
-                                            data?.length === 0 ? (
+                                            slicedRecords?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No records found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                data?.map((claim: any, index: any) => {
+                                                slicedRecords?.map((claim: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow claim={claim} index={index}

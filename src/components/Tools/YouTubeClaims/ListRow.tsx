@@ -1,8 +1,5 @@
 import * as React from "react";
 import GetDate from "../../../utility/GetDate";
-import { FaEdit } from "react-icons/fa";
-import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
-import Edit from "./CreatePopup";
 
 
 

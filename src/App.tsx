@@ -43,8 +43,8 @@ function App() {
               {/* <Route path="Submission" element={<Submission />} /> */}
               <Route path="Songsinfo" element={<SongInfo />} />
               <Route path="ManageUser/" element={<ManageUserList />} />
-              <Route path="ManageUser/Labels" element={<ManageLabelList />} />
-              <Route path="ManageUser/Catalogs" element={<ManageCatalogsList />} />
+              <Route path="ManageUser/Labels/:id" element={<ManageLabelList />} />
+              <Route path="ManageUser/Catalogs/:id" element={<ManageCatalogsList />} />
               <Route path="Songsinfo" element={<SongInfo />} />
               <Route path="Catalogs" element={<CatalogsPage />} />
               <Route path="Submission" element={<Submission />} />

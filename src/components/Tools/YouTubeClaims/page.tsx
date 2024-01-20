@@ -1,15 +1,16 @@
 import * as React from "react";
 import AdminYouTubeClaimsIndex from "./Admin";
 import YouTubeClaims from "./index";
+import useAuthStore from "../../../store/userstore";
 
 
 
 export default function YouTubeClaimsPage() {
-    const [admin, setAdmin] = React.useState(false);
+    const { userType, setUserType } = useAuthStore()
 
     return (
         <>
-            {true ? <AdminYouTubeClaimsIndex /> : <YouTubeClaims />}
+            {userType !== "User"  ? <AdminYouTubeClaimsIndex /> : <YouTubeClaims />}
         </>
     )
 }

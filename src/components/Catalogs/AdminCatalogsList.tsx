@@ -1,34 +1,72 @@
 import * as React from "react";
 import AdminListRow from "./AdminListRow";
+import { GetAdminAllCatalogsApi } from "../../api/catalogs";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { GetAllUsersDataApi } from "../../api/user";
+import { BounceLoader } from "react-spinners";
 
 
 export default function AdminCatalogsList() {
 
-    const dummyData = [
-        {
-            id: 1,
-            title: 'Sample Title 1',
-            userId: 'user_001',
-            userName: 'John Doe',
-            email: 'johndoe@example.com',
-            label: 'Label 1',
-            numberOfTracks: 5,
-            releaseDate: '2023-12-15',
-        },
-        {
-            id: 2,
-            title: 'Sample Title 2',
-            userId: 'user_002',
-            userName: 'Jane Smith',
-            email: 'janesmith@example.com',
-            label: 'Label 2',
-            numberOfTracks: 8,
-            releaseDate: '2023-11-20',
-        },
-        // Add more dummy data as needed
-    ];
+
+    //filters
+    const [userId, setUserId] = React.useState('');
+    const [statusId, setStatusId] = React.useState('');
+    const [catalogs, setCatalogs] = React.useState([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const [currentPage, setCurrentPage] = React.useState(1);
+
+    const { data: getCatalogs, isLoading: isLoadingGetCatalogs, isFetching } = GetAdminAllCatalogsApi(userId, statusId);
+
+    const { data: allUsersData } = GetAllUsersDataApi();
+
+    const PAGE_SIZE =25
+    React.useEffect(() => {
+        if (getCatalogs) {
+            setCatalogs(getCatalogs.data.data);
+            setCurrentPage(1);
+        }
+    }, [getCatalogs]);
+
+    const handleFilter = (event:any) => {
+        const inputValue = event.target.value.toLowerCase();
+        setSearchTerm(inputValue);
+        setCurrentPage(1);
+    };
+
+    const handlePageChange = (pageNumber:any) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const filterRecords = (data: any, term: any) => {
+        return data.filter(
+            (row: any) =>
+                row?.ReleaseTitle.toLowerCase().includes(term) ||
+                row?.LabelName.toLowerCase().includes(term)
+        );
+    };
+
+    const getCurrentPageData = () => {
+        const filteredRecords = filterRecords(catalogs, searchTerm);
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        const slicedRecords = filteredRecords.slice(startIndex, endIndex);
+        return { slicedRecords, totalFilteredRecords: filteredRecords.length };
+    };
+
+    const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
+    const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
+
+
+
+
     return (
         <>
+            {(isLoadingGetCatalogs || isFetching) && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+                    <BounceLoader size={150} color={"#000000"} />
+                </div>
+            )}
             <div className="p-4">
                 <div className="w-1/2 bg-neutral-800 p-2">
                     <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Catalogs</p>
@@ -41,16 +79,16 @@ export default function AdminCatalogsList() {
                             type="text"
                             className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             id="search"
-                            placeholder="Search Title"
+                            placeholder="Search Title, Label"
                             defaultValue={""}
-                        // onChange={handleFilter}
+                            onChange={handleFilter}
                         />
                         <select
                             className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
+                            onChange={(e: any) => setStatusId(e.target.value)}
+                            value={statusId}
                         >
-                            <option value="All">All</option>
+                            <option value="">All</option>
                             <option value={4}>Approved</option>
                             <option value={0}>Draft</option>
                             <option value={1}>Pending</option>
@@ -58,40 +96,34 @@ export default function AdminCatalogsList() {
                             <option value={3}>Corrections</option>
                         </select>
                         <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
+                            onChange={(e:any) => setUserId(e.target.value)}
+                            value={userId}
                         >
-                            <option value="All">UserId</option>
-                            <option value={4}>Approved</option>
-                            <option value={0}>Draft</option>
-                            <option value={2}>Rejected</option>
-                            <option value={3}>Corrections</option>
+                            <option value="">UserId</option>
+                            {
+                                allUsersData?.data?.data?.map((user:any)=>{
+                                    return (
+                                        <>
+                                            <option value={user?.users_id}>{user?.fname + " " + user?.lname}</option>
+                                        </>
+                                    )
+                                })
+                            }
                         </select>
-                        <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
-                        >
-                            <option value="All">Label</option>
-                            <option value={4}>Approved</option>
-                            <option value={0}>Draft</option>
-                            <option value={2}>Rejected</option>
-                            <option value={3}>Corrections</option>
-                        </select>
-                        <input
+                        {/* <input
                             type="text"
                             className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             id="search"
                             placeholder="Search Cat#"
                             defaultValue={""}
                         // onChange={handleFilter}
-                        />
+                        /> */}
                     </div>
 
 
                     <div className="mt-4 sm:mt-0">
-                        <p className="font-semibold text-gray-700">Total Releases : 20</p>
+                        <p className="font-semibold text-gray-700">Total Releases : {totalFilteredRecords || 0}</p>
                     </div>
                 </div>
 
@@ -112,6 +144,9 @@ export default function AdminCatalogsList() {
                                                 User ID
                                             </th>
                                             <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                                Status
+                                            </th>
+                                            <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                                 User Name
                                             </th>
                                             <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
@@ -130,17 +165,18 @@ export default function AdminCatalogsList() {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
                                         {
-                                            dummyData?.length === 0 ? (
+                                            slicedRecords?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No records found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                dummyData?.map((catalog: any, index: any) => {
+                                                    slicedRecords?.map((catalog: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
-                                                            <AdminListRow catalog={catalog} index={index} />
+                                                            <AdminListRow catalog={catalog} index={index} currentPage={currentPage}
+                                                                PAGE_SIZE={PAGE_SIZE} />
                                                         </React.Fragment>
                                                     )
                                                 })
@@ -152,6 +188,26 @@ export default function AdminCatalogsList() {
                         </div>
                     </div>
                 </div>
+
+                {totalPages > 1 && (
+                    <div className="flex justify-end items-center mt-4">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronLeft color="white" />
+                        </button>
+                        <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                        >
+                            <FiChevronRight color="white" />
+                        </button>
+                    </div>
+                )}
 
 
                 {/* Table */}

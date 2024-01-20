@@ -1,9 +1,20 @@
 import * as React from "react";
+import { UpdateTicketAdminApi } from "../../../api/ticket";
 
 
 
-export default function ListRow({ data, index }: { data: any, index: any }) {
+export default function ListRow({ data, index, currentPage, PAGE_SIZE }: { data: any, index: any, currentPage: any, PAGE_SIZE: any }) {
 
+    const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+
+    const { mutate: UpdateYoutubeClaims } = UpdateTicketAdminApi()
+
+    const handleDownload = (link: any) => {
+        const fileUrl = `https://fmdigitalofficial.in/${link}`;
+
+        // Open a new window with the file URL
+        const newWindow = window.open(fileUrl, '_blank');
+    };
     const statusButton = (status: any) => {
         switch (status) {
             case 0:
@@ -19,7 +30,20 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                         </div>
                     </>
                 );
-            case 1:
+            case 2:
+                return (
+                    <>
+                        <div className="flex items-center gap-2 w-full">
+                            <button
+                                type="submit"
+                                className="px-4 w-20 text-center py-2 bg-red-500 text-xs text-white text-base rounded hover:bg-red-600 focus:outline-none "
+                            >
+                                <span className="mr-2 text-white font-semibold">Reject</span>
+                            </button>
+                        </div>
+                    </>
+                );
+            case 4:
                 return (
                     <>
                         <div className="flex items-center gap-2 w-full">
@@ -40,16 +64,16 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
         <>
             <tr>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {index + 1}
+                    {actualIndex}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.userId || '--'}
+                    {data.users_id || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.userName || '--'}
+                    {data.users[0]?.fname + " " + data.users[0]?.lname || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.email || '--'}
+                    {data.users[0].email || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {data.reason || '--'}
@@ -58,7 +82,12 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                     {data.discreption || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    Download
+                    <span
+                        onClick={() => handleDownload(data?.ticketDocument)}
+                        className="font-semibold cursor-pointer"
+                    >
+                        Download
+                    </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(data.Status)}
@@ -69,6 +98,7 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                             type="button"
                             className="bg-green-600 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
                             onClick={() => {
+                                UpdateYoutubeClaims({ users_id: data.users_id, ticket_id: data.ticket_id, "Status": 4 })
                             }}
                         >
                             Approve
@@ -77,6 +107,7 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                             type="button"
                             className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
                             onClick={() => {
+                                UpdateYoutubeClaims({ users_id: data.users_id, ticket_id: data.ticket_id, "Status": 2 })
                             }}
                         >
                             Reject

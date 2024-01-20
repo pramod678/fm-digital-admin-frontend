@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Dashboard from "./Dashboard";
 import AdminHome from "./AdminHome";
 import { GetUserDataApi } from "../../api/authentication";
+import useAuthStore from "../../store/userstore";
 
 
 export default function Index() {
@@ -11,13 +12,14 @@ export default function Index() {
     const [admin, setAdmin] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
-    const { mutate: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setAdmin, setUserData, navigate)
+    console.log(token, "token")
+    const { userType, setUserType } = useAuthStore()
+    const { mutate: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setAdmin, setUserData, navigate, setUserType)
 
-    console.log("index")
 
     useEffect(() => {
         getUserData({ token: token })
     }, []);
 
-    return (<>{true ? <AdminHome /> : <Dashboard userData={userData} />}</>);
+    return (<>{userType !== "User" ? <AdminHome /> : <Dashboard userData={userData} />}</>);
 }

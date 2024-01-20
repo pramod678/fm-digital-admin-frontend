@@ -4,6 +4,8 @@ import useResponsiveIconSize from "../../hooks/useResponsiveIconSize"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import InputUrl from "../../ui/InputUrl"
+import { GetDashBoardStatsApi } from '../../api/releaseInfo';
+import { BounceLoader } from 'react-spinners';
 
 interface PlayListUrl {
     url: string
@@ -15,6 +17,10 @@ export default function AdminHome() {
 
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
+    const { data: GetDashBoardStats, isLoading, isFetching } = GetDashBoardStatsApi()
+
+    console.log(GetDashBoardStats?.data)
+
 
     let catalogs: any[] = []
     let labels: any[] = []
@@ -30,18 +36,22 @@ export default function AdminHome() {
     } = useForm<PlayListUrl>({})
 
     const cardsData = [
-        { title: 'Pending Catalogs', count: 10, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue' },
-        { title: 'Pending Labels', count: 5, icon: < BsCardChecklist className="text-5xl text-green-500 mb-4" />, color: 'green' },
-        { title: 'Total Artists', count: 8, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple' },
-        { title: 'Pending Tickets', count: 15, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red' },
+        { title: 'Pending Catalogs', count: GetDashBoardStats?.data?.data?.pendingRelese || 0, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue' },
+        { title: 'Pending Labels', count: GetDashBoardStats?.data?.data?.pendingLabel || 0, icon: < BsCardChecklist className="text-5xl text-green-500 mb-4" />, color: 'green' },
+        { title: 'Total Artists', count: GetDashBoardStats?.data?.data?.pendingTickets || 0, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple' },
+        { title: 'Pending Tickets', count: GetDashBoardStats?.data?.data?.totalArtist || 0, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red' },
     ];
     //pending catalogs
     //pending labels
 
     return (
         <>
+            {(isLoading || isFetching) && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+                    <BounceLoader size={150} color={"#000000"} />
+                </div>
+            )}
             <div className="flex flex-col sm:flex-row h-[90%] p-4 gap-6">
-
                 {/* Latest Playlists */}
                 <div className="flex flex-col gap-1 sm:w-[60%] h-2/3 sm:h-full">
                     <div className="bg-black px-4 py-2">

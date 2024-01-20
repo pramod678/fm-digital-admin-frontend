@@ -20,6 +20,17 @@ export const ProfileLinkingGetAllApi = (id: any) =>
         }
     );
 
+export const GetAllAdminProfileLinkingApi = () =>
+    useQuery(
+        [`GetAllAdminProfileLinking`],
+        async () => await api.get(`admin/profile-linking-get-all`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
 export const ProfileLinkingPostApi = (reset: any, setIsOpen:any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("tools/profileLinkingPost", data), {
@@ -28,6 +39,20 @@ export const ProfileLinkingPostApi = (reset: any, setIsOpen:any) => {
             setIsOpen(false)
             queryClient.refetchQueries([`profileLinkingGetAll`]);
             reset()
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+
+export const UpdateProfileLinkingPostApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put("admin/profile-linking-update", data), {
+        onSuccess: (res) => {
+            cogoToast.success("Profile Linking updated");
+            queryClient.refetchQueries([`GetAllAdminProfileLinking`]);
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);

@@ -8,6 +8,7 @@ import { BsPersonFillGear, BsTicketPerforated } from "react-icons/bs";
 import { ImFileMusic } from "react-icons/im";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { IoMdWallet } from "react-icons/io";
+import useAuthStore from "../../store/userstore";
 
 interface props {
     isOpen: boolean;
@@ -18,7 +19,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
     const size = useResponsiveIconSize();
     const [openDropdownIndex, setOpenDropdownIndex] = React.useState<number | null>(null);
-
+    const { userType, setUserType } = useAuthStore()
     const Userroutes = [
         {
             path: "/",
@@ -143,7 +144,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
     function getRoutes() {
         // Choose routes based on the user's role
-        const routes = true ? AdminRoutes : Userroutes;
+        const routes = userType !== "User" ? AdminRoutes : Userroutes;
 
         return routes;
     }
