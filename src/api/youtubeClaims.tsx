@@ -63,6 +63,19 @@ export const YoutubeClaimsGetAllApi = (id: any) =>
         }
     );
 
+export const GetAllAdminYoutubeClaimsApi = () =>
+    useQuery(
+        [`GetAllAdminYoutubeClaims`],
+        async () => await api.get(`admin/youtube-get-all`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            onSuccess: (res) => {
+            },
+        }
+    );
+
 export const YoutubeClaimsPostApi = (reset: any, setIsOpen: any, setReleseInfoGetOne:any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("tools/youtubeClaimsPost", data), {
@@ -72,6 +85,21 @@ export const YoutubeClaimsPostApi = (reset: any, setIsOpen: any, setReleseInfoGe
             setReleseInfoGetOne([])
             queryClient.refetchQueries([`youtubeClaimsGetAll`]);
             reset()
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+
+
+export const UpdateYoutubeClaimsApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put("admin/youtube-claims-update", data), {
+        onSuccess: (res) => {
+            cogoToast.success("Youtube claims updated");
+            queryClient.refetchQueries([`GetAllAdminYoutubeClaims`]);
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);

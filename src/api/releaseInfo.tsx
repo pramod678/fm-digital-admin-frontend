@@ -290,3 +290,16 @@ export const GetLatestCoorectionsApi = (userId: any) =>
             },
         }
     );
+
+export const GetDashBoardStatsApi= () =>
+    useQuery(
+        [`GetDashBoardStats`],
+        async () => await api.get(`admin/dashBoard-get-all`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            onSuccess: (res) => {
+            },
+        }
+    );

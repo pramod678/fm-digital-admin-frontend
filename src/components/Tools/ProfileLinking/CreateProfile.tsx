@@ -124,11 +124,11 @@ export default function CreateProfile() {
                                             <Label text="Artist Name" htmlFor="grid-Artist" required={true} />
                                             <InputField
                                                 type="text"
-                                                name="Artist"
+                                                name="ArtistName"
                                                 placeholder="Make sure to enter the exact name of artist"
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="Artist is required."
+                                                requiredMessage="ArtistName is required."
                                             />
                                         </div>
                                         <div className="w-full mb-2">

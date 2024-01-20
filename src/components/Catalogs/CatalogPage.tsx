@@ -1,15 +1,17 @@
 import * as React from "react";
 import Catalogs from "./index";
 import AdminCatalogsList from "./AdminCatalogsList";
+import useAuthStore from "../../store/userstore";
 
 
 
 export default function CatalogsPage(){
-    const [admin, setAdmin] = React.useState(false);
+    const { userType, setUserType } = useAuthStore()
+
     
     return(
         <>
-            {true ? <AdminCatalogsList /> : <Catalogs />}
+            {userType !== "User"  ? <AdminCatalogsList /> : <Catalogs />}
         </>
     )
 }

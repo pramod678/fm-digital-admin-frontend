@@ -4,19 +4,21 @@ import { Link } from "react-router-dom";
 import LabelTable from "./LabelTable";
 
 
-export default function ManageLabelListRow({ data, index }: { data: any, index: any }) {
+export default function ManageLabelListRow({ data, index, currentPage, PAGE_SIZE }: { data: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+
     return (
         <>
             <tr onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {index + 1}
+                    {actualIndex}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {data.userId || '--'}
+                    {data.users_id || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.userName || '--'}
+                    {data.fname + " " + data.lname || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {data.email || '--'}
@@ -25,10 +27,10 @@ export default function ManageLabelListRow({ data, index }: { data: any, index: 
                     {data.phone || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.numberOfTracks || '--'}
+                    {data.total}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.pendingLabel ? data.pendingLabel : '--'}
+                    {data.pending}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 flex justify-end">
                     {isOpen ? (
@@ -41,14 +43,14 @@ export default function ManageLabelListRow({ data, index }: { data: any, index: 
             {isOpen && (
                 <tr className="">
                     <td colSpan={10} className="p-4">
-                        <LabelTable />
+                        <LabelTable labelData={data.labelData} />
                     </td>
                 </tr>
             )}
             <tr className="">
                 <td colSpan={10}>
                     <div className="flex w-full justify-end gap-3 p-1">
-                        <Link to={`/ManageUser/Catalogs`}>
+                        <Link to={`/ManageUser/Catalogs/${data.users_id}`}>
                             <button
                                 type="button"
                                 className="bg-red-600 hover:bg-red-900 text-white py-2 px-4 rounded sm:text-xs "

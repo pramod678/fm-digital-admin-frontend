@@ -29,3 +29,27 @@ export const GetAllTicketApi = (userId: any) =>
             refetchOnWindowFocus: false,
         }
     );
+
+export const GetAllAdminTicketApi = () =>
+    useQuery(
+        [`GetAllAdminTicket`],
+        async () => await api.get(`admin/ticket-get-all`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+export const UpdateTicketAdminApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put("admin/ticket-update", data), {
+        onSuccess: (res) => {
+            cogoToast.success("ticket updated");
+            queryClient.refetchQueries([`GetAllAdminTicket`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

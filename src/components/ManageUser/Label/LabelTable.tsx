@@ -1,24 +1,29 @@
 import * as React from "react";
 import LabelTableListRow from "./LabelTableListRow";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 
 
-export default function LabelTable() {
-    const dummyData = [
-        {
-            id: 1,
-            channelName: 'user_001',
-            channelUrl: 'John Doe',
-            fileDownload: 'johndoe@example.com',
-        },
-        {
-            id: 2,
-            channelName: 'user_002',
-            channelUrl: 'Jane Smith',
-            fileDownload: 'janesmith@example.com',
-        },
-        // Add more dummy data as needed
-    ];
+export default function LabelTable({ labelData }: { labelData: any }) {
+
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const PAGE_SIZE = 1
+
+    const handlePageChange = (pageNumber: any) => {
+        setCurrentPage(pageNumber);
+    };
+
+
+    const getCurrentPageData = () => {
+
+        const startIndex = (currentPage - 1) * PAGE_SIZE;
+        const endIndex = startIndex + PAGE_SIZE;
+        const slicedRecords = labelData.slice(startIndex, endIndex);
+        return { slicedRecords };
+    };
+
+    const { slicedRecords } = getCurrentPageData();
+    const totalPages = Math.ceil(slicedRecords / PAGE_SIZE);
 
     return (
         <>
@@ -42,26 +47,33 @@ export default function LabelTable() {
                                             B2B/Doc
                                         </th>
                                         <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
+                                            Status
+                                        </th>
+                                        <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
                                             Action
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {
-                                        dummyData?.length === 0 ? (
+                                        labelData?.length === 0 ? (
                                             <tr className="w-full">
                                                 <td className="text-center py-4" colSpan={8}>
                                                     No records found.
                                                 </td>
                                             </tr>
                                         ) : (
-                                            dummyData?.map((data: any, index: any) => {
-                                                return (
-                                                    <React.Fragment key={index}>
-                                                        <LabelTableListRow data={data} index={index} />
-                                                    </React.Fragment>
-                                                )
-                                            })
+                                            <>
+                                                {
+                                                    labelData?.map((data: any, index: any) => {
+                                                        return (
+                                                            <React.Fragment key={index}>
+                                                                <LabelTableListRow data={data} index={index} />
+                                                            </React.Fragment>
+                                                        )
+                                                    })
+                                                }
+                                            </>
                                         )
                                     }
                                 </tbody>
@@ -70,6 +82,27 @@ export default function LabelTable() {
                     </div>
                 </div>
             </div>
+
+            {totalPages > 1 && (
+                <div className="flex justify-end items-center mt-4">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                    >
+                        <FiChevronLeft color="white" />
+                    </button>
+                    <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                    >
+                        <FiChevronRight color="white" />
+                    </button>
+                </div>
+            )}
+
         </>
     )
 }

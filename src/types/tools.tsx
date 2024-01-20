@@ -12,6 +12,7 @@ export type ProfileLinkingDto = {
     Selectplatform: string
     FecebookLink: string
     InstagramLink: string
+    ArtistName:string
 }
 
 export const policyOptions: any[] = [

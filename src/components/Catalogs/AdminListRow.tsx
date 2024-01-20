@@ -1,35 +1,101 @@
 import * as React from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import { UpdateAdminCatalogApi } from "../../api/catalogs";
+import { MdDelete } from "react-icons/md";
+import Stores from "./PopUp/Stores";
 
 
-export default function AdminListRow({ catalog, index }: { catalog: any, index: any }) {
+export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }: { catalog: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const [isOpen, setIsOpen] = React.useState(false);
+    const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+
+    const { mutate: UpdateAdminCatalog } = UpdateAdminCatalogApi()
+
+    const statusButton = (status: any) => {
+        switch (status) {
+            case 0:
+                return (
+                    <>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="submit"
+                                className="px-4 w-20 text-center py-2 bg-[#9dd3fc] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none "
+                            >
+                                <span className="mr-2 text-white font-semibold">Draft</span>
+                            </button>
+                            <span  className="cursor-pointer">
+                                <MdDelete color="red" size={20} />
+                            </span>
+                        </div>
+                    </>
+                );
+            case 1:
+                return (
+                    <>
+                        --
+                    </>
+                );
+            case 2:
+                return (
+                    <>
+                        --
+                    </>
+                );
+            case 3:
+                return (
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-[#0000cd] w-20 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none"
+                        >
+                            <span className=" text-white text-xs font-semibold">Correct..</span>
+                        </button>
+                        <span  className="cursor-pointer">
+                            <MdDelete color="red" size={20} />
+                        </span>
+
+                    </div>
+                );
+            case 4:
+                return (
+                    <>
+                        <Stores />
+                    </>
+                );
+            default:
+                return <></>;
+        }
+    };
+    
     return (
         <>
             <tr onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {index + 1}
+                    {actualIndex}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.title || '--'}
+                    {catalog.ReleaseTitle || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {catalog.userId || '--'}
+                    {catalog.users_id || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.userName || '--'}
+                    {statusButton(catalog.Status)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.email || '--'}
+                    {catalog.userData[0]?.fname + " " + catalog.userData[0]?.lname || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.label || '--'}
+                    {catalog.userData[0]?.email || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.numberOfTracks || '--'}
+                    {catalog.LabelName || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.releaseDate ? catalog.releaseDate : '--'}
+                    {catalog.songInfo?.length || '--'}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                    {catalog.ReleaseDate ? catalog.ReleaseDate : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 flex justify-end">
                     {isOpen ? (
@@ -42,141 +108,141 @@ export default function AdminListRow({ catalog, index }: { catalog: any, index: 
             {isOpen && (
                 <tr className="w-full">
                     <td colSpan={8} className="px-0 py-0">
-                        <div className="px-6 py-4 grid grid-cols-3 gap-16">
+                        <div className="px-6 py-4 grid sm:grid-cols-3 gap-16">
                             {/* Your accordion content goes here */}
                             <div>
                                 <div className="flex items-center justify-between  mb-1 mb-1">
-                                    <p className="font-semibold  sm:text-sm">Release Type:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semiboldtext-sm">Release Type:</p>
+                                    <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Release Title:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Release Title:</p>
+                                    <p className="text-sm">{catalog?.ReleaseTitle}</p>
                                 </div>
 
                                 <div className="flex items-center justify-between mt-6 mb-1">
-                                    <p className="font-semibold  sm:text-sm">Primary Artist:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Primary Artist:</p>
+                                    <p className="text-sm">{catalog?.PrimaryArtist}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Apple Id:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Apple Id:</p>
+                                    <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
                                 <div className="flex items-center justify-between mb-1">
-                                    <p className="font-semibold  sm:text-sm">Spotify Id:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Spotify Id:</p>
+                                    <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
                                 <div className="flex items-center justify-between mt-6 mb-1">
-                                    <p className="font-semibold  sm:text-sm">Genre:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Genre:</p>
+                                    <p className="text-sm">{catalog?.Genre}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Sub Genre:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Sub Genre:</p>
+                                    <p className="text-sm">{catalog?.SubGenre}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">PLine:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">PLine:</p>
+                                    <p className="text-sm">{catalog?.PLine}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">CLine:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">CLine:</p>
+                                    <p className="text-sm">{catalog?.CLine}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">UPC/EAN:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">UPC/EAN:</p>
+                                    <p className="text-sm">{catalog?.UPCEAN}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Cat No. :</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                            </div>
-                            <div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Track Version</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Instrumental:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Song Title:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Version/SubTitle:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Primary Artist:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Featuring Artist:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Author:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Composer:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Producer:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Publisher:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">ISRC:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Genre:</p>
-                                    <p className="text-sm">ojolj</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Sub Genre:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Cat No. :</p>
+                                    <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
                             </div>
                             <div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Price Tier:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Track Version</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Trackversion}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Explicit Version:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Instrumental:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Instrumental}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Track Title Language:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Song Title:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Title}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Lyrics Language:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Version/SubTitle:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.VersionSubtitle}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Primary Artist:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Primaryartist}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Featuring Artist:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.FeaturingArtist}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Author:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Author}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Composer:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Composer}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Producer:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Producer}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Publisher:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Publisher}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">ISRC:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.ISRC}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Genre:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Genre}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Sub Genre:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.Subgenre}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Price Tier:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.PriceTier}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Explicit Version:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.ExplicitVersion}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Track Title Language:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.TrackTitleLanguage}</p>
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Lyrics Language:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.LyricsLanguage}</p>
                                 </div>
                                 <div className="flex flex-col mb-1">
                                     <p className="font-semibold text-sm mb-1">Lyrics:</p>
                                     <div className=" h-32 border-2 border-black p-1 overflow-hidden">
                                         <p className="whitespace-normal">
-                                            ihaidhfihihihihaidhhcackkkkkkkkkkkkkkkkkkpijppppaaaaaaaaaaaaijhiiiiiiiiiiiasssssssssssssssssssss
+                                            {catalog?.songInfo[0]?.Lyrics}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Caller Tune Timing:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Caller Tune Timing:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.CallerTuneTiming}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold  sm:text-sm">Distribute Music Video:</p>
-                                    <p className="text-sm">ojolj</p>
+                                    <p className="font-semibold text-sm">Distribute Music Video:</p>
+                                    <p className="text-sm">{catalog?.songInfo[0]?.PriceTier}</p>
                                 </div>
                             </div>
                         </div>
@@ -190,6 +256,7 @@ export default function AdminListRow({ catalog, index }: { catalog: any, index: 
                             type="button"
                             className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
                             onClick={() => {
+                                UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 4 })
                             }}
                         >
                             Approve Release
@@ -198,6 +265,7 @@ export default function AdminListRow({ catalog, index }: { catalog: any, index: 
                             type="button"
                             className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
                             onClick={() => {
+                                UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status:3  })
                             }}
                         >
                             Reject Release
@@ -206,6 +274,7 @@ export default function AdminListRow({ catalog, index }: { catalog: any, index: 
                             type="button"
                             className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
                             onClick={() => {
+                                UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 2 })
                             }}
                         >
                             Take Down Release
