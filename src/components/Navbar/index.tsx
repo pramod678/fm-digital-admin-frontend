@@ -37,11 +37,6 @@ export default function Index({ isOpen, setIsOpen }: props) {
     const [userData, setUserData] = React.useState<any>("");
     const token = localStorage.getItem("token")
 
-    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-
-    React.useEffect(() => {
-        getUserData({ token: token })
-    }, [])
 
     const routes = [
         {
