@@ -114,7 +114,6 @@ export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
                 cogoToast.success("Token Expired");
                 navigate('/sign-in');
             }
-            console.log(res.data?.data)
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);

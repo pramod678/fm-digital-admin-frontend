@@ -144,7 +144,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
     function getRoutes() {
         // Choose routes based on the user's role
-        const routes = userType !== "User" ? AdminRoutes : Userroutes;
+        const routes = userType === "Admin" ? AdminRoutes : Userroutes;
 
         return routes;
     }

@@ -27,7 +27,7 @@ export default function Index() {
     const { setToken } = useAuthStore()
 
     //Login Api Call
-    const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMailApi(reset, navigate)
+    const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMailApi(reset, navigate, setToken)
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
