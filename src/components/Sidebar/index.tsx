@@ -20,6 +20,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
     const size = useResponsiveIconSize();
     const [openDropdownIndex, setOpenDropdownIndex] = React.useState<number | null>(null);
     const { userType, setUserType } = useAuthStore()
+    console.log(userType, "userType")
     const Userroutes = [
         {
             path: "/",
@@ -139,8 +140,12 @@ export default function Index({ isOpen, setIsOpen }: props) {
         },
     ]
 
+    console.log(userType === "Admin")
+
 
     const routes = getRoutes();
+
+    console.log(routes, "routes")
 
     function getRoutes() {
         // Choose routes based on the user's role
@@ -148,6 +153,7 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
         return routes;
     }
+
 
     const handleClick = (r: any, e: React.MouseEvent) => {
         if (r?.subRoutes) {

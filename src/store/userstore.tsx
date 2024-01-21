@@ -12,7 +12,7 @@ const useAuthStore = create<AuthState>()(
     persist(
         devtools(
             (set, get) => ({
-                userType: 'User',
+                userType: '',
                 token:'',
                 setToken: (token: any) => set({ token: token }),
                 setUserType: (type: any) => set({ userType: type }),

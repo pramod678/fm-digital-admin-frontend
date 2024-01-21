@@ -4,12 +4,13 @@ import api from "../lib/api";
 import { NavigateFunction } from "react-router-dom";
 
 
-export const LoginWithMailApi = (reset: any, navigate: NavigateFunction) => {
+export const LoginWithMailApi = (reset: any, navigate: NavigateFunction,setToken:any) => {
     return useMutation((data) => api.post("/user/login", data), {
         onSuccess: (res) => {
             if (res?.data?.status === "error"){
                 cogoToast.success(res?.data?.error);
             }else{
+                setToken(res?.data.data)
                 cogoToast.success("Login successfully");
                 console.log(res.data.data, "token")
                 window.localStorage.setItem("token", res.data?.data);
