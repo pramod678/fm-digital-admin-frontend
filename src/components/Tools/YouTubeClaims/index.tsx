@@ -131,82 +131,85 @@ export default function Index() {
 
                 <p className="text-base sm:text-lg font-semibold my-2">Your UGC Claims History</p>
 
-                <div className="flex flex-col">
-                    <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                No.
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Release Title
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Audio Title
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Policy
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Status
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Date
-                                            </th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                URLs
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {
-                                            currentData?.length === 0 ? (
-                                                <tr className="w-full">
-                                                    <td className="text-center py-4" colSpan={8}>
-                                                        No records found.
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                currentData?.map((claim: any, index: any) => {
-                                                    return (
-                                                        <React.Fragment key={index}>
-                                                            <ListRow claim={claim} index={index}
-                                                                currentPage={currentPage}
-                                                                PAGE_SIZE={PAGE_SIZE} />
-                                                        </React.Fragment>
-                                                    )
-                                                })
-                                            )
-                                        }
-                                    </tbody>
-                                </table>
+                <div className="p-4">
+                    <div className="flex flex-col">
+                        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <table className="min-w-full divide-y divide-gray-200">
+                                        <thead className="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    No.
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    Release Title
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    Audio Title
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    Policy
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    Status
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    Date
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    URLs
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="bg-white divide-y divide-gray-200">
+                                            {
+                                                currentData?.length === 0 ? (
+                                                    <tr className="w-full">
+                                                        <td className="text-center py-4" colSpan={8}>
+                                                            No records found.
+                                                        </td>
+                                                    </tr>
+                                                ) : (
+                                                    currentData?.map((claim: any, index: any) => {
+                                                        return (
+                                                            <React.Fragment key={index}>
+                                                                <ListRow claim={claim} index={index}
+                                                                    currentPage={currentPage}
+                                                                    PAGE_SIZE={PAGE_SIZE} />
+                                                            </React.Fragment>
+                                                        )
+                                                    })
+                                                )
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {totalPages > 1 && (
-                    <div className="flex justify-end items-center mt-4">
-                        <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
-                        >
-                            <FiChevronLeft color="white" />
-                        </button>
-                        <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
-                        <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
-                        >
-                            <FiChevronRight color="white" />
-                        </button>
-                    </div>
-                )}
+                    {totalPages > 1 && (
+                        <div className="flex justify-end items-center mt-4">
+                            <button
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                            >
+                                <FiChevronLeft color="white" />
+                            </button>
+                            <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
+                            <button
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
+                            >
+                                <FiChevronRight color="white" />
+                            </button>
+                        </div>
+                    )}
+                </div>
+                
 
             </div>
         </>

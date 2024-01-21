@@ -11,9 +11,12 @@ import { useNavigate } from "react-router-dom";
 import { DeleteCatalogApi } from "../../api/catalogs";
 import Stores from "./PopUp/Stores";
 
-export default function ListRow({ catalog, index }: { catalog: any, index: any }) {
+export default function ListRow({ catalog, index, currentPage, PAGE_SIZE }: { catalog: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const size = useResponsiveIconSize();
     const navigate = useNavigate()
+
+    const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+
 
     const { mutate: DeleteCatalog, isLoading: isLoadingDeleteCatalog } = DeleteCatalogApi({ id: catalog?.releseInfo_id })
 
@@ -121,7 +124,7 @@ export default function ListRow({ catalog, index }: { catalog: any, index: any }
         <>
             <tr>
                 <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {index + 1}
+                    {actualIndex}
                 </td>
                 <td onClick={handleNavigation} className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer ">
                     <div className="flex justify-center sm:mr-2 lg:mr-4">

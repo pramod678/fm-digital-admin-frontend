@@ -4,8 +4,10 @@ import useResponsiveIconSize from "../../hooks/useResponsiveIconSize"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import InputUrl from "../../ui/InputUrl"
-import { GetDashBoardStatsApi } from '../../api/releaseInfo';
+import { GetDashBoardStatsApi, GetDashboardsLinksApi } from '../../api/releaseInfo';
 import { BounceLoader } from 'react-spinners';
+import AdminSpotifyList from './AdminSpotifyList';
+import AdminYoutubeList from './AdminYoutubeList';
 
 interface PlayListUrl {
     url: string
@@ -16,7 +18,7 @@ export default function AdminHome() {
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
     const { data: GetDashBoardStats, isLoading, isFetching } = GetDashBoardStatsApi()
-
+    
     let catalogs: any[] = []
     let labels: any[] = []
 
@@ -55,23 +57,13 @@ export default function AdminHome() {
                     <div className="flex flex-col sm:flex-row gap-2 h-full bg-zinc-500">
                         <div className="w-full sm:w-[50%] overflow-y-auto">
                             <div className="flex flex-col p-2 gap-3">
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
+                                <AdminSpotifyList />
                             </div>
 
                         </div>
                         <div className="w-full sm:w-[50%] overflow-y-auto">
                             <div className="flex flex-col p-2 gap-3">
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
-                                <InputUrl />
+                                <AdminYoutubeList />
                             </div>
                         </div>
                     </div>

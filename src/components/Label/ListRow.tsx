@@ -32,6 +32,12 @@ export default function ListRow({ label, index, userData }: { label: any, index:
                         <FcCancel size={size} />
                     </p>
                 );
+            case 4:
+                return (
+                    <p style={{ color: "green" }}>
+                        <BsCheckCircle size={size} />
+                    </p>
+                );
             default:
                 return <></>;
         }

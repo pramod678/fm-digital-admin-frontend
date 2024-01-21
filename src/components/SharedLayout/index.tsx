@@ -11,9 +11,9 @@ export default function Index() {
         <>
             <div className="h-full">
                 <Navbar isOpen={isOpen} setIsOpen={setIsOpen} />
-                <div className="flex">
+                <div className="flex ">
                     <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-                    <div className={`h-[92vh] overflow-y-auto w-full`}>
+                    <div className={`h-[92vh] overflow-y-auto w-full `}>
                         <Outlet/>
                     </div>
                 </div>

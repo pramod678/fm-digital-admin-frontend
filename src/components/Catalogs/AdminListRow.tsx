@@ -231,7 +231,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                 <div className="flex flex-col mb-1">
                                     <p className="font-semibold text-sm mb-1">Lyrics:</p>
                                     <div className=" h-32 border-2 border-black p-1 overflow-hidden">
-                                        <p className="whitespace-normal">
+                                        <p className="whitespace-normal break-all">
                                             {catalog?.songInfo[0]?.Lyrics}
                                         </p>
                                     </div>

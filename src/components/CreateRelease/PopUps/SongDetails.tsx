@@ -351,6 +351,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
                                                 placeholder="Enter hh:mm:ss "
                                                 register={register}
                                                 errors={errors}
+                                                step={"1"}
                                                 onKeyDown={(e:any) => e.preventDefault()}
                                             />
                                         </div>
