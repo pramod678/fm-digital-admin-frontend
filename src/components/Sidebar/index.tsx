@@ -139,7 +139,9 @@ export default function Index({ isOpen, setIsOpen }: props) {
             icon: <BsTicketPerforated color={'#ffffff'} size={size} />,
         },
     ]
-
+    const handleUrlClick = (link: any) => {
+        window.open(link, '_blank');
+    };
     console.log(userType === "Admin")
 
 
@@ -223,11 +225,10 @@ export default function Index({ isOpen, setIsOpen }: props) {
                 <div className={` ${!isOpen ? 'hidden' : 'block'} mt-60 bg-[#00CED1] h-14 flex flex-col items-center justify-center`}>
                     <p className="text-white text-center mb-0">Connect with us</p>
                     <div className="flex gap-3 mt-2">
-                        <FaFacebook className="text-white cursor-pointer" />
-                        <FaLinkedin className="text-white cursor-pointer" />
-                        <FaYoutube className="text-white cursor-pointer" />
-                        <FaInstagram className="text-white cursor-pointer" />
-                        <FaTwitter className="text-white cursor-pointer" />
+                        <FaLinkedin className="text-white cursor-pointer" onClick={() => handleUrlClick("https://www.linkedin.com/in/fm-digital-043a34244/")} />
+                        <FaYoutube className="text-white cursor-pointer" onClick={() => handleUrlClick("https://www.youtube.com/channel/UCtiKMeo0LJa8mUQNZIwRNsA")} />
+                        <FaInstagram className="text-white cursor-pointer" onClick={() => handleUrlClick("https://www.instagram.com/fmdigitalofficial/")} />
+                        <FaTwitter className="text-white cursor-pointer" onClick={() => handleUrlClick("https://twitter.com/AshishT97719445")} />
                     </div>
                 </div>
             </div>

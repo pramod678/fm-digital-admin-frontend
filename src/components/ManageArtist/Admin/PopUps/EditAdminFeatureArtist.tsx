@@ -1,44 +1,48 @@
 import * as React from "react";
+import { YouTubeClaimsDto } from "../../../../types/tools";
+import { useForm } from "react-hook-form";
+import { ManageArtistDto } from "../../../../types/manageArtist";
+import Label from "../../../../ui/Label";
+import InputField from "../../../../ui/InputField";
+import { AiFillSave, AiOutlineCloseCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { UpdateAdminFeaturingArtistApi, UpdateAdminPrimaryArtistApi, UpdatePrimaryArtistApi, UserDataApi } from "../../../../api/releaseInfo";
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
-import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
-import Label from "../../../ui/Label";
-import InputField from "../../../ui/InputField";
-import { useForm } from "react-hook-form";
-import { FeatureArtistDto } from "../../../types/ReleaseInfo";
-import { FeaturingArtisttPostApi, GetFeaturingArtistApi } from "../../../api/releaseInfo";
+import { FaUserEdit } from "react-icons/fa";
+import useResponsiveIconSize from "../../../../hooks/useResponsiveIconSize";
 import { BeatLoader } from "react-spinners";
+import { FeatureArtistDto } from "../../../../types/ReleaseInfo";
 
-export default function FeatureArtist({ userData }: { userData: any }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const size = useResponsiveIconSize();
+
+export default function EditAdminManageArtist({ Initialdata }: { Initialdata: any }) {
 
     const {
         register,
         handleSubmit,
         watch,
         reset,
+        control,
         formState: { errors }
-    } = useForm<FeatureArtistDto>()
+    } = useForm<FeatureArtistDto>({ defaultValues: Initialdata })
+    const size = useResponsiveIconSize();
 
-    //featuringArtisttPost Api Call
-    const { mutate: featuringArtisttPost, isLoading: isLoadingfeaturingArtisttPost } = FeaturingArtisttPostApi(setIsOpen)
+    const [isOpen, setIsOpen] = useState(false);
+
+    const { mutate: UpdateAdminFeaturingArtist, isLoading } = UpdateAdminFeaturingArtistApi(Initialdata?.featuringArtist_id, setIsOpen)
+
+
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        newData.users_id = Number(userData?.users_id)
-        featuringArtisttPost(newData)
+        UpdateAdminFeaturingArtist(newData)
     });
 
     return (
         <>
-            <button
-                type="button"
-                className="flex items-center justify-center ml-2 py-1 px-1 bg-blue-500 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-                onClick={() => setIsOpen(true)}
-            >
-                <AiOutlinePlus size={size} />
-            </button>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => setIsOpen(true)}>
+                <FaUserEdit className="cursor-pointer ml-4" size={size} />
+            </td>
+
 
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
@@ -55,7 +59,6 @@ export default function FeatureArtist({ userData }: { userData: any }) {
                         >
                             &#8203;
                         </span>
-
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -68,9 +71,9 @@ export default function FeatureArtist({ userData }: { userData: any }) {
                             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg text-center font-medium leading-6 text-gray-900"
+                                    className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Create Featuring Artist
+                                    Edit Featuring Artist
                                 </Dialog.Title>
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
@@ -121,12 +124,11 @@ export default function FeatureArtist({ userData }: { userData: any }) {
                                             Close
                                         </button>
                                         <button
-                                            type="button"
-                                            onClick={onSubmit}
-                                            disabled={isLoadingfeaturingArtisttPost}
+                                            type="submit"
+                                            disabled={isLoading}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                                         >
-                                            {isLoadingfeaturingArtisttPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
+                                            {isLoading ? <BeatLoader color="#ffffff" /> : 'Update'}
                                         </button>
                                     </div>
 
@@ -139,3 +141,4 @@ export default function FeatureArtist({ userData }: { userData: any }) {
         </>
     )
 }
+

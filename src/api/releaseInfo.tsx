@@ -105,6 +105,31 @@ export const GetPrimaryArtistApi = (id: any) =>
         }
     );
 
+export const GetAllAdminPrimaryArtistApi = (userId:any) =>
+    useQuery(
+        [`GetAllAdminPrimaryArtist`, userId],
+        async () => await api.get(`admin/primary-artist-get-all?user_id=${userId}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            onSuccess: (res) => {
+            },
+        }
+    );
+
+export const GetAllAdminFeaturingArtistApi = (userId: any, showPrimaryArtist:any) =>
+    useQuery(
+        [`GetAllAdminFeaturingArtist`, userId, showPrimaryArtist],
+        async () => await api.get(`admin/featuring-artist-get-all?user_id=${userId}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            onSuccess: (res) => {
+            },
+        }
+    );
 
 export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
     return useMutation((data: any) => api.post("user/userData", data), {
@@ -156,6 +181,34 @@ export const UpdatePrimaryArtistApi = (id: any, setIsOpen: any) => {
             cogoToast.success("updated Successfully");
             setIsOpen(false)
             queryClient.refetchQueries([`GetPrimaryArtist`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+export const UpdateAdminPrimaryArtistApi = (id: any, setIsOpen: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.put(`admin/primary-artist-update/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("updated Successfully");
+            setIsOpen(false)
+            queryClient.refetchQueries([`GetAllAdminPrimaryArtist`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+export const UpdateAdminFeaturingArtistApi = (id: any, setIsOpen: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.put(`admin/featuring-artist-update/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("updated Successfully");
+            setIsOpen(false)
+            queryClient.refetchQueries([`GetAllAdminFeaturingArtist`]);
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
@@ -302,3 +355,45 @@ export const GetDashBoardStatsApi= () =>
             },
         }
     );
+
+export const GetDashboardsLinksApi = (active:any) =>
+    useQuery(
+        [`GetDashBoardLinks+${active}`, active],
+        async () => await api.get(`admin/dashBoard-get-link-all?spotify_active=${active}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            onSuccess: (res) => {
+            },
+        }
+    );
+
+export const CreateDashboardLinkApi = (reset: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data:any) => api.post("admin/dashBoard-link-create", data), {
+        onSuccess: (res) => {
+            cogoToast.success("Link Added");
+            queryClient.refetchQueries([`GetDashBoardLinks`]);
+            reset()
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+export const UpdateDashboardLinkApi = (setIsEditing: any, setReadMode:any ) => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put(`admin/dashBoard-link-update/${data?.dashBoard_id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Link Updated");
+            queryClient.refetchQueries([`GetDashBoardLinks+${res.data?.spotify_active}`]);
+            setIsEditing(false)
+            setReadMode(true)
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

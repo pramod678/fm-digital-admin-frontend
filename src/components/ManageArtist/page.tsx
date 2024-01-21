@@ -1,7 +1,7 @@
 import * as React from "react";
 import ManageArtist from "./index";
-import AdminManageArtistIndex from "./Admin";
 import useAuthStore from "../../store/userstore";
+import AdminManageArtistIndex from "./Admin/page";
 
 
 

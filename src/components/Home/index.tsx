@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import AdminHome from "./AdminHome";
 import { GetUserDataApi } from "../../api/authentication";
 import useAuthStore from "../../store/userstore";
+import { BounceLoader } from "react-spinners";
 
 
 export default function Index() {
@@ -23,7 +24,9 @@ export default function Index() {
 
     if (isLoadinggetUserData) {
         // Render a loading indicator or a placeholder
-        return <div>Loading...</div>;
+        return <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+            <BounceLoader size={150} color={"#000000"} />
+        </div>
     }
 
     return (<>{userType !== "User" ? <AdminHome /> : <Dashboard userData={userData} />}</>);

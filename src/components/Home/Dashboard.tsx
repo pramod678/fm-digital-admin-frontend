@@ -9,6 +9,9 @@ import * as React from "react"
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize"
 import { Link, useNavigate } from "react-router-dom"
 import { GetLatestCoorectionsApi, GetLatestDraftsApi } from "../../api/releaseInfo"
+import SpotifyList from "./SpotifyList"
+import YoutubeList from "./YoutubeList"
+
 
 export default function UserHome({ userData }: { userData: any }) {
 
@@ -18,7 +21,6 @@ export default function UserHome({ userData }: { userData: any }) {
     const { data: GetLatestDrafts, isLoading: isLoadingGetLatestDrafts } = GetLatestDraftsApi(userData?.users_id)
 
     const { data: GetLatestCoorections, isLoading } = GetLatestCoorectionsApi(userData?.users_id)
-        console.log("api hit")
 
     
     return (
@@ -32,18 +34,10 @@ export default function UserHome({ userData }: { userData: any }) {
                     </div>
                     <div className="flex flex-col sm:flex-row gap-2 h-full bg-gray-500">
                         <div className="w-full sm:w-[30%] overflow-y-auto">
-                            <iframe src="https://open.spotify.com/embed/track/4Q1pRLjLK7PQeCV3DQ9P6A?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
-                            <iframe src="https://open.spotify.com/embed/track/4GeHXCwcvz1LKszU3TnQvf?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
-                            <iframe src="https://open.spotify.com/embed/track/1JUbvTiGqLUgrPj5vMOlKU?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
-                            <iframe src="https://open.spotify.com/embed/track/7yLqwZe6gvG0Lr1Tdbojw7?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
-                            <iframe src="https://open.spotify.com/embed/track/3PkxDIO67YHMYRdJv7bf9V?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" className="w-full h-52 sm:h-60 object-fit p-1"></iframe>
+                            <SpotifyList />
                         </div>
                         <div className="w-full sm:w-[70%] overflow-y-auto">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/MW6XMllF6Ww?si=CaYyAfL7eLb_5wL7" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/LT7_vVEuk40?si=W0_9Gyut22Q0Gpqj" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/MOItMO8pOIs?si=fE6JGXx6pK7f3EEU" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/-i9mSEBQvUw?si=H59ArXF53WE894UW" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/0gg7XhUhSbk?si=JBD_mSU8IuOsN13-" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className="w-full h-52 sm:h-80 object-fit p-1"  allowFullScreen></iframe>
+                            <YoutubeList />
                         </div>
                     </div>
                 </div>
