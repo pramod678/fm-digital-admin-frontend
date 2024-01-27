@@ -7,10 +7,14 @@ import { FcCancel } from "react-icons/fc";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import UpdateLabel from "./PopUps/UpdateLabel";
+import { IoLogoYoutube } from "react-icons/io";
 
 
 export default function ListRow({ label, index, userData }: { label: any, index: any, userData :any}) {
     const size = useResponsiveIconSize();
+    const handleUrlClick = (link: any) => {
+        window.open(link, '_blank');
+    };
 
     const iconSelector = (status: any) => {
         switch (status) {
@@ -62,6 +66,9 @@ export default function ListRow({ label, index, userData }: { label: any, index:
                         '--'
                     )} */}
                     {label.title || '--'}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => handleUrlClick(label.youtubeURL)}>
+                    <IoLogoYoutube size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {iconSelector(label.Status) || '--'}

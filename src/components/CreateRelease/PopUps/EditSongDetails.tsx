@@ -348,12 +348,11 @@ export default function EditSongDetails({ userData, getReleaseInfo, song, refetc
                                         <div className="w-full mb-2">
                                             <Label text="Caller Tune Timing" htmlFor="grid-CallerTuneTiming" required={false} />
                                             <InputField
-                                                type="time"
+                                                type="text"
                                                 name="CallerTuneTiming"
-                                                placeholder="Enter hh:mm:ss "
+                                                placeholder="HH:MM:SS"
                                                 register={register}
                                                 errors={errors}
-                                                onKeyDown={(e: any) => e.preventDefault()}
                                             />
                                         </div>
 

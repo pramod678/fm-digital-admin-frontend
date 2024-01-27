@@ -1,10 +1,16 @@
 import * as React from "react";
 import GetDate from "../../../utility/GetDate";
+import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
+import { IoLogoYoutube } from "react-icons/io";
 
 
 
 export default function ListRow({ claim, index, currentPage, PAGE_SIZE }: { claim: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+    const size = useResponsiveIconSize()
+    const handleUrlClick = (link: any) => {
+        window.open(link, '_blank');
+    };
     const statusButton = (status: any) => {
         switch (status) {
             case 0:
@@ -81,8 +87,8 @@ export default function ListRow({ claim, index, currentPage, PAGE_SIZE }: { clai
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {claim.createdAt ? GetDate(claim.createdAt) : '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {claim.PasteURL || '--'}
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => handleUrlClick(claim.PasteURL)}>
+                    <IoLogoYoutube size={size} />
                 </td>
             </tr>
         </>

@@ -19,7 +19,7 @@ export default function ManageCatalogsList() {
 
     const { data: getCatalogs, isLoading: isLoadingGetCatalogs, isFetching } = GetAdminAllCatalogsApi(id, '');
 
-    const PAGE_SIZE = 2
+    const PAGE_SIZE = 25
     React.useEffect(() => {
         if (getCatalogs) {
             setCatalogs(getCatalogs.data.data);

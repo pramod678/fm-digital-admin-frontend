@@ -3,6 +3,8 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { UpdateAdminCatalogApi } from "../../api/catalogs";
 import { MdDelete } from "react-icons/md";
 import Stores from "./PopUp/Stores";
+import AllSongs from "./AllSongs";
+import ConfirmationButton from "../../ui/ConfirmationButton";
 
 
 export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }: { catalog: any, index: any, currentPage: any, PAGE_SIZE: any }) {
@@ -10,6 +12,39 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
 
     const { mutate: UpdateAdminCatalog } = UpdateAdminCatalogApi()
+
+    const handleDownload = (link:any) => {
+        const fileUrl = `https://fmdigitalofficial.in/${link}`;
+
+        console.log(link.split("/")[1])
+
+        // Fetch the file
+        fetch(fileUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                // Create a Blob object and create a temporary anchor element
+                const blobObject = new Blob([blob]);
+                const downloadLink = document.createElement('a');
+
+                // Set the href attribute to a URL created by the Blob
+                downloadLink.href = URL.createObjectURL(blobObject);
+
+                // Set the download attribute with a suggested filename
+                downloadLink.download = link.split("/")[2];
+
+                // Trigger a click on the anchor
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+
+                // Remove the anchor from the DOM
+                document.body.removeChild(downloadLink);
+            })
+            .catch(error => {
+                console.error('Download failed:', error);
+            });
+    };
+
+
 
     const statusButton = (status: any) => {
         switch (status) {
@@ -23,9 +58,9 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                             >
                                 <span className="mr-2 text-white font-semibold">Draft</span>
                             </button>
-                            <span  className="cursor-pointer">
+                            <ConfirmationButton title={"Are you sure you want to delete ?"} >
                                 <MdDelete color="red" size={20} />
-                            </span>
+                            </ConfirmationButton>
                         </div>
                     </>
                 );
@@ -50,6 +85,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                         >
                             <span className=" text-white text-xs font-semibold">Correct..</span>
                         </button>
+                        
                         <span  className="cursor-pointer">
                             <MdDelete color="red" size={20} />
                         </span>
@@ -67,13 +103,15 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
         }
     };
     
+    console.log(`https://fmdigitalofficial.in/${catalog.ImageDocument}`)
+    
     return (
         <>
-            <tr onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+            <tr  >
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {actualIndex}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.ReleaseTitle || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -82,22 +120,22 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {statusButton(catalog.Status)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.userData[0]?.fname + " " + catalog.userData[0]?.lname || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.userData[0]?.email || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.LabelName || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.songInfo?.length || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.ReleaseDate ? catalog.ReleaseDate : '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 flex justify-end">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 flex justify-end cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? (
                         <FaChevronUp className="text-gray-500" />
                     ) : (
@@ -105,14 +143,27 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                     )}
                 </td>
             </tr>
+
+            
+
             {isOpen && (
                 <tr className="w-full">
                     <td colSpan={8} className="px-0 py-0">
-                        <div className="px-6 py-4 grid sm:grid-cols-3 gap-16">
+                        <div className="px-6 py-4 grid sm:grid-cols-3 gap-20">
                             {/* Your accordion content goes here */}
-                            <div>
-                                <div className="flex items-center justify-between  mb-1 mb-1">
-                                    <p className="font-semiboldtext-sm">Release Type:</p>
+                            <div className="sm:col-span-1">
+                                <div className="flex w-full justify-center items-center">
+                                    {
+                                        catalog.ImageDocument && <img
+                                            className="w-32 h-32 object-cover rounded"
+                                            src={`https://fmdigitalofficial.in/${catalog.ImageDocument}`}
+                                            alt="Art Work"
+                                        />
+                                    }
+                                    
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Release Type:</p>
                                     <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
@@ -131,6 +182,10 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                 <div className="flex items-center justify-between mb-1">
                                     <p className="font-semibold text-sm">Spotify Id:</p>
                                     <p className="text-sm">{catalog?.ReleaseType}</p>
+                                </div>
+                                <div className="flex items-center justify-between mb-1">
+                                    <p className="font-semibold text-sm">FeaturingArtist :</p>
+                                    <p className="text-sm">{catalog?.FeaturingArtist}</p>
                                 </div>
                                 <div className="flex items-center justify-between mt-6 mb-1">
                                     <p className="font-semibold text-sm">Genre:</p>
@@ -156,129 +211,57 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                     <p className="font-semibold text-sm">Cat No. :</p>
                                     <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
-                            </div>
-                            <div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Track Version</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Trackversion}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Instrumental:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Instrumental}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Song Title:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Title}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Version/SubTitle:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.VersionSubtitle}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Primary Artist:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Primaryartist}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Featuring Artist:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.FeaturingArtist}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Author:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Author}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Composer:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Composer}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Producer:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Producer}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Publisher:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Publisher}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">ISRC:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.ISRC}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Genre:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Genre}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Sub Genre:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Subgenre}</p>
+                                <div className="w-full flex justify-end mt-2">
+                                    <button
+                                        onClick={() => handleDownload(catalog?.ImageDocument)}
+                                        className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full cursor-pointer transition-all duration-300 text-sm"
+                                    >
+                                        Download
+                                    </button>
                                 </div>
                             </div>
-                            <div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Price Tier:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.PriceTier}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Explicit Version:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.ExplicitVersion}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Track Title Language:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.TrackTitleLanguage}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Lyrics Language:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.LyricsLanguage}</p>
-                                </div>
-                                <div className="flex flex-col mb-1">
-                                    <p className="font-semibold text-sm mb-1">Lyrics:</p>
-                                    <div className=" h-32 border-2 border-black p-1 overflow-hidden">
-                                        <p className="whitespace-normal break-all">
-                                            {catalog?.songInfo[0]?.Lyrics}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Caller Tune Timing:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.CallerTuneTiming}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Distribute Music Video:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.PriceTier}</p>
-                                </div>
+                            
+                            <div className="h-[300px] w-full sm:col-span-2">
+                                <AllSongs data={catalog}/>
                             </div>
                         </div>
                     </td>
                 </tr>
             )}
+            
             <tr className="">
                 <td colSpan={10}>
                     <div className="flex w-full justify-end gap-3 p-1">
-                        <button
-                            type="button"
-                            className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
-                            onClick={() => {
-                                UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 4 })
-                            }}
-                        >
-                            Approve Release
-                        </button>
-                        <button
-                            type="button"
-                            className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
-                            onClick={() => {
-                                UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status:3  })
-                            }}
-                        >
-                            Reject Release
-                        </button>
-                        <button
-                            type="button"
-                            className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
-                            onClick={() => {
-                                UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 2 })
-                            }}
-                        >
-                            Take Down Release
-                        </button>
+
+                        <ConfirmationButton onConfirm={() => { UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 4 })}} title={"Are you sure you want to Approve Release ?"}  >
+                            <button
+                                type="button"
+                                className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
+                            >
+                                Approve Release
+                            </button>
+                        </ConfirmationButton>
+
+                        <ConfirmationButton onConfirm={() => {
+                            UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 3 })
+                        }} title={"Are you sure you want to Reject Release ?"} >
+                            <button
+                                type="button"
+                                className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
+                            >
+                                Reject Release
+                            </button>
+                        </ConfirmationButton>
+                        
+                        <ConfirmationButton onConfirm={() => { UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 2 }) }} title={"Are you sure you want to Take Down Release ?"}>
+                            <button
+                                type="button"
+                                className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
+                            >
+                                Take Down Release
+                            </button>
+                        </ConfirmationButton>
+                        
                     </div>
                 </td>
             </tr>

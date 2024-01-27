@@ -12,9 +12,12 @@ export const LoginWithMailApi = (reset: any, navigate: NavigateFunction,setToken
             }else{
                 setToken(res?.data.data)
                 cogoToast.success("Login successfully");
-                console.log(res.data.data, "token")
-                window.localStorage.setItem("token", res.data?.data);
-                navigate('/');
+                setToken(res.data.data)
+                localStorage.setItem("token", res.data?.data);
+                if(localStorage.getItem("token")){
+                    console.log("token saved")
+                    navigate('/');
+                } 
                 reset()
             }    
         },

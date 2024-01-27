@@ -2,6 +2,7 @@ import * as React from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { DeleteUserDataApi } from "../../api/user";
+import ConfirmationButton from "../../ui/ConfirmationButton";
 
 
 
@@ -152,15 +153,17 @@ export default function ManageUserListRow({ data, index, currentPage, PAGE_SIZE 
             <tr className="">
                 <td colSpan={10}>
                     <div className="flex w-full justify-end gap-3 p-1">
-                        <button
-                            type="button"
-                            className="bg-red-700 hover:bg-red-900 text-white py-2 px-4 rounded sm:text-xs "
-                            onClick={() => {
-                                DeleteUserData(data.users_id)
-                            }}
-                        >
-                            Delete User
-                        </button>
+                        <ConfirmationButton onConfirm={() => {
+                            DeleteUserData(data.users_id)
+                        }} title={"Are you sure you want to delete the user ?"}>
+                            <button
+                                type="button"
+                                className="bg-red-700 hover:bg-red-900 text-white py-2 px-4 rounded sm:text-xs "
+                            >
+                                Delete User
+                            </button>
+                        </ConfirmationButton>
+
                         <Link to={`/ManageUser/Labels/${data.users_id}`}>
                             <button
                                 type="button"

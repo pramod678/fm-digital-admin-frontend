@@ -1,11 +1,17 @@
 import * as React from "react";
 import GetDate from "../../../utility/GetDate";
+import { GrInstagram } from "react-icons/gr";
+import { FaFacebookSquare } from "react-icons/fa";
+import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 
 
 
 export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
-    
+    const size = useResponsiveIconSize()
+    const handleUrlClick = (link: any) => {
+        window.open(link, '_blank');
+    };
     const statusButton = (status: any) => {
         switch (status) {
             case 0:
@@ -77,11 +83,11 @@ export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link:
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {link.ArtistName || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {link.FecebookLink || '--'}
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => handleUrlClick(link.FecebookLink)}>
+                    <FaFacebookSquare size={size} />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {link.InstagramLink || '--'}
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => handleUrlClick(link.InstagramLink)}>
+                    <GrInstagram size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(link.Status)}

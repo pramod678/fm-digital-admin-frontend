@@ -7,6 +7,7 @@ import { UpdateLabelAdminApi } from "../../../api/label";
 import axios from "axios";
 import { BsCheckCircle } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
+import ConfirmationButton from "../../../ui/ConfirmationButton";
 // import UpdateLabel from "./PopUps/UpdateLabel";
 
 
@@ -48,7 +49,7 @@ export default function LabelListRow({ label, index, currentPage, PAGE_SIZE }: {
                 return <></>;
         }
     };
-    
+
     const { mutate: UpdateLabelAdmin } = UpdateLabelAdminApi()
     const size = useResponsiveIconSize()
     return (
@@ -77,7 +78,7 @@ export default function LabelListRow({ label, index, currentPage, PAGE_SIZE }: {
                         onClick={() => handleDownload(label?.labelDocument)}
                         className="font-semibold cursor-pointer"
                     >
-                    Download
+                        Download
                     </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
@@ -85,24 +86,27 @@ export default function LabelListRow({ label, index, currentPage, PAGE_SIZE }: {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     <div className="flex gap-3 p-1">
-                        <button
-                            type="button"
-                            className="bg-green-600 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
-                            onClick={() => {
-                                UpdateLabelAdmin({ users_id: label.users_id, label_id: label.label_id, "Status": 4 })
-                            }}
-                        >
-                            Approve Label
-                        </button>
-                        <button
-                            type="button"
-                            className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
-                            onClick={() => {
-                                UpdateLabelAdmin({ users_id: label.users_id, label_id: label.label_id, "Status": 2 })
-                            }}
-                        >
-                            Reject Label
-                        </button>
+                        <ConfirmationButton onConfirm={() => {
+                            UpdateLabelAdmin({ users_id: label.users_id, label_id: label.label_id, "Status": 4 })
+                        }} title={"Are you sure you want to Approve Label ?"} >
+                            <button
+                                type="button"
+                                className="bg-green-600 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
+                            >
+                                Approve Label
+                            </button>
+                        </ConfirmationButton>
+
+                        <ConfirmationButton onConfirm={() => {
+                            UpdateLabelAdmin({ users_id: label.users_id, label_id: label.label_id, "Status": 2 })
+                        }} title={"Are you sure you want to Reject Label ?"} >
+                            <button
+                                type="button"
+                                className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs "
+                            >
+                                Reject Label
+                            </button>
+                        </ConfirmationButton>
                     </div>
                 </td>
             </tr>

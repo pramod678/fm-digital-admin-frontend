@@ -94,10 +94,10 @@ export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link:
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {link.Selectplatform || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => handleUrlClick(link.FecebookLink)}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => handleUrlClick(link.FecebookLink)}>
                     <FaFacebookSquare size={size}/>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => handleUrlClick(link.InstagramLink)}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => handleUrlClick(link.InstagramLink)}>
                     <GrInstagram size={size} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
