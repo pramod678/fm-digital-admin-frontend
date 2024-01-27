@@ -25,9 +25,9 @@ export default function CreateReleasePage() {
                     {
                         dayOfWeek === 0 && (
                             <>
-                                <p className="text-xl text-center font-semibold mb-2">Good job, You broke the Internet! Just kidding.
-                                    <p className="text-xl text-center font-semibold mb-2">We’re backing up the server at the moment. The site should be back online before monday - 12:00 AM IST.</p>
+                                <p className="text-xl text-center font-semibold mb-2">Good job, You broke the Internet! Just kidding.  
                                 </p>
+                                <p className="text-xl text-center font-semibold mb-2 ">We’re backing up the server at the moment. The site should be back online before monday - 12:00 AM IST.</p>
                                 <p className="text-lg text-center font-semibold mb-2">Thank you, Team FM Digital.</p>
                             </>
                         )
