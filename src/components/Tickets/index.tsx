@@ -18,6 +18,7 @@ export default function Index() {
     const [totalPages, setTotalPages] = React.useState<number>(1);
     const pageSize = 10; // Number of items per page
     const token = localStorage.getItem("token")
+    const [searchTerm, setSearchTerm] = React.useState('');
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllTicketApi(userData?.users_id)
 
@@ -37,6 +38,12 @@ export default function Index() {
         if (pageNumber >= 1 && pageNumber <= totalPages) {
             setCurrentPage(pageNumber);
         }
+    };
+
+    const handleFilter = (event: any) => {
+        const inputValue = event.target.value.toLowerCase();
+        setSearchTerm(inputValue);
+        setCurrentPage(1);
     };
 
     const startIndex = (currentPage - 1) * pageSize;
@@ -60,22 +67,23 @@ export default function Index() {
             )}
             <div className="p-4">
                 <div className="flex items-center justify-between">
-                    <select className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option defaultValue="All">All</option>
-                        <option value="true">Done</option>
-                        <option value="false">Pending</option>
-                    </select>
-                    <select
-                        className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    // onChange={(e) => setSelectedOption(e.target.value)}
-                    // value={selectedOption}
-                    >
-                        <option value="All">UserId</option>
-                        <option value={4}>Approved</option>
-                        <option value={0}>Draft</option>
-                        <option value={2}>Rejected</option>
-                        <option value={3}>Corrections</option>
-                    </select>
+                    <div className="flex items-center gap-4">
+                        <input
+                            type="text"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            id="search"
+                            placeholder="Search reason"
+                            defaultValue={""}
+                            onChange={handleFilter}
+                        />
+                        <select className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option defaultValue="All">All</option>
+                            <option value={1}>Approved</option>
+                            <option value={0}>Pending</option>
+                        </select>
+                    </div>
+                    
+
                     <AddTicket userData={userData} />
                 </div>
                 <p className="text-right text-lg font-semibold text-black mt-2">Total Tickets :{GetAllTicket?.data?.data?.length}</p>

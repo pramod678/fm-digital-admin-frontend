@@ -346,13 +346,11 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
                                         <div className="w-full mb-2">
                                             <Label text="Caller Tune Timing" htmlFor="grid-CallerTuneTiming" required={false} />
                                             <InputField
-                                                type="time"
+                                                type="text"
                                                 name="CallerTuneTiming"
-                                                placeholder="Enter hh:mm:ss "
+                                                placeholder="HH:MM:SS"
                                                 register={register}
                                                 errors={errors}
-                                                step={"1"}
-                                                onKeyDown={(e:any) => e.preventDefault()}
                                             />
                                         </div>
 

@@ -121,7 +121,7 @@ const AdminFeaturingArtistIndex = ({ showPrimaryArtist }: { showPrimaryArtist :a
                                                 Artist Name
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                Instagram Id
+                                                Spotify Id
                                             </th>
                                             <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                 Apple Id

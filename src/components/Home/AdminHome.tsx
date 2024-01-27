@@ -18,7 +18,7 @@ export default function AdminHome() {
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
     const { data: GetDashBoardStats, isLoading, isFetching } = GetDashBoardStatsApi()
-    
+
     let catalogs: any[] = []
     let labels: any[] = []
 
@@ -33,10 +33,10 @@ export default function AdminHome() {
     } = useForm<PlayListUrl>({})
 
     const cardsData = [
-        { title: 'Pending Catalogs', count: GetDashBoardStats?.data?.data?.pendingRelese || 0, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue' },
-        { title: 'Pending Labels', count: GetDashBoardStats?.data?.data?.pendingLabel || 0, icon: < BsCardChecklist className="text-5xl text-green-500 mb-4" />, color: 'green' },
-        { title: 'Total Artists', count: GetDashBoardStats?.data?.data?.pendingTickets || 0, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple' },
-        { title: 'Pending Tickets', count: GetDashBoardStats?.data?.data?.totalArtist || 0, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red' },
+        { title: 'Pending Catalogs', count: GetDashBoardStats?.data?.data?.pendingRelese || 0, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue', route:'/Catalogs' },
+        { title: 'Pending Labels', count: GetDashBoardStats?.data?.data?.pendingLabel || 0, icon: < BsCardChecklist className="text-5xl text-green-500 mb-4" />, color: 'green', route: '/Label' },
+        { title: 'Total Artists', count: GetDashBoardStats?.data?.data?.pendingTickets || 0, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple', route: '/ManageArtist' },
+        { title: 'Pending Tickets', count: GetDashBoardStats?.data?.data?.totalArtist || 0, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red', route: '/Tickets' },
     ];
     //pending catalogs
     //pending labels
@@ -72,11 +72,13 @@ export default function AdminHome() {
                 {/* create 4 cards for pending catalogs, labels, artists, tickets, */}
                 <div className="grid grid-cols-2 gap-6 sm:w-[40%]">
                     {cardsData.map((card, index) => (
-                        <div style={{ borderColor: `${card.color}`}} className={`bg-gray-100 border-b-4 cursor-pointer rounded-md p-6 shadow-full flex flex-col hover:bg-gray-200 justify-center items-center`}>
-                            {card.icon}
-                            <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
-                            <p style={{ color: `${card.color}` }} className={`text-${card.color}-600 text-3xl font-bold`}>{`${card.count} `}</p>
-                        </div>
+                        <Link to={`${card.route}`}>
+                            <div style={{ borderColor: `${card.color}` }} className={`bg-gray-100 border-b-4 cursor-pointer rounded-md p-6 shadow-full flex flex-col hover:bg-gray-200 justify-center items-center`}>
+                                {card.icon}
+                                <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
+                                <p style={{ color: `${card.color}` }} className={`text-${card.color}-600 text-3xl font-bold`}>{`${card.count} `}</p>
+                            </div>
+                        </Link>
                     ))}
                 </div>
             </div>

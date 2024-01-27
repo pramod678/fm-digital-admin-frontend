@@ -30,6 +30,26 @@ export default function SignUp() {
 
     const userType = watch("userType")
 
+    const backgroundImages = [
+        'beautiful-little.jpg',
+        'caucasian-woman.jpg',
+        'yellow-color.jpg',
+        'young-man.jpg'
+        // Add more image filenames as needed
+    ];
+
+    const [backgroundImage, setBackgroundImage] = React.useState('');
+    const selectBackgroundImage = () => {
+        const date = new Date();
+        const dayOfMonth = date.getDate(); // Get the day of the month (1-31)
+        const index = (dayOfMonth - 1) % backgroundImages.length; // Calculate index based on the day
+        setBackgroundImage(backgroundImages[index]);
+    };
+
+    React.useEffect(() => {
+        selectBackgroundImage(); // Select background image when the component mounts
+    }, []);
+
     //Register Api Call
     const { mutate: RegisterWithMail, isLoading: isLoadingRegisterWithMail } = RegisterWithMailApi(reset, navigate)
 
@@ -38,7 +58,7 @@ export default function SignUp() {
         let objdata :any = {
             fname: newData.fname,
             lname: newData.lname,
-            email: newData.email,
+            email: newData.email.toLowerCase(),
             password: newData.password,
             userType: newData.userType
         }
@@ -52,7 +72,7 @@ export default function SignUp() {
     return (
         <>
 
-            <div className="flex justify-center items-center h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center items-center h-screen bg-gray-100 px-4 sm:px-6 lg:px-8" style={{ backgroundImage: `url(${backgroundImage}), `, backgroundSize: 'cover', }}>
                 {/* Card */}
                 <div className="bg-white w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[30%] p-4 sm:p-6 md:p-8 rounded-lg shadow-lg">
                     <form onSubmit={(e: any) => {

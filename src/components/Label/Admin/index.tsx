@@ -31,7 +31,7 @@ export default function AdminLabelIndex() {
 
     const { data: allUsersData } = GetAllUsersDataApi();
 
-    const PAGE_SIZE = 2
+    const PAGE_SIZE = 25
     React.useEffect(() => {
         if (GetAllLabels) {
             setCatalogs(GetAllLabels.data.data);
