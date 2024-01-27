@@ -92,7 +92,7 @@ export default function ListRow({ link, index, currentPage, PAGE_SIZE }: { link:
                     {link.SelectAudio || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {link.Selectplatform || '--'}
+                    {link.ArtistName || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => handleUrlClick(link.FecebookLink)}>
                     <FaFacebookSquare size={size}/>
