@@ -26,6 +26,7 @@ import YouTubeClaimsPage from "./components/Tools/YouTubeClaims/page";
 import TicketsPage from "./components/Tickets/page";
 import ManageArtistPage from "./components/ManageArtist/page";
 import LabelPage from "./components/Label/page";
+import CreateReleasePage from "./components/CreateRelease/page";
 
 
 
@@ -37,7 +38,7 @@ function App() {
           <Routes>  
             <Route path="/" element={<ProtectedRoute> <SharedLayout /></ProtectedRoute>} >
               <Route index element={<Home />} />
-              <Route path="ReleseInfo" element={< ReleaseInfo />} />
+              <Route path="ReleseInfo" element={< CreateReleasePage />} />
               <Route path="Platform" element={<Platform />} />
               <Route path="userDetails/:id" element={<UserDetails />} />
               {/* <Route path="Submission" element={<Submission />} /> */}

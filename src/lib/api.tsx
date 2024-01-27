@@ -7,7 +7,6 @@ const api = axios.create({
     headers: {
         'Access-Control-Allow-Credentials': true,
         "Access-Control-Allow-Origin": "*",
-        "Authorization": `Bearer ${token}`
     }
 });
 

@@ -8,7 +8,7 @@ const FileUpload = ({ file, setFile }: { file: any, setFile: any }) => {
     const onDrop = useCallback((acceptedFiles: any[]) => {
         const selectedFile = acceptedFiles[0];
         const fileSizeLimit = 10 * 1024 * 1024; // 10 MB in bytes
-        const allowedExtensions = ['.pdf', '.doc', '.txt']; // Allowed file extensions
+        const allowedExtensions = ['.pdf', '.doc', '.txt', '.docx']; // Allowed file extensions
 
         const fileExtension = selectedFile.name.substring(selectedFile.name.lastIndexOf('.')).toLowerCase();
 
