@@ -27,6 +27,8 @@ import TicketsPage from "./components/Tickets/page";
 import ManageArtistPage from "./components/ManageArtist/page";
 import LabelPage from "./components/Label/page";
 import CreateReleasePage from "./components/CreateRelease/page";
+import FinancialPage from "./components/Financial/Admin/page";
+import UserFinancialAdmin from "./components/Financial/User";
 
 
 
@@ -52,13 +54,14 @@ function App() {
               <Route path="Tools/YoutubeClaims" element={<YouTubeClaimsPage />} />
               <Route path="Tools/ProfileLinking" element={<ProfileLinkingPage />} />
               <Route path="Label" element={<LabelPage />} />
-              <Route path="Financial" element={<Financial />} />
+              <Route path="Financial" element={<FinancialPage />} />
               <Route path="ManageArtist" element={<ManageArtistPage />} />
               <Route path="Tickets" element={<TicketsPage />} />
               <Route path="ReleseInfoUpdate/:id" element={<EditReleaseInfo />} />
               <Route path="Songsinfo/:id" element={<EditSongsInfo />} />
               <Route path="Platform/:id" element={<EditPlatform />} />
               <Route path="Submission/:id" element={<EditSubmission />} />
+              <Route path="UserFinancial" element={<UserFinancialAdmin />} />
             </Route>
             {/* Add other routes here */}
             <Route path="sign-in" element={<PublicRoute><Login /></PublicRoute>} />
