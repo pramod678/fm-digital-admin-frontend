@@ -1,11 +1,13 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginWithMailApi } from "../../api/authentication";
 import { ClipLoader } from "react-spinners";
 import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
 import useAuthStore from "../../store/userstore";
+import { FaRegUser } from "react-icons/fa6";
+import { FaLock } from "react-icons/fa";
 
 
 type FormValues = {
@@ -56,58 +58,72 @@ export default function Index() {
 
     return (
         <>
-            <div className="flex justify-center items-center h-screen bg-gray-100 px-4 sm:px-6 lg:px-8"
-                style={{ backgroundImage: `url(${backgroundImage})` }}>
+            <div className="flex justify-end items-center h-screen w-[100%] bg-gray-100 px-4 sm:px-6 lg:px-8 bg-cover bg-no-repeat" style={{ backgroundImage: `url(${backgroundImage})` }}>
                 {/* Card */}
-                <div className="bg-white w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[30%] p-4 sm:p-8 md:p-10 rounded-lg shadow-lg">
-                    <form onSubmit={(e: any) => {
-                        onSubmit(e); e.preventDefault();
-                    }}>
-                        <h3 className="text-center text-black font-semibold text-lg tracking-wider">Log In</h3>
-                        <div className="w-full mb-4">
-                            <Label text="Email" htmlFor="grid-email" />
-                            <InputField
-                                type="email"
-                                name="email"
-                                placeholder="Enter your email"
-                                register={register}
-                                errors={errors}
-                                requiredMessage="Email is required."
-                            />
-                        </div>
+                <div className="bg-white sm:flex sm:flex-col w-full sm:w-[25%] rounded-lg shadow-lg">
+                    <div >
+                        <img src={`/${backgroundImage}`} className="h-42 object-cover w-42 rounded-t-lg" alt="" />
+                    </div>
+                    <div className="p-2 sm:p-8 md:p-6 bg-[#2d3e50] rounded-b-lg">
+                        <form onSubmit={(e: any) => {
+                            onSubmit(e);
+                            e.preventDefault();
+                        }}>
+                            <h3 className="text-center text-black font-semibold text-xl text-white mb-4">User LogIn</h3>
+                            <div className="mb-4">
+                                <div className="flex items-center gap-4">
+                                    <FaRegUser size={20} color="white" />
+                                    <InputField
+                                        type="email"
+                                        name="email"
+                                        placeholder="Enter your email"
+                                        register={register}
+                                        errors={errors}
+                                        requiredMessage="Email is required."
+                                    />
+                                </div>
+                            </div>
+                            <div className="mb-4">
+                                <div className="flex items-center gap-4">
+                                    <FaLock size={20} color="white" />
+                                    <InputField
+                                        type="password"
+                                        name="password"
+                                        placeholder="Enter your password"
+                                        register={register}
+                                        errors={errors}
+                                        requiredMessage="Password is required."
+                                    />
+                                </div>
+                            </div>
 
-                        <div className="w-full mb-4">
-                            <Label text="Password" htmlFor="grid-password" />
-                            <InputField
-                                type="password"
-                                name="password"
-                                placeholder="Enter your password"
-                                register={register}
-                                errors={errors}
-                                requiredMessage="password is required."
-                            />
-                        </div>
-
-
-                        <button
-                            type={isLoadingLoginWithMail ? "button" : "submit"}
-                            className={`w-full mr-auto bg-[#E97451] text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-[#F28C28] tracking-wider font-semibold mt-3`}
-                            disabled={isLoadingLoginWithMail}
-                        >
-                            {isLoadingLoginWithMail ? (
-                                <ClipLoader color="white" size={25} />
-                            ) : (
-                                "Log in"
-                            )}
-                        </button>
-
-                    </form>
-
-                    <p className="cursor-pointer font-semibold mt-2 text-right">
-                        Don't have an account ? <a href="/sign-up" className="text-[#E97451]"> Sign up</a>
-                    </p>
+                            <p className="text-gray-300 my-1 text-end font-semibold text-sm cursor-pointer">Forgot Password ? </p>
+                            <div className="flex justify-between gap-2">
+                                <button
+                                    type={isLoadingLoginWithMail ? "button" : "submit"}
+                                    className={`bg-gradient-to-r from-teal-500 to-indigo-500 text-white px-4 py-2 rounded-full text-center text-base cursor-pointer hover:bg-[#F28C28] font-bold mt-3`}
+                                    disabled={isLoadingLoginWithMail}
+                                >
+                                    {isLoadingLoginWithMail ? (
+                                        <ClipLoader color="white" size={25} />
+                                    ) : (
+                                        "Log in"
+                                    )}
+                                </button>
+                                <Link to={"/sign-up"}>
+                                    <button
+                                        type={"button"}
+                                        className={`bg-gradient-to-r from-teal-500 to-indigo-500 font-bold text-white px-4 py-2 rounded-full text-center text-base cursor-pointer hover:bg-[#F28C28] mt-3`}
+                                    >
+                                        Sign Up
+                                    </button>
+                                </Link>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+
         </>
     )
 }

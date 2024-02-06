@@ -1,16 +1,17 @@
 import * as React from "react";
-import InputField from "../../ui/InputField";
-import cogoToast from "@successtar/cogo-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { UserDataApi } from "../../../api/releaseInfo";
 import ListRow from "./ListRow";
-import { useNavigate } from "react-router-dom";
-import { UserDataApi } from "../../api/releaseInfo";
-import { GetAllUsersDataApi } from "../../api/user";
-import { GetAdminAllFinancialApi, GetUserAllUserFinancialApi, UserFinancialPostApi } from "../../api/financial";
+import cogoToast from "@successtar/cogo-toast";
+import AddFundRequest from "../PopUps/AddFundRequest";
+import { GetAdminAllFinancialApi } from "../../../api/financial";
+import { GetAllUsersDataApi } from "../../../api/user";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { BounceLoader } from "react-spinners";
 
 
 
-export default function Index() {
+export default function FinancialAdmin(){
 
     const [amount, setAmount] = React.useState(0)
 
@@ -26,10 +27,7 @@ export default function Index() {
     const [currentPage, setCurrentPage] = React.useState(1);
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate,)
-    const { data: GetUserAllUserFinancial, isLoading: isLoadingGetUserAllUserFinancial, isFetching } = GetUserAllUserFinancialApi(userData?.users_id, statusId)
-
-
-
+    const { data: GetAdminAllFinancial, isLoading: isLoadingGetAdminAllFinancial, isFetching } = GetAdminAllFinancialApi(userId, statusId)
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -39,11 +37,11 @@ export default function Index() {
 
     const PAGE_SIZE = 25
     React.useEffect(() => {
-        if (GetUserAllUserFinancial) {
-            setfinancialData(GetUserAllUserFinancial.data.data);
+        if (GetAdminAllFinancial) {
+            setfinancialData(GetAdminAllFinancial.data.data);
             setCurrentPage(1);
         }
-    }, [GetUserAllUserFinancial]);
+    }, [GetAdminAllFinancial]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
@@ -67,68 +65,68 @@ export default function Index() {
         return { slicedRecords, totalFilteredRecords: filteredRecords.length };
     };
 
-    const handleAmount = ()=>{
-        setAmount(0)
-    }
-
-    const { mutate: UserFinancialPost, isLoading: isLoadingUserFinancialPost } = UserFinancialPostApi({ handleAmount })
-
-    const handleSubmit = () => {
-        if (amount > 0) {
-            let data = {
-                users_id: userData?.users_id,
-                requested_amount: amount
-            }
-            UserFinancialPost(data)
-        }
-        else {
-            cogoToast.info("Amount should be greater than 1")
-        }
-    }
-
     const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
     const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
 
 
+
+    let totalTransferUserPanel = GetAdminAllFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_panel), 0);
+
+    let totalTransferUserBank = GetAdminAllFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_bank), 0);
+
+
     return (
         <>
+            {(isLoadingGetAdminAllFinancial || isFetching) && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+                    <BounceLoader size={150} color={"#000000"} />
+                </div>
+            )}
             <div className="p-4">
-                <div className="shadow-lg w-[60%] md:w-1/3 p-2">
-                    <div className="flex justify-between items-center px-2 py-1">
-                        <p className="font-semibold text-sm sm:text-base">Earning Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.earning_sum_amount}</p>
+
+                <div className="w-1/2 bg-neutral-800 p-2 mb-2">
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Financial Admin</p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-between w-full gap-2">
+                    <div className="shadow-lg p-2 w-full sm:w-1/3">
+                        <div className="flex justify-between items-center px-2 py-1">
+                            <p className="font-semibold text-sm sm:text-base">Total Fund</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.total_sum_ammount || 0}</p>
+                        </div>
+                        <div className="flex justify-between items-center px-2 py-1">
+                            <p className="font-semibold text-sm sm:text-base">C Commission</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.commsion_sum_amount || 0}</p>
+                        </div>
+                        <div className="flex justify-between items-center px-2 py-1">
+                            <p className="font-semibold text-sm sm:text-base">Total Panel Fund</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.totalpenal_sum_amount || 0}</p>
+                        </div>
+                        <div className="flex justify-between items-center px-2 py-1">
+                            <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>
+                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserPanel || 0}</p>
+                        </div>
+
+                        <div className="flex justify-between items-center px-2 py-1">
+                            <p className="font-semibold text-sm sm:text-base">Transferred to User Bank</p>
+                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserBank || 0}</p>
+                        </div>
                     </div>
-                    <div className="flex justify-between items-center px-2 py-1">
-                        <p className="font-semibold text-sm sm:text-base">Approved Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.approved_sum_amount}</p>
-                    </div>
-                    <div className="flex justify-between items-center px-2 py-1">
-                        <p className="font-semibold text-sm sm:text-base">Requested Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.requested_sum_amount}</p>
-                    </div>
-                    <div className="flex justify-between items-center px-2 py-1">
-                        <p className="font-semibold text-sm sm:text-base">Available Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.avlaiable_sum_amount}</p>
+
+                    <div className="">
+                        <AddFundRequest userData={userData} />
+                        <Link to={"/UserFinancial"}>
+                            <button
+                                className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-[#00CED1] text-white hover:bg-[#00CED1] focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
+                            // onClick={() => setIsOpen(true)}
+                            >
+                                Go to User Payment
+                            </button>
+                        </Link>
                     </div>
                 </div>
 
-                <p className="text-sm sm:text-base font-semibold mt-4">Request Amount</p>
-                <div className="flex items-center justify-between gap-4 mt-2 bg-gray-100 sm:w-1/2">
-                    <input
-                        type="number"
-                        value={amount}
-                        onChange={(e: any) => setAmount(e.target.value)}
-                        className="w-[80%] px-2 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-500"
-                        placeholder="Enter value"
-                    />
-                    <button type="button" onClick={handleSubmit}
-                        className="w-[20%] px-2 py-2 bg-neutral-800 text-white rounded-md hover:bg-neutral-600 focus:outline-none focus:ring focus:border-neutral-800">
-                        Submit
-                    </button>
-                </div>
-                <p className="text-xs mt-2">Minimum Amount Should be 10$</p>
 
-                <p className="text-sm sm:text-base font-semibold mt-4">Previously Requested</p>
                 <div className="p-4">
                     <div className="flex flex-col">
                         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -141,23 +139,36 @@ export default function Index() {
                                                     No.
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Report
+                                                    Amount
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Date
+                                                    Month date
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Requested Amount
+                                                    Earning Resources
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Approved Amount
+                                                    Vendor
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Earning Amount
+                                                    Requested By
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Status
+                                                    Company Comission
                                                 </th>
+                                                {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    Total Amount
+                                                </th> */}
+                                                {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    User Amount
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    User Amount in Panel
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    User Amount in Bank
+                                                </th> */}
+
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
@@ -185,6 +196,7 @@ export default function Index() {
                         </div>
                     </div>
                 </div>
+
                 {totalPages > 1 && (
                     <div className="flex justify-end items-center mt-4">
                         <button
@@ -204,6 +216,8 @@ export default function Index() {
                         </button>
                     </div>
                 )}
+                
+                
             </div>
         </>
     )

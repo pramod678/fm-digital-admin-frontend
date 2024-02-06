@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Label from "../../ui/Label";
 import InputField from "../../ui/InputField";
 import { ClipLoader } from "react-spinners";
@@ -10,11 +10,11 @@ import { RegisterWithMailApi } from "../../api/authentication"
 
 type FormValues = {
     fname: string;
-    lname:string;
-    email:string;
+    lname: string;
+    email: string;
     password: string;
-    userType:string;
-    secretKey:string;
+    userType: string;
+    secretKey: string;
 }
 
 export default function SignUp() {
@@ -55,14 +55,14 @@ export default function SignUp() {
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
-        let objdata :any = {
+        let objdata: any = {
             fname: newData.fname,
             lname: newData.lname,
             email: newData.email.toLowerCase(),
             password: newData.password,
             userType: newData.userType
         }
-        if (newData?.userType === "Admin" && newData?.secretKey !== "Admin123") { 
+        if (newData?.userType === "Admin" && newData?.secretKey !== "Admin123") {
             cogoToast.error("Invalid Admin");
         } else {
             RegisterWithMail(objdata)
@@ -72,16 +72,16 @@ export default function SignUp() {
     return (
         <>
 
-            <div className="flex justify-center items-center h-screen bg-gray-100 px-4 sm:px-6 lg:px-8" style={{ backgroundImage: `url(${backgroundImage}), `, backgroundSize: 'cover', }}>
+            <div className="flex justify-center items-center h-screen bg-gradient-to-r from-teal-500 to-indigo-500 px-4 sm:px-6 lg:px-8" style={{ backgroundImage: `url(${backgroundImage}), `, backgroundSize: 'cover', }}>
                 {/* Card */}
-                <div className="bg-white w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[30%] p-4 sm:p-6 md:p-8 rounded-lg shadow-lg">
+                <div className="bg-[#2d3e50] w-full sm:w-[90%] md:w-[70%] lg:w-[50%] xl:w-[30%] p-4 sm:p-6 md:p-8 rounded-lg shadow-lg">
                     <form onSubmit={(e: any) => {
-                        onSubmit(e); 
+                        onSubmit(e);
                     }}>
-                        <h3 className="text-center text-black font-semibold text-lg tracking-wider">Sign Up</h3>
+                        <h3 className="text-center text-white font-semibold text-lg tracking-wider">Sign Up</h3>
 
                         <div className="flex gap-2 items-center my-2">
-                            <span className="text-gray-700 font-medium mr-4">Register As</span>
+                            <span className="text-white font-medium mr-4">Register As</span>
 
                             <label className="inline-flex items-center gap-2">
                                 <input
@@ -93,7 +93,7 @@ export default function SignUp() {
                                     {...register("userType", { required: `userType is required ` })}
                                     value="User"
                                 />
-                                <span className="text-gray-700">User</span>
+                                <span className="text-white">User</span>
                             </label>
 
                             {/* <label className="inline-flex items-center gap-2">
@@ -105,13 +105,13 @@ export default function SignUp() {
                                     value="Admin"
                                     {...register("userType", { required: `userType is required ` })}
                                 />
-                                <span className="text-gray-700">Admin</span>
+                                <span className="text-white">Admin</span>
                             </label> */}
                         </div>
 
 
                         <div className="w-full mb-2">
-                            <Label text="First name" htmlFor="grid-firstName" />
+                            <Label text="First name" additionalClasses={"text-white"} htmlFor="grid-firstName" />
                             <InputField
                                 type="text"
                                 name="fname"
@@ -123,7 +123,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="w-full mb-2">
-                            <Label text="Last name" htmlFor="grid-lastName" />
+                            <Label text="Last name" additionalClasses={"text-white"} htmlFor="grid-lastName" />
                             <InputField
                                 type="text"
                                 name="lname"
@@ -135,7 +135,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="w-full mb-2">
-                            <Label text="Email" htmlFor="grid-email" />
+                            <Label text="Email" additionalClasses={"text-white"} htmlFor="grid-email" />
                             <InputField
                                 type="email"
                                 name="email"
@@ -147,7 +147,7 @@ export default function SignUp() {
                         </div>
 
                         <div className="w-full mb-2">
-                            <Label text="Password" htmlFor="grid-password" />
+                            <Label text="Password" additionalClasses={"text-white"} htmlFor="grid-password" />
                             <InputField
                                 type="password"
                                 name="password"
@@ -160,7 +160,7 @@ export default function SignUp() {
 
                         {
                             userType === "Admin" && <div className="w-full mb-2">
-                                <Label text="Secret Key" htmlFor="grid-secretKey" />
+                                <Label text="Secret Key" additionalClasses={"text-white"} htmlFor="grid-secretKey" />
                                 <InputField
                                     type="text"
                                     name="secretKey"
@@ -174,7 +174,7 @@ export default function SignUp() {
 
                         <button
                             type={isLoadingRegisterWithMail ? "button" : "submit"}
-                            className={`w-full mr-auto bg-[#E97451] text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-[#F28C28] tracking-wider font-semibold mt-3`}
+                            className={`w-full mr-auto bg-gradient-to-r from-teal-500 to-indigo-500 text-white px-4 py-2 rounded-md w-full text-center text-base cursor-pointer hover:bg-[#F28C28] tracking-wider font-semibold mt-3`}
                             disabled={isLoadingRegisterWithMail}
                         >
                             {isLoadingRegisterWithMail ? (
@@ -185,8 +185,8 @@ export default function SignUp() {
                         </button>
                     </form>
 
-                    <p className="cursor-pointer font-semibold mt-4 text-right">
-                        Already registered ? <a href="/sign-in" className="text-[#E97451]">Sign in here</a>
+                    <p className="cursor-pointer font-semibold mt-4 text-white text-right flex items-center justify-end">
+                        Already registered ? <Link to={"/sign-in"}><p className="ml-1 text-gray-300">Sign in here</p></Link>
                     </p>
                 </div>
             </div>
