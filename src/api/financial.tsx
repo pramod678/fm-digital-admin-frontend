@@ -56,6 +56,19 @@ export const GetAdminAllUserFinancialApi = (adminId: string, statusId?: string) 
         }
     );
 
+
+export const GetAdminAllUserFinancialHistoryApi = (adminId: string, statusId?: string) =>
+    useQuery(
+        [`GetAdminAllUserFinancialHistory`, adminId, statusId],
+        async () => await api.get(`admin/finacial-history-get-all`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            keepPreviousData: true,
+        }
+    );
+
 export const GetUserAllUserFinancialApi = (userId: string, statusId?: string) =>
     useQuery(
         [`GetUserAllUserFinancial`, userId, statusId],
@@ -89,6 +102,7 @@ export const UpdateUserFundApi = () => {
         onSuccess: (res) => {
             cogoToast.success("updated");
             queryClient.refetchQueries([`GetAdminAllUserFinancial`]);
+            queryClient.refetchQueries([`GetAdminAllUserFinancialHistory`]);
             queryClient.refetchQueries([`GetAdminAllFinancial`]);
         },
         onError: ({ response }) => {
