@@ -29,6 +29,7 @@ import LabelPage from "./components/Label/page";
 import CreateReleasePage from "./components/CreateRelease/page";
 import FinancialPage from "./components/Financial/Admin/page";
 import UserFinancialAdmin from "./components/Financial/User";
+import HistoryIndex from "./components/Financial/History/HistoryIndex";
 
 
 
@@ -62,6 +63,7 @@ function App() {
               <Route path="Platform/:id" element={<EditPlatform />} />
               <Route path="Submission/:id" element={<EditSubmission />} />
               <Route path="UserFinancial" element={<UserFinancialAdmin />} />
+              <Route path="UserFinancialHistory" element={<HistoryIndex />} />
             </Route>
             {/* Add other routes here */}
             <Route path="sign-in" element={<PublicRoute><Login /></PublicRoute>} />

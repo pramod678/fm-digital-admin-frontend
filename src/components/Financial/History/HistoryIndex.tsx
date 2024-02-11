@@ -1,17 +1,17 @@
 import * as React from "react";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../api/releaseInfo";
-import { GetAdminAllFinancialApi, GetAdminAllUserFinancialApi } from "../../../api/financial";
+import { GetAdminAllUserFinancialApi, GetUserAllUserFinancialApi, UserFinancialPostApi } from "../../../api/financial";
 import { GetAllUsersDataApi } from "../../../api/user";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import ListRow from "./ListRow";
-import AddUserFund from "../PopUps/AddUserFund";
 import { BounceLoader } from "react-spinners";
+import AddUserFund from "../PopUps/AddUserFund";
+import HistoryTableIndex from "./HistoryTable/Index";
 
 
 
-
-export default function UserFinancialAdmin() {
+export default function HistoryIndex() {
 
     const [amount, setAmount] = React.useState(0)
 
@@ -27,7 +27,7 @@ export default function UserFinancialAdmin() {
     const [currentPage, setCurrentPage] = React.useState(1);
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate,)
-    const { data:  GetAdminAllUserFinancial, isLoading: isLoadingGetAdminAllUserFinancial, isFetching } = GetAdminAllUserFinancialApi(userData?.users_id)
+    const { data: GetAdminAllUserFinancial, isLoading: isLoadingGetAdminAllUserFinancial, isFetching } = GetAdminAllUserFinancialApi(userData?.users_id)
 
 
     React.useEffect(() => {
@@ -36,13 +36,13 @@ export default function UserFinancialAdmin() {
 
     const { data: allUsersData } = GetAllUsersDataApi();
 
-    const PAGE_SIZE = 25
+    const PAGE_SIZE = 5
     React.useEffect(() => {
-        if ( GetAdminAllUserFinancial) {
-            setfinancialData( GetAdminAllUserFinancial.data.data);
+        if (GetAdminAllUserFinancial) {
+            setfinancialData(GetAdminAllUserFinancial.data.data);
             setCurrentPage(1);
         }
-    }, [ GetAdminAllUserFinancial]);
+    }, [GetAdminAllUserFinancial]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
@@ -71,11 +71,11 @@ export default function UserFinancialAdmin() {
 
 
 
-    let totalTransferUserPanel =  GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_panel), 0);
+    let totalTransferUserPanel = GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_panel), 0);
 
     let totalEarningAmount = GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.earning_amount), 0);
 
-    let totalTransferUserBank =  GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_bank), 0);
+    let totalTransferUserBank = GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_bank), 0);
 
 
     return (
@@ -88,23 +88,23 @@ export default function UserFinancialAdmin() {
             <div className="p-4">
 
                 <div className="w-1/2 bg-neutral-800 p-2 mb-2">
-                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Financial User Admin</p>
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">User Financial Bank Request</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-between w-full gap-2">
                     <div className="shadow-lg p-2 w-full sm:w-1/3">
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Total Panel Fund</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.totalpenal_sum_amount }</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.totalpenal_sum_amount}</p>
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserPanel }</p>
+                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserPanel}</p>
                         </div>
 
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transferred to User Bank</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserBank }</p>
+                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserBank}</p>
                         </div>
                     </div>
 
@@ -117,15 +117,7 @@ export default function UserFinancialAdmin() {
                             >
                                 Go to Financial
                             </button>
-                        </Link>    
-                        <Link to={"/UserFinancialHistory"}>
-                            <button
-                                className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-[#00CED1] text-white hover:bg-[#00CED1] focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
-                            // onClick={() => setIsOpen(true)}
-                            >
-                                Go to User Bank
-                            </button>
-                        </Link>         
+                        </Link>
                     </div>
                 </div>
 
@@ -192,7 +184,7 @@ export default function UserFinancialAdmin() {
                                                     slicedRecords?.map((d: any, index: any) => {
                                                         return (
                                                             <React.Fragment key={index}>
-                                                                <ListRow d={d} index={index}  />
+                                                                <ListRow d={d} index={index} userData={userData} currentPage={currentPage} PAGE_SIZE={PAGE_SIZE} />
                                                             </React.Fragment>
                                                         )
                                                     })
@@ -228,6 +220,8 @@ export default function UserFinancialAdmin() {
 
 
             </div>
+
+            <HistoryTableIndex />
         </>
     )
 }

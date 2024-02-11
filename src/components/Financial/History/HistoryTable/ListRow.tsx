@@ -1,14 +1,11 @@
 import * as React from "react";
-import GetDate from "../../../utility/GetDate";
-import { FaChevronUp, FaChevronDown } from "react-icons/fa6";
-import UserHistoryTable from "./Table/List";
-import ConfirmationButton from "../../../ui/ConfirmationButton";
-import { UpdateLabelAdminApi } from "../../../api/label";
-import { UpdateUserFundApi } from "../../../api/financial";
+import { UpdateUserFundApi } from "../../../../api/financial";
+import ConfirmationButton from "../../../../ui/ConfirmationButton";
+import GetDate from "../../../../utility/GetDate";
 
 
-export default function ListRow({ d, index, }: { d: any, index: any }) {
-
+export default function ListRow({ d, index, currentPage, PAGE_SIZE }: { d: any, index: any, currentPage: any, PAGE_SIZE: any }) {
+    const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
     const [isOpen, setIsOpen] = React.useState(false);
     const { mutate: UpdateUserFund } = UpdateUserFundApi()
 
@@ -58,12 +55,12 @@ export default function ListRow({ d, index, }: { d: any, index: any }) {
                 return <></>;
         }
     };
-    
+
     return (
         <>
             <tr onClick={() => setIsOpen(!isOpen)}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {index + 1}
+                    {actualIndex}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.requested_amount || '--'}
@@ -72,10 +69,10 @@ export default function ListRow({ d, index, }: { d: any, index: any }) {
                     {d.users_id || "--"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.email || '--'}
+                    {d.admin_id || "--"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.vender || '--'}
+                    {GetDate(d.createdAt) || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.earning_amount || '--'}
@@ -95,16 +92,18 @@ export default function ListRow({ d, index, }: { d: any, index: any }) {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(d.Status)}
                 </td>
-                
+
             </tr>
             {/* <tr className="">
                 <td colSpan={11}>
                     <div className="flex w-full justify-end gap-3 p-1">
-                        <ConfirmationButton onConfirm={() => { UpdateUserFund({ 
-                            id: d.user_financial_id, 
-                            approved_amount: d?.requested_amount, 
-                            Status: 4 
-                            }) }} title={"Are you sure you want to Approve  ?"}  >
+                        <ConfirmationButton onConfirm={() => {
+                            UpdateUserFund({
+                                id: d.user_financial_id,
+                                approved_amount: d?.requested_amount,
+                                Status: 4
+                            })
+                        }} title={"Are you sure you want to Approve  ?"}  >
                             <button
                                 type="button"
                                 className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
@@ -114,7 +113,7 @@ export default function ListRow({ d, index, }: { d: any, index: any }) {
                         </ConfirmationButton>
 
                         <ConfirmationButton onConfirm={() => {
-                            UpdateUserFund({ id: d.user_financial_id,  Status: 2 })
+                            UpdateUserFund({ id: d.user_financial_id, Status: 2 })
                         }} title={"Are you sure you want to Reject  ?"} >
                             <button
                                 type="button"
