@@ -67,7 +67,7 @@ export default function Index() {
         return { slicedRecords, totalFilteredRecords: filteredRecords.length };
     };
 
-    const handleAmount = ()=>{
+    const handleAmount = () => {
         setAmount(0)
     }
 
@@ -171,9 +171,13 @@ export default function Index() {
                                                 ) : (
                                                     slicedRecords?.map((d: any, index: any) => {
                                                         return (
-                                                            <React.Fragment key={index}>
-                                                                <ListRow d={d} index={index} />
-                                                            </React.Fragment>
+                                                            <>
+                                                                {
+                                                                    d?.earning_amount === 0 && <React.Fragment key={index}>
+                                                                        <ListRow d={d} index={index} />
+                                                                    </React.Fragment>
+                                                                }
+                                                            </>
                                                         )
                                                     })
                                                 )

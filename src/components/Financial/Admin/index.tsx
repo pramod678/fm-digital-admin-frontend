@@ -85,7 +85,7 @@ export default function FinancialAdmin(){
             <div className="p-4">
 
                 <div className="w-1/2 bg-neutral-800 p-2 mb-2">
-                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Financial Admin</p>
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Admin Financial</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-between w-full gap-2">
@@ -104,12 +104,12 @@ export default function FinancialAdmin(){
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserPanel || 0}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.earning_sum_amount}</p>
                         </div>
 
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transferred to User Bank</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserBank || 0}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.approved_sum_amount}</p>
                         </div>
                     </div>
 

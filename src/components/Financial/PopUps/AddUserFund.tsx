@@ -122,7 +122,7 @@ export default function AddUserFund({ userData, totalPanelFund }: { userData: an
                                                 <div className="mt-2">
                                                     <div className="w-full mb-2">
                                                         <Label text="User Id" htmlFor="grid-amount" required={true} />
-                                                        <SelectUser control={control} name="user_id" options={allUsersData?.data?.data} errors={errors} required={true} />
+                                                        <SelectUser control={control} name="users_id" options={allUsersData?.data?.data} errors={errors} required={true} />
                                                     </div>
 
 
