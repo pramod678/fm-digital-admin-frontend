@@ -7,7 +7,7 @@ import { UpdateLabelAdminApi } from "../../../api/label";
 import { UpdateUserFundApi } from "../../../api/financial";
 
 
-export default function ListRow({ d, index, }: { d: any, index: any }) {
+export default function ListRow({ d, index, currentPage, PAGE_SIZE }: { d: any, index: any, currentPage: any, PAGE_SIZE:any }) {
 
     const [isOpen, setIsOpen] = React.useState(false);
     const { mutate: UpdateUserFund } = UpdateUserFundApi()
@@ -69,6 +69,9 @@ export default function ListRow({ d, index, }: { d: any, index: any }) {
                     {d.requested_amount || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {GetDate(d.createdAt) || '--'}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.users_id || "--"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -81,9 +84,6 @@ export default function ListRow({ d, index, }: { d: any, index: any }) {
                     {d.earning_amount || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.approved_amount || '--'}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.requested_amount || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -92,10 +92,10 @@ export default function ListRow({ d, index, }: { d: any, index: any }) {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.user_amount_panel || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(d.Status)}
                 </td>
-                
+                 */}
             </tr>
             {/* <tr className="">
                 <td colSpan={11}>

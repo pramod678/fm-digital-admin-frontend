@@ -27,7 +27,7 @@ export default function UserFinancialAdmin() {
     const [currentPage, setCurrentPage] = React.useState(1);
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate,)
-    const { data:  GetAdminAllUserFinancial, isLoading: isLoadingGetAdminAllUserFinancial, isFetching } = GetAdminAllUserFinancialApi(userData?.users_id)
+    const { data: GetAdminAllUserFinancial, isLoading: isLoadingGetAdminAllUserFinancial, isFetching } = GetAdminAllUserFinancialApi(userData?.users_id)
 
 
     React.useEffect(() => {
@@ -38,11 +38,11 @@ export default function UserFinancialAdmin() {
 
     const PAGE_SIZE = 25
     React.useEffect(() => {
-        if ( GetAdminAllUserFinancial) {
-            setfinancialData( GetAdminAllUserFinancial.data.data);
+        if (GetAdminAllUserFinancial) {
+            setfinancialData(GetAdminAllUserFinancial.data.data);
             setCurrentPage(1);
         }
-    }, [ GetAdminAllUserFinancial]);
+    }, [GetAdminAllUserFinancial]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
@@ -55,7 +55,7 @@ export default function UserFinancialAdmin() {
     };
 
     const filterRecords = (data: any, term: any) => {
-        return data
+        return data.filter((d: any) => d?.requested_amount === 0)
     };
 
     const getCurrentPageData = () => {
@@ -71,11 +71,11 @@ export default function UserFinancialAdmin() {
 
 
 
-    let totalTransferUserPanel =  GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_panel), 0);
+    let totalTransferUserPanel = GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_panel), 0);
 
     let totalEarningAmount = GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.earning_amount), 0);
 
-    let totalTransferUserBank =  GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_bank), 0);
+    let totalTransferUserBank = GetAdminAllUserFinancial?.data?.data.reduce((sum: any, data: any) => sum + parseFloat(data.user_amount_bank), 0);
 
 
     return (
@@ -88,23 +88,23 @@ export default function UserFinancialAdmin() {
             <div className="p-4">
 
                 <div className="w-1/2 bg-neutral-800 p-2 mb-2">
-                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">Financial User Admin</p>
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">User Financial</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-between w-full gap-2">
                     <div className="shadow-lg p-2 w-full sm:w-1/3">
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Total Panel Fund</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.totalpenal_sum_amount }</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.totalpenal_sum_amount}</p>
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserPanel }</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.avlaiable_sum_amount}</p>
                         </div>
 
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transferred to User Bank</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserBank }</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.approved_sum_amount}</p>
                         </div>
                     </div>
 
@@ -117,7 +117,7 @@ export default function UserFinancialAdmin() {
                             >
                                 Go to Financial
                             </button>
-                        </Link>    
+                        </Link>
                         <Link to={"/UserFinancialHistory"}>
                             <button
                                 className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-[#00CED1] text-white hover:bg-[#00CED1] focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
@@ -125,11 +125,11 @@ export default function UserFinancialAdmin() {
                             >
                                 Go to User Bank
                             </button>
-                        </Link>         
+                        </Link>
                     </div>
                 </div>
 
-
+                <p className="text-white  font-semibold bg-black max-w-md p-2 text-base sm:text-lg my-2">History</p>
                 <div className="p-4">
                     <div className="flex flex-col">
                         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -142,7 +142,10 @@ export default function UserFinancialAdmin() {
                                                     No.
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Requested Amount
+                                                    Monthly Earning
+                                                </th>
+                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    Date
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     User ID
@@ -157,9 +160,6 @@ export default function UserFinancialAdmin() {
                                                     Earning Amount
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Approved Amount
-                                                </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Available Amount
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
@@ -167,9 +167,6 @@ export default function UserFinancialAdmin() {
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Bank Amount
-                                                </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Status
                                                 </th>
                                                 {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     User Amount in Panel
@@ -191,9 +188,13 @@ export default function UserFinancialAdmin() {
                                                 ) : (
                                                     slicedRecords?.map((d: any, index: any) => {
                                                         return (
-                                                            <React.Fragment key={index}>
-                                                                <ListRow d={d} index={index}  />
-                                                            </React.Fragment>
+                                                            <>
+                                                                {
+                                                                    d?.requested_amount === 0 && <React.Fragment key={index}>
+                                                                        <ListRow d={d} index={index} currentPage={currentPage} PAGE_SIZE={PAGE_SIZE} />
+                                                                    </React.Fragment>
+                                                                }
+                                                            </>
                                                         )
                                                     })
                                                 )

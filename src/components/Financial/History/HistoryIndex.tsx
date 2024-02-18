@@ -55,7 +55,7 @@ export default function HistoryIndex() {
     };
 
     const filterRecords = (data: any, term: any) => {
-        return data
+        return data.filter((d: any) => d?.earning_amount === 0)
     };
 
     const getCurrentPageData = () => {
@@ -88,7 +88,7 @@ export default function HistoryIndex() {
             <div className="p-4">
 
                 <div className="w-1/2 bg-neutral-800 p-2 mb-2">
-                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">User Financial Bank Request</p>
+                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">User Bank Request</p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row justify-between w-full gap-2">
@@ -99,23 +99,31 @@ export default function HistoryIndex() {
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserPanel}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.avlaiable_sum_amount}</p>
                         </div>
 
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transferred to User Bank</p>
-                            <p className="font-semibold text-sm sm:text-base">${totalTransferUserBank}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.approved_sum_amount}</p>
                         </div>
                     </div>
 
                     <div className="">
-                        <AddUserFund userData={userData} totalPanelFund={GetAdminAllUserFinancial?.data?.totalpenal_sum_amount} />
+                        {/* <AddUserFund userData={userData} totalPanelFund={GetAdminAllUserFinancial?.data?.totalpenal_sum_amount} /> */}
+                        <Link to={"/UserFinancial"}>
+                            <button
+                                className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-[#00CED1] text-white hover:bg-[#00CED1] focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
+                            // onClick={() => setIsOpen(true)}
+                            >
+                                Go to User Financial
+                            </button>
+                        </Link>
                         <Link to={"/Financial"}>
                             <button
                                 className="flex items-center text-sm justify-center ml-2 py-2 px-2 bg-[#00CED1] text-white hover:bg-[#00CED1] focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
                             // onClick={() => setIsOpen(true)}
                             >
-                                Go to Financial
+                                Go to Admin Financial
                             </button>
                         </Link>
                     </div>
@@ -183,9 +191,13 @@ export default function HistoryIndex() {
                                                 ) : (
                                                     slicedRecords?.map((d: any, index: any) => {
                                                         return (
-                                                            <React.Fragment key={index}>
-                                                                <ListRow d={d} index={index} userData={userData} currentPage={currentPage} PAGE_SIZE={PAGE_SIZE} />
-                                                            </React.Fragment>
+                                                            <>
+                                                                <React.Fragment key={index}>
+                                                                    <ListRow d={d} index={index} userData={userData} currentPage={currentPage} PAGE_SIZE={PAGE_SIZE} />
+                                                                </React.Fragment>
+                                                            </>
+
+
                                                         )
                                                     })
                                                 )
