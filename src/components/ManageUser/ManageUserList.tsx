@@ -84,7 +84,7 @@ export default function ManageUserList() {
                                 allUsersDataWithoutFilters?.data?.data?.map((user: any) => {
                                     return (
                                         <>
-                                            <option value={user?.users_id}>{user?.fname + " " + user?.lname}</option>
+                                            <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
                                         </>
                                     )
                                 })

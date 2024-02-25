@@ -35,7 +35,7 @@ export default function AdminYouTubeClaimsIndex() {
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: allUsersData } = GetAllUsersDataApi();
-    const { data: YoutubeClaims, isLoading: isLoadingYoutubeClaimsPost, isFetching } = GetAllAdminYoutubeClaimsApi()
+    const { data: YoutubeClaims, isLoading: isLoadingYoutubeClaimsPost, isFetching } = GetAllAdminYoutubeClaimsApi(userId, statusId )
 
     React.useEffect(() => {
         getUserData({ token: token });
@@ -100,6 +100,17 @@ export default function AdminYouTubeClaimsIndex() {
                             onChange={handleFilter}
                         />
                         <select
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => setStatusId(e.target.value)}
+                            value={statusId}
+                        >
+                            <option value="">All</option>
+                            <option value={4}>Approved</option>
+                            <option value={0}>Pending</option>
+                            <option value={2}>Rejected</option>
+                        </select>
+
+                        <select
                             className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
                             onChange={(e: any) => setUserId(e.target.value)}
                             value={userId}
@@ -109,7 +120,7 @@ export default function AdminYouTubeClaimsIndex() {
                                 allUsersData?.data?.data?.map((user: any) => {
                                     return (
                                         <>
-                                            <option value={user?.users_id}>{user?.fname + " " + user?.lname}</option>
+                                            <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
                                         </>
                                     )
                                 })

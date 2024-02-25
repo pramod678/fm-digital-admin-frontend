@@ -5,6 +5,7 @@ import { UserDataApi } from "../../../api/releaseInfo";
 import { GetAllAdminTicketApi, GetAllTicketApi } from "../../../api/ticket";
 import { BounceLoader } from "react-spinners";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { GetAllUsersDataApi } from "../../../api/user";
 
 
 
@@ -19,8 +20,9 @@ export default function AdminTicketsIndex() {
     const [searchTerm, setSearchTerm] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
     const token = localStorage.getItem("token")
+    const { data: allUsersData } = GetAllUsersDataApi();
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
-    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllAdminTicketApi()
+    const { data: GetAllTicket, isLoading: isLoadingGetAllTicket, isFetching } = GetAllAdminTicketApi(userId, statusId)
 
 
     React.useEffect(() => {
@@ -85,6 +87,33 @@ export default function AdminTicketsIndex() {
                             defaultValue={""}
                             onChange={handleFilter}
                         />
+                        <select
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => setStatusId(e.target.value)}
+                            value={statusId}
+                        >
+                            <option value="">All</option>
+                            <option value={4}>Approved</option>
+                            <option value={0}>Pending</option>
+                            <option value={2}>Rejected</option>
+                        </select>
+
+                        <select
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
+                            onChange={(e: any) => setUserId(e.target.value)}
+                            value={userId}
+                        >
+                            <option value="">UserId</option>
+                            {
+                                allUsersData?.data?.data?.map((user: any) => {
+                                    return (
+                                        <>
+                                            <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
+                                        </>
+                                    )
+                                })
+                            }
+                        </select>
                     </div>
 
                     <div className="mt-4 sm:mt-0">
@@ -174,7 +203,7 @@ export default function AdminTicketsIndex() {
                         </div>
                     )}
                 </div>
-               
+
             </div>
         </>
     )

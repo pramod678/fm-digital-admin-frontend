@@ -106,7 +106,7 @@ export default function AdminCatalogsList() {
                                 allUsersData?.data?.data?.map((user: any) => {
                                     return (
                                         <>
-                                            <option value={user?.users_id}>{user?.fname + " " + user?.lname}</option>
+                                            <option value={user?.users_id}>{user?.users_id + " - " + user?.fname + " " + user?.lname}</option>
                                         </>
                                     )
                                 })
@@ -119,7 +119,7 @@ export default function AdminCatalogsList() {
                             isSearchable
                             options={allUsersData?.data?.data?.map((user: any) => ({
                                 value: user?.users_id,
-                                label: user?.fname + " " + user?.lname,
+                                label: user?.users_id +" - "+user?.fname + " " + user?.lname,
                             }))}
                             onChange={(selectedOption: any) => setUserId(selectedOption?.value || '')}
                             value={allUsersData?.data?.data?.find((user: any) => user?.users_id === userId)?.users_id || null}

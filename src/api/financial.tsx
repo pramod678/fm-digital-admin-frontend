@@ -44,7 +44,7 @@ export const UserFinancialPostApi = ({ handleClose, handleReset, handleAmount }:
     })
 }
 
-export const GetAdminAllUserFinancialApi = (adminId: string, statusId?: string) =>
+export const GetAdminAllUserFinancialApi = (adminId: string, statusId?: number) =>
     useQuery(
         [`GetAdminAllUserFinancial`, adminId, statusId],
         async () => await api.get(`admin/user-finacial-get-all`),

@@ -33,10 +33,11 @@ export default function AdminHome() {
     } = useForm<PlayListUrl>({})
 
     const cardsData = [
-        { title: 'Pending Catalogs', count: GetDashBoardStats?.data?.data?.pendingRelese || 0, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue', route:'/Catalogs' },
+        { title: 'Pending Catalogs', count: GetDashBoardStats?.data?.data?.pendingRelese || 0, icon: <BsFileEarmarkText className="text-5xl text-blue-500 mb-4" />, color: 'blue', route: '/Catalogs' },
         { title: 'Pending Labels', count: GetDashBoardStats?.data?.data?.pendingLabel || 0, icon: < BsCardChecklist className="text-5xl text-green-500 mb-4" />, color: 'green', route: '/Label' },
-        { title: 'Total Artists', count: GetDashBoardStats?.data?.data?.pendingTickets || 0, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple', route: '/ManageArtist' },
-        { title: 'Pending Tickets', count: GetDashBoardStats?.data?.data?.totalArtist || 0, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red', route: '/Tickets' },
+        { title: 'Total Artists', count: GetDashBoardStats?.data?.data?.totalArtist || 0, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple', route: '/ManageArtist' },
+        { title: 'Financial Requests', count: GetDashBoardStats?.data?.data?.pendingFinancial || 0, icon: < BsPeople className="text-5xl text-purple-500 mb-4" />, color: 'purple', route: '/Financial' },
+        { title: 'Pending Tickets', count: GetDashBoardStats?.data?.data?.pendingTickets || 0, icon: < BsTicket className="text-5xl text-red-500 mb-4" />, color: 'red', route: '/Tickets' },
     ];
     //pending catalogs
     //pending labels

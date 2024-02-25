@@ -37,9 +37,17 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
     const [userData, setUserData] = React.useState<any>("");
 
+    const token = localStorage.getItem("token")
 
+    //Api calls
+    const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
+
+
+    React.useEffect(() => {
+        getUserData({ token: token })
+    }, []);
+    
     const { userType, setUserType } = useAuthStore()
-    console.log(userType, "userType")
     const Userroutes = [
         {
             path: "/",

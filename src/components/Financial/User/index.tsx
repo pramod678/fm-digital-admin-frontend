@@ -55,7 +55,7 @@ export default function UserFinancialAdmin() {
     };
 
     const filterRecords = (data: any, term: any) => {
-        return data.filter((d: any) => d?.requested_amount === 0)
+        return data.filter((d: any) => Number(d?.requested_amount) === 0)
     };
 
     const getCurrentPageData = () => {
@@ -156,18 +156,12 @@ export default function UserFinancialAdmin() {
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Phone Number
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Earning Amount
-                                                </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                    Available Amount
-                                                </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Panel Amount
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Bank Amount
-                                                </th>
+                                                </th> */}
                                                 {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     User Amount in Panel
                                                 </th>
@@ -190,7 +184,7 @@ export default function UserFinancialAdmin() {
                                                         return (
                                                             <>
                                                                 {
-                                                                    d?.requested_amount === 0 && <React.Fragment key={index}>
+                                                                     <React.Fragment key={index}>
                                                                         <ListRow d={d} index={index} currentPage={currentPage} PAGE_SIZE={PAGE_SIZE} />
                                                                     </React.Fragment>
                                                                 }

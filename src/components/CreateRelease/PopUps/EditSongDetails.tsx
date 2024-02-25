@@ -19,15 +19,19 @@ import { RiEditLine } from "react-icons/ri";
 import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 import axios from "axios";
 import SongPreview from "../../../ui/SongPreview";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
 
 
-export default function EditSongDetails({ userData, getReleaseInfo, song, refetch }: { userData: any, getReleaseInfo: any, song: any, refetch: any }) {
+export default function EditSongDetails({ userData, song, getReleaseInfo, refetch }: { userData: any, song: any, getReleaseInfo?: any, refetch?: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [featuringArtistGet, setfeaturingArtistGet] = React.useState([]);
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(true)
     const size = useResponsiveIconSize();
+
+
     const {
         register,
         handleSubmit,
@@ -67,7 +71,7 @@ export default function EditSongDetails({ userData, getReleaseInfo, song, refetc
  
 
     //edit song Api Call
-    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = EditSongsApi({ setIsOpen, refetch, id: song?.songsInfo_id, setFile })
+    const { mutate: SongsPost, isLoading: isLoadingSongsPost } = EditSongsApi({ setIsOpen, refetch, id: song?.songsInfo_id, setFile})
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
@@ -347,10 +351,18 @@ export default function EditSongDetails({ userData, getReleaseInfo, song, refetc
 
                                         <div className="w-full mb-2">
                                             <Label text="Caller Tune Timing" htmlFor="grid-CallerTuneTiming" required={false} />
+                                            {/* <TimePicker
+                                                id="grid-CallerTuneTiming"
+                                                onChange={onChange}
+                                                value={timeValue}
+                                                disableClock
+                                                format="hh:mm"
+                                                className="shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md transition ease-in-out duration-150"
+                                            /> */}
                                             <InputField
                                                 type="text"
                                                 name="CallerTuneTiming"
-                                                placeholder="HH:MM:SS"
+                                                placeholder="Type like this HH:mm:ss"
                                                 register={register}
                                                 errors={errors}
                                             />

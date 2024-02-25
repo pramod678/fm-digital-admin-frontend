@@ -45,10 +45,17 @@ export default function LabelListRow({ label, index, currentPage, PAGE_SIZE }: {
                         <FcCancel size={size} />
                     </p>
                 );
+            case 4:
+                return (
+                    <p style={{ color: "green" }}>
+                        <BsCheckCircle size={size} />
+                    </p>
+                );
             default:
                 return <></>;
         }
     };
+
 
     const { mutate: UpdateLabelAdmin } = UpdateLabelAdminApi()
     const size = useResponsiveIconSize()

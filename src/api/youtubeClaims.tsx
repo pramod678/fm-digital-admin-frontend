@@ -63,10 +63,10 @@ export const YoutubeClaimsGetAllApi = (id: any) =>
         }
     );
 
-export const GetAllAdminYoutubeClaimsApi = () =>
+export const GetAllAdminYoutubeClaimsApi = (userId: string, statusId:string ) =>
     useQuery(
-        [`GetAllAdminYoutubeClaims`],
-        async () => await api.get(`admin/youtube-get-all`),
+        [`GetAllAdminYoutubeClaims`, userId, statusId],
+        async () => await api.get(`admin/youtube-get-all?user_id=${userId}&status=${statusId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

@@ -45,10 +45,10 @@ export const GetAllLabelsApi = (id: any) =>
         }
     );
 
-export const GetAllAdminLabelsApi = () =>
+export const GetAllAdminLabelsApi = (userId: string, statusId:string ) =>
     useQuery(
-        [`GetAllAdminLabels`],
-        async () => await api.get(`admin/label-get-all`),
+        [`GetAllAdminLabels`, userId, statusId],
+        async () => await api.get(`admin/label-get-all?user_id=${userId}&status=${statusId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

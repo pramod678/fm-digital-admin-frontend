@@ -30,10 +30,10 @@ export const GetAllTicketApi = (userId: any) =>
         }
     );
 
-export const GetAllAdminTicketApi = () =>
+export const GetAllAdminTicketApi = (userId:string, statusId:string) =>
     useQuery(
-        [`GetAllAdminTicket`],
-        async () => await api.get(`admin/ticket-get-all`),
+        [`GetAllAdminTicket`, userId, statusId],
+        async () => await api.get(`admin/ticket-get-all?user_id=${userId}&status=${statusId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

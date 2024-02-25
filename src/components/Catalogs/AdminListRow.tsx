@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import Stores from "./PopUp/Stores";
 import AllSongs from "./AllSongs";
 import ConfirmationButton from "../../ui/ConfirmationButton";
+import EditReleasePopUp from "./PopUp/EditReleasePopUp";
 
 
 export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }: { catalog: any, index: any, currentPage: any, PAGE_SIZE: any }) {
@@ -103,7 +104,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
         }
     };
     
-    console.log(`https://fmdigitalofficial.in/${catalog.ImageDocument}`)
+
     
     return (
         <>
@@ -211,7 +212,8 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                     <p className="font-semibold text-sm">Cat No. :</p>
                                     <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
-                                <div className="w-full flex justify-end mt-2">
+                                <div className="w-full flex space-x-2 justify-end mt-2">
+                                    <EditReleasePopUp id={catalog?.releseInfo_id} userId={catalog?.users_id} />
                                     <button
                                         onClick={() => handleDownload(catalog?.ImageDocument)}
                                         className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full cursor-pointer transition-all duration-300 text-sm"
@@ -222,7 +224,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                             </div>
                             
                             <div className="h-[300px] w-full sm:col-span-2">
-                                <AllSongs data={catalog}/>
+                                <AllSongs data={catalog} userId={catalog?.users_id} />
                             </div>
                         </div>
                     </td>

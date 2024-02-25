@@ -8,6 +8,7 @@ import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi, Y
 import { GetAllAdminProfileLinkingApi, ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../../api/profileLinking";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { GetAllUsersDataApi } from "../../../../api/user";
 
 
 
@@ -36,9 +37,9 @@ export default function AdminProfileLinkingIndex() {
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
 
-    const { data: profilelinkings, isLoading: isLoadingprofilelinkingsPost, isFetching } = GetAllAdminProfileLinkingApi()
+    const { data: profilelinkings, isLoading: isLoadingprofilelinkingsPost, isFetching } = GetAllAdminProfileLinkingApi(userId, statusId)
+    const { data: allUsersData } = GetAllUsersDataApi();
 
-    console.log(profilelinkings?.data?.data)
 
     React.useEffect(() => {
         getUserData({ token: token });
@@ -106,15 +107,31 @@ export default function AdminProfileLinkingIndex() {
                         onChange={handleFilter}
                         />
                         <select
-                            className=" px-4 py-2 rounded-md border-2 border-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) => setStatusId(e.target.value)}
+                            value={statusId}
                         >
-                            <option value="All">UserId</option>
+                            <option value="">All</option>
                             <option value={4}>Approved</option>
-                            <option value={0}>Draft</option>
+                            <option value={0}>Pending</option>
                             <option value={2}>Rejected</option>
-                            <option value={3}>Corrections</option>
+                        </select>
+
+                        <select
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
+                            onChange={(e: any) => setUserId(e.target.value)}
+                            value={userId}
+                        >
+                            <option value="">UserId</option>
+                            {
+                                allUsersData?.data?.data?.map((user: any) => {
+                                    return (
+                                        <>
+                                            <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
+                                        </>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
 

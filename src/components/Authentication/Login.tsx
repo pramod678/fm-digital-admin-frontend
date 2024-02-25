@@ -8,7 +8,8 @@ import InputField from "../../ui/InputField";
 import useAuthStore from "../../store/userstore";
 import { FaRegUser } from "react-icons/fa6";
 import { FaLock } from "react-icons/fa";
-
+import ReCAPTCHA from "react-google-recaptcha";
+import cogoToast from "@successtar/cogo-toast";
 
 type FormValues = {
     email: string;
@@ -35,6 +36,7 @@ export default function Index() {
     } = useForm<FormValues>({ defaultValues: { email: "", password: "" } })
     const navigate = useNavigate();
     const { setToken } = useAuthStore()
+    const [cap, setCaap] = React.useState(null)
     const [backgroundImage, setBackgroundImage] = React.useState('');
     const selectBackgroundImage = () => {
         const date = new Date();
@@ -42,6 +44,8 @@ export default function Index() {
         const index = (dayOfMonth - 1) % backgroundImages.length; // Calculate index based on the day
         setBackgroundImage(backgroundImages[index]);
     };
+
+
 
     React.useEffect(() => {
         selectBackgroundImage(); // Select background image when the component mounts
@@ -51,9 +55,14 @@ export default function Index() {
     const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMailApi(reset, navigate, setToken)
 
     const onSubmit = handleSubmit(async (data: any) => {
-        const newData: any = { ...data };
-        newData.email = newData.email.toLowerCase()
-        LoginMail(newData)
+        if(cap){
+            const newData: any = { ...data };
+            newData.email = newData.email.toLowerCase()
+            LoginMail(newData)
+        }else{
+            cogoToast.success("verify captcha");
+        }
+        
     });
 
     return (
@@ -96,6 +105,8 @@ export default function Index() {
                                     />
                                 </div>
                             </div>
+
+                            <ReCAPTCHA sitekey="6LdFPH8pAAAAAFpZr2CrRBPvCaqoO0iXpLFVGYte" onChange={(val) => setCaap(val)} />
 
                             <p className="text-gray-300 my-1 text-end font-semibold text-sm cursor-pointer">Forgot Password ? </p>
                             <div className="flex justify-between gap-2">

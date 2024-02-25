@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const token = localStorage.getItem("token");
-console.log(token, "token")
 const api = axios.create({
     baseURL: "https://fmdigitalofficial.in/api/v1" ,
     // baseURL: "https://fmdigitalofficial.in/api/v1" ,

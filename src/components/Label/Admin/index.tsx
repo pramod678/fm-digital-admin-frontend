@@ -22,7 +22,7 @@ export default function AdminLabelIndex() {
     const [currentPage, setCurrentPage] = React.useState(1);
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate,)
-    const { data: GetAllLabels, isLoading: isLoadingGetAllLabels, isFetching } = GetAllAdminLabelsApi()
+    const { data: GetAllLabels, isLoading: isLoadingGetAllLabels, isFetching } = GetAllAdminLabelsApi(userId, statusId)
 
 
     React.useEffect(() => {
@@ -91,26 +91,30 @@ export default function AdminLabelIndex() {
                         />
                         <select
                             className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
+                            onChange={(e) => setStatusId(e.target.value)}
+                            value={statusId}
                         >
-                            <option value="All">All</option>
+                            <option value="">All</option>
                             <option value={4}>Approved</option>
                             <option value={0}>Pending</option>
-                            <option value={2}>Takedown</option>
-                            <option value={3}>Corrections</option>
+                            <option value={2}>Rejected</option>
                         </select>
 
                         <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        // onChange={(e) => setSelectedOption(e.target.value)}
-                        // value={selectedOption}
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
+                            onChange={(e: any) => setUserId(e.target.value)}
+                            value={userId}
                         >
-                            <option value="All">UserId</option>
-                            <option value={4}>Approved</option>
-                            <option value={0}>Draft</option>
-                            <option value={2}>Rejected</option>
-                            <option value={3}>Corrections</option>
+                            <option value="">UserId</option>
+                            {
+                                allUsersData?.data?.data?.map((user: any) => {
+                                    return (
+                                        <>
+                                            <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
+                                        </>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
 
