@@ -6,6 +6,8 @@ import InputField from "../../ui/InputField";
 import { ClipLoader } from "react-spinners";
 import cogoToast from "@successtar/cogo-toast";
 import { RegisterWithMailApi } from "../../api/authentication"
+import useCaptcha from "../../hooks/useCaptcha";
+import { IoReload } from "react-icons/io5";
 
 
 type FormValues = {
@@ -27,6 +29,16 @@ export default function SignUp() {
         formState: { errors }
     } = useForm<FormValues>()
     const navigate = useNavigate();
+
+    const {
+        captcha,
+        error,
+        input,
+        success,
+        checkValidCaptcha,
+        refreshCaptcha,
+        handleInputChange
+    } = useCaptcha();
 
     const userType = watch("userType")
 
@@ -65,7 +77,11 @@ export default function SignUp() {
         if (newData?.userType === "Admin" && newData?.secretKey !== "Admin123") {
             cogoToast.error("Invalid Admin");
         } else {
-            RegisterWithMail(objdata)
+            if (checkValidCaptcha()) {
+                // RegisterWithMail(objdata);
+            } else {
+                cogoToast.error("Please enter a valid captcha.");
+            }
         }
     });
 
@@ -156,6 +172,40 @@ export default function SignUp() {
                                 errors={errors}
                                 requiredMessage="password is required."
                             />
+                        </div>
+                        
+
+                        <div className="w-full mb-2">
+                            <div className="flex items-center space-x-6 justify-between my-2">
+                                <p className="bg-white rounded-md text-sm px-4 py-2 text-black">{captcha}</p>
+                                <IoReload onClick={refreshCaptcha} size={20} className="text-white cursor-pointer" />
+                            </div>
+                            <div className="flex items-center justify-between space-x-5">
+                                <input
+                                    type={"text"}
+                                    placeholder={"Enter captcha"}
+                                    value={input}
+                                    onChange={(e) => handleInputChange(e.target.value)}
+                                    className={`border-2 px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full transition ease-in-out duration-150 ${error ? 'border-red-500' : 'border-gray-300'
+                                        }`}
+                                />
+
+                                <button type="button" onClick={checkValidCaptcha} className="px-4 py-2 rounded-full bg-black text-white ">Submit</button>
+                            </div>
+
+                            
+                            {error &&  (
+                                <p className="text-xs text-red-500 mt-1">
+                                    {"Captcha is not matched"}
+                                </p>
+                            )}
+
+                            {success && (
+                                <p className="text-xs text-green-500 mt-1">
+                                    {"Captcha is matched"}
+                                </p>
+                            )}
+                            
                         </div>
 
                         {

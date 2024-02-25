@@ -27,7 +27,7 @@ export default function HistoryIndex() {
     const [currentPage, setCurrentPage] = React.useState(1);
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate,)
-    const { data: GetAdminAllUserFinancial, isLoading: isLoadingGetAdminAllUserFinancial, isFetching } = GetAdminAllUserFinancialApi(userData?.users_id)
+    const { data: GetAdminAllUserFinancial, isLoading: isLoadingGetAdminAllUserFinancial, isFetching } = GetAdminAllUserFinancialApi(userData?.users_id, 0)
 
 
     React.useEffect(() => {
@@ -162,12 +162,12 @@ export default function HistoryIndex() {
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Available Amount
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Panel Amount
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Bank Amount
-                                                </th>
+                                                </th> */}
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Status
                                                 </th>

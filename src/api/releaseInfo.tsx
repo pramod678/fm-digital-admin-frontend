@@ -63,7 +63,7 @@ export const SongsPostApi = ({ setIsOpen, refetch, reset, setFile }: { setIsOpen
     })
 }
 
-export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: any, refetch?: any, id?: any, setFile?: any }) => {
+export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: any, refetch?: any, id?: any, setFile?: any, setStartDate?:any }) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/songsInfoUpdate/${id}`, data), {
         onSuccess: (res) => {
@@ -71,6 +71,7 @@ export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: a
             setFile(null)
             refetch()
             queryClient.refetchQueries([`GetSongs`]);
+            queryClient.refetchQueries([`GetAdminAllCatalogs`]);
             setIsOpen(false)
         },
         onError: ({ response }) => {
@@ -166,6 +167,21 @@ export const EditInfoReleaseApi = (navigate: NavigateFunction, id: any, refetch:
         onSuccess: (res) => {
             cogoToast.success("updated Successfully");
             navigate(`/Songsinfo/${id}`);
+            refetch()
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+export const AdminEditInfoReleaseApi = (id: any, refetch: any, setIsOpen:any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.put(`createRelease/releseInfoUpdate/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("updated Successfully");
+            setIsOpen(false)
+            queryClient.refetchQueries([`GetAdminAllCatalogs`])
             refetch()
         },
         onError: ({ response }) => {

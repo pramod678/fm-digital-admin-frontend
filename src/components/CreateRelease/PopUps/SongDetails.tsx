@@ -17,16 +17,17 @@ import SelectPriceTier from "../../../ui/SelectPriceTier";
 import SongsUpload from "../../../ui/SongsUpload";
 import TimePicker from "react-time-picker";
 import 'react-time-picker/dist/TimePicker.css';
+import { capitalizeString } from "../../../utility/Capitilize";
 
 
-export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetch }: { userData: any, getReleaseInfo: any, GetSongs: any, refetch:any }) {
+export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetch }: { userData: any, getReleaseInfo: any, GetSongs: any, refetch: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [featuringArtistGet, setfeaturingArtistGet] = React.useState([]);
     const [file, setFile] = useState(null);
     const [timeValue, setTimeValue] = useState('');
 
-    const onChange = (newTimeValue:any) => {
+    const onChange = (newTimeValue: any) => {
         // Handle TimePicker change
         setTimeValue(newTimeValue);
     };
@@ -82,14 +83,14 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
         formData.append("VersionSubtitle", newData.VersionSubtitle);
         formData.append("Primaryartist", newData.Primaryartist);
         formData.append("FeaturingArtist", newData.FeaturingArtist);
-        formData.append("Author", newData.Author);
-        formData.append("Composer", newData.Composer);
-        formData.append("Producer", newData.Producer);
+        formData.append("Author", capitalizeString(newData.Author));
+        formData.append("Composer", capitalizeString(newData.Composer));
+        formData.append("Producer", capitalizeString(newData.Producer));
         formData.append("Publisher", newData.Publisher);
         formData.append("ISRC", newData.ISRC);
         formData.append("Genre", newData.Genre);
         formData.append("PriceTier", newData.PriceTier);
-        formData.append("Subgenre", newData.Subgenre);
+        formData.append("Subgenre", capitalizeString(newData.Subgenre));
         formData.append("ExplicitVersion", newData.ExplicitVersion);
         formData.append("TrackTitleLanguage", newData.TrackTitleLanguage);
         formData.append("LyricsLanguage", newData.LyricsLanguage);
@@ -100,7 +101,6 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
         formData.append("users_id", parseInt(userData?.users_id));
         // @ts-ignore
         formData.append("releseInfo_id", parseInt(getReleaseInfo?.data?.data?.releseInfo_id));
-
 
         SongsPost(formData)
 
@@ -353,13 +353,20 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
 
                                         <div className="w-full mb-2 flex flex-col">
                                             <Label text="Caller Tune Timing" htmlFor="grid-CallerTuneTiming" required={false} />
-                                            <TimePicker
+                                            {/* <TimePicker
                                                 id="grid-CallerTuneTiming"
                                                 onChange={onChange}
                                                 value={timeValue}
                                                 disableClock 
                                                 format="HH:mm:ss" 
                                                 className="shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md transition ease-in-out duration-150"
+                                            /> */}
+                                            <InputField
+                                                type="text"
+                                                name="CallerTuneTiming"
+                                                placeholder="Type like this HH:mm:ss"
+                                                register={register}
+                                                errors={errors}
                                             />
                                         </div>
 

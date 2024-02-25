@@ -35,9 +35,10 @@ export default function CreateReleasePage() {
                 </div>
             ) : (
                 <>
-                    <ReleaseInfo />
+                        <ReleaseInfo />
                 </>
             )}
+
         </>
     );
 }

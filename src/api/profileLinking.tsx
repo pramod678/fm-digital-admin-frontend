@@ -20,10 +20,10 @@ export const ProfileLinkingGetAllApi = (id: any) =>
         }
     );
 
-export const GetAllAdminProfileLinkingApi = () =>
+export const GetAllAdminProfileLinkingApi = (userId: string, statusId: string) =>
     useQuery(
-        [`GetAllAdminProfileLinking`],
-        async () => await api.get(`admin/profile-linking-get-all`),
+        [`GetAllAdminProfileLinking`, userId, statusId],
+        async () => await api.get(`admin/profile-linking-get-all?user_id=${userId}&status=${statusId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
@@ -31,7 +31,7 @@ export const GetAllAdminProfileLinkingApi = () =>
         }
     );
 
-export const ProfileLinkingPostApi = (reset: any, setIsOpen:any) => {
+export const ProfileLinkingPostApi = (reset: any, setIsOpen: any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("tools/profileLinkingPost", data), {
         onSuccess: (res) => {

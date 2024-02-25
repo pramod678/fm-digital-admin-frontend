@@ -85,7 +85,7 @@ const AdminFeaturingArtistIndex = ({ showPrimaryArtist }: { showPrimaryArtist :a
                             allUsersData?.data?.data?.map((user: any) => {
                                 return (
                                     <>
-                                        <option value={user?.users_id}>{user?.fname + " " + user?.lname}</option>
+                                        <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
                                     </>
                                 )
                             })

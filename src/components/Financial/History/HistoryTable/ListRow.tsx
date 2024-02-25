@@ -75,19 +75,19 @@ export default function ListRow({ d, index, currentPage, PAGE_SIZE }: { d: any, 
                     {GetDate(d.createdAt) || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.earning_amount || '--'}
+                    {d.earning_amount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.approved_amount || '--'}
+                    {d.approved_amount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.requested_amount || '--'}
+                    {d.requested_amount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.avlable_amount_panel || '--'}
+                    {d.avlable_amount_panel}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.user_amount_panel || '--'}
+                    {d.user_amount_panel}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(d.Status)}

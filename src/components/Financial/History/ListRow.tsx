@@ -6,7 +6,7 @@ import { UpdateLabelAdminApi } from "../../../api/label";
 import { UpdateUserFundApi } from "../../../api/financial";
 
 
-export default function ListRow({ d, index, userData, currentPage, PAGE_SIZE }: { d: any, index: any, userData: any, currentPage:any, PAGE_SIZE:any }) {
+export default function ListRow({ d, index, userData, currentPage, PAGE_SIZE }: { d: any, index: any, userData: any, currentPage: any, PAGE_SIZE: any }) {
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
 
     const [isOpen, setIsOpen] = React.useState(false);
@@ -66,32 +66,32 @@ export default function ListRow({ d, index, userData, currentPage, PAGE_SIZE }: 
                     {actualIndex}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.requested_amount || '--'}
+                    {d.requested_amount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.users_id || "--"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.email || '--'}
+                    {d.users[0]?.email || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.vender || '--'}
+                    {d.users[0]?.phoneNumber || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.earning_amount || '--'}
+                    {d.earning_amount }
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.approved_amount || '--'}
+                    {d.approved_amount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.requested_amount || '--'}
+                    {d.requested_amount}
+                </td>
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {d.avlable_amount_panel}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.avlable_amount_panel || '--'}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {d.user_amount_panel || '--'}
-                </td>
+                    {d.user_amount_panel}
+                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(d.Status)}
                 </td>
@@ -106,7 +106,7 @@ export default function ListRow({ d, index, userData, currentPage, PAGE_SIZE }: 
                                 users_id: d.users_id,
                                 approved_amount: d?.requested_amount,
                                 Status: 4,
-                                admin_id: userData?.users_id
+                                admin_id: userData?.users_id,
                             })
                         }} title={"Are you sure you want to Approve  ?"}  >
                             <button
@@ -119,7 +119,9 @@ export default function ListRow({ d, index, userData, currentPage, PAGE_SIZE }: 
 
                         <ConfirmationButton onConfirm={() => {
                             UpdateUserFund({
-                                id: d.user_financial_id, users_id: d.users_id, Status: 2,admin_id :userData?.users_id })
+                                id: d.user_financial_id, users_id: d.users_id, Status: 2, admin_id: userData?.users_id,
+                                reject_amount: d?.requested_amount
+                            })
                         }} title={"Are you sure you want to Reject  ?"} >
                             <button
                                 type="button"

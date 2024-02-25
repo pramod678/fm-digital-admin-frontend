@@ -1,14 +1,26 @@
 import * as React from "react";
+import EditSongDetails from "../CreateRelease/PopUps/EditSongDetails";
+import { GetReleaseInfoApi, UserDataApi } from "../../api/releaseInfo";
+import { useNavigate } from "react-router-dom";
 
 
 
-export default function EachSong({ index, data }: { index: any, data: any }) {
+export default function EachSong({ index, data, userId }: { index: any, data: any, userId:any }) {
 
     const [activeIndex, setActiveIndex] = React.useState(null);
 
     const toggleAccordion = (index: any) => {
         setActiveIndex((prevIndex: any) => (prevIndex === index ? null : index));
     };
+
+ 
+    const { data: getReleaseInfo } = GetReleaseInfoApi(userId)
+
+    let Usersdata ={
+        users_id: userId
+    }
+
+
 
     const handleDownload = (link: any) => {
         const fileUrl = `https://fmdigitalofficial.in${link}`;
@@ -40,6 +52,7 @@ export default function EachSong({ index, data }: { index: any, data: any }) {
                 console.error('Download failed:', error);
             });
     };
+
     return (
         <>
             <div key={index} className="border rounded mb-2 overflow-hidden">
@@ -53,11 +66,13 @@ export default function EachSong({ index, data }: { index: any, data: any }) {
                     </div>
                 </div>
                 {
-                    activeIndex === index && <div
+                    activeIndex === index && 
+                    <div
                         className={`p-2 border-t transition-max-height duration-300 ease-in-out `}
                     >
                         <div className="w-full flex justify-end mt-2">
-                            <audio controls className="outline-none h-8 w-full md:w-64">
+                                {/* <EditSongDetails userData={Usersdata} song={data} getReleaseInfo={getReleaseInfo} /> */}
+                            <audio controls className="outline-none ml-2 h-8 w-full md:w-64">
                                 <source src={`https://fmdigitalofficial.in/${data.AudioDocument}`} />
                                 Your browser does not support the audio tag.
                             </audio>
