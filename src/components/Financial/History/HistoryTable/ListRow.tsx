@@ -71,6 +71,9 @@ export default function ListRow({ d, index, currentPage, PAGE_SIZE }: { d: any, 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.admin_id || "--"}
                 </td>
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                    {d.users[0]?.email || '--'}
+                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {GetDate(d.createdAt) || '--'}
                 </td>
@@ -83,12 +86,12 @@ export default function ListRow({ d, index, currentPage, PAGE_SIZE }: { d: any, 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.requested_amount}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.avlable_amount_panel}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {d.user_amount_panel}
-                </td>
+                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {statusButton(d.Status)}
                 </td>

@@ -52,3 +52,20 @@ export const GetUserDataApi = (setAdmin: any, setUserData: any, navigate: Naviga
         }
     })
 }
+
+
+export const GetTokenValidateApi = (navigate: NavigateFunction, setIsVerified:any) => {
+    return useMutation((data: any) => api.post("/user/userData", data), {
+        onSuccess: (res) => {
+            if (res.data?.data === "token expired") {
+                cogoToast.success("Token Expired");
+                navigate('/sign-in');
+                setIsVerified(false)
+            }
+        },
+        retry: 1,
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

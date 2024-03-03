@@ -71,7 +71,7 @@ function App() {
             {/* Add other routes outside of SharedLayout here */}
             <Route path="*" element={<>not found</>} />
           </Routes>
-        </div>
+        </div>      
       </Router>
     </>
   );

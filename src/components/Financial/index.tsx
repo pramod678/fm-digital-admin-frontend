@@ -74,7 +74,7 @@ export default function Index() {
     const { mutate: UserFinancialPost, isLoading: isLoadingUserFinancialPost } = UserFinancialPostApi({ handleAmount })
 
     const handleSubmit = () => {
-        if (amount > 0) {
+        if (amount <= GetUserAllUserFinancial?.data?.avlaiable_sum_amount) {
             let data = {
                 users_id: userData?.users_id,
                 requested_amount: amount
@@ -82,7 +82,7 @@ export default function Index() {
             UserFinancialPost(data)
         }
         else {
-            cogoToast.info("Amount should be greater than 1")
+            cogoToast.info("Amount should be lesser than available amount")
         }
     }
 

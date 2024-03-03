@@ -20,10 +20,9 @@ export default function Index() {
 
     useEffect(() => {
         getUserData({ token: token })
-    }, []);
+    }, [ ]);
 
     if (isLoadinggetUserData) {
-        // Render a loading indicator or a placeholder
         return <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
             <BounceLoader size={150} color={"#000000"} />
         </div>
