@@ -57,10 +57,10 @@ export const GetAdminAllUserFinancialApi = (adminId: string, statusId?: number) 
     );
 
 
-export const GetAdminAllUserFinancialHistoryApi = (adminId: string, statusId?: string) =>
+export const GetAdminAllUserFinancialHistoryApi = (adminId: string, userId?:string) =>
     useQuery(
-        [`GetAdminAllUserFinancialHistory`, adminId, statusId],
-        async () => await api.get(`admin/finacial-history-get-all`),
+        [`GetAdminAllUserFinancialHistory`, adminId, userId],
+        async () => await api.get(`admin/finacial-history-get-all?user_id=${userId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

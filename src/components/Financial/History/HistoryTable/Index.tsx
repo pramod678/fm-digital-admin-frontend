@@ -20,13 +20,12 @@ export default function HistoryTableIndex() {
 
 
     const [userId, setUserId] = React.useState('');
-    const [statusId, setStatusId] = React.useState('');
     const [financialData, setfinancialData] = React.useState([]);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate,)
-    const { data: GetAdminAllUserFinancialHistory, isLoading: isLoadingGetAdminAllUserFinancialHistory, isFetching } = GetAdminAllUserFinancialHistoryApi(userData?.users_id)
+    const { data: GetAdminAllUserFinancialHistory, isLoading: isLoadingGetAdminAllUserFinancialHistory, isFetching } = GetAdminAllUserFinancialHistoryApi(userData?.users_id, userId)
 
 
     React.useEffect(() => {
@@ -69,6 +68,10 @@ export default function HistoryTableIndex() {
     const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
 
 
+    const filteredData = GetAdminAllUserFinancialHistory?.data?.data?.filter((item: any) => item.Status === 4);
+
+    const totalApprovedAmount = filteredData?.reduce((prev: any, cur: any) => prev + Number(cur.approved_amount), 0);
+    // const totalAvaibaleAmount = GetAdminAllUserFinancialHistory?.data?.data?.reduce((prev: any, cur: any) => prev + Number(cur.requested_amount), 0);
 
 
     return (
@@ -83,7 +86,22 @@ export default function HistoryTableIndex() {
                 <div className="w-1/2 bg-neutral-800 p-2 mb-2">
                     <p className="text-white font-semibold ml-4 text-base sm:text-lg ">User Financial History</p>
                 </div>
-
+                <select
+                    className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
+                    onChange={(e: any) => setUserId(e.target.value)}
+                    value={userId}
+                >
+                    <option value="">UserId</option>
+                    {
+                        allUsersData?.data?.data?.map((user: any) => {
+                            return (
+                                <>
+                                    <option value={user?.users_id}>{user?.users_id + " - " + user?.fname + " " + user?.lname}</option>
+                                </>
+                            )
+                        })
+                    }
+                </select>
 
 
                 <div className="p-4">
@@ -104,8 +122,11 @@ export default function HistoryTableIndex() {
                                                     User ID
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
-                                                   Admin ID
+                                                    Admin ID
                                                 </th>
+                                                {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                    User Email
+                                                </th> */}
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Created At
                                                 </th>
@@ -118,12 +139,12 @@ export default function HistoryTableIndex() {
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Available Amount
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Panel Amount
                                                 </th>
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Bank Amount
-                                                </th>
+                                                </th> */}
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Status
                                                 </th>
@@ -162,6 +183,16 @@ export default function HistoryTableIndex() {
                     </div>
                 </div>
 
+                <div className="w-full flex space-x-4 justify-end">
+                    <div className="flex items-center space-x-2">
+                        <p className="font-semibold">Total Approved Amount :</p>
+                        <p className="font-semibold">{totalApprovedAmount}</p>
+                    </div>
+                    {/* <div className="flex items-center space-x-2">
+                        <p className="font-semibold">Total Available Amount :</p>
+                        <p className="font-semibold">{totalAvaibaleAmount}</p>
+                    </div> */}
+                </div>
                 {totalPages > 1 && (
                     <div className="flex justify-end items-center mt-4">
                         <button
