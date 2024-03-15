@@ -93,7 +93,7 @@ export default function ReleaseInfo() {
 
     }
 
-    function toTitleCase(str: string) {
+     function toTitleCase(str: string) {
         return str.replace(
             /\w\S*/g,
             function (txt) {
