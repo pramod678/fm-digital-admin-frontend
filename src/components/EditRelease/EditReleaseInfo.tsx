@@ -82,13 +82,22 @@ export default function EditReleaseInfo() {
         setSelectedItems(item);
     };
 
+    function toTitleCase(str: string) {
+        return str.replace(
+            /\w\S*/g,
+            function (txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
+
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         let formData: any = new FormData();
         formData.append("ImageDocument", file);
         formData.append("ReleaseType", selectedItems);
-        formData.append("ReleaseTitle", newData.ReleaseTitle);
+        formData.append("ReleaseTitle", toTitleCase(newData.ReleaseTitle));
         formData.append("PrimaryArtist", newData.PrimaryArtist);
         formData.append("FeaturingArtist", newData.FeaturingArtist);
         formData.append("Genre", newData.Genre);

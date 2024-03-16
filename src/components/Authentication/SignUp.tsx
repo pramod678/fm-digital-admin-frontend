@@ -78,7 +78,7 @@ export default function SignUp() {
             cogoToast.error("Invalid Admin");
         } else {
             if (checkValidCaptcha()) {
-                // RegisterWithMail(objdata);
+                RegisterWithMail(objdata);
             } else {
                 cogoToast.error("Please enter a valid captcha.");
             }
