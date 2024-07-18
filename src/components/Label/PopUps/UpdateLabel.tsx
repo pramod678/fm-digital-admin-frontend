@@ -15,7 +15,7 @@ import { FaEdit } from "react-icons/fa";
 
 
 
-export default function UpdateLabel({ userData, labelData }: { userData: any, labelData:any }) {
+export default function UpdateLabel({ userData, labelData }: { userData: any, labelData: any }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
     const [file, setFile] = useState(null)
@@ -35,6 +35,7 @@ export default function UpdateLabel({ userData, labelData }: { userData: any, la
         const newData: any = { ...data };
         let formData: any = new FormData();
         formData.append("labelDocument", file);
+        formData.append("Status", 0);
         formData.append("title", newData.title);
         formData.append("youtubeURL", newData.youtubeURL);
         formData.append("users_id", parseInt(userData?.users_id));

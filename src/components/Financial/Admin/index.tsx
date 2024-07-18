@@ -11,7 +11,7 @@ import { BounceLoader } from "react-spinners";
 
 
 
-export default function FinancialAdmin(){
+export default function FinancialAdmin() {
 
     const [amount, setAmount] = React.useState(0)
 
@@ -92,11 +92,11 @@ export default function FinancialAdmin(){
                     <div className="shadow-lg p-2 w-full sm:w-1/3">
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Total Fund</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.total_sum_ammount || 0}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.total_sum_ammount?.toFixed(2) || 0}</p>
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">C Commission</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.commsion_sum_amount || 0}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.commsion_sum_amount?.toFixed(2) || 0}</p>
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Total Panel Fund</p>
@@ -104,7 +104,7 @@ export default function FinancialAdmin(){
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.earning_sum_amount}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.earning_sum_amount?.toFixed(2)}</p>
                         </div>
 
                         <div className="flex justify-between items-center px-2 py-1">
@@ -216,8 +216,8 @@ export default function FinancialAdmin(){
                         </button>
                     </div>
                 )}
-                
-                
+
+
             </div>
         </>
     )

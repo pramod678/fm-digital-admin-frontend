@@ -14,7 +14,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
 
     const { mutate: UpdateAdminCatalog } = UpdateAdminCatalogApi()
 
-    const handleDownload = (link:any) => {
+    const handleDownload = (link: any) => {
         const fileUrl = `https://fmdigitalofficial.in/${link}`;
 
         console.log(link.split("/")[1])
@@ -86,8 +86,8 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                         >
                             <span className=" text-white text-xs font-semibold">Correct..</span>
                         </button>
-                        
-                        <span  className="cursor-pointer">
+
+                        <span className="cursor-pointer">
                             <MdDelete color="red" size={20} />
                         </span>
 
@@ -103,9 +103,9 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                 return <></>;
         }
     };
-    
 
-    
+
+
     return (
         <>
             <tr  >
@@ -145,7 +145,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                 </td>
             </tr>
 
-            
+
 
             {isOpen && (
                 <tr className="w-full">
@@ -161,7 +161,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                             alt="Art Work"
                                         />
                                     }
-                                    
+
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold text-sm">Release Type:</p>
@@ -210,7 +210,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold text-sm">Cat No. :</p>
-                                    <p className="text-sm">{catalog?.ReleaseType}</p>
+                                    <p className="text-sm">{catalog?.cat_id}</p>
                                 </div>
                                 <div className="w-full flex space-x-2 justify-end mt-2">
                                     <EditReleasePopUp id={catalog?.releseInfo_id} userId={catalog?.users_id} />
@@ -222,7 +222,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div className="h-[300px] w-full sm:col-span-2">
                                 <AllSongs data={catalog} userId={catalog?.users_id} />
                             </div>
@@ -230,12 +230,12 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                     </td>
                 </tr>
             )}
-            
+
             <tr className="">
                 <td colSpan={10}>
                     <div className="flex w-full justify-end gap-3 p-1">
 
-                        <ConfirmationButton onConfirm={() => { UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 4 })}} title={"Are you sure you want to Approve Release ?"}  >
+                        <ConfirmationButton onConfirm={() => { UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 4 }) }} title={"Are you sure you want to Approve Release ?"}  >
                             <button
                                 type="button"
                                 className="bg-green-700 hover:bg-green-900 text-white py-2 px-4 rounded sm:text-xs "
@@ -254,7 +254,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                 Reject Release
                             </button>
                         </ConfirmationButton>
-                        
+
                         <ConfirmationButton onConfirm={() => { UpdateAdminCatalog({ users_id: catalog.users_id, releseInfo_id: catalog.releseInfo_id, Status: 2 }) }} title={"Are you sure you want to Take Down Release ?"}>
                             <button
                                 type="button"
@@ -263,7 +263,7 @@ export default function AdminListRow({ catalog, index, currentPage, PAGE_SIZE }:
                                 Take Down Release
                             </button>
                         </ConfirmationButton>
-                        
+
                     </div>
                 </td>
             </tr>
