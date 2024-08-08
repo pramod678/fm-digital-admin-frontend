@@ -96,11 +96,11 @@ export default function Index() {
                 <div className="shadow-lg w-[60%] md:w-1/3 p-2">
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Earning Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.earning_sum_amount}</p>
+                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.earning_sum_amount?.toFixed(2)}</p>
                     </div>
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Approved Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.approved_sum_amount}</p>
+                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.approved_sum_amount?.toFixed(2)}</p>
                     </div>
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Requested Amount</p>
@@ -108,7 +108,7 @@ export default function Index() {
                     </div>
                     <div className="flex justify-between items-center px-2 py-1">
                         <p className="font-semibold text-sm sm:text-base">Available Amount</p>
-                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.avlaiable_sum_amount}</p>
+                        <p className="font-semibold text-sm sm:text-base">${GetUserAllUserFinancial?.data?.avlaiable_sum_amount?.toFixed(2)}</p>
                     </div>
                 </div>
 

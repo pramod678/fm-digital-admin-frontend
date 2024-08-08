@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { GetLatestCoorectionsApi, GetLatestDraftsApi } from "../../api/releaseInfo"
 import SpotifyList from "./SpotifyList"
 import YoutubeList from "./YoutubeList"
+import { GetUserAllUserFinancialApi } from "../../api/financial"
 
 
 export default function UserHome({ userData }: { userData: any }) {
@@ -19,10 +20,11 @@ export default function UserHome({ userData }: { userData: any }) {
     const navigate = useNavigate();
 
     const { data: GetLatestDrafts, isLoading: isLoadingGetLatestDrafts } = GetLatestDraftsApi(userData?.users_id)
-
     const { data: GetLatestCoorections, isLoading } = GetLatestCoorectionsApi(userData?.users_id)
+    const { data: GetUserAllUserFinancial, isLoading: isLoadingGetUserAllUserFinancial, isFetching } = GetUserAllUserFinancialApi(userData?.users_id)
 
-    
+    console.log(GetUserAllUserFinancial?.data)
+
     return (
         <>
             <div className="flex flex-col sm:flex-row h-[90%] p-4 gap-6">
@@ -114,7 +116,7 @@ export default function UserHome({ userData }: { userData: any }) {
                                             </div>
                                         </div>
                                     ))}
-                                        <button className="items-start border border-gray-500 mt-2 mx-auto px-2" onClick={() => navigate(`/ReleseInfo`)}>
+                                    <button className="items-start border border-gray-500 mt-2 mx-auto px-2" onClick={() => navigate(`/ReleseInfo`)}>
                                         <span>+</span>
                                         More
                                     </button>
@@ -131,15 +133,15 @@ export default function UserHome({ userData }: { userData: any }) {
                                 <TbDatabaseDollar size={22} />
                                 <p className="mb-0 ml-2">Payments</p>
                             </div>
-                            <div className="flex items-center justify-center h-6 w-6">
+                            {/* <div className="flex items-center justify-center h-6 w-6">
                                 <BiRefresh size={22} />
-                            </div>
+                            </div> */}
 
                         </div>
 
                         <button className="items-start text-white border bg-green-400 border-gray-500 mt-2  mx-auto px-2">
                             <span className="flex items-center gap-1 py-1" onClick={() => navigate('/Financial')}>
-                                <BsCurrencyDollar color={'#ffffff'} /> 0.00
+                                <BsCurrencyDollar color={'#ffffff'} />{GetUserAllUserFinancial?.data?.avlaiable_sum_amount?.toFixed(2) || 0.0}
                             </span>
                         </button>
                     </div>

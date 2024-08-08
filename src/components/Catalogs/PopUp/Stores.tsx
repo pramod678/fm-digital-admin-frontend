@@ -10,36 +10,35 @@ export default function Stores() {
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
     const data = [
-        { name: "Adaptr" },
+        { name: "Adaptr", link: "https://www.adaptr.com/" },
         { name: "Amazon", link: "https://music.amazon.in/search" },
-        { name: "Anghami" },
-        { name: "Boomplay" },
-        { name: "ClaroMúsica" },
-        { name: "Deezer" },
-        { name: "FM Digital Stores maximizer" },
-        { name: "Flo" },
-        { name: "Ganna" },
-        { name: "Instagram & Facebook" },
-        { name: "iTunes/Apple music" },
-        { name: "iHeartRadio" },
-        { name: "Joox" },
-        { name: "Joox" },
-        { name: "KKBox" },
-        { name: "Kuack Media" },
-        { name: "MediaNet & many smaller outlets" },
-        { name: "NetEase" },
-        { name: "Pandora" },
-        { name: "Saavn" },
-        { name: "Shazam" },
-        { name: "Snapchat" },
-        { name: "Soundcloud" },
-        { name: "Spotify" },
-        { name: "Tencent" },
-        { name: "Tidal" },
-        { name: "TikTok, Resso, Luna" },
-        { name: "Wynk" },
-        { name: "Yandex Music (beta)" },
-        { name: "YouTube Music", link:"https://www.youtube.com/" },
+        { name: "Anghami", link: "https://www.anghami.com/" },
+        { name: "Boomplay", link: "https://www.boomplay.com/" },
+        { name: "ClaroMúsica", link: "https://app.fmdigitalofficial.com/" },
+        { name: "Deezer", link: "https://www.deezer.com/" },
+        { name: "FM Digital Stores maximizer", link: "https://app.fmdigitalofficial.com/" },
+        { name: "Flo", link: "https://www.music-flo.com/" },
+        { name: "Ganna", link: "https://gaana.com/" },
+        { name: "Instagram & Facebook", link: "https://www.instagram.com/" },
+        { name: "iTunes/Apple music", link: "https://www.apple.com/in/itunes/" },
+        { name: "iHeartRadio", link: "https://www.iheart.com/" },
+        { name: "Joox", link: "https://www.joox.com/" },
+        { name: "KKBox", link: "https://www.kkbox.com/intl/" },
+        { name: "Kuack Media", link: "https://kuackmedia.com/" },
+        { name: "MediaNet & many smaller outlets", link: "https://medianet.mv/" },
+        { name: "NetEase", link: "https://ir.netease.com/" },
+        { name: "Pandora", link: "https://www.pandora.com/" },
+        { name: "Saavn", link: "https://www.jiosaavn.com/" },
+        { name: "Shazam", link: "https://www.shazam.com/" },
+        { name: "Snapchat", link: "https://www.snapchat.com/" },
+        { name: "Soundcloud", link: "https://soundcloud.com/" },
+        { name: "Spotify", link: "https://open.spotify.com/" },
+        { name: "Tencent", link: "https://www.tencentmusic.com/en-us/" },
+        { name: "Tidal", link: "https://tidal.com/" },
+        { name: "TikTok, Resso, Luna", link: "https://www.tiktok.com/" },
+        { name: "Wynk", link: 'https://wynk.in/music' },
+        { name: "Yandex Music (beta)", link: "https://music.yandex.com/" },
+        { name: "YouTube Music", link: "https://www.youtube.com/" },
     ];
 
 
@@ -92,7 +91,7 @@ export default function Stores() {
                                             return (
                                                 <div key={index} className="flex items-center mb-4">
                                                     <label className="cursor-pointer" >
-                                                        <a href={`${item?.link}`}>
+                                                        <a href={`${item?.link}`} target="_blank" >
                                                             <input type="checkbox" checked className="mr-2" />
                                                             {item.name}
                                                         </a>
