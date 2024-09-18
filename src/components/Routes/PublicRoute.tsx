@@ -5,7 +5,7 @@ import * as React from 'react';
 import { BounceLoader } from 'react-spinners';
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-    const token = localStorage.getItem('token');
+    const token = React.useMemo(() => localStorage.getItem('token'), []);
     const navigate = useNavigate();
     const [isVerified, setIsVerified] = useState(true);
     const { mutate: GetTokenValidate, isLoading } = GetTokenValidateApi(navigate, setIsVerified);
@@ -14,10 +14,10 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
         if (token) {
             GetTokenValidate({ token });
         }
-    }, [ ]);
+    }, [GetTokenValidate, token]);
 
     if (isLoading) {
-        return 
+        return
     }
 
     if (token && isVerified) {
