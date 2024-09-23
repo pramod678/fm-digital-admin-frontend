@@ -8,13 +8,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const token = React.useMemo(() => localStorage.getItem('token'), []);
     const navigate = useNavigate();
     const [isVerified, setIsVerified] = useState(true);
-    const { mutate: GetTokenValidate, isLoading } = GetTokenValidateApi(navigate, setIsVerified);
-
-    useEffect(() => {
-        if (token) {
-            GetTokenValidate({ token });
-        }
-    }, [GetTokenValidate, token]);
+    const { data: GetTokenValidate, isLoading } = GetTokenValidateApi(navigate, setIsVerified, token);
 
     if (isLoading) {
         return <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
@@ -22,7 +16,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         </div>
     }
 
-    if (token && isVerified) {
+    if (token && GetTokenValidate?.data?.data?.users_id) {
         // Token is present and verified, render protected content
         return <>{children}</>;
     }

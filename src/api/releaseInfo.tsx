@@ -63,7 +63,7 @@ export const SongsPostApi = ({ setIsOpen, refetch, reset, setFile }: { setIsOpen
     })
 }
 
-export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: any, refetch?: any, id?: any, setFile?: any, setStartDate?:any }) => {
+export const EditSongsApi = ({ setIsOpen, refetch, id, setFile }: { setIsOpen: any, refetch?: any, id?: any, setFile?: any, setStartDate?: any }) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/songsInfoUpdate/${id}`, data), {
         onSuccess: (res) => {
@@ -106,7 +106,7 @@ export const GetPrimaryArtistApi = (id: any) =>
         }
     );
 
-export const GetAllAdminPrimaryArtistApi = (userId:any) =>
+export const GetAllAdminPrimaryArtistApi = (userId: any) =>
     useQuery(
         [`GetAllAdminPrimaryArtist`, userId],
         async () => await api.get(`admin/primary-artist-get-all?user_id=${userId}`),
@@ -119,7 +119,7 @@ export const GetAllAdminPrimaryArtistApi = (userId:any) =>
         }
     );
 
-export const GetAllAdminFeaturingArtistApi = (userId: any, showPrimaryArtist:any) =>
+export const GetAllAdminFeaturingArtistApi = (userId: any, showPrimaryArtist: any) =>
     useQuery(
         [`GetAllAdminFeaturingArtist`, userId, showPrimaryArtist],
         async () => await api.get(`admin/featuring-artist-get-all?user_id=${userId}`),
@@ -148,6 +148,7 @@ export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
     })
 }
 
+
 export const ReleaseInfoPostApi = (navigate: NavigateFunction) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.post("createRelease/releseInfoPost", data), {
@@ -175,7 +176,7 @@ export const EditInfoReleaseApi = (navigate: NavigateFunction, id: any, refetch:
     })
 }
 
-export const AdminEditInfoReleaseApi = (id: any, refetch: any, setIsOpen:any) => {
+export const AdminEditInfoReleaseApi = (id: any, refetch: any, setIsOpen: any) => {
     const queryClient = useQueryClient();
     return useMutation((data) => api.put(`createRelease/releseInfoUpdate/${id}`, data), {
         onSuccess: (res) => {
@@ -341,6 +342,7 @@ export const GetLatestDraftsApi = (userId: any) =>
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
+            enabled: userId ? true : false,
             onSuccess: (res) => {
             },
         }
@@ -354,12 +356,13 @@ export const GetLatestCoorectionsApi = (userId: any) =>
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
+            enabled: userId ? true : false,
             onSuccess: (res) => {
             },
         }
     );
 
-export const GetDashBoardStatsApi= () =>
+export const GetDashBoardStatsApi = () =>
     useQuery(
         [`GetDashBoardStats`],
         async () => await api.get(`admin/dashBoard-get-all`),
@@ -372,7 +375,7 @@ export const GetDashBoardStatsApi= () =>
         }
     );
 
-export const GetDashboardsLinksApi = (active:any) =>
+export const GetDashboardsLinksApi = (active: any) =>
     useQuery(
         [`GetDashBoardLinks+${active}`, active],
         async () => await api.get(`admin/dashBoard-get-link-all?spotify_active=${active}`),
@@ -387,7 +390,7 @@ export const GetDashboardsLinksApi = (active:any) =>
 
 export const CreateDashboardLinkApi = (reset: any) => {
     const queryClient = useQueryClient();
-    return useMutation((data:any) => api.post("admin/dashBoard-link-create", data), {
+    return useMutation((data: any) => api.post("admin/dashBoard-link-create", data), {
         onSuccess: (res) => {
             cogoToast.success("Link Added");
             queryClient.refetchQueries([`GetDashBoardLinks`]);
@@ -399,7 +402,7 @@ export const CreateDashboardLinkApi = (reset: any) => {
     })
 }
 
-export const UpdateDashboardLinkApi = (setIsEditing: any, setReadMode:any ) => {
+export const UpdateDashboardLinkApi = (setIsEditing: any, setReadMode: any) => {
     const queryClient = useQueryClient();
     return useMutation((data: any) => api.put(`admin/dashBoard-link-update/${data?.dashBoard_id}`, data), {
         onSuccess: (res) => {

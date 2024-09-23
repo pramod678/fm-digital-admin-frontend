@@ -135,7 +135,7 @@ export default function ManageUserListRow({ data, index, currentPage, PAGE_SIZE 
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">IBAN/Account Number:</p>
-                                    <p className="text-sm">{data?.islo}</p>
+                                    <p className="text-sm">{data?.accountNumber}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold  sm:text-sm">IFSC Code:</p>

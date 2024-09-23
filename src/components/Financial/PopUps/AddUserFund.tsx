@@ -34,11 +34,11 @@ export default function AddUserFund({ userData, totalPanelFund }: { userData: an
     } = useForm<AddUserFundDto>()
     const { data: allUsersData } = GetAllUsersDataApi();
 
-    const handleReset = ()=>{
+    const handleReset = () => {
         reset()
     }
 
-    const handleClose = ()=>{
+    const handleClose = () => {
         setIsOpen(false)
     }
 
@@ -53,11 +53,11 @@ export default function AddUserFund({ userData, totalPanelFund }: { userData: an
         if (newData.earning_amount > totalPanelFund) {
             cogoToast.info("No Sufficient Fund")
         } else {
-            if (newData.earning_amount < 1) {
-                cogoToast.info("Amount should be greater than 1")
-            } else {
+            if (newData.earning_amount > 0) {
                 newData.admin_id = userData?.users_id
                 UserFinancialPost(newData)
+            } else {
+                cogoToast.info("Amount should be greater than 0")
             }
 
         }

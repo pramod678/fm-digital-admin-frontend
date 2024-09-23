@@ -100,7 +100,7 @@ export default function FinancialAdmin() {
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Total Panel Fund</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.totalpenal_sum_amount || 0}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllFinancial?.data?.totalpenal_sum_amount?.toFixed(2) || 0}</p>
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>

@@ -34,7 +34,7 @@ export default function ListRow({ data, index }: { data: any, index: any }) {
                     {data.SpotifyId ? <FaSpotify size={size} onClick={() => handleUrlClick(data.SpotifyId)} /> : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.AppleId ? <SiApplemusic size={size} onClick={() => handleUrlClick(data.SpotifyId)} /> : '--'}
+                    {data.AppleId ? <SiApplemusic size={size} onClick={() => handleUrlClick(data.AppleId)} /> : '--'}
                 </td>
                 <Edit data={data} />
             </tr>

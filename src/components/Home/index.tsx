@@ -10,17 +10,10 @@ import { BounceLoader } from "react-spinners";
 
 export default function Index() {
     const [userData, setUserData] = useState("");
-    const [admin, setAdmin] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem("token")
     const { userType, setUserType } = useAuthStore()
-    const { mutate: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setAdmin, setUserData, navigate, setUserType)
-
-    console.log(userType, "userType")
-
-    useEffect(() => {
-        getUserData({ token: token })
-    }, [ ]);
+    const { data: getUserData, isLoading: isLoadinggetUserData } = GetUserDataApi(setUserData, navigate, setUserType, token);
 
     if (isLoadinggetUserData) {
         return <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
@@ -28,5 +21,5 @@ export default function Index() {
         </div>
     }
 
-    return (<>{userType !== "User" ? <AdminHome /> : <Dashboard userData={userData} />}</>);
+    return (<>{getUserData?.data?.data?.userType !== "User" ? <AdminHome /> : <Dashboard userData={userData} />}</>);
 }

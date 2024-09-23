@@ -99,7 +99,7 @@ export default function EditAdminManageArtist({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Instagram Id" htmlFor="grid-InstagramId" required={false} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="InstagramId"
                                                 placeholder="Enter Instagram Id"
                                                 register={register}
@@ -110,7 +110,7 @@ export default function EditAdminManageArtist({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Facebook Id" htmlFor="grid-FacebookId" required={false} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="FacebookId"
                                                 placeholder="Enter Facebook Id"
                                                 register={register}
@@ -120,7 +120,7 @@ export default function EditAdminManageArtist({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Spotify Id" htmlFor="grid-SpotifyId" required={false} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="SpotifyId"
                                                 placeholder="Enter Spotify Id"
                                                 register={register}
@@ -130,7 +130,7 @@ export default function EditAdminManageArtist({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Apple Id" htmlFor="grid-AppleId" required={false} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="AppleId"
                                                 placeholder="Apple Id"
                                                 register={register}
