@@ -99,7 +99,7 @@ export default function Index({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Instagram Id" htmlFor="grid-InstagramId" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="InstagramId"
                                                 placeholder="Enter Instagram Id"
                                                 register={register}
@@ -111,7 +111,7 @@ export default function Index({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Facebook Id" htmlFor="grid-FacebookId" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="FacebookId"
                                                 placeholder="Enter Facebook Id"
                                                 register={register}
@@ -122,7 +122,7 @@ export default function Index({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Spotify Id" htmlFor="grid-SpotifyId" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="SpotifyId"
                                                 placeholder="Enter Spotify Id"
                                                 register={register}
@@ -133,7 +133,7 @@ export default function Index({ data }: { data: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Apple Id" htmlFor="grid-AppleId" required={true} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="AppleId"
                                                 placeholder="Apple Id"
                                                 register={register}

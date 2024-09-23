@@ -90,9 +90,9 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Primary Artist Apple Id " htmlFor="grid-lastName" required={false}  />
+                                            <Label text="Primary Artist Apple Id " htmlFor="grid-lastName" required={false} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="AppleId"
                                                 placeholder="Enter Primary Artist Apple Id "
                                                 register={register}
@@ -103,7 +103,7 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Primary Artist Spotify Id " htmlFor="grid-lastName" required={false} />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="SpotifyId"
                                                 placeholder="Enter Primary Artist Spotify Id "
                                                 register={register}
@@ -125,7 +125,7 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
                                             onClick={onSubmit}
                                             disabled={isLoadingPrimaryArtisttPost}
                                             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
-                                        > 
+                                        >
                                             {isLoadingPrimaryArtisttPost ? <BeatLoader color="#ffffff" /> : 'Submit'}
                                         </button>
                                     </div>

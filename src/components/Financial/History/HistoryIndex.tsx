@@ -95,16 +95,16 @@ export default function HistoryIndex() {
                     <div className="shadow-lg p-2 w-full sm:w-1/3">
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Total Panel Fund</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.totalpenal_sum_amount}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.totalpenal_sum_amount?.toFixed(2)}</p>
                         </div>
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transfered to Users Panel</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.avlaiable_sum_amount}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.avlaiable_sum_amount?.toFixed(2)}</p>
                         </div>
 
                         <div className="flex justify-between items-center px-2 py-1">
                             <p className="font-semibold text-sm sm:text-base">Transferred to User Bank</p>
-                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.approved_sum_amount}</p>
+                            <p className="font-semibold text-sm sm:text-base">${GetAdminAllUserFinancial?.data?.approved_sum_amount?.toFixed(2)}</p>
                         </div>
                     </div>
 

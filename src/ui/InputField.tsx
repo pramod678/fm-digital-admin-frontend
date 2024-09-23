@@ -12,7 +12,7 @@ interface InputFieldProps {
     min?: any
     disabled?: any
     onKeyDown?: any
-    step?:any
+    step?: any
 }
 
 const InputField: FC<InputFieldProps> = ({

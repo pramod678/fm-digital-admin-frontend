@@ -13,7 +13,7 @@ export type ReleaseInfoDto = {
     users_id: number
     Status: number
     releseInfo_id: number
-    ImageDocument:[]
+    ImageDocument: []
 }
 
 export type FeatureArtistDto = {
@@ -35,7 +35,7 @@ export type SongDetailsDto = {
     AudioDocument: string
     Trackversion: string
     Instrumental: string
-    Title:string
+    Title: string
     VersionSubtitle: string
     Primaryartist: string
     FeaturingArtist: string
@@ -45,7 +45,7 @@ export type SongDetailsDto = {
     Publisher: string
     ISRC: string
     Genre: string
-    PriceTier:string
+    PriceTier: string
     Subgenre: string
     ExplicitVersion: string
     TrackTitleLanguage: string
@@ -55,5 +55,5 @@ export type SongDetailsDto = {
     DistributeMusicvideo: string
     users_id: number
     releseInfo_id: number
-    songsInfo_id:number
+    songsInfo_id: number
 }

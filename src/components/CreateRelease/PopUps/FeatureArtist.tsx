@@ -92,7 +92,7 @@ export default function FeatureArtist({ userData }: { userData: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Featuring Artist Apple Id " htmlFor="grid-lastName" />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="AppleId"
                                                 placeholder="Enter Featuring Artist Apple Id "
                                                 register={register}
@@ -103,7 +103,7 @@ export default function FeatureArtist({ userData }: { userData: any }) {
                                         <div className="w-full mb-2">
                                             <Label text="Featuring Artist Spotify Id " htmlFor="grid-lastName" />
                                             <InputField
-                                                type="text"
+                                                type="url"
                                                 name="SpotifyId"
                                                 placeholder="Enter Featuring Artist Spotify Id "
                                                 register={register}

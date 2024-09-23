@@ -8,19 +8,13 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     const token = React.useMemo(() => localStorage.getItem('token'), []);
     const navigate = useNavigate();
     const [isVerified, setIsVerified] = useState(true);
-    const { mutate: GetTokenValidate, isLoading } = GetTokenValidateApi(navigate, setIsVerified);
-
-    useEffect(() => {
-        if (token) {
-            GetTokenValidate({ token });
-        }
-    }, [GetTokenValidate, token]);
+    const { data: GetTokenValidate, isLoading } = GetTokenValidateApi(navigate, setIsVerified, token);
 
     if (isLoading) {
         return
     }
 
-    if (token && isVerified) {
+    if (token && GetTokenValidate?.data?.data?.users_id) {
         return <Navigate to="/" />;
     }
 

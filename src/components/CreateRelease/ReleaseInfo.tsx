@@ -93,7 +93,7 @@ export default function ReleaseInfo() {
 
     }
 
-     function toTitleCase(str: string) {
+    function toTitleCase(str: string) {
         return str.replace(
             /\w\S*/g,
             function (txt) {
@@ -146,7 +146,7 @@ export default function ReleaseInfo() {
             <form onSubmit={(e: any) => {
                 onSubmit(e);
             }}>
-                <div className="flex flex-col md:flex-row gap-4 p-8">
+                <div className="flex flex-col md:flex-row gap-4 px-8 py-4">
                     {/* Image */}
                     <div className="flex flex-col items-center mt-4 space-y-4">
                         <FileUpload file={file} setFile={setFile} />
@@ -159,8 +159,8 @@ export default function ReleaseInfo() {
                             </ul>
                         </div>
                     </div>
-                    <div className="w-full">
-                        <div className="flex flex-col sm:flex-row items-center sm:sm:gap-8 mt-1">
+                    <div className="flex flex-col sm:flex-row w-full sm:gap-8">
+                        <div className="w-full">
                             <div className="w-full mb-2">
                                 <Label text="Release Type" htmlFor="grid-firstName" required={true} />
                                 <div className="flex flex-wrap items-center gap-6 px-4 py-1">
@@ -177,6 +177,52 @@ export default function ReleaseInfo() {
                             </div>
 
                             <div className="w-full mb-2">
+                                <Label text="Release Title" htmlFor="grid-ReleaseTitle" required={true} />
+                                <InputField
+                                    type="text"
+                                    name="ReleaseTitle"
+                                    placeholder="Enter Release Title"
+                                    register={register}
+                                    errors={errors}
+                                    requiredMessage="Release Title is required."
+                                />
+                            </div>
+
+                            <div className="w-full mb-2">
+                                <Label text="Primary Artist" htmlFor="grid-PrimaryArtist" required={true} />
+                                <div className="flex gap-2 items-center">
+                                    <SelectPrimaryArtist control={control} name="PrimaryArtist" errors={errors} required={true} id={userData?.users_id} />
+                                    <PrimaryArtist userData={userData} />
+                                </div>
+                            </div>
+
+                            <div className="w-full mb-2">
+                                <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={false} />
+                                <div className="flex gap-2 items-center">
+                                    <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={false} id={userData?.users_id} />
+                                    <FeatureArtist userData={userData} />
+                                </div>
+                            </div>
+
+                            <div className="w-full mb-2">
+                                <Label text="Genre" htmlFor="grid-Genre" required={true} />
+                                <SelectGenre control={control} name="Genre" options={genre?.data?.data || []} errors={errors} required={true} />
+                            </div>
+
+                            <div className="w-full mb-2">
+                                <Label text="Sub Genre" htmlFor="grid-SubGenre" required={false} />
+                                <InputField
+                                    type="text"
+                                    name="SubGenre"
+                                    placeholder="Enter SubGenre"
+                                    register={register}
+                                    errors={errors}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="w-full">
+                            <div className="w-full mb-2">
                                 <Label text="Label Name" htmlFor="grid-labelName" required={true} />
                                 <InputField
                                     type="text"
@@ -187,17 +233,16 @@ export default function ReleaseInfo() {
                                     requiredMessage="LabelName is required."
                                 />
                             </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
+
                             <div className="w-full mb-2">
-                                <Label text="Release Title" htmlFor="grid-ReleaseTitle" required={true} />
+                                <Label text="Label Name" htmlFor="grid-labelName" required={true} />
                                 <InputField
                                     type="text"
-                                    name="ReleaseTitle"
-                                    placeholder="Enter Release Title"
+                                    name="LabelName"
+                                    placeholder="Enter Label name"
                                     register={register}
                                     errors={errors}
-                                    requiredMessage="Release Title is required."
+                                    requiredMessage="LabelName is required."
                                 />
                             </div>
 
@@ -216,15 +261,6 @@ export default function ReleaseInfo() {
                                     })}
                                 />
                             </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Primary Artist" htmlFor="grid-PrimaryArtist" required={true} />
-                                <div className="flex gap-2 items-center">
-                                    <SelectPrimaryArtist control={control} name="PrimaryArtist" errors={errors} required={true} id={userData?.users_id} />
-                                    <PrimaryArtist userData={userData} />
-                                </div>
-                            </div>
 
                             <div className="w-full mb-2">
                                 <Label text="PLine" htmlFor="grid-PLine" required={true} />
@@ -236,15 +272,6 @@ export default function ReleaseInfo() {
                                     errors={errors}
                                     requiredMessage="PLine is required."
                                 />
-                            </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={false} />
-                                <div className="flex gap-2 items-center">
-                                    <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={false} id={userData?.users_id} />
-                                    <FeatureArtist userData={userData} />
-                                </div>
                             </div>
 
                             <div className="w-full mb-2">
@@ -258,12 +285,6 @@ export default function ReleaseInfo() {
                                     requiredMessage="CLine is required."
                                 />
                             </div>
-                        </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Genre" htmlFor="grid-Genre" required={true} />
-                                <SelectGenre control={control} name="Genre" options={genre?.data?.data || []} errors={errors} required={true} />
-                            </div>
 
                             <div className="w-full mb-2">
                                 <Label text="UPC/EAN" htmlFor="grid-UPC/EAN" required={false} />
@@ -276,31 +297,17 @@ export default function ReleaseInfo() {
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
-                            <div className="w-full mb-2">
-                                <Label text="Sub Genre" htmlFor="grid-SubGenre" required={false} />
-                                <InputField
-                                    type="text"
-                                    name="SubGenre"
-                                    placeholder="Enter SubGenre"
-                                    register={register}
-                                    errors={errors}
-                                />
-                            </div>
-
-                            <div className="mt-4 w-full flex justify-center items-center">
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center"
-                                    disabled={isLoadingReleaseInfoPost}
-                                >
-                                    <span className="mr-2">Save</span>
-                                    <AiFillSave />
-                                </button>
-                            </div>
-
-                        </div>
                     </div>
+                </div>
+                <div className="w-full flex justify-end items-center px-8">
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center"
+                        disabled={isLoadingReleaseInfoPost}
+                    >
+                        <span className="mr-2">Save</span>
+                        <AiFillSave />
+                    </button>
                 </div>
             </form>
         </>
