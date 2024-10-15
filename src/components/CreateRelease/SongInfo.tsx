@@ -83,7 +83,7 @@ export default function SongInfo() {
                                     </div>
 
                                     <audio controls className="outline-none h-8 w-full md:w-64">
-                                        <source src={`https://fmdigitalofficial.in/${song?.AudioDocument}`} />
+                                        <source src={`https://api.fmdigitalofficial.com/${song?.AudioDocument}`} />
                                         Your browser does not support the audio tag.
                                     </audio>
                                 </div>

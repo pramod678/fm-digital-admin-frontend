@@ -10,7 +10,7 @@ export default function ListRow({ data, index, currentPage, PAGE_SIZE }: { data:
     const { mutate: UpdateYoutubeClaims } = UpdateTicketAdminApi()
 
     const handleDownload = (link: any) => {
-        const fileUrl = `https://fmdigitalofficial.in/${link}`;
+        const fileUrl = `https://api.fmdigitalofficial.com/${link}`;
 
         // Open a new window with the file URL
         const newWindow = window.open(fileUrl, '_blank');

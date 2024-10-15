@@ -95,7 +95,7 @@ export default function EditSubmission() {
                 <div className="w-full sm:w-1/2 flex justify-center mt-8 sm:mt-0">
                     <img
                         className="w-32 h-32 object-cover rounded"
-                        src={`https://fmdigitalofficial.in/${getSubmissions?.data?.data?.ImageDocument}`}
+                        src={`https://api.fmdigitalofficial.com/${getSubmissions?.data?.data?.ImageDocument}`}
                         alt="Art Work"
                     />
                 </div>

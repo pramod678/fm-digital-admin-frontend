@@ -19,7 +19,7 @@ export default function LabelListRow({ label, index, currentPage, PAGE_SIZE }: {
     };
 
     const handleDownload = (link: any) => {
-        const fileUrl = `https://fmdigitalofficial.in/${link}`;
+        const fileUrl = `https://api.fmdigitalofficial.com/${link}`;
 
         // Open a new window with the file URL
         const newWindow = window.open(fileUrl, '_blank');

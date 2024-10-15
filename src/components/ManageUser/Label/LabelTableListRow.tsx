@@ -14,7 +14,7 @@ export default function LabelTableListRow({ data, index }: { data: any, index: a
     };
 
     const handleDownload = (link: any) => {
-        const fileUrl = `https://fmdigitalofficial.in/${link}`;
+        const fileUrl = `https://api.fmdigitalofficial.com/${link}`;
 
         // Open a new window with the file URL
         const newWindow = window.open(fileUrl, '_blank');
@@ -62,7 +62,7 @@ export default function LabelTableListRow({ data, index }: { data: any, index: a
                     <IoLogoYoutube size={size} />
                 </td>
                 <td className=" cursor-pointer px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => handleDownload(data?.labelDocument)}
->
+                >
                     <p>Download</p>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

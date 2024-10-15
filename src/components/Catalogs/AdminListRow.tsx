@@ -25,7 +25,7 @@ export default function AdminListRow({
     const { mutate: UpdateAdminCatalog } = UpdateAdminCatalogApi();
 
     const handleDownload = (link: any) => {
-        const fileUrl = `https://fmdigitalofficial.in/${link}`;
+        const fileUrl = `https://api.fmdigitalofficial.com/${link}`;
 
         console.log(link.split("/")[1]);
 
@@ -164,7 +164,7 @@ export default function AdminListRow({
                                     {catalog.ImageDocument && (
                                         <img
                                             className="w-32 h-32 object-cover rounded"
-                                            src={`https://fmdigitalofficial.in/${catalog.ImageDocument}`}
+                                            src={`https://api.fmdigitalofficial.com/${catalog.ImageDocument}`}
                                             alt="Art Work"
                                         />
                                     )}
