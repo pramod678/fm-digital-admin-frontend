@@ -70,7 +70,7 @@ const FileUpload = ({ file, setFile, previewFile, preview, setPreview }: { file:
                                 preview ? (
                                     <>
                                         <img
-                                            src={`https://fmdigitalofficial.in/${previewFile}`}
+                                            src={`https://api.fmdigitalofficial.com/${previewFile}`}
                                             alt="Preview"
                                             className="h-32 w-full object-contain rounded-md"
                                         />
@@ -79,7 +79,7 @@ const FileUpload = ({ file, setFile, previewFile, preview, setPreview }: { file:
                                     <>
                                         {file?.type?.startsWith('image/') ? (
                                             <img
-                                                src={preview ? `https://fmdigitalofficial.in/${previewFile}` : URL.createObjectURL(file)}
+                                                src={preview ? `https://api.fmdigitalofficial.com/${previewFile}` : URL.createObjectURL(file)}
                                                 alt="Preview"
                                                 className="h-32 w-full object-contain rounded-md"
                                             />

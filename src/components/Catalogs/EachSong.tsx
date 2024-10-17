@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-export default function EachSong({ index, data, userId }: { index: any, data: any, userId:any }) {
+export default function EachSong({ index, data, userId }: { index: any, data: any, userId: any }) {
 
     const [activeIndex, setActiveIndex] = React.useState(null);
 
@@ -13,17 +13,17 @@ export default function EachSong({ index, data, userId }: { index: any, data: an
         setActiveIndex((prevIndex: any) => (prevIndex === index ? null : index));
     };
 
- 
+
     const { data: getReleaseInfo } = GetReleaseInfoApi(userId)
 
-    let Usersdata ={
+    let Usersdata = {
         users_id: userId
     }
 
 
 
     const handleDownload = (link: any) => {
-        const fileUrl = `https://fmdigitalofficial.in${link}`;
+        const fileUrl = `https://api.fmdigitalofficial.com${link}`;
 
         console.log(link.split("/")[2])
 
@@ -66,14 +66,14 @@ export default function EachSong({ index, data, userId }: { index: any, data: an
                     </div>
                 </div>
                 {
-                    activeIndex === index && 
+                    activeIndex === index &&
                     <div
                         className={`p-2 border-t transition-max-height duration-300 ease-in-out `}
                     >
                         <div className="w-full flex justify-end mt-2">
-                                {/* <EditSongDetails userData={Usersdata} song={data} getReleaseInfo={getReleaseInfo} /> */}
+                            {/* <EditSongDetails userData={Usersdata} song={data} getReleaseInfo={getReleaseInfo} /> */}
                             <audio controls className="outline-none ml-2 h-8 w-full md:w-64">
-                                <source src={`https://fmdigitalofficial.in/${data.AudioDocument}`} />
+                                <source src={`https://api.fmdigitalofficial.com/${data.AudioDocument}`} />
                                 Your browser does not support the audio tag.
                             </audio>
                         </div>
@@ -154,7 +154,7 @@ export default function EachSong({ index, data, userId }: { index: any, data: an
                                     <div className=" h-32 border-2 border-black p-1 text-sm overflow-y-auto">
                                         <p className="whitespace-normal break-all">
                                             {data?.Lyrics}
-                                            
+
                                         </p>
                                     </div>
                                 </div>

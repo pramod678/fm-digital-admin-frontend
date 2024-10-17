@@ -57,7 +57,7 @@ export default function ListRow({ catalog, index, currentPage, PAGE_SIZE }: { ca
                 return <></>;
         }
     };
- 
+
     const statusButton = (status: any) => {
         switch (status) {
             case 0:
@@ -135,7 +135,7 @@ export default function ListRow({ catalog, index, currentPage, PAGE_SIZE }: { ca
                     {catalog.ImageDocument ? (
                         <div className="flex justify-center sm:mr-3 lg:mr-6">
                             <img
-                                src={`https://fmdigitalofficial.in/${catalog.ImageDocument}`}
+                                src={`https://api.fmdigitalofficial.com/${catalog.ImageDocument}`}
                                 alt="Catalog"
                                 className="w-8 h-8 object-cover rounded"
                             />

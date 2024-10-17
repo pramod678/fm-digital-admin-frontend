@@ -60,7 +60,7 @@ const SongPreview = ({ file, setFile, previewFile, preview, setPreview }: { file
                 !file && preview && <div className="flex items-center justify-between bg-gray-200 p-2 rounded-md">
                     <div className="flex">
                         <audio controls className="outline-none h-8 w-full md:w-64">
-                            <source src={`https://fmdigitalofficial.in/${previewFile}`} />
+                            <source src={`https://api.fmdigitalofficial.com/${previewFile}`} />
                             Your browser does not support the audio tag.
                         </audio>
                     </div>
