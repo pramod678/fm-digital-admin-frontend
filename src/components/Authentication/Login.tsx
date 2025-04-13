@@ -62,7 +62,7 @@ const LoginPage = () => {
             </p>
 
             {/* Login Card */}
-            <div className="bg-white w-85 max-w-sm rounded-2xl shadow-2xl overflow-hidden max-h-[95vh]">
+            <div className="bg-white w-95 max-w-sm rounded-2xl shadow-2xl overflow-hidden max-h-[95vh]">
                 {/* Logo and Welcome Text */}
                 <div className="text-center pt-6">
                     <img
