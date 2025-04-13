@@ -48,16 +48,21 @@ const LoginPage = () => {
 
     return (
         <div
-          className="min-h-screen w-full flex justify-center items-center bg-cover bg-center bg-no-repeat px-4 sm:px-6 md:px-8 relative"
-          style={{ backgroundImage: "url('/images/fm-logo/bg.png')" }}
-        >
+        className="w-full flex justify-center items-center bg-no-repeat bg-center bg-cover overflow-hidden"
+        style={{
+          height: "100dvh",
+          backgroundImage: "url('/images/fm-logo/bg.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
           {/* Bottom Caption */}
-          <p className="absolute bottom-6 left-6 text-white text-xs sm:text-sm">
+          <p className="absolute bottom-4 left-4 text-white text-xs sm:text-sm z-10">
             The choice of top performers.
           </p>
       
           {/* Login Card */}
-          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden">
+          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden z-10">
             {/* Logo and Welcome Text */}
             <div className="text-center pt-6">
               <img
@@ -128,7 +133,7 @@ const LoginPage = () => {
       
               {/* Captcha */}
               <div className="mb-4 flex justify-center">
-                <div className="scale-90 rounded-lg overflow-hidden border border-gray-300 p-1 shadow-md bg-white">
+                <div className="scale-[0.88] rounded-lg overflow-hidden border border-gray-300 p-1 shadow-md bg-white">
                   <ReCAPTCHA
                     sitekey="6LdFPH8pAAAAAFpZr2CrRBPvCaqoO0iXpLFVGYte"
                     onChange={setCaptchaVerified}
@@ -136,7 +141,7 @@ const LoginPage = () => {
                 </div>
               </div>
       
-              {/* Remember Me & Forgot */}
+              {/* Remember Me + Forgot */}
               <div className="flex items-center justify-between mb-4">
                 <label className="flex items-center text-sm text-gray-700">
                   <input
@@ -179,6 +184,7 @@ const LoginPage = () => {
           </div>
         </div>
       );
+      
       
 };
 
