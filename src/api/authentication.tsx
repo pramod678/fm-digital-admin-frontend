@@ -11,21 +11,23 @@ type LoginPayload = {
   export const LoginWithMailApi = (reset: any, navigate: any, setToken: any) => {
     return useMutation({
       mutationFn: async (payload: LoginPayload) => {
-        const response = await api.post("/user/login", payload);
-        return response.data;
+        const res = await api.post("/user/login", payload);
+        return res;
       },
-      onSuccess: (data) => {
-        setToken(data.token);
-        reset();
-        navigate("/");
-        cogoToast.success("Login successfully");
-        localStorage.setItem("token", data?.data);
-        navigate('/');
-        reset()
-      },
-      onError: (err) => {
-        console.error("Login failed", err);
-      }
+      onSuccess: (res) => {
+        if (res?.data?.status === "error") {
+            cogoToast.success(res?.data?.error);
+        } else {
+            setToken(res.data.data)
+            localStorage.setItem("token", res.data?.data);
+            navigate('/');
+            cogoToast.success("Login successfully");
+            reset()
+        }
+    },
+      onError: (res: any) => {
+        cogoToast.error(res?.data?.error);
+    }
     });
   };
 
