@@ -6,7 +6,7 @@ export default function CreateReleasePage() {
     const dayOfWeek = data.getDay();
 
     // Check if it's Saturday (6) or Sunday (0)
-    const isWeekend = dayOfWeek === 6 || dayOfWeek === 0;
+    const isWeekend = dayOfWeek === 6;
 
     return (
         <>
@@ -22,7 +22,7 @@ export default function CreateReleasePage() {
                             </>
                         )
                     }
-                    {
+                    {/* {
                         dayOfWeek === 0 && (
                             <>
                                 <p className="text-xl text-center font-semibold mb-2">Good job, You broke the Internet! Just kidding.  
@@ -31,7 +31,7 @@ export default function CreateReleasePage() {
                                 <p className="text-lg text-center font-semibold mb-2">Thank you, Team FM Digital.</p>
                             </>
                         )
-                    }
+                    } */}
                 </div>
             ) : (
                 <>
