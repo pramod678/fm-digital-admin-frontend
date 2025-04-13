@@ -8,6 +8,5 @@ html, body {
     height: 100%;
     overflow: hidden;
     touch-action: none; /* Prevents elastic scroll on iOS */
-    background-color: #000; /* Removes white patch on load */
   }
   
