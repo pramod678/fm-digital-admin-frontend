@@ -72,25 +72,32 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
 
     //featuringArtisttPost Api Call
     const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi({ setIsOpen, refetch, reset, setFile })
-
+    function toTitleCase(str: string) {
+        return str.replace(
+            /\w\S*/g,
+            function (txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
         let formData: any = new FormData();
         formData.append("AudioDocument", file);
         formData.append("Trackversion", newData.Trackversion);
         formData.append("Instrumental", newData.Instrumental);
-        formData.append("Title", newData.Title);
+        formData.append("Title", toTitleCase(newData.Title));
         formData.append("VersionSubtitle", newData.VersionSubtitle);
         formData.append("Primaryartist", newData.Primaryartist);
         formData.append("FeaturingArtist", newData.FeaturingArtist);
-        formData.append("Author", capitalizeString(newData.Author));
-        formData.append("Composer", capitalizeString(newData.Composer));
-        formData.append("Producer", capitalizeString(newData.Producer));
+        formData.append("Author", toTitleCase(newData.Author));
+        formData.append("Composer", toTitleCase(newData.Composer));
+        formData.append("Producer", toTitleCase(newData.Producer));
         formData.append("Publisher", newData.Publisher);
         formData.append("ISRC", newData.ISRC);
         formData.append("Genre", newData.Genre);
         formData.append("PriceTier", newData.PriceTier);
-        formData.append("Subgenre", capitalizeString(newData.Subgenre));
+        formData.append("Subgenre", toTitleCase(newData.Subgenre));
         formData.append("ExplicitVersion", newData.ExplicitVersion);
         formData.append("TrackTitleLanguage", newData.TrackTitleLanguage);
         formData.append("LyricsLanguage", newData.LyricsLanguage);
@@ -371,11 +378,11 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
                                         </div>
 
                                         <div className="w-full mb-2">
-                                            <Label text="Distribute Music video" htmlFor="grid-DistributeMusicvideo" required={false} />
+                                            <Label text="Released Video URL" htmlFor="grid-DistributeMusicvideo" required={false} />
                                             <InputField
                                                 type="text"
                                                 name="DistributeMusicvideo"
-                                                placeholder="Distribute Music video URL "
+                                                placeholder="Released Video URL"
                                                 register={register}
                                                 errors={errors}
                                             />

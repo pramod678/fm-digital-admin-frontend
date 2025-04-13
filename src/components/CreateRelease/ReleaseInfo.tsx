@@ -105,6 +105,7 @@ export default function ReleaseInfo() {
 
     const onSubmit = handleSubmit(async (data: any) => {
         const newData: any = { ...data };
+        
         let formData: any = new FormData();
         formData.append("ImageDocument", file);
         formData.append("ReleaseType", selectedItems);
@@ -112,11 +113,11 @@ export default function ReleaseInfo() {
         formData.append("PrimaryArtist", newData.PrimaryArtist);
         formData.append("FeaturingArtist", newData.FeaturingArtist);
         formData.append("Genre", newData.Genre);
-        formData.append("SubGenre", newData.SubGenre);
-        formData.append("LabelName", newData.LabelName);
+        formData.append("SubGenre", toTitleCase(newData.SubGenre));
+        formData.append("LabelName", toTitleCase(newData.LabelName));
         formData.append("ReleaseDate", newData.ReleaseDate);
-        formData.append("PLine", newData.PLine);
-        formData.append("CLine", newData.CLine);
+        formData.append("PLine", toTitleCase(newData.PLine));
+        formData.append("CLine", toTitleCase(newData.CLine));
         formData.append("UPCEAN", newData.UPCEAN);
         // @ts-ignore
         formData.append("users_id", parseInt(userData.users_id));
@@ -222,18 +223,6 @@ export default function ReleaseInfo() {
                         </div>
 
                         <div className="w-full">
-                            <div className="w-full mb-2">
-                                <Label text="Label Name" htmlFor="grid-labelName" required={true} />
-                                <InputField
-                                    type="text"
-                                    name="LabelName"
-                                    placeholder="Enter Label name"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="LabelName is required."
-                                />
-                            </div>
-
                             <div className="w-full mb-2">
                                 <Label text="Label Name" htmlFor="grid-labelName" required={true} />
                                 <InputField
