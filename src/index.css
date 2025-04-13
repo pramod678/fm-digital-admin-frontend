@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    touch-action: none; /* Prevents elastic scroll on iOS */
+    background-color: #000; /* Removes white patch on load */
+  }
+  
