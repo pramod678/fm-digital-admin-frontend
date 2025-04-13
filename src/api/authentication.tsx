@@ -3,25 +3,31 @@ import { useMutation, useQuery } from "react-query";
 import api from "../lib/api";
 import { NavigateFunction } from "react-router-dom";
 
-
-export const LoginWithMailApi = (reset: any, navigate: NavigateFunction, setToken: any) => {
-    return useMutation((data) => api.post("/user/login", data), {
-        onSuccess: (res) => {
-            if (res?.data?.status === "error") {
-                cogoToast.success(res?.data?.error);
-            } else {
-                cogoToast.success("Login successfully");
-                setToken(res.data.data)
-                localStorage.setItem("token", res.data?.data);
-                navigate('/');
-                reset()
-            }
-        },
-        onError: (res: any) => {
-            cogoToast.error(res?.data?.error);
-        }
-    })
-}
+type LoginPayload = {
+    email: string;
+    password: string;
+    checkbox: boolean;
+  };
+  export const LoginWithMailApi = (reset: any, navigate: any, setToken: any) => {
+    return useMutation({
+      mutationFn: async (payload: LoginPayload) => {
+        const response = await api.post("/user/login", payload);
+        return response.data;
+      },
+      onSuccess: (data) => {
+        setToken(data.token);
+        reset();
+        navigate("/");
+        cogoToast.success("Login successfully");
+        localStorage.setItem("token", data?.data);
+        navigate('/');
+        reset()
+      },
+      onError: (err) => {
+        console.error("Login failed", err);
+      }
+    });
+  };
 
 export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation((data) => api.post("/user/register", data), {
