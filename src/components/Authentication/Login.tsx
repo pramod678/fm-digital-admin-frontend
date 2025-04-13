@@ -48,14 +48,12 @@ const LoginPage = () => {
 
     return (
         <div
-            className="w-full flex justify-center items-center bg-no-repeat bg-center bg-cover overflow-hidden"
-            style={{
-                height: "100dvh",
-                backgroundImage: "url('/images/fm-logo/bg.png')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-            }}
-        >
+        className="w-full h-[100dvh] flex justify-center items-center bg-no-repeat bg-center bg-cover relative"
+        style={{
+          backgroundImage: "url('/images/fm-logo/bg.png')",
+        }}
+      >
+      
             {/* Footer Caption */}
             <p className="absolute bottom-4 left-4 text-white text-xs sm:text-sm z-10">
                 The choice of top performers.
@@ -98,7 +96,7 @@ const LoginPage = () => {
                     <p className="text-xs text-gray-400">OR BY EMAIL</p>
                     <div className="flex-grow h-px bg-gray-300" />
                 </div>
-
+                <div className="overflow-y-auto max-h-[70vh] px-6 pb-6">
                 {/* Form */}
                 <form
                     onSubmit={(e) => {
@@ -181,6 +179,7 @@ const LoginPage = () => {
                         </Link>
                     </p>
                 </form>
+                </div>
             </div>
         </div>
     );
