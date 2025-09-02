@@ -5,8 +5,11 @@ export default function CreateReleasePage() {
     const data = new Date();
     const dayOfWeek = data.getDay();
 
-    // Check if it's Saturday (6) or Sunday (0)
-    const isWeekend = dayOfWeek === 6 || dayOfWeek === 0;
+        // Add a status flag for controlling weekend behavior
+        const status = false; // Change this value dynamically as needed
+
+        // Check if it's Saturday (6) or Sunday (0) and status is true
+        const isWeekend = status && (dayOfWeek === 6 || dayOfWeek === 0);
 
     return (
         <>
