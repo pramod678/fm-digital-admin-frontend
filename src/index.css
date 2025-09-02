@@ -1,3 +1,21 @@
+<<<<<<< HEAD
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+=======
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+>>>>>>> 41dd8b6341e16e4abb1d7810761386846104ef2e
