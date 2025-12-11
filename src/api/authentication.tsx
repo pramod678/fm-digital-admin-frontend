@@ -167,3 +167,33 @@ export const GetTokenValidateApi = (navigate: NavigateFunction, setIsVerified: a
             }
         }
     );
+
+// Forgot Password API - Stubbed for frontend development
+// TODO: Update endpoint when backend is ready
+type ForgotPasswordPayload = {
+    email: string;
+};
+
+export const ForgotPasswordApi = (reset: any, navigate: NavigateFunction) => {
+    return useMutation({
+        mutationFn: async (payload: ForgotPasswordPayload) => {
+            // TODO: Replace with actual endpoint when backend is ready
+            const res = await api.post("/user/forgot-password", payload);
+            return res;
+        },
+        onSuccess: (res) => {
+            if (res?.data?.error) {
+                cogoToast.error(res?.data?.error || 'Failed to send OTP');
+            } else {
+                cogoToast.success("OTP sent to your email successfully");
+                reset();
+                // TODO: Navigate to OTP verification page when implemented
+                // navigate('/verify-otp');
+            }
+        },
+        onError: (error: any) => {
+            const errorMessage = error?.response?.data?.message || error?.message || 'Failed to send OTP';
+            cogoToast.error(errorMessage);
+        }
+    });
+};
