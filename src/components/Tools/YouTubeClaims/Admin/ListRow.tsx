@@ -10,9 +10,10 @@ interface ListRowProps {
     currentPage: number;
     PAGE_SIZE: number;
     tableType: "pending" | "history";
+    onRejectClick?: () => void;
 }
 
-export default function ListRow({ claim, index, currentPage, PAGE_SIZE, tableType }: ListRowProps) {
+export default function ListRow({ claim, index, currentPage, PAGE_SIZE, tableType, onRejectClick }: ListRowProps) {
     const actualIndex = tableType === "history" ? (currentPage - 1) * PAGE_SIZE + index + 1 : index + 1;
     const { mutate: UpdateYoutubeClaims } = UpdateYoutubeClaimsApi();
 
@@ -105,8 +106,8 @@ export default function ListRow({ claim, index, currentPage, PAGE_SIZE, tableTyp
                             <button 
                                 className="bg-[#e63946] hover:bg-[#d62828] text-white py-1 px-3 rounded-md text-[10px] font-bold shadow-sm transition-all"
                                 onClick={() => {
-                                    /* BACKEND NOTE: This call updates the claim status to 2 (Rejected) */
-                                    UpdateYoutubeClaims({ users_id: claim.users_id, youtubeClaims_id: claim.youtubeClaims_id, "Status": 2 })
+                                    /* BACKEND NOTE: This call now opens the rejection modal to collect a reason */
+                                    onRejectClick && onRejectClick();
                                 }}
                             >
                                 Reject

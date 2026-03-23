@@ -8,6 +8,8 @@ import { GetAllAdminYoutubeClaimsApi, GetAllReleseInfoApi, ProfileLinkinAdudiogG
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { GetAllUsersDataApi } from "../../../../api/user";
+import RejectClaimModal from "./RejectClaimModal";
+import { UpdateYoutubeClaimsApi } from "../../../../api/youtubeClaims";
 
 
 
@@ -91,12 +93,32 @@ export default function AdminYouTubeClaimsIndex() {
     const [searchTerm, setSearchTerm] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
 
+    // Rejection Modal State
+    const [isRejectModalOpen, setIsRejectModalOpen] = React.useState(false);
+    const [selectedClaim, setSelectedClaim] = React.useState<any>(null);
 
     //Api calls
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: allUsersData } = GetAllUsersDataApi();
     // Always fetch all claims to support dual-table view
     const { data: YoutubeClaims, isLoading: isLoadingYoutubeClaimsPost, isFetching } = GetAllAdminYoutubeClaimsApi('', '')
+    const { mutate: UpdateYoutubeClaims } = UpdateYoutubeClaimsApi();
+
+    const handleOpenRejectModal = (claim: any) => {
+        setSelectedClaim(claim);
+        setIsRejectModalOpen(true);
+    };
+
+    const handleConfirmReject = (reason: string) => {
+        if (selectedClaim) {
+            UpdateYoutubeClaims({ 
+                users_id: selectedClaim.users_id, 
+                youtubeClaims_id: selectedClaim.youtubeClaims_id, 
+                "Status": 2,
+                "Reason": reason 
+            });
+        }
+    };
 
     React.useEffect(() => {
         getUserData({ token: token });
@@ -195,7 +217,15 @@ export default function AdminYouTubeClaimsIndex() {
                                         </tr>
                                     ) : (
                                         pendingClaims.map((claim: any, index: number) => (
-                                            <ListRow key={index} claim={claim} index={index} currentPage={1} PAGE_SIZE={pendingClaims.length} tableType="pending" />
+                                            <ListRow 
+                                                key={index} 
+                                                claim={claim} 
+                                                index={index} 
+                                                currentPage={1} 
+                                                PAGE_SIZE={pendingClaims.length} 
+                                                tableType="pending" 
+                                                onRejectClick={() => handleOpenRejectModal(claim)}
+                                            />
                                         ))
                                     )}
                                 </tbody>
@@ -295,6 +325,13 @@ export default function AdminYouTubeClaimsIndex() {
                     )}
                 </div>
             </div>
+
+            {/* Rejection Modal */}
+            <RejectClaimModal 
+                isOpen={isRejectModalOpen}
+                onClose={() => setIsRejectModalOpen(false)}
+                onConfirm={handleConfirmReject}
+            />
         </div>
     );
 }
