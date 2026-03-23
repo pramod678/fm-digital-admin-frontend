@@ -97,33 +97,33 @@ const UserFund = () => {
           <hr className="border-gray-200 mb-4" />
 
           <div className="flex">
-            <div className="bg-white rounded-none shadow overflow-hidden w-3/4">
+            <div className="bg-white rounded-none shadow flex-1 overflow-x-auto rounded-lg">
               {/* Header (fixed, not scrollable) */}
-              <table className="w-full table-fixed">
+              <table className="w-full table-fixed min-w-[1000px]">
                 <thead className="bg-orange-400 text-white">
                   <tr>
-                    <th className="w-16 px-4 py-3 text-left text-sm font-medium">
+                    <th className="w-16 px-4 py-3 text-left typo-table-head">
                       No
                     </th>
-                    <th className="w-28 px-4 py-3 text-left text-sm font-medium">
+                    <th className="w-28 px-4 py-3 text-left typo-table-head">
                       Amount
                     </th>
-                    <th className="w-44 px-3 py-3 text-left text-sm font-medium">
+                    <th className="w-44 px-3 py-3 text-left typo-table-head">
                       Date
                     </th>
-                    <th className="w-28 px-3 py-3 text-left text-sm font-medium">
+                    <th className="w-28 px-3 py-3 text-left typo-table-head">
                       User ID
                     </th>
-                    <th className="w-44 px-3 py-3 text-left text-sm font-medium">
+                    <th className="w-44 px-3 py-3 text-left typo-table-head">
                       User
                     </th>
-                    <th className="w-42 px-3 py-3 text-left text-sm font-medium">
+                    <th className="w-42 px-3 py-3 text-left typo-table-head">
                       User Email
                     </th>
-                    <th className="w-30 px-3 py-3 text-left text-sm font-medium">
+                    <th className="w-30 px-3 py-3 text-left typo-table-head">
                       Phone Number
                     </th>
-                    <th className="w-26 px-3 py-3 text-left text-sm font-medium">
+                    <th className="w-26 px-3 py-3 text-left typo-table-head">
                       Requested By
                     </th>
                   </tr>
@@ -131,33 +131,33 @@ const UserFund = () => {
               </table>
 
               {/* Scrollable body (only rows scroll) */}
-              <div className="max-h-64 overflow-y-auto">
-                <table className="w-full table-fixed">
+              <div className="max-h-64 overflow-y-auto overflow-x-hidden">
+                <table className="w-full table-fixed min-w-[1000px]">
                   <tbody className="divide-y divide-gray-200">
                     {userData.map((item, index) => (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="w-16 px-4 py-3 text-sm text-gray-700">
+                        <td className="w-16 px-4 py-3 typo-table-cell">
                           {index + 1}
                         </td>
-                        <td className="w-28 px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
+                        <td className="w-28 px-4 py-3 typo-table-cell-strong whitespace-nowrap">
                           $ {item.amount}.00
                         </td>
-                        <td className="w-44 px-4 py-3 text-sm text-gray-700">
+                        <td className="w-44 px-4 py-3 typo-table-cell whitespace-nowrap">
                           {item.date}
                         </td>
-                        <td className="w-28 px-4 py-3 text-sm text-gray-700">
+                        <td className="w-28 px-4 py-3 typo-table-cell">
                           {item.userId}
                         </td>
-                        <td className="w-44 px-4 py-3 text-sm text-gray-700">
+                        <td className="w-44 px-4 py-3 typo-table-cell">
                           {item.name}
                         </td>
-                        <td className="w-42 px-4 py-3 text-sm text-gray-700">
+                        <td className="w-42 px-4 py-3 typo-table-cell">
                           {item.email}
                         </td>
-                        <td className="w-30 px-4 py-3 text-sm text-gray-700 ">
+                        <td className="w-30 px-4 py-3 typo-table-cell">
                           {item.phone}
                         </td>
-                        <td className="w-26 px-4 py-3 text-sm text-gray-700 ">
+                        <td className="w-26 px-4 py-3 typo-table-cell">
                           {item.requestedBy}
                         </td>
                       </tr>
@@ -178,13 +178,13 @@ const UserFund = () => {
                 // );
 
                 return (
-                  <table className="w-full table-fixed mt-2">
+                  <table className="w-full table-fixed mt-2 min-w-[1000px]">
                     <tfoot>
                       <tr className="bg-purple-200">
-                        <td className="w-16 px-4 py-3 font-semibold text-gray-800">
+                        <td className="w-16 px-4 py-3 typo-table-cell-strong">
                           Totals
                         </td>
-                        <td className="w-28 px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
+                        <td className="w-28 px-4 py-3 typo-table-cell-strong whitespace-nowrap">
                           $ {totalAmount.toFixed(2)}
                         </td>
                         <td className="w-44"></td>
@@ -200,8 +200,8 @@ const UserFund = () => {
               })()}
             </div>
 
-            <div className="ml-8">
-              <button className="flex items-center gap-2 border-2 rounded-3xl border-gray-900 text-gray-900 px-4 py-2  text-sm">
+            <div className="ml-8 shrink-0 border-l border-gray-100 pl-8">
+              <button className="flex items-center gap-2 border-2 rounded-3xl border-gray-900 text-gray-900 px-4 py-2 typo-btn-main">
                 <span>
                   <FiPlusCircle />
                 </span>{" "}

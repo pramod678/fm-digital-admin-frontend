@@ -2,28 +2,24 @@ import * as React from "react";
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { AiOutlineCloseCircle, AiOutlinePlus } from 'react-icons/ai';
-import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
-import Label from "../../../ui/Label";
 import InputField from "../../../ui/InputField";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
-import { LabelDto } from "../../../types/label";
-import { LabelPostApi, UpdateLabelApi } from "../../../api/label";
+import { UpdateLabelApi } from "../../../api/label";
 import FileUpload from "../../../ui/fileupload";
 import { FaEdit } from "react-icons/fa";
 
 
 
 
-export default function UpdateLabel({ userData, labelData }: { userData: any, labelData: any }) {
+import { Label, LabelDto } from "../../../types/label";
+
+export default function UpdateLabel({ userData, labelData }: { userData: any, labelData: Label }) {
     const [isOpen, setIsOpen] = useState(false);
-    const size = useResponsiveIconSize();
-    const [file, setFile] = useState(null)
-    const [ImageDocument, setImageDocument] = useState({ preview: "", data: "" });
+    const [file, setFile] = useState<File | null>(null)
     const {
         register,
         handleSubmit,
-        watch,
         reset,
         formState: { errors }
     } = useForm<LabelDto>({ defaultValues: labelData })
@@ -31,38 +27,38 @@ export default function UpdateLabel({ userData, labelData }: { userData: any, la
 
     const { mutate: UpdateLabel, isLoading } = UpdateLabelApi(labelData?.label_id, setIsOpen)
 
-    const onSubmit = handleSubmit(async (data: any) => {
-        const newData: any = { ...data };
-        let formData: any = new FormData();
-        formData.append("labelDocument", file);
-        formData.append("Status", 0);
-        formData.append("title", newData.title);
-        formData.append("youtubeURL", newData.youtubeURL);
-        formData.append("users_id", parseInt(userData?.users_id));
-        UpdateLabel(formData)
+    const onSubmit = handleSubmit(async (data: LabelDto) => {
+        const formData = new FormData();
+        if (file) {
+            formData.append("labelDocument", file);
+        }
+        formData.append("Status", "0"); // Resetting status to pending on update
+        formData.append("title", data.title);
+        formData.append("youtubeURL", data.youtubeURL);
+        formData.append("users_id", String(userData?.users_id));
+        
+        UpdateLabel(formData);
     });
 
     return (
         <>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer" onClick={() => setIsOpen(true)}>
-                <FaEdit />
-            </td>
+            <button
+                className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded text-gray-600 hover:bg-gray-100 transition-colors"
+                onClick={() => setIsOpen(true)}
+            >
+                <FaEdit size={14} />
+            </button>
 
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
                     as="div"
-                    className="fixed inset-0 z-10 overflow-y-auto"
+                    className="fixed inset-0 z-50 overflow-y-auto"
                     onClose={() => setIsOpen(false)}
                 >
                     <div className="min-h-screen px-4 text-center">
-                        <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+                        <Dialog.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" />
 
-                        <span
-                            className="inline-block h-screen align-middle"
-                            aria-hidden="true"
-                        >
-                            &#8203;
-                        </span>
+                        <span className="inline-block h-screen align-middle" aria-hidden="true">&#8203;</span>
 
                         <Transition.Child
                             as={Fragment}
@@ -73,64 +69,71 @@ export default function UpdateLabel({ userData, labelData }: { userData: any, la
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                                <Dialog.Title
-                                    as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
-                                >
-                                    Update Label
-                                </Dialog.Title>
-                                <form onSubmit={(e: any) => {
-                                    onSubmit(e);
-                                }}>
-                                    <div className="mt-2">
+                            <div className="inline-block w-full max-w-lg p-0 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-2xl rounded-3xl border border-gray-100">
+                                <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                                    <div className="w-6" /> {/* Spacer */}
+                                    <Dialog.Title as="h3" className="text-2xl font-bold text-gray-800 text-center flex-grow">
+                                        Update Label
+                                    </Dialog.Title>
+                                    <button 
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                                    >
+                                        <AiOutlineCloseCircle size={24} />
+                                    </button>
+                                </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Channel Name" htmlFor="grid-title" required={true} />
+                                <form onSubmit={onSubmit} className="p-6">
+                                    <div className="space-y-4">
+                                        <div className="w-full">
+                                            <FileUpload file={file} setFile={setFile} />
+                                        </div>
+
+                                        <div className="w-full">
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                                Channel Name
+                                            </label>
                                             <InputField
                                                 type="text"
                                                 name="title"
-                                                placeholder="Enter title"
+                                                placeholder="Enter Title"
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="title is required."
+                                                requiredMessage="Title is required."
                                             />
                                         </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Youtube Url" htmlFor="grid-youtubeURL" required={true} />
+                                        <div className="w-full">
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                                Youtube Url
+                                            </label>
                                             <InputField
                                                 type="text"
                                                 name="youtubeURL"
-                                                placeholder="Enter youtubeURL "
+                                                placeholder="Enter Youtube URL"
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="youtubeURL is required."
+                                                requiredMessage="Youtube URL is required."
                                             />
                                         </div>
-
-                                        <FileUpload file={file} setFile={setFile} />
-
-
                                     </div>
 
-                                    <div className="mt-4 flex justify-end space-x-2">
+                                    <div className="mt-6 flex gap-4">
                                         <button
                                             type="button"
-                                            className="px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                            className="flex-1 py-3 px-6 text-lg font-bold text-gray-800 bg-white border border-red-100 rounded-xl hover:bg-red-50 hover:border-red-200 transition-all text-center"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            Close
+                                            Cancel
                                         </button>
                                         <button
                                             type="submit"
                                             disabled={isLoading}
-                                            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+                                            className="flex-1 py-3 px-6 text-lg font-bold text-white bg-[#00b768] border border-transparent rounded-xl hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all flex items-center justify-center"
                                         >
-                                            {isLoading ? <BeatLoader color="#ffffff" /> : 'Update'}
+                                            {isLoading ? <BeatLoader size={8} color="#ffffff" /> : 'Update'}
                                         </button>
                                     </div>
-
                                 </form>
                             </div>
                         </Transition.Child>
@@ -139,4 +142,4 @@ export default function UpdateLabel({ userData, labelData }: { userData: any, la
             </Transition>
         </>
     )
-}
+}

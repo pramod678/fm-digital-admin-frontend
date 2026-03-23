@@ -87,115 +87,115 @@ export default function Sales() {
       </div>
 
       <div className="mb-6">
-        <div className="overflow-x-auto mb-6">
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-            <thead className="bg-gray-800 text-green">
+        <div className="flex-1 overflow-x-auto mb-6 rounded-lg shadow">
+          <table className="min-w-[1800px] w-full bg-white">
+            <thead className="text-white bg-gray-800">
               <tr>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Sales Month
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   DSP
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Sale Store Name
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Sale Type
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Sale User Type
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Territory
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Product Label
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Album Title
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Song Title
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Song Artist
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Streams/Impressions/Views
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Converted Gross Income
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Contract deal term
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Reported Royalty
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Currency
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Report Run ID
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-semibold text-green-100">
+                <th className="px-4 py-3 text-left typo-table-head">
                   Report ID
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {salesData.map((row, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                <tr key={index} className="hover:bg-gray-50 border-b border-gray-100">
+                  <td className="px-4 py-3 typo-table-cell">
                     Sales Month
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.store}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.storeName }
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.saleType}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.userType}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.territory}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.productLabel}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.album}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.song}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.artist}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.impressions}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
-                    {row.grossIncome}
+                  <td className="px-4 py-3 typo-table-cell-strong">
+                    $ {row.grossIncome}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.contractTerm}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
-                    {row.reportedRoyalty}
+                  <td className="px-4 py-3 typo-table-cell-strong">
+                    $ {row.reportedRoyalty}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.currency}
                   </td>
-                   <td className="px-4 py-2 text-xs text-gray-700">
+                   <td className="px-4 py-3 typo-table-cell">
                     {row.reportRunId}
                   </td>
-                  <td className="px-4 py-2 text-xs text-gray-700">
+                  <td className="px-4 py-3 typo-table-cell">
                     {row.runId}
                   </td>
                 </tr>

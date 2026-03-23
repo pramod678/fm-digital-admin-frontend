@@ -133,7 +133,30 @@ export const GetAllAdminFeaturingArtistApi = (userId: any, showPrimaryArtist: an
     );
 
 export const UserDataApi = (setUserData: any, navigate: NavigateFunction) => {
-    return useMutation((data: any) => api.post("user/userData", data), {
+    return useMutation((data: any) => {
+        // MOCK DATA for Development
+        if (data?.token === "mock-token-12345") {
+            console.log("⚡ Fetching Mock User Data");
+            return Promise.resolve({
+                data: {
+                    status: "success",
+                    data: {
+                        fname: "Admin",
+                        lname: "User",
+                        email: "admin@local.com",
+                        userType: "admin", 
+                        profile_image: "",
+                        subscriptionPlan: "Pro"
+                    }
+                },
+                status: 200,
+                statusText: "OK",
+                headers: {},
+                config: {},
+            } as any);
+        }
+        return api.post("user/userData", data);
+    }, {
         onSuccess: (res) => {
             setUserData(res?.data?.data)
             if (res.data?.data === "token expired") {

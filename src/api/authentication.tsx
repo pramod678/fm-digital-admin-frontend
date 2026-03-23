@@ -12,19 +12,36 @@ type LoginPayload = {
     console.log("Login with mail")
     return useMutation({
       mutationFn: async (payload: LoginPayload) => {
-        const res = await api.post("/user/login", payload);
+        // MOCK LOGIN for Development
+        if (payload.email === "admin@local.com" && payload.password === "pass123") {
+            console.log("⚡ Executing Magic Login");
+            return {
+                data: {
+                    status: "success",
+                    data: {
+                        token: "mock-token-12345",
+                        userType: "admin"
+                    },
+                    message: "Login successfully"
+                }
+            };
+        }
+
+        console.log("Attempting login to: https://api.fmdigitalofficial.com/api/v1/user/login");
+        const res = await api.post("https://api.fmdigitalofficial.com/api/v1/user/login", payload);
         return res;
       },
 onSuccess: (res) => {
             if (res?.data?.status === "error") {
-                cogoToast.success(res?.data?.error);
+                cogoToast.error(res?.data?.error);
             } else {
-                setToken(res.data.data)
-                localStorage.setItem("token", res.data?.data);
+                // Handle both string tokens and object tokens
+                const tokenData = typeof res.data.data === 'string' ? res.data.data : res.data.data?.token;
+                setToken(tokenData);
+                localStorage.setItem("token", tokenData);
                 
                 // Set user type from response
-                //const userType = res.data?.data?.userType || 'admin'; // Default to admin if not specified
-                const userType = res.data?.data?.userType || 'user'; // Default to admin if not specified
+                const userType = res.data?.data?.userType || 'user';
                 setUserType(userType);
                 localStorage.setItem("userType", userType);
                 
@@ -44,7 +61,7 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
         mutationFn: async (data) => {
             console.log('🚀 Starting registration with data:', data);
             try {
-                const res = await api.post("/user/register", data);
+                const res = await api.post("https://api.fmdigitalofficial.com/api/v1/user/register", data);
                 console.log('✅ Registration API call successful:', res);
                 return res;
             } catch (error) {

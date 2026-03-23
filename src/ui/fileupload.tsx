@@ -27,23 +27,32 @@ const FileUpload = ({ file, setFile }: { file: any, setFile: any }) => {
     };
 
     return (
-        <div className="space-y-2">
-            {file && (
-                <div className="flex items-center justify-between bg-gray-200 p-2 rounded-md">
-                    <span className="text-base ml-2">{file.name}</span>
-                    <button onClick={removeFile} className="text-red-500 hover:text-red-700">
-                        <AiOutlineCloseCircle />
+        <div className="w-full">
+            {file ? (
+                <div className="flex items-center justify-between bg-green-50 border border-green-100 p-4 rounded-xl">
+                    <span className="text-sm font-medium text-green-700 truncate mr-2">{file.name}</span>
+                    <button onClick={removeFile} className="text-red-400 hover:text-red-600 transition-colors">
+                        <AiOutlineCloseCircle size={20} />
                     </button>
                 </div>
-            )}
-            {!file && (
-                <div {...getRootProps()} className="flex items-center justify-center h-20 border-2 border-dashed border-gray-400 rounded-md p-2">
+            ) : (
+                <div 
+                    {...getRootProps()} 
+                    className="flex flex-col items-center justify-center h-28 border border-dashed border-gray-400 hover:border-[#00b768] hover:bg-green-50/10 transition-all rounded-xl cursor-pointer bg-white"
+                >
                     <input {...getInputProps()} />
-                    <p className="text-gray-600 text-sm">Drag 'n' drop a file here, or click to select a PDF, DOC, or TXT file</p>
+                    <div className="text-center px-4">
+                        <p className="text-xs text-gray-700 font-medium">
+                            Drag & drop <span className="text-[#5b68ef]">choose file</span>
+                        </p>
+                        <p className="text-[10px] text-gray-500 mt-1">
+                            PDF, or DOC
+                        </p>
+                    </div>
                 </div>
             )}
         </div>
     );
-};
+}
 
 export default FileUpload;

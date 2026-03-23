@@ -13,9 +13,9 @@ import ReferFriend from "./tabs/ReferFriend";
 
 const tabs = [
     { id: 'overview', label: 'Account Overview' },
-    { id: 'achievements', label: 'Achievements' },
+    // { id: 'achievements', label: 'Achievements' },
     { id: 'subscription', label: 'Subscription' },
-    { id: 'refer', label: 'Refer a Friend' }
+    // { id: 'refer', label: 'Refer a Friend' }
 ];
 
 const DashboardPage: React.FC = () => {

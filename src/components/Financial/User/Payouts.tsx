@@ -140,10 +140,10 @@ const Payouts = () => {
             <div
               className={`bg-white rounded-none ${
                 payoutData.length > 0 ? "shadow" : ""
-              } overflow-hidden w-3/5`}
+              } flex-1 overflow-x-auto rounded-lg`}
             >
               {/* Header (fixed, not scrollable) */}
-              <table className="w-full table-fixed">
+              <table className="w-full table-fixed min-w-[600px]">
                 <thead 
                   className="text-white relative"
                   style={{
@@ -154,25 +154,16 @@ const Payouts = () => {
                   }}
                 >
                   <tr>
-                    <th className="w-12 px-4 py-3 text-left text-sm font-medium">
+                    <th className="w-12 px-4 py-3 text-left typo-table-head">
                       No
                     </th>
-                    {/* <th className="w-28 px-4 py-3 text-left text-sm font-medium">
-                      Amount
-                    </th> */}
-                    <th className="w-40 px-2 py-3 text-left text-sm font-medium">
+                    <th className="w-40 px-2 py-3 text-left typo-table-head">
                       Date
                     </th>
-                    {/* <th className="w-48 px-4 py-3 text-left text-sm font-medium">
-                      Earning Resources
-                    </th>
-                    <th className="w-40 px-4 py-3 text-left text-sm font-medium">
-                      Vendor
-                    </th> */}
-                    <th className="w-40 px-4 py-3 text-left text-sm font-medium">
+                    <th className="w-40 px-4 py-3 text-left typo-table-head">
                       Requested Amount
                     </th>
-                    <th className="w-36 px-4 py-3 text-left text-sm font-medium">
+                    <th className="w-36 px-4 py-3 text-left typo-table-head">
                       Status
                     </th>
                   </tr>
@@ -180,72 +171,53 @@ const Payouts = () => {
               </table>
 
               {/* Scrollable body (only rows scroll) */}
-              <div className="max-h-64 overflow-y-auto">
-                <table className="w-full table-fixed">
+              <div className="max-h-64 overflow-y-auto overflow-x-hidden">
+                <table className="w-full table-fixed min-w-[600px]">
                   <tbody className="divide-y divide-gray-200">
-                    {payoutData.map((item, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="w-12 px-4 py-3 text-sm text-gray-700">
-                          {index + 1}
-                        </td>
-                        {/* <td className="w-28 px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
-                          $ {item.amount}.00
-                        </td> */}
-                        <td className="w-40 px-2 py-3 text-sm text-gray-700">
-                          {item.date}
-                        </td>
-                        {/* <td className="w-48 px-4 py-3 text-sm text-gray-700">
-                          {item.earning}
-                        </td>
-                        <td className="w-40 px-4 py-3 text-sm text-gray-700">
-                          {item.vendor}
-                        </td> */}
-                        <td className="w-40 px-4 py-3 text-sm text-gray-700">
-                          {item.requestedBy}
-                        </td>
-                        <td className="w-36 px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
-                          $ {item.commission}.00
+                    {payoutData.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="px-4 py-6 text-sm text-gray-500">
+                          You haven't made any payout request yet.
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      payoutData.map((item, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="w-12 px-4 py-3 typo-table-cell">
+                            {index + 1}
+                          </td>
+                          <td className="w-40 px-2 py-3 typo-table-cell whitespace-nowrap">
+                            {item.date}
+                          </td>
+                          <td className="w-40 px-4 py-3 typo-table-cell">
+                            {item.requestedBy}
+                          </td>
+                          <td className="w-36 px-4 py-3 typo-table-cell-strong whitespace-nowrap">
+                            $ {item.commission}.00
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
 
-              {/* Totals row — perfectly aligned with table columns */}
-              {(() => {
-                if (payoutData.length === 0) {
-                  return (
-                    <div className=" py-4">
-                      You Haven't made any payout request yet.
-                    </div>
-                  );
-                }
-
-                const totalAmount = payoutData.reduce(
-                  (acc, cur) => acc + Number(cur.amount || 0),
-                  0
-                );
+              {/* Totals row */}
+              {payoutData.length > 0 && (() => {
                 const totalCommission = payoutData.reduce(
                   (acc, cur) => acc + Number(cur.commission || 0),
                   0
                 );
-
                 return (
-                  <table className="w-full table-fixed mt-2">
+                  <table className="w-full table-fixed mt-2 min-w-[600px]">
                     <tfoot>
                       <tr className="bg-purple-200">
-                        <td className="w-12 px-4 py-3 font-semibold text-gray-800">
+                        <td className="w-12 px-4 py-3 typo-table-cell-strong">
                           Totals
                         </td>
-                        <td className="w-28 px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
-                          $ {totalAmount.toFixed(2)}
-                        </td>
-                        <td className="w-44"></td>
-                        <td className="w-48"></td>
-                        <td className="w-40"></td>
-                        <td className="w-40"></td>
-                        <td className="w-36  py-3 text-sm text-gray-700 whitespace-nowrap">
+                        <td className="w-40 px-2 py-3"></td>
+                        <td className="w-40 px-4 py-3"></td>
+                        <td className="w-36 px-4 py-3 typo-table-cell-strong whitespace-nowrap">
                           $ {totalCommission.toFixed(2)}
                         </td>
                       </tr>
@@ -254,12 +226,6 @@ const Payouts = () => {
                 );
               })()}
             </div>
-
-            {/* <div className="ml-8">
-              <button className="flex items-center gap-2 border-2 rounded-3xl border-gray-900 text-gray-900 px-4 py-2  text-sm">
-              <span><FiPlusCircle /></span> Add Fund
-            </button>
-            </div> */}
           </div>
         </div>
       </div>

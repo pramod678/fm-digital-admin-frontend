@@ -1,14 +1,15 @@
 import * as React from "react";
-import { NavLink } from "react-router-dom";
-import { FaFacebook, FaHome, FaInstagram, FaLinkedin, FaQuora, FaTwitter, FaYoutube } from "react-icons/fa";
+import { NavLink, useLocation } from "react-router-dom";
+import { FaFacebook, FaHome, FaInstagram, FaLinkedin, FaQuora, FaTwitter, FaYoutube, FaTools, FaHeadset, FaUserCog, FaMoneyBillWave } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp, FiLink, FiYoutube } from "react-icons/fi";
 import { AiFillTag, AiOutlinePlusCircle } from "react-icons/ai";
-import { TbTool } from "react-icons/tb";
-import { BsPersonFillGear, BsTicketPerforated } from "react-icons/bs";
+import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
+import { BsPersonFillGear } from "react-icons/bs";
 import { ImFileMusic } from "react-icons/im";
 import useResponsiveIconSize from "../../hooks/useResponsiveIconSize";
 import { IoMdWallet } from "react-icons/io";
 import useAuthStore from "../../store/userstore";
+import useServiceStatus from "../../hooks/useServiceStatus";
 
 interface props {
     isOpen: boolean;
@@ -19,143 +20,132 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
     const size = useResponsiveIconSize();
     const [openDropdownIndex, setOpenDropdownIndex] = React.useState<number | null>(null);
-    const { userType, setUserType } = useAuthStore()
-    console.log(userType, "userType")
+    const { userType } = useAuthStore()
+    const location = useLocation();
+    const { isActive: serviceActive, message: serviceMessage } = useServiceStatus();
+    const [showServiceMsg, setShowServiceMsg] = React.useState(false);
+
+    // Define routes with Icon Components, not Elements, to allow dynamic coloring
     const Userroutes = [
         {
             path: "/",
-            name: "Dashboard",
-            icon: <FaHome color={'#ffffff'} size={size} />,
-        },
-        {
-            path: "/ReleseInfo",
-            name: "Create Release",
-            icon: <AiOutlinePlusCircle color={'#ffffff'} size={size} />,
-        },
-        {
-            path: "/Catalogs",
-            name: "Catalogs",
-            icon: <ImFileMusic color={'#ffffff'} size={size} />,
+            name: "Home",
+            icon: FaHome,
         },
 
         {
+            path: "/Catalogs",
+            name: "Catalog",
+            icon: ImFileMusic,
+        },
+        {
             path: "/Tools",
             name: "Tools",
-            icon: <TbTool color={'#ffffff'} size={size} />,
+            icon: FaTools,
             exact: true,
             subRoutes: [
                 {
                     path: "/Tools/YoutubeClaims",
                     name: "Youtube Claims",
-                    icon: <FiYoutube color={'#ffffff'} size={size} />,
+                    icon: FiYoutube,
                 },
                 {
                     path: "/Tools/ProfileLinking",
                     name: "Profile Linking",
-                    icon: <FiLink color={'#ffffff'} size={size} />,
+                    icon: FiLink,
                 },
             ],
         },
         {
+            path: "/Label",
+            name: "Label",
+            icon: AiFillTag,
+        },
+        {
             path: "/Financial",
             name: "Financial",
-            icon: <IoMdWallet color={'#ffffff'} size={size} />,
+            icon: FaMoneyBillWave,
         },
         {
             path: "/ManageArtist",
             name: "Manage Artist",
-            icon: <BsPersonFillGear color={'#ffffff'} size={size} />,
+            icon: BsPersonFillGear,
         },
-        {
-            path: "/Label",
-            name: "Label",
-            icon: <AiFillTag color={'#ffffff'} size={size} />,
-        },
+
         {
             path: "/Tickets",
             name: "Tickets",
-            icon: <BsTicketPerforated color={'#ffffff'} size={size} />,
+            icon: FaHeadset,
         },
         {
             path: "/FAQ",
             name: "FAQ",
-            icon: <FaQuora color={'#ffffff'} size={size} />,
+            icon: FaQuora,
         },
     ];
 
     const AdminRoutes = [
         {
             path: "/",
-            name: "Dashboard",
-            icon: <FaHome color={'#ffffff'} size={size} />,
+            name: "Home",
+            icon: FaHome,
         },
         {
             path: "/Catalogs",
-            name: "Catalogs",
-            icon: <ImFileMusic color={'#ffffff'} size={size} />,
+            name: "Catalog",
+            icon: ImFileMusic,
         },
         {
             path: "/ManageUser",
             name: "Manage User",
-            icon: <BsPersonFillGear color={'#ffffff'} size={size} />,
+            icon: BsPersonFillGear,
             exact: true,
         },
         {
             path: "/Tools",
             name: "Tools",
-            icon: <TbTool color={'#ffffff'} size={size} />,
+            icon: FaTools,
             exact: true,
             subRoutes: [
                 {
                     path: "/Tools/YoutubeClaims",
                     name: "Youtube Claims",
-                    icon: <FiYoutube color={'#ffffff'} size={size} />,
+                    icon: FiYoutube,
                 },
                 {
                     path: "/Tools/ProfileLinking",
                     name: "Profile Linking",
-                    icon: <FiLink color={'#ffffff'} size={size} />,
+                    icon: FiLink,
                 },
             ],
         },
         {
             path: "/Label",
             name: "Label",
-            icon: <AiFillTag color={'#ffffff'} size={size} />,
+            icon: AiFillTag,
         },
         {
             path: "/Financial",
             name: "Financial",
-            icon: <IoMdWallet color={'#ffffff'} size={size} />,
+            icon: FaMoneyBillWave,
         },
         {
             path: "/ManageArtist",
             name: "Manage Artist",
-            icon: <BsPersonFillGear color={'#ffffff'} size={size} />,
+            icon: BsPersonFillGear,
         },
         {
             path: "/Tickets",
             name: "Tickets",
-            icon: <BsTicketPerforated color={'#ffffff'} size={size} />,
+            icon: FaHeadset,
         },
     ]
+
     const handleUrlClick = (link: any) => {
         window.open(link, '_blank');
     };
-    console.log(userType === "Admin")
 
-
-    const routes = getRoutes();
-
-    console.log(routes, "routes")
-
-    function getRoutes() {
-        // Choose routes based on the user's role
-        const routes = userType === "Admin" ? AdminRoutes : Userroutes;
-
-        return routes;
-    }
-
+    const routes = (userType === "Admin" || userType === "admin") ? AdminRoutes : Userroutes;
 
     const handleClick = (r: any, e: React.MouseEvent) => {
         if (r?.subRoutes) {
@@ -163,74 +153,208 @@ export default function Index({ isOpen, setIsOpen }: props) {
         }
     };
 
-
+    // Helper to check if a route or its subroutes are active
+    const isActiveRoute = (r: any) => {
+        if (r.path === "/" && location.pathname === "/") return true;
+        if (r.path !== "/" && location.pathname.startsWith(r.path)) return true;
+        if (r.subRoutes) {
+            return r.subRoutes.some((sub: any) => location.pathname.startsWith(sub.path));
+        }
+        return false;
+    };
 
     return (
         <>
-            <div className={`hidden sm:flex flex-col justify-between bg-neutral-800 ${isOpen ? 'sm:w-[14%] md:w-[14%] lg:w-[11%]' : 'w-[44px]'} py-1 pb-[32px] overflow-y-auto`}>
-                <div>
-                    <div className="flex flex-col gap-1">
-                        {
-                            routes?.map((r, index) => {
-                                const isOpenDropdown = isOpen && r?.subRoutes;
+            <div className={`hidden sm:flex flex-col justify-between bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${isOpen ? 'sm:w-[260px]' : 'w-[80px]'} py-3 h-full relative overflow-hidden`}>
+                
+                {/* Top Section: Logo & CTA */}
+                <div className="flex flex-col items-center px-4 mb-2 gap-2 w-full">
+                     {/* Logo */}
+                     <div className="flex items-center justify-center h-20 w-full overflow-hidden shrink-0">
+                        {isOpen ? (
+                            <img src="/logo.svg" alt="FM Digital" className="h-full w-auto object-contain transition-all duration-500" />
+                        ) : (
+                            // Use a small part of logo or just the FM text if logo is too wide. 
+                            // User provided logo.svg which is likely the full logo (black pill).
+                            // We will try to show it scaled down or just the icon if possible.
+                            // For smoothness, we can just fade it.
+                            <img src="/logo.svg" alt="FM" className="h-8 w-auto object-contain" />
+                        )}
+                     </div>
 
-                                const toggleDropdown = () => {
-                                    setOpenDropdownIndex(openDropdownIndex === index ? null : index);
-                                };
-                                return (
-                                    <>
-                                        {
-                                            r?.subRoutes ? (
-                                                <>
-                                                    <div className={`w-full items-center flex ${isOpen ? 'sm:gap-2 lg:gap-4 px-2 py-1.5' : 'justify-center px-4 py-4'} cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-2"} `} onClick={(e) => handleClick(r, e)}>
-                                                        {r.icon}
-                                                        <div className={`flex justify-between items-center ${isOpen ? "" : "hidden"} `} onClick={toggleDropdown}>
-                                                            <p className={`md:text-sm text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
-                                                            <button className="text-icons text-xl ml-2">
-                                                                {openDropdownIndex === index ? <FiChevronUp color={'#ffffff'} /> : <FiChevronDown color={'#ffffff'} />}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <NavLink to={r.path} key={r.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""
-                                                    } >
-                                                        <div className={`w-full items-center flex ${isOpen ? 'sm:gap-2 lg:gap-2 px-2 py-1.5' : 'justify-center px-2 py-1.5'} cursor-pointer hover:bg-zinc-500 ${isOpen ? "" : "mb-1"} `}>
-                                                            {r.icon}
-                                                            <p className={`md:text-sm text-white ${isOpen ? "" : "hidden"}`}>{r.name}</p>
-                                                        </div>
-                                                    </NavLink>
-                                                </>
-                                            )
-                                        }
-                                        {isOpenDropdown && openDropdownIndex === index && (
-                                            <div className="flex flex-col gap-2">
-                                                {r?.subRoutes?.map((s, i) => (
-                                                    <NavLink to={s.path} key={s.path} className={({ isActive }) => isActive ? "bg-zinc-500 " : ""
-                                                    } >
-                                                        <div className="w-full items-center flex md:gap-2 lg:gap-4 px-2 py-1.5 cursor-pointer hover:bg-zinc-500 ">
-                                                            {s.icon}
-                                                            <p className={`md:text-xs text-white ${isOpen ? "" : "hidden"}`}>{s.name}</p>
-                                                        </div>
-                                                    </NavLink>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </>
-                                )
-                            })
-                        }
-                    </div>
+                     {/* Create Release Button */}
+                     <div className="w-full h-auto flex flex-col items-center justify-center relative">
+                        {/* Expanded Button */}
+                        <button 
+                             onClick={() => {
+                               if (!serviceActive) {
+                                 setShowServiceMsg(true);
+                                 return;
+                               }
+                               window.location.href = '/ReleseInfo';
+                             }}
+                             className={`flex items-center justify-center gap-2 px-4 h-10 w-full bg-white border border-gray-200 rounded-full shadow-sm transition-all duration-300 text-sm whitespace-nowrap overflow-hidden
+                                ${isOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-2 pointer-events-none icon-only-mode'}
+                                ${!serviceActive ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-md hover:border-gray-300 text-gray-700 font-medium'}
+                             `}
+                        >
+                            <AiOutlinePlusCircle size={18} />
+                            Create Release
+                        </button>
+                        
+                         {/* Collapsed Button (Icon Only) */}
+                         <button 
+                             onClick={() => {
+                               if (!serviceActive) {
+                                 setShowServiceMsg(true);
+                                 return;
+                               }
+                               window.location.href = '/ReleseInfo';
+                             }}
+                             className={`absolute flex items-center justify-center w-10 h-10 bg-white border border-gray-200 rounded-full shadow-sm text-gray-700 transition-all duration-300
+                                ${!isOpen ? 'opacity-100 scale-100 pointer-events-auto' : 'opacity-0 scale-75 pointer-events-none'}
+                                ${!serviceActive ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-md'}
+                             `}
+                         >
+                            <AiOutlinePlusCircle size={20} />
+                        </button>
+
+                        {/* Service Unavailable Message */}
+                        {showServiceMsg && !serviceActive && (
+                          <div className="mt-2 w-full bg-amber-50 border border-amber-200 rounded-lg p-2.5 animate-in fade-in duration-200">
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="text-xs text-amber-800 leading-relaxed">{serviceMessage || 'Service is currently unavailable.'}</p>
+                              <button onClick={() => setShowServiceMsg(false)} className="text-amber-400 hover:text-amber-600 text-xs font-bold shrink-0">✕</button>
+                            </div>
+                          </div>
+                        )}
+                     </div>
                 </div>
 
-                <div className={` ${!isOpen ? 'hidden' : 'block'} bg-[#00CED1] h-12 flex flex-col items-center justify-center px-4 mt-6`}>
-                    <p className="text-white text-center mb-0">Connect with us</p>
-                    <div className="flex gap-3 mt-2">
-                        <FaLinkedin className="text-white cursor-pointer" onClick={() => handleUrlClick("https://www.linkedin.com/in/fm-digital-043a34244/")} />
-                        <FaYoutube className="text-white cursor-pointer" onClick={() => handleUrlClick("https://www.youtube.com/channel/UCtiKMeo0LJa8mUQNZIwRNsA")} />
-                        <FaInstagram className="text-white cursor-pointer" onClick={() => handleUrlClick("https://www.instagram.com/fmdigitalofficial/")} />
-                        <FaTwitter className="text-white cursor-pointer" onClick={() => handleUrlClick("https://twitter.com/AshishT97719445")} />
+                {/* Navigation Links */}
+                <div className="flex-1 px-3 space-y-1 overflow-y-auto custom-scrollbar">
+                    {
+                        routes?.map((r, index) => {
+                            const isOpenDropdown = openDropdownIndex === index; 
+                            const isParentActive = isActiveRoute(r);
+
+                            const toggleDropdown = (e: React.MouseEvent) => {
+                                e.stopPropagation();
+                                setOpenDropdownIndex(openDropdownIndex === index ? null : index);
+                            };
+
+                            const Icon = r.icon;
+
+                            return (
+                                <div key={index}>
+                                    {
+                                        r?.subRoutes ? (
+                                            <div className="flex flex-col">
+                                                 <div 
+                                                    className={`
+                                                        w-full flex items-center px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group
+                                                        ${isParentActive || isOpenDropdown 
+                                                            ? 'bg-gray-200/50 text-black font-semibold shadow-sm' 
+                                                            : 'text-gray-600 hover:bg-gray-50 hover:text-black'}
+                                                        ${!isOpen ? 'justify-center' : 'justify-between'}
+                                                    `}
+                                                    onClick={(e) => {
+                                                        if (!isOpen) {
+                                                            setIsOpen(true);
+                                                            setTimeout(() => setOpenDropdownIndex(index), 100);
+                                                        } else {
+                                                            toggleDropdown(e);
+                                                        }
+                                                    }}
+                                                 >
+                                                    <div className="flex items-center gap-4">
+                                                        <Icon size={20} className={`${isParentActive || isOpenDropdown ? 'text-black' : 'text-gray-500 group-hover:text-black'}`} />
+                                                        {isOpen && <span className="text-sm tracking-wide">{r.name}</span>}
+                                                    </div>
+                                                    {isOpen && (
+                                                        <div className={`text-gray-400 transition-transform duration-200 ${isOpenDropdown ? 'rotate-180' : ''}`}>
+                                                            {/* Simple triangle/arrow for tools */}
+                                                            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                            </svg>
+                                                        </div>
+                                                    )}
+                                                 </div>
+
+                                                {/* Submenu */}
+                                                {(isOpenDropdown && isOpen) && (
+                                                    <div className="flex flex-col mt-1 space-y-1">
+                                                        {r?.subRoutes?.map((s, i) => {
+                                                            const SubIcon = s.icon;
+                                                            return (
+                                                                <NavLink 
+                                                                    to={s.path} 
+                                                                    key={s.path} 
+                                                                    className={({ isActive }) => `
+                                                                        flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all duration-200 ml-4
+                                                                        ${isActive 
+                                                                            ? 'text-black font-semibold' 
+                                                                            : 'text-gray-500 hover:text-black'}
+                                                                    `}
+                                                                >
+                                                                        <span className="whitespace-nowrap">{s.name}</span>
+                                                                </NavLink>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <NavLink 
+                                                to={r.path} 
+                                                key={r.path} 
+                                                className={({ isActive }) => `
+                                                    flex items-center px-3 py-2.5 rounded-xl transition-all duration-200 group
+                                                    ${isActive 
+                                                        ? 'bg-gray-200/50 text-black font-semibold shadow-sm' 
+                                                        : 'text-gray-600 hover:bg-gray-50 hover:text-black'}
+                                                    ${!isOpen ? 'justify-center' : 'gap-4'}
+                                                `}
+                                            >
+                                                {({ isActive }) => (
+                                                    <>
+                                                        <Icon size={20} className={`${isActive ? 'text-black' : 'text-gray-500 group-hover:text-black'}`} />
+                                                        {isOpen && <span className="text-sm tracking-wide">{r.name}</span>}
+                                                    </>
+                                                )}
+                                            </NavLink>
+                                        )
+                                    }
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+
+                {/* Footer Section: Connect & Toggle */}
+                <div className="flex flex-col items-center gap-4 mt-auto px-4 pt-4 pb-2 border-t border-gray-100/50 shrink-0">
+                    
+                    {/* Connect with us */}
+                    {isOpen && (
+                        <div className="flex flex-col items-center gap-3 w-full">
+                            <p className="text-gray-500 text-xs font-medium">Connect with us</p>
+                            <div className="flex gap-4">
+                                <FaFacebook className="text-gray-800 text-lg cursor-pointer hover:scale-110 transition" />
+                                <FaLinkedin className="text-gray-800 text-lg cursor-pointer hover:scale-110 transition" onClick={() => handleUrlClick("https://www.linkedin.com/in/fm-digital-043a34244/")} />
+                                <FaInstagram className="text-gray-800 text-lg cursor-pointer hover:scale-110 transition" onClick={() => handleUrlClick("https://www.instagram.com/fmdigitalofficial/")} />
+                                <FaYoutube className="text-gray-800 text-lg cursor-pointer hover:scale-110 transition" onClick={() => handleUrlClick("https://www.youtube.com/channel/UCtiKMeo0LJa8mUQNZIwRNsA")} />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Collapse Toggle Button */}
+                    <div className={`w-full flex ${isOpen ? 'justify-end' : 'justify-center'} mt-2`}>
+                        <button 
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="p-2 text-gray-400 hover:text-gray-800 transition-colors rounded-lg hover:bg-gray-100"
+                        >
+                            <TbLayoutSidebarLeftCollapse size={24} className={`transform transition-transform ${!isOpen ? 'rotate-180' : ''}`} /> 
+                        </button>
                     </div>
                 </div>
             </div>

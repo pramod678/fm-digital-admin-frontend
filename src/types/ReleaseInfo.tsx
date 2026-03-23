@@ -10,6 +10,7 @@ export type ReleaseInfoDto = {
     PLine: string
     CLine: string
     UPCEAN: string
+    AdditionalInfo: string  // Free-text field for any extra release notes or instructions
     users_id: number
     Status: number
     releseInfo_id: number

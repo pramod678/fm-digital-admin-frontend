@@ -56,7 +56,7 @@ const ForgotPassword = () => {
         {/* Form Card */}
         <div className="backdrop-blur-sm rounded-2xl pl-1 pr-1 pb-8">
           <h2 className="text-white text-lg font-medium mb-2 text-center">
-            forgot password
+            Forgot Password
           </h2>
 
           {/* Horizontal line */}

@@ -1,267 +1,230 @@
 import * as React from "react";
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { X, Check } from 'lucide-react';
+import { X, Check, ArrowLeft, Info } from 'lucide-react';
+import { GetReleaseInfoByIdApi, GetSongsApi } from "../../../api/releaseInfo";
+import { BounceLoader } from "react-spinners";
+import AppHeader from "../../SharedLayout/AppHeader";
+
 const UserRejectedSong = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
-
-  // Extract data from navigation state or use empty values
-  const rowData = location.state || {};
+  const stateData = location.state;
   
-  // Status: 0 = Accepted/Approved, 1 = Rejected
-  // Handle both number and string types for status
-  const statusValue = rowData.status !== undefined ? rowData.status : 1;
-  const status = typeof statusValue === 'string' ? parseInt(statusValue) : statusValue;
-  const isApproved = status === 0;
-  const publicImageBase = `${process.env.PUBLIC_URL}/images`;
-  const approvedBadgeSrc = `${publicImageBase}/catalog/${encodeURIComponent('Approved Button.png')}`;
-  const pendingBadgeSrc = `${publicImageBase}/catalog/${encodeURIComponent('Pending button.png')}`;
+  // Fetch release info by ID (ONLY if not provided in state)
+  const { data: releaseInfoData, isLoading: isLoadingRelease } = GetReleaseInfoByIdApi(id);
+  // Fetch songs for this release (ONLY if not provided in state)
+  const { data: songsData, isLoading: isLoadingSongs } = GetSongsApi(id);
 
-  const platformIconMap: Record<string, { label: string; src: string }> = {
-    spotify: { label: 'Spotify', src: `${publicImageBase}/achievement/Spotify.png` },
-    gaana: { label: 'Gaana', src: `${publicImageBase}/ganna.png` },
-    ganna: { label: 'Gaana', src: `${publicImageBase}/ganna.png` }, // safeguard for spelling
-    soundcloud: { label: 'SoundCloud', src: `${publicImageBase}/soundcloud.png` },
-    youtubemusic: { label: 'YouTube Music', src: `${publicImageBase}/youtubemusic.png` },
-    apple: { label: 'Apple Music', src: `${publicImageBase}/achievement/AppleMusic.png` },
-    applemusic: { label: 'Apple Music', src: `${publicImageBase}/achievement/AppleMusic.png` },
-    wynk: { label: 'Wynk', src: `${publicImageBase}/wynk.png` },
-    saavn: { label: 'Saavn', src: `${publicImageBase}/achievement/JioSavan.png` },
-    anghami: { label: 'Anghami', src: `${publicImageBase}/anghami.png` },
-  };
-
-  const defaultMajorPlatforms = ['Spotify', 'Saavn','Apple Music'];
-
-  const normalizeKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const normalizeMajorPlatforms = (value: unknown) => {
-    if (Array.isArray(value)) {
-      return value.filter((platform) => typeof platform === 'string' && platform.trim().length).map((platform) => platform.trim());
-    }
-
-    if (typeof value === 'string') {
-      return value
-        .split(',')
-        .map((platform) => platform.trim())
-        .filter(Boolean);
-    }
-
-    return [];
-  };
+  // Prioritize state data (for dummy data flow), else use API data
+  const releaseData = stateData || releaseInfoData?.data?.data || releaseInfoData?.data?.result;
   
-  // Debug log to verify status (can remove later)
-  console.log('Row Data:', rowData);
-  console.log('Status Value:', statusValue, 'Parsed Status:', status, 'Is Approved:', isApproved);
+  // For dummy data, tracks might be missing or mocked. Let's mock a track if missing.
+  const apiTracks = songsData?.data?.data || songsData?.data?.result || [];
+  const tracksData = stateData ? 
+      (stateData.tracksArray || [{Title: stateData.Title || "Track 1", ArtistName: stateData.ArtistName, Genre: stateData.Genre, ISRC: "IN-XYZ-12345", Status: stateData.Status}]) 
+      : apiTracks;
+
+  // Status: 4 = Approved, 2 = Rejected
+  const status = releaseData?.Status;
+  const isApproved = status === 4;
+  const isRejected = status === 2;
   
-  // Format date from YYYY-MM-DD to DD/MM/YYYY
   const formatDate = (dateStr: string | undefined) => {
-    if (!dateStr) return '';
+    if (!dateStr) return '-';
     try {
       const date = new Date(dateStr);
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
+      return date.toLocaleDateString('en-GB'); // DD/MM/YYYY
     } catch {
       return dateStr;
     }
   };
 
-  const songData = {
-    id: id || rowData.id || '',
-    label: rowData.label || '',
-    primaryArtist: rowData.artist || '',
-    releaseTitle: rowData.title || '',
-    genre: rowData.genre || '',
-    explicitVersion: '', // Not available in row data
-    numberOfTracks: rowData.tracks || '',
-    primaryDate: formatDate(rowData.date) || '',
-    priceTier: '', // Not available in row data
-    rejectionNote: 'This song is already live on all the DSPs, URL - https://gemini.google.com/u/2/app/5c22703b97af52f9',
-    tracks: [
-      {
-        no: 1,
-        title: rowData.title || '',
-        artist: rowData.artist || '',
-        genre: rowData.genre || '',
-        catalogueNumber: '', // Not available in row data
-        status: isApproved ? 'Approved' : 'Rejected',
-        majorPlatforms: normalizeMajorPlatforms(rowData?.majorPlatforms)
-      }
-    ]
-  };
+  // Skip loading check if we have state data
+  if (!stateData && (isLoadingRelease || isLoadingSongs)) {
+    return (
+        <div className="flex justify-center items-center h-screen bg-white">
+            <BounceLoader size={60} color={"#000000"} />
+        </div>
+    );
+  }
+
+  if (!releaseData) {
+      return (
+          <div className="flex flex-col justify-center items-center h-screen bg-white gap-4">
+              <p className="text-gray-600">Release not found.</p>
+              <button onClick={() => navigate(-1)} className="text-blue-600 hover:underline">Go Back</button>
+          </div>
+      )
+  }
 
   return (
-    <div className="bg-gray-50 overflow-hidden flex flex-col">
-      <div className="w-full mx-auto p-4 flex-1 flex flex-col">
-        {/* Header */}
-        {/* <div className="bg-indigo-700 text-white px-6 py-3  mb-1">
-          <h1 className="text-xl font-semibold">Audio Catalog</h1>
-        </div> */}
-         <div className="bg-indigo-700 w-[50%] px-6 py-3 text-white mb-2 rounded">
-            <div className="flex items-start">
-              <h1 className="text-xl font-semibold">Audio Catalog</h1>
-            </div>
-          </div>
+    <div className="flex flex-col min-h-screen bg-slate-50 relative">
+        <AppHeader title="Audio Catalog Details" />
+        
+        <div className="flex flex-col gap-6 p-6 md:p-8 max-w-7xl mx-auto w-full">
+            
+            {/* Navigation */}
+            <button 
+                onClick={() => navigate('/user/catalog/audio')}
+                className="flex items-center gap-2 text-gray-500 hover:text-black transition-colors self-start"
+            >
+                <ArrowLeft size={18} />
+                <span className="typo-btn-action normal-case">Back to Audio Catalog</span>
+            </button>
 
-        {/* Status Notice */}
-        {isApproved ? (
-          <div className="bg-green-400 px-6 py-4 flex items-center gap-4 mb-1 rounded">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-              <Check className="w-5 h-5 text-green-700 stroke-[3]" />
-            </div>
-            <span className="text-green-700 text-lg font-semibold">Approved</span>
-          </div>
-        ) : (
-          <div className="bg-[#F1A4B1] px-6 py-4 flex items-center gap-4 mb-1">
-            <div className="w-8 h-8 bg-[#F1A4B1] rounded-full border-2 border-red-700 flex items-center justify-center flex-shrink-0">
-              <X className="w-5 h-5 text-red-600 stroke-[3]" />
-            </div>
-            <span className="text-red-600 text-lg font-semibold">Rejected</span>
-            <span className="text-black text-sm">
-              Note: {songData.rejectionNote}
-            </span>
-          </div>
-        )}
+            {/* Status Banners */}
+            {isRejected && (
+                <div className="w-full bg-red-100 rounded-lg border border-red-200 flex flex-col md:flex-row items-start md:items-center p-4 gap-4 md:gap-6">
+                    <div className="flex items-center gap-2 text-red-600 min-w-fit">
+                        <X size={20} className="stroke-[3]" />
+                        <span className="typo-page-title">Rejected</span>
+                    </div>
+                    
+                    <div className="hidden md:block w-px h-8 bg-red-300"></div>
+                    
+                    <div className="flex gap-2 text-red-800 typo-table-cell">
+                        <span className="font-semibold">Note:</span>
+                        <span>{releaseData.RejectReason || "No specific reason provided."}</span>
+                    </div>
+                </div>
+            )}
 
-        {/* Song Details Section */}
-        <div className="bg-white p-6 flex gap-6 mb-1 border border-gray-200 rounded-md ">
-          {/* Album Art */}
-          <div>
-          <div className="w-48 h-48 flex-shrink-0 rounded overflow-hidden ml-32 mr-16">
-            <img 
-              src="https://picsum.photos/400/400" 
-              alt="Album cover" 
-              className="w-full h-full object-cover"
-            />
-            </div>
-          </div>
+            {isApproved && (
+                <div className="w-full bg-green-100 rounded-lg border border-green-200 flex items-center p-4 gap-4">
+                     <div className="flex items-center gap-2 text-green-700">
+                        <Check size={20} className="stroke-[3]" />
+                        <span className="typo-page-title">Approved</span>
+                    </div>
+                </div>
+            )}
 
-          {/* Metadata */}
-          <div className="flex-3 flex  gap-12">
-           
-            {/* Left Column */}
-            <div className="space-y-3 flex-1 min-w-[500px]">
-              <div className="flex items-center">
-                <p className="text-sm text-gray-800 font-semibold w-36">Label:</p>
-                <p className="text-sm  text-gray-600">{songData.label || '-'}</p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-sm text-gray-800 font-semibold w-36">Primary Artist:</p>
-                <p className="text-sm  text-gray-600">{songData.primaryArtist || '-'}</p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-sm text-gray-800 font-semibold w-36">Release Title:</p>
-                <p className="text-sm  text-gray-600">{songData.releaseTitle || '-'}</p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-sm text-gray-800 font-semibold w-36">Genre:</p>
-                <p className="text-sm  text-gray-600">{songData.genre || '-'}</p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-sm font-semibold text-gray-800 w-36">Explicit Version:</p>
-                <p className="text-sm  text-gray-600">{songData.explicitVersion || '-'}</p>
-              </div>
-            </div>
 
-            {/* Right Column */}
-            <div className="space-y-3 flex-1 ">
-              <div className="flex items-center">
-                <p className="text-sm text-gray-800 font-semibold w-36">Number Of Tracks:</p>
-                <p className="text-sm  text-gray-600">{songData.numberOfTracks || '-'}</p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-sm text-gray-800 font-semibold w-36">Primary Date:</p>
-                <p className="text-sm  text-gray-600">{songData.primaryDate || '-'}</p>
-              </div>
-              <div className="flex items-center">
-                <p className="text-sm text-gray-800 font-semibold w-36">Price Tier:</p>
-                <p className="text-sm  text-gray-600">{songData.priceTier || '-'}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+            {/* Main Content: Single Card Layout for Artwork + Metadata */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+                {/* Artwork Section */}
+                <div className="w-full md:w-80 h-80 flex-shrink-0 bg-gray-100 relative">
+                     {releaseData.ImageDocument ? (
+                         <img 
+                            src={`https://api.fmdigitalofficial.com/${releaseData.ImageDocument}`} 
+                            alt="Album Artwork" 
+                            className="w-full h-full object-cover"
+                         />
+                     ) : (
+                         <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 gap-2">
+                             <span className="text-4xl">🎵</span>
+                             <span className="text-sm font-medium">No Artwork</span>
+                         </div>
+                     )}
+                </div>
 
-        {/* Tracks Section */}
-        <div className="px-1 py-4 border-b ">
-            <h2 className="text-lg font-semibold text-gray-800">Tracks</h2>
-          </div>
-        <div className="bg-white border border-gray-200 rounded-md overflow-hidden">
-         
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-100 border-b text-xs text-gray-600 uppercase">
-                  <th className="px-4 py-3 text-left">No.</th>
-                  <th className="px-4 py-3 text-left">Title</th>
-                  <th className="px-4 py-3 text-left">Artist</th>
-                  <th className="px-4 py-3 text-left">Genre</th>
-                  <th className="px-4 py-3 text-left">Catalogue Number</th>
-                  <th className="px-4 py-3 text-left">Status</th>
-                  <th className="px-4 py-3 text-left">Major Platforms</th>
-                </tr>
-              </thead>
-              <tbody>
-                {songData.tracks.map((track) => (
-                  <tr key={track.no} className="border-b hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm text-gray-600">{track.no}</td>
-                    <td className="px-4 py-3 text-sm text-gray-700">{track.title || '-'}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{track.artist || '-'}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{track.genre || '-'}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{track.catalogueNumber || '-'}</td>
-                    <td className="px-4 py-3">
-                      <img
-                        src={isApproved ? approvedBadgeSrc : pendingBadgeSrc}
-                        alt={track.status}
-                        className="h-8 w-auto"
-                      />
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">
-                      {isApproved ? (
-                        <div className="flex flex-col gap-2">
-                          <div className="flex flex-wrap items-center gap-0">
-                            {(track.majorPlatforms && track.majorPlatforms.length ? track.majorPlatforms : defaultMajorPlatforms).map((platform) => {
-                              const key = normalizeKey(platform);
-                              const iconInfo = platformIconMap[key];
-
-                              if (!iconInfo) {
-                                return (
-                                  <span key={`${track.no}-${platform}`} className="px-2 py-1 text-xs bg-gray-100 rounded-full text-gray-600 border">
-                                    {platform}
-                                  </span>
-                                );
-                              }
-
-                              return (
-                                <div
-                                  key={`${track.no}-${platform}`}
-                                  className="  flex items-center justify-center"
-                                  title={iconInfo.label}
-                                >
-                                  <img src={iconInfo.src} alt={iconInfo.label} className="w-5 h-5 object-contain" />
-                                </div>
-                              );
-                            })}
-                          </div>
-                          <p className="text-[11px] text-gray-500 flex items-center gap-1">
-                            <span className="text-gray-600 text-base leading-none pl-1"> <div className="w-3 h-3  flex items-center justify-center rounded-full border border-gray-400">
-                            <span className="text-gray-400 text-[9px] leading-[5px]">i</span>
-    </div></span>
-                            Some stores do not provide direct links. To find your album on a specific platform, simply visit the store and search for your album manually.
-                          </p>
+                {/* Metadata Grid */}
+                <div className="flex-1 p-6 md:p-8 flex flex-col gap-6">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h1 className="typo-page-title text-gray-900 mb-1">{releaseData.Title}</h1>
+                            <p className="text-gray-500 typo-table-cell-strong">{releaseData.ArtistName}</p>
                         </div>
-                      ) : (
-                        <div className="h-6" />
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                        {/* Status chip for non-approved/rejected if needed, or just hide it */}
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="flex flex-col typo-table-cell">
+                        <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">Label</span>
+                        <span className="font-semibold text-gray-800">{releaseData.Label || '-'}</span>
+                    </div>
+                    <div className="flex flex-col typo-table-cell">
+                        <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">Release Date</span>
+                        <span className="font-semibold text-gray-800">{formatDate(releaseData.ReleaseDate)}</span>
+                    </div>
+                    <div className="flex flex-col typo-table-cell">
+                        <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">Genre</span>
+                        <span className="font-semibold text-gray-800">{releaseData.Genre || '-'}</span>
+                    </div>
+                    <div className="flex flex-col typo-table-cell">
+                        <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">Language</span>
+                        <span className="font-semibold text-gray-800">{releaseData.Language || 'English'}</span>
+                    </div>
+                    <div className="flex flex-col typo-table-cell">
+                        <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">UPC/EAN</span>
+                        <span className="font-medium text-gray-800 font-mono">{releaseData.UPC || 'N/A'}</span>
+                    </div>
+                    <div className="flex flex-col typo-table-cell">
+                           <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">P Line</span>
+                           <span className="font-semibold text-gray-800">{releaseData.PLine || '-'}</span>
+                    </div>
+                    <div className="flex flex-col typo-table-cell">
+                           <span className="text-xs text-gray-400 uppercase tracking-wider mb-1">C Line</span>
+                           <span className="font-semibold text-gray-800">{releaseData.CLine || '-'}</span>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Tracks Section */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h2 className="typo-page-title text-gray-900">Tracks</h2>
+                    <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded">{tracksData.length}</span>
+                </div>
+                
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left bg-white">
+                        <thead className="bg-gray-50 typo-table-head border-b border-gray-100">
+                            <tr>
+                                <th className="px-6 py-4 w-12">#</th>
+                                <th className="px-6 py-4">Title</th>
+                                <th className="px-6 py-4">Genre</th>
+                                <th className="px-6 py-4">Cat Number</th>
+                                <th className="px-6 py-4">Status</th>
+                                <th className="px-6 py-4">Major Platforms</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-50">
+                            {tracksData.map((track: any, idx: number) => (
+                                <tr key={idx} className="hover:bg-gray-50/50 transition-colors group">
+                                    <td className="px-6 py-4 typo-table-cell-strong text-gray-400">{idx + 1}</td>
+                                    <td className="px-6 py-4 typo-table-cell">
+                                        <div className="flex flex-col">
+                                            <span className="font-medium text-gray-900">{track.Title}</span>
+                                            <span className="text-gray-500">{track.ArtistName || releaseData.ArtistName}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 typo-table-cell text-gray-600">{track.Genre || releaseData.Genre || '-'}</td>
+                                    <td className="px-6 py-4 typo-table-cell font-mono text-gray-500">{track.KB_CatNumber || track.ISRC || '-'}</td>
+                                    <td className="px-6 py-4">
+                                        <span className={`px-3 py-1 rounded border typo-btn-action normal-case ${
+                                            isApproved 
+                                            ? 'border-green-500 text-green-500 bg-white' 
+                                            : isRejected 
+                                            ? 'border-red-500 text-red-500 bg-white' 
+                                            : 'border-yellow-500 text-yellow-500 bg-white'
+                                        }`}>
+                                            {isApproved ? 'Approved' : isRejected ? 'Rejected' : 'Pending'}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex items-center gap-2">
+                                                <img src="/Elements/Spotify.svg" alt="Spotify" className="w-5 h-5" title="Spotify" />
+                                                <img src="/Elements/Apple music.svg" alt="Apple Music" className="w-5 h-5" title="Apple Music" />
+                                                <img src="/Elements/YT music.svg" alt="YouTube Music" className="w-5 h-5" title="YouTube Music" />
+                                                <img src="/Elements/Amazon music.svg" alt="Amazon Music" className="w-5 h-5" title="Amazon Music" />
+                                                <img src="/Elements/Soundcloud.svg" alt="SoundCloud" className="w-5 h-5" title="SoundCloud" />
+                                            </div>
+                                            <span className="text-[10px] text-gray-400 leading-tight max-w-[200px]">
+                                                Some stores don't provide direct links. To find your album on a specific platform, simply visit the store and search for your album manually.
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-       
-      </div>
     </div>
   );
 };

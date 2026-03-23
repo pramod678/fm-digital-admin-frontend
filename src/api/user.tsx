@@ -15,15 +15,16 @@ export const GetSingleUserDataApi = (id: any) =>
         }
     );
 
-export const GetAllUsersDataApi = () =>
+export const GetAllUsersDataApi = (isEnabled: boolean = true) =>
     useQuery(
-        [`GetSingleUserData`],
+        [`GetAllUsers`], // Changed from GetSingleUserData to be more accurate
         async () => await api.get(`admin/get-all-user`),
         {
             keepPreviousData: true,
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
+            enabled: isEnabled,
         }
     );
 

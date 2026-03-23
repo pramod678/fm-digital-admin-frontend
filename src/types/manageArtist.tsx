@@ -4,4 +4,5 @@ export type ManageArtistDto = {
     FacebookId: string
     SpotifyId: string
     AppleId: string
+    users_id: string
 }

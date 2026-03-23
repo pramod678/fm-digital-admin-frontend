@@ -135,31 +135,31 @@ export default function HistoryIndex() {
                         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                                 <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200">
+                                    <table className="min-w-[1200px] w-full divide-y divide-gray-200">
                                         <thead className="bg-gray-50">
                                             <tr>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     No.
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     Requested Amount
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     User ID
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     User Email
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     Phone Number
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     Earning Amount
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     Approved Amount
                                                 </th>
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     Available Amount
                                                 </th>
                                                 {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
@@ -168,7 +168,7 @@ export default function HistoryIndex() {
                                                 <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
                                                     Bank Amount
                                                 </th> */}
-                                                <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">
+                                                <th scope="col" className="px-6 py-3 text-left typo-table-head">
                                                     Status
                                                 </th>
                                                 {/* <th scope="col" className="px-6 py-3 text-left text-xs text-black font-semibold uppercase ">

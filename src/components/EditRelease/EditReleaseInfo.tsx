@@ -57,9 +57,17 @@ export default function EditReleaseInfo() {
             setValue("SubGenre", getReleaseInfo?.data?.data?.SubGenre)
             setValue("LabelName", getReleaseInfo?.data?.data?.LabelName)
             setValue("ReleaseDate", getReleaseInfo?.data?.data?.ReleaseDate)
-            setValue("PLine", getReleaseInfo?.data?.data?.PLine)
+            
+            // Strip the fixed prefix from PLine if it exists, so the user only edits the 'Label Name' part
+            const fullPLine = getReleaseInfo?.data?.data?.PLine || "";
+            const prefix = "FM Digital Official On Behalf Of ";
+            const pLineValue = fullPLine.startsWith(prefix) ? fullPLine.substring(prefix.length) : fullPLine;
+            setValue("PLine", pLineValue)
+
             setValue("CLine", getReleaseInfo?.data?.data?.CLine)
             setValue("UPCEAN", getReleaseInfo?.data?.data?.UPCEAN)
+            // Restore AdditionalInfo if it was saved previously
+            setValue("AdditionalInfo", getReleaseInfo?.data?.data?.AdditionalInfo || "")
         }
     }, [isLoading])
 
@@ -104,9 +112,12 @@ export default function EditReleaseInfo() {
         formData.append("SubGenre", newData.SubGenre);
         formData.append("LabelName", newData.LabelName);
         formData.append("ReleaseDate", newData.ReleaseDate);
-        formData.append("PLine", newData.PLine);
+        // Prepend the fixed prefix to the user's input before sending to the backend
+        formData.append("PLine", `FM Digital Official On Behalf Of ${newData.PLine}`);
         formData.append("CLine", newData.CLine);
         formData.append("UPCEAN", newData.UPCEAN);
+        // AdditionalInfo is optional — send empty string if not filled
+        formData.append("AdditionalInfo", newData.AdditionalInfo || "");
         // @ts-ignore
         formData.append("users_id", parseInt(userData.users_id));
         // @ts-ignore
@@ -239,14 +250,27 @@ export default function EditReleaseInfo() {
 
                             <div className="w-full mb-2">
                                 <Label text="PLine" htmlFor="grid-PLine" required={true} />
-                                <InputField
-                                    type="text"
-                                    name="PLine"
-                                    placeholder="Enter PLine"
-                                    register={register}
-                                    errors={errors}
-                                    requiredMessage="PLine is required."
-                                />
+                                <div className="mt-1.5 flex items-stretch">
+                                    <span className="flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md text-gray-500 text-sm whitespace-nowrap select-none">
+                                        FM Digital Official On Behalf Of
+                                    </span>
+                                    <Controller
+                                        name="PLine"
+                                        control={control}
+                                        rules={{ required: "PLine Label Name is required." }}
+                                        render={({ field }) => (
+                                            <input
+                                                {...field}
+                                                type="text"
+                                                placeholder="(Label Name)"
+                                                className={`flex-1 w-full px-3 py-2 border rounded-r-md text-sm outline-none focus:ring-2 focus:ring-blue-500 transition ${
+                                                    errors?.PLine ? "border-red-500" : "border-gray-300"
+                                                }`}
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                {errors.PLine && <p className="text-red-500 text-xs mt-1">{errors.PLine.message as React.ReactNode}</p>}
                             </div>
                         </div>
                         <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
@@ -299,7 +323,27 @@ export default function EditReleaseInfo() {
                                 />
                             </div>
 
-                            <div className="mt-4 w-full flex justify-center items-center">
+                        {/* Additional Info — full width, optional free-text field for extra release notes */}
+                        <div className="flex flex-col sm:flex-row items-center sm:gap-8 mt-1">
+                            <div className="w-full mb-2">
+                                <Label text="Additional Info" htmlFor="AdditionalInfo" />
+                                <Controller
+                                    name="AdditionalInfo"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <textarea
+                                            {...field}
+                                            value={field.value || ""}
+                                            placeholder="Enter any additional information or special requests here... "
+                                            rows={5}
+                                            className="border-2 mt-2 px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full transition ease-in-out duration-150 border-gray-300 resize-none"
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mt-4 w-full flex justify-center items-center">
                                 <button
                                     type="submit"
                                     className="px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center"

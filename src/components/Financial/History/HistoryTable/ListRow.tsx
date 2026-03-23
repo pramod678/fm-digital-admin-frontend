@@ -13,43 +13,33 @@ export default function ListRow({ d, index, currentPage, PAGE_SIZE }: { d: any, 
         switch (status) {
             case 0:
                 return (
-                    <>
-                        <button
-                            type="submit"
-                            className="px-4 w-20 text-center py-2 bg-[#9dd3fc] text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none "
-                        >
-                            <span className="mr-2 text-white font-semibold">Pending</span>
-                        </button>
-                    </>
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-[#9dd3fc] typo-btn-action normal-case w-20"
+                    >
+                        Pending
+                    </button>
                 );
             case 1:
-                return (
-                    <>
-                        --
-                    </>
-                );
+                return <>--</>;
             case 2:
                 return (
-                    <>
-                        <button
-                            type="submit"
-                            className="px-4 w-20 text-center py-2 bg-red-500 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none "
-                        >
-                            <span className="mr-2 text-white font-semibold">Reject</span>
-                        </button>
-                    </>
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-red-500 typo-btn-action normal-case w-20"
+                    >
+                        Reject
+                    </button>
                 );
 
             case 4:
                 return (
-                    <>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-[#0000cd] w-20 text-xs text-white text-base rounded hover:bg-neutral-600 focus:outline-none"
-                        >
-                            <span className=" text-white text-xs font-semibold">Approved</span>
-                        </button>
-                    </>
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-[#0000cd] typo-btn-action normal-case w-20"
+                    >
+                        Approved
+                    </button>
                 );
             default:
                 return <></>;
@@ -59,40 +49,40 @@ export default function ListRow({ d, index, currentPage, PAGE_SIZE }: { d: any, 
     return (
         <>
             <tr onClick={() => setIsOpen(!isOpen)}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {actualIndex}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell-strong">
                     {d.requested_amount || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.users_id || "--"}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.admin_id || "--"}
                 </td>
-                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {/* <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.users[0]?.email || '--'}
                 </td> */}
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {GetDate(d.createdAt) || '--'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.earning_amount}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.approved_amount}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.requested_amount}
                 </td>
-                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                {/* <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.avlable_amount_panel}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {d.user_amount_panel}
                 </td> */}
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                <td className="px-6 py-4 whitespace-nowrap typo-table-cell">
                     {statusButton(d.Status)}
                 </td>
 

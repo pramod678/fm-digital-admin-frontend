@@ -38,6 +38,7 @@ import UserAudioCatalog from "./components/Catalogs/User/UserAudioCatalog";
 import UserVideoCatalog from "./components/Catalogs/User/UserVideoCatalog";
 import UserRejectedSong from "./components/Catalogs/User/UserRejectedSong";
 import MusicReleaseCards from "./components/CreateRelease/MusicReleaseCards";
+import CreateReleaseChoice from "./components/CreateRelease/CreateReleaseChoice";
 import Index from "./components/Home";
 
 
@@ -54,12 +55,13 @@ function App() {
               <Route index element={<Home />} />
               {/* <Route path="ReleseInfo" element={< CreateReleasePage />} /> */}
               <Route path="ReleseInfo" element={<MusicReleaseCards />} />
+              <Route path="create-release" element={<CreateReleaseChoice />} />
               <Route path="ReleaseInfo/VideoRelease" element={<VideoRelease />} />
               <Route path="ReleaseInfo/AudioRelease" element={< CreateReleasePage />} />
-              <Route path="Platform" element={<Platform />} />
+              <Route path="ReleaseInfo/Platform" element={<Platform />} />
               <Route path="userDetails/:id" element={<UserDetails />} />
               {/* <Route path="Submission" element={<Submission />} /> */}
-              <Route path="Songsinfo" element={<SongInfo />} />
+              <Route path="ReleaseInfo/Songsinfo" element={<SongInfo />} />
               <Route path="ManageUser/" element={<ManageUserList />} />
               <Route path="ManageUser/Labels/:id" element={<ManageLabelList />} />
               <Route path="ManageUser/Catalogs/:id" element={<ManageCatalogsList />} />
@@ -69,7 +71,7 @@ function App() {
               <Route path="user/catalog/audio" element={<UserAudioCatalog />} />
               <Route path="user/catalog/video" element={<UserVideoCatalog />} />
               <Route path="user/catalog/audio/:id" element={<UserRejectedSong />} />
-              <Route path="Submission" element={<Submission />} />
+              <Route path="ReleaseInfo/Submission" element={<Submission />} />
               <Route path="Tools/YoutubeClaims" element={<YouTubeClaimsPage />} />
               <Route path="Tools/ProfileLinking" element={<ProfileLinkingPage />} />
               <Route path="Label" element={<LabelPage />} />

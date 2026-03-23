@@ -1,4 +1,6 @@
 import * as React from "react";
+import AppHeader from "../SharedLayout/AppHeader";
+import CreateReleaseTabs from "./CreateReleaseTabs";
 import SongDetails from "./PopUps/SongDetails";
 import { MdClear } from "react-icons/md"
 import { AiFillSave, AiOutlinePlus } from "react-icons/ai";
@@ -24,13 +26,6 @@ export default function Submission() {
         getUserData({ token: token })
     }, []);
 
-    const tabs = [
-        { name: 'Release Info', route: 'ReleseInfo' },
-        { name: 'Song Info', route: 'Songsinfo' },
-        { name: 'Platform', route: 'Platform' },
-        { name: 'Submission', route: 'Submission' },
-    ]
-
     const handleSubmit = () => {
         let formData: any = {
             releseInfo_id: getSubmissions?.data?.data?.releseInfo_id,
@@ -43,99 +38,117 @@ export default function Submission() {
 
 
     return (
-        <>
-            <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
-                <div className="flex items-center">
-                    {tabs?.map((r, index) => (
-                        // <Link to={`/${r.route}`}>
-                        <button
-                            key={index}
-                            type="button"
-                            className={`text-left text-sm md:text-base pl-1 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Submission" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
-                        >
-                            {r.name}
-                        </button>
-                        // </Link>
-                    ))}
+        <div className="min-h-screen bg-gray-50 flex flex-col pb-12">
+            <AppHeader title="Create Audio Release" />
+
+            {/* Tabs / Stepper */}
+            <CreateReleaseTabs activeTab="Submission" />
+
+            <div className="max-w-7xl mx-auto w-full px-4 mt-8">
+                {/* Header */}
+                <div className="mb-6">
+                    <h1 className="text-2xl font-bold text-gray-900">Review & Submit Release</h1>
+                    <p className="text-sm text-gray-500 mt-1">Please review your release information before submitting.</p>
                 </div>
 
-            </div>
+                {/* Review Card */}
+                <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
+                    <div className="flex flex-col lg:flex-row gap-12">
+                        {/* Artwork Column */}
+                        <div className="flex flex-col items-center w-full lg:w-48 flex-shrink-0">
+                            <div className="w-48 h-48 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shadow-sm relative group">
+                                <img
+                                    className="w-full h-full object-cover"
+                                    src={`https://api.fmdigitalofficial.com/${getRelease?.data?.data?.ImageDocument}`}
+                                    alt="Art Work"
+                                />
+                            </div>
+                            <p className="mt-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Album Artwork</p>
+                            
+                            <button
+                                type="button"
+                                className="mt-6 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1.5 px-4 py-2 border border-blue-200 rounded-full bg-blue-50 hover:bg-blue-100"
+                                onClick={() => navigate(`/ReleaseInfo/AudioRelease`)}
+                            >
+                                Edit Release Info
+                            </button>
+                        </div>
 
-            <p className="text-left font-semibold mt-4 text-lg ml-8">Release Information</p>
-            <div className="flex flex-col sm:flex-row items-center justify-between ml-8">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-8 w-full sm:w-1/2">
-                    <div className="flex flex-col w-full sm:mr-4">
-                        <div className="flex items-center justify-between">
-                            <p className="font-semibold  sm:text-md">Title</p>
-                            <p className="text-sm">{getSubmissions?.data?.data?.Title}</p>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <p className="font-semibold  sm:text-md">Artist</p>
-                            <p className="text-sm">{getSubmissions?.data?.data?.Artist}</p>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <p className="font-semibold  sm:text-md">Label</p>
-                            <p className="text-sm">{getSubmissions?.data?.data?.Label}</p>
+                        {/* Details Column */}
+                        <div className="flex-1">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                                {/* Left Grid */}
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
+                                        <span className="text-sm font-semibold text-gray-500">Release Title:</span>
+                                        <span className="text-sm font-medium text-gray-900">{getSubmissions?.data?.data?.Title || "---"}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
+                                        <span className="text-sm font-semibold text-gray-500">Primary Artist:</span>
+                                        <span className="text-sm font-medium text-gray-900">{getSubmissions?.data?.data?.Artist || "---"}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
+                                        <span className="text-sm font-semibold text-gray-500">Label:</span>
+                                        <span className="text-sm font-medium text-gray-900">{getSubmissions?.data?.data?.Label || "---"}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
+                                        <span className="text-sm font-semibold text-gray-500">Genre:</span>
+                                        <span className="text-sm font-medium text-gray-900">{getRelease?.data?.data?.Genre || "---"}</span>
+                                    </div>
+                                </div>
+
+                                {/* Right Grid */}
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
+                                        <span className="text-sm font-semibold text-gray-500">Number of Tracks:</span>
+                                        <span className="text-sm font-medium text-gray-900">{getRelease?.data?.data?.Songs || 0}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
+                                        <span className="text-sm font-semibold text-gray-500">Primary Date:</span>
+                                        <span className="text-sm font-medium text-gray-900">{getRelease?.data?.data?.ReleaseDate || "---"}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-50">
+                                        <span className="text-sm font-semibold text-gray-500">Subgenre:</span>
+                                        <span className="text-sm font-medium text-gray-900">{getRelease?.data?.data?.SubGenre || "---"}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex flex-col w-full sm:ml-4">
-                        <div className="flex items-center justify-between">
-                            <p className="font-semibold  sm:text-md">Genre</p>
-                            <p className="text-sm">{getRelease?.data?.data?.Genre}</p>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <p className="font-semibold  sm:text-md">Subgenre</p>
-                            <p className="text-sm">{getRelease?.data?.data?.SubGenre || "---"}</p>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <p className="font-semibold  sm:text-md"># of songs</p>
-                            <p className="text-sm">{getRelease?.data?.data?.Songs || 0}</p>
-                        </div>
+                </div>
+
+                {/* Terms Bar */}
+                <div className="mt-8 bg-white border border-gray-200 rounded-lg p-4 shadow-sm flex items-center justify-center">
+                    <div className="flex items-center gap-3">
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                            onChange={(event) => setUserIagery(event.target.checked)}
+                        />
+                        <label htmlFor="terms" className="text-sm text-gray-700 cursor-pointer">
+                            I understand and agree to the <a href="https://fmdigitalofficial.com/support/legal-documents" target="_blank" rel="noopener noreferrer" className="font-bold text-gray-900 hover:text-blue-600 underline decoration-gray-300 underline-offset-4 transition-colors">FM Digital Distribution Terms & Privacy Policy.</a>
+                        </label>
                     </div>
                 </div>
-                <div className="w-full sm:w-1/2 flex justify-center mt-8 sm:mt-0">
-                    <img
-                        className="w-32 h-32 object-cover rounded"
-                        src={`https://api.fmdigitalofficial.com/${getRelease?.data?.data?.ImageDocument}`}
-                        alt="Art Work"
-                    />
+
+                {/* Submit Action */}
+                <div className="mt-8 flex justify-end">
+                    <button
+                        type="button"
+                        onClick={() => handleSubmit()}
+                        disabled={!userIagery || isLoadingSubmissionPost}
+                        className={`group relative flex items-center gap-2 px-8 py-3 text-base font-semibold text-white transition-all rounded-full shadow-lg ${
+                            userIagery 
+                            ? 'bg-gray-900 hover:bg-gray-800' 
+                            : 'bg-gray-400 cursor-not-allowed opacity-70'
+                        }`}
+                    >
+                        <span>{isLoadingSubmissionPost ? "Submitting..." : "Submit Release"}</span>
+                        <AiFillSave className={`transition-transform duration-200 ${userIagery ? 'group-hover:scale-110' : ''}`} />
+                    </button>
                 </div>
             </div>
-
-            <div className="flex w-full justify-end ">
-                <button
-                    className="flex items-center mr-[270px] mt-6 font-semibold text-sm justify-center ml-2 py-2 px-4 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
-                    onClick={() => navigate(`/ReleseInfoUpdate/${getSubmissions?.data?.data?.releseInfo_id}`)}
-                >
-                    {/* < size={size} /> */}
-                    Edit Details
-                </button>
-            </div>
-
-
-
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-24">
-                <input
-                    type="checkbox"
-                    onChange={(event) => setUserIagery(event.target.checked)}
-                />
-
-                <label>I understand and agree to the </label> <a href="/">FM Digital Distribution Terms & Privacy Policy.</a>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-                <button
-                    type="button"
-                    onClick={() => handleSubmit()}
-                    className={`px-4 py-2 bg-gray-700 text-white text-base rounded hover:bg-gray-600 focus:outline-none flex items-center ${userIagery ? '' : 'cursor-not-allowed'}`}
-                    disabled={!userIagery}
-                >
-                    <span className="mr-2">Submit</span>
-                    <AiFillSave />
-                </button>
-            </div>
-
-
-        </>
+        </div>
     )
 }

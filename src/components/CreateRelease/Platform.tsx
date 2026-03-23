@@ -1,7 +1,10 @@
 import * as React from "react";
+import AppHeader from "../SharedLayout/AppHeader";
+import CreateReleaseTabs from "./CreateReleaseTabs";
 import { GetReleaseInfoApi, GetSongsApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
 import { Link, useNavigate } from "react-router-dom";
 import { PlatformPostApi } from "../../api/platform";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 
 export default function Platform() {
@@ -73,13 +76,6 @@ export default function Platform() {
         { name: "Vimeo" },
     ];
 
-    const tabs = [
-        { name: 'Release Info', route: 'ReleseInfo' },
-        { name: 'Song Info', route: 'Songsinfo' },
-        { name: 'Platform', route: 'Platform' },
-        { name: 'Submission', route: 'Submission' },
-    ]
-
     const handleSubmit = async (e: any) => {
         let formdata = {
             Audio: data,
@@ -95,22 +91,11 @@ export default function Platform() {
 
     return (
         <>
-            <div className="flex items-center justify-center pt-3 px-2 border-t-2 border-b-1 border-gray-600 w-full mt-6">
-                <div className="flex items-center">
-                    {tabs?.map((r, index) => (
-                        // <Link to={`/${r.route}`}>
-                        <button
-                            key={index}
-                            type="button"
-                            className={`text-left text-sm md:text-base pl-1 md:pl-3 lg:pl-4 pr-4 md:pr-16 lg:pr-32 py-2 font-semibold ${r?.name === "Platform" ? 'border-b-4 border-teal-400 bg-gray-200' : 'border-b-4 border-gray-200'} `}
-                        >
-                            {r.name}
-                        </button>
-                        // </Link>
-                    ))}
-                </div>
+            <AppHeader title="Create Audio Release" />
 
-            </div>
+            {/* Tabs / Stepper */}
+            <CreateReleaseTabs activeTab="Platform" />
+
             <div className="p-10">
                 <div className="flex items-center gap-4">
                     <h3 className="text-lg sm:text-2xl font-bold">Audio(190+)</h3>
@@ -156,7 +141,7 @@ export default function Platform() {
                 </div>
             </div>
 
-            <div className="p-10">
+            {/* <div className="p-10">
                 <div className="flex items-center gap-4">
                     <h3 className="text-lg sm:text-2xl font-bold">Video Platform(3+)</h3>
                     <input
@@ -178,12 +163,15 @@ export default function Platform() {
                         );
                     })}
                 </div>
-            </div>
+            </div> */}
 
 
-            <div className="flex justify-end items-center p-4">
-                <button onClick={handleSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Save
+            <div className="max-w-7xl mx-auto flex justify-end mt-4 px-4 pb-8">
+                <button 
+                   onClick={handleSubmit} 
+                   className="flex items-center gap-2 bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-gray-800 transition shadow-sm text-sm font-medium"
+                >
+                    Save & Next <AiOutlineArrowRight size={18} />
                 </button>
             </div>
 

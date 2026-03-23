@@ -37,13 +37,13 @@ const Sales = () => {
   ];
 
 
-   const statusButton = (status: any) => {
+    const statusButton = (status: any) => {
         switch (status) {
             case 0:
                 return (
                     <button
                         type="button"
-                        className=" py-1 text-center bg-white border border-gray-700 text-black text-xs rounded hover:bg-gray-100 focus:outline-none w-full font-semibold"
+                        className="py-1 px-3 text-center bg-white border border-black text-black typo-btn-action normal-case w-full"
                     >
                         Pending
                     </button>
@@ -52,7 +52,7 @@ const Sales = () => {
                 return (
                      <button
                         type="button"
-                        className=" py-1 text-center bg-white border border-green-600 text-green-600 text-xs rounded hover:bg-gray-100 focus:outline-none w-full font-semibold"
+                        className="py-1 px-3 text-center bg-white border border-green-600 text-green-600 typo-btn-action normal-case w-full"
                     >
                         RECEIVED
                     </button>
@@ -61,9 +61,8 @@ const Sales = () => {
                 return (
                     <button
                         type="button"
-                        className=" py-1 text-center bg-white border border-black text-green-700 text-xs rounded hover:bg-gray-100 focus:outline-none w-full"
+                        className="py-1 px-3 text-center bg-white border border-green-600 text-green-700 typo-btn-action normal-case w-full"
                     >
-                      
                         DONE
                     </button>
                 );
@@ -109,86 +108,81 @@ const Sales = () => {
           {/* Horizontal Line */}
           <hr className="border-green-700 mb-4" />
 
-          <div className="flex">
-            <div
-              className={`bg-white rounded-none ${
-                salesData.length > 0 ? "shadow" : ""
-              } overflow-hidden w-3/4`}
-            >
-              {/* Header (fixed, not scrollable) */}
-              <table className="w-full table-fixed">
-                {/* <thead className="bg-orange-400 text-white"> */}
-                <thead 
-                  className="text-white relative"
-                  style={{
-                    backgroundImage: 'url(/images/financial/OrangeBigBand.svg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
-                  }}
-                >
+          <div
+            className={`bg-white rounded-none ${
+              salesData.length > 0 ? "shadow" : ""
+            } flex-1 overflow-x-auto rounded-lg`}
+          >
+            <table className="w-full min-w-[800px]">
+              <thead 
+                className="text-white relative"
+                style={{
+                  backgroundImage: 'url(/images/financial/OrangeBigBand.svg)',
+                  backgroundSize: '100% 100%',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              >
+                <tr>
+                  <th className="px-4 py-3 text-left typo-table-head w-[6%]">
+                    No
+                  </th>
+                  <th className="px-4 py-3 text-left typo-table-head w-[18%]">
+                    Reporting Month
+                  </th>
+                  <th className="px-4 py-3 text-left typo-table-head w-[18%]">
+                    Sale Month
+                  </th>
+                  <th className="px-4 py-3 text-left typo-table-head w-[20%]">
+                    Label
+                  </th>
+                  <th className="px-4 py-3 text-left typo-table-head w-[14%]">
+                    Earning
+                  </th>
+                  <th className="px-4 py-3 text-left typo-table-head w-[12%]">
+                    Report
+                  </th>
+                  <th className="px-4 py-3 text-left typo-table-head w-[12%]">
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {salesData.length === 0 ? (
                   <tr>
-                    <th className="w-12 px-4 py-3 text-left text-sm font-medium">
-                      No
-                    </th>
-                    <th className="w-36 px-4 py-3 text-left text-sm font-medium">
-                      Reporting Month
-                    </th>
-                    <th className="w-44 px-4 py-3 text-left text-sm font-medium">
-                      Sale Month
-                    </th>
-                    <th className="w-48 px-4 py-3 text-left text-sm font-medium">
-                      Label
-                    </th>
-                    <th className="w-40 px-4 py-3 text-left text-sm font-medium">
-                      Earning
-                    </th>
-                    <th className="w-40 px-4 py-3 text-left text-sm font-medium">
-                      Report
-                    </th>
-                    <th className="w-36 px-4 py-3 text-left text-sm font-medium">
-                      Status
-                    </th>
+                    <td colSpan={7} className="px-4 py-6 text-sm text-gray-500">
+                      No sales data available yet.
+                    </td>
                   </tr>
-                </thead>
-              </table>
-
-              {/* Scrollable body (only rows scroll) */}
-              <div className="max-h-64 overflow-y-auto">
-                <table className="w-full table-fixed">
-                  <tbody className="divide-y divide-gray-200">
-                    {salesData.map((item, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
-                        <td className="w-12 px-4 py-3 text-sm text-gray-700">
-                          {index + 1}
-                        </td>
-                        <td className="w-36 px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
-                          {item.reportingMonth}
-                        </td>
-                        <td className="w-44 px-4 py-3 text-sm text-gray-700">
-                          {item.saleMonth}
-                        </td>
-                        <td className="w-48 px-4 py-3 text-sm text-gray-700">
-                          {item.label}
-                        </td>
-                        <td className="w-40 px-4 py-3 text-sm text-gray-700">
-                          {item.earning}
-                        </td>
-                        <td className="w-40 px-4 py-3 text-sm text-gray-700">
-                          {item.report}
-                        </td>
-                        <td className="w-36 px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
-                          {statusButton(item.status)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-            </div>
-
-           
+                ) : (
+                  salesData.map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 typo-table-cell">
+                        {index + 1}
+                      </td>
+                      <td className="px-4 py-3 typo-table-cell">
+                        {item.reportingMonth}
+                      </td>
+                      <td className="px-4 py-3 typo-table-cell">
+                        {item.saleMonth}
+                      </td>
+                      <td className="px-4 py-3 typo-table-cell">
+                        {item.label}
+                      </td>
+                      <td className="px-4 py-3 typo-table-cell-strong">
+                        $ {item.earning}.00
+                      </td>
+                      <td className="px-4 py-3 typo-table-cell">
+                        {item.report}
+                      </td>
+                      <td className="px-4 py-3 typo-table-cell">
+                        {statusButton(item.status)}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

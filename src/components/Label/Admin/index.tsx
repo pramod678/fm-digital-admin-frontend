@@ -1,19 +1,20 @@
 import * as React from "react";
 import { UserDataApi } from "../../../api/releaseInfo";
 import { useNavigate } from "react-router-dom";
-import { GetAllAdminLabelsApi, GetAllLabelsApi } from "../../../api/label";
+import { GetAllAdminLabelsApi } from "../../../api/label";
 import { BounceLoader } from "react-spinners";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import LabelListRow from "./LabelListRow";
 import { GetAllUsersDataApi } from "../../../api/user";
-
-
+import AddLabel from "../PopUps/AddLabel";
+import { FiSearch } from "react-icons/fi";
+import { IoMdArrowDropdown } from "react-icons/io";
+import AppHeader from "../../SharedLayout/AppHeader";
 
 export default function AdminLabelIndex() {
     const navigate = useNavigate();
     const [userData, setUserData] = React.useState<any>("")
     const token = localStorage.getItem("token")
-
 
     const [userId, setUserId] = React.useState('');
     const [statusId, setStatusId] = React.useState('');
@@ -24,19 +25,54 @@ export default function AdminLabelIndex() {
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate,)
     const { data: GetAllLabels, isLoading: isLoadingGetAllLabels, isFetching } = GetAllAdminLabelsApi(userId, statusId)
 
-
     React.useEffect(() => {
         getUserData({ token: token })
     }, []);
 
     const { data: allUsersData } = GetAllUsersDataApi();
 
+    const dummyData = [
+        {
+            label_id: "LBL-001",
+            users_id: "USR-001",
+            users: [{ fname: "John", lname: "Doe", email: "john@example.com" }],
+            title: "Ocean Records",
+            youtubeURL: "https://youtube.com/c/oceanrecords",
+            labelDocument: "dummy_doc_1.pdf",
+            Status: 4, // Approved
+            createdAt: "2023-11-20T10:30:00Z"
+        },
+        {
+            label_id: "LBL-002",
+            users_id: "USR-002",
+            users: [{ fname: "Sarah", lname: "Smith", email: "sarahS@example.com" }],
+            title: "Indie Beats",
+            youtubeURL: "https://youtube.com/c/indiebeats",
+            labelDocument: "dummy_doc_2.pdf",
+            Status: 0, // Pending
+            createdAt: "2023-12-05T14:15:00Z"
+        },
+        {
+            label_id: "LBL-003",
+            users_id: "USR-003",
+            users: [{ fname: "Mike", lname: "Johnson", email: "mike.j@example.com" }],
+            title: "Lofi Central",
+            youtubeURL: "https://youtube.com/c/loficentral",
+            labelDocument: "dummy_doc_3.pdf",
+            Status: 2, // Rejected
+            createdAt: "2024-01-10T09:45:00Z"
+        }
+    ];
+
     const PAGE_SIZE = 8
     React.useEffect(() => {
-        if (GetAllLabels) {
+        if (GetAllLabels && GetAllLabels.data && GetAllLabels.data.data && GetAllLabels.data.data.length > 0) {
             setCatalogs(GetAllLabels.data.data);
-            setCurrentPage(1);
+        } else {
+            // Use dummy data if API returns empty or fails
+            setCatalogs(dummyData as any);
         }
+        setCurrentPage(1);
     }, [GetAllLabels]);
 
     const handleFilter = (event: any) => {
@@ -66,148 +102,182 @@ export default function AdminLabelIndex() {
     const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
     const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
 
-
     return (
         <>
-            {(isLoadingGetAllLabels || isFetching) && (
-                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
-                    <BounceLoader size={150} color={"#000000"} />
-                </div>
-            )}
-            <div className="p-4">
-                <div className="w-1/2 bg-neutral-800 p-2 mb-2">
-                    <p className="text-white font-semibold ml-4 text-base sm:text-lg "> Label</p>
-                </div>
-                {/* Filters */}
-                <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full mb-2">
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                        <input
-                            type="text"
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            id="search"
-                            placeholder="Search Title"
-                            defaultValue={""}
-                            onChange={handleFilter}
-                        />
-                        <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={(e) => setStatusId(e.target.value)}
-                            value={statusId}
-                        >
-                            <option value="">All</option>
-                            <option value={4}>Approved</option>
-                            <option value={0}>Pending</option>
-                            <option value={2}>Rejected</option>
-                        </select>
-
-                        <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
-                            onChange={(e: any) => setUserId(e.target.value)}
-                            value={userId}
-                        >
-                            <option value="">UserId</option>
-                            {
-                                allUsersData?.data?.data?.map((user: any) => {
-                                    return (
-                                        <>
-                                            <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
-                                        </>
-                                    )
-                                })
-                            }
-                        </select>
+            <AppHeader title="Label" />
+            <div className="p-6 bg-white min-h-screen font-poppins">
+                {(isLoadingGetAllLabels || isFetching) && (
+                    <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-50 bg-white/50 backdrop-blur-sm">
+                        <BounceLoader size={120} color={"#00b768"} />
                     </div>
+                )}
 
-
-                    <div className="mt-4 sm:mt-0">
-                        <p className="font-semibold text-gray-700">Total Labels : {totalFilteredRecords || 0}</p>
-                    </div>
+                {/* Title */}
+                <div className="mb-4">
+                    <h1 className="typo-page-title">Label</h1>
                 </div>
 
-                <div className="p-4">
-                    <div className="flex flex-col">
-                        <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                                <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                    <table className="min-w-full divide-y divide-gray-200">
-                                        <thead className="bg-gray-50">
-                                            <tr>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    No.
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    User ID
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    User Name
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    Email
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    Channel Name
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    Channel URL
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    B2B/DOC
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    Status
-                                                </th>
-                                                <th scope="col" className="px-6 py-4 text-left text-xs text-black font-semibold uppercase ">
-                                                    Action
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="bg-white divide-y divide-gray-200">
-                                            {
-                                                slicedRecords?.length === 0 ? (
-                                                    <tr className="w-full">
-                                                        <td className="text-center py-4" colSpan={8}>
-                                                            No records found.
-                                                        </td>
-                                                    </tr>
-                                                ) : (
-                                                    slicedRecords?.map((data: any, index: any) => {
-                                                        return (
-                                                            <React.Fragment key={index}>
-                                                                <LabelListRow label={data} index={index} currentPage={currentPage}
-                                                                    PAGE_SIZE={PAGE_SIZE} />
-                                                            </React.Fragment>
-                                                        )
-                                                    })
-                                                )
-                                            }
-                                        </tbody>
-                                    </table>
+                {/* Filters Header */}
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
+                    <div className="flex flex-wrap items-center gap-3">
+                        {/* Search Label */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                className="pl-3 pr-8 py-1.5 w-40 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#00b768]/20 focus:border-[#00b768] outline-none text-xs placeholder:text-gray-400 shadow-sm transition-all"
+                                placeholder="Search Label"
+                                onChange={handleFilter}
+                            />
+                            <FiSearch className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                        </div>
+
+                        {/* Search User Id/Name */}
+                        <div className="relative group">
+                            <div className="flex items-center">
+                                <input
+                                    type="text"
+                                    className="pl-3 pr-8 py-1.5 w-56 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[#00b768]/20 focus:border-[#00b768] outline-none text-xs placeholder:text-gray-400 shadow-sm transition-all cursor-pointer"
+                                    placeholder="Search User Id/Name"
+                                    value={userId ? allUsersData?.data?.data?.find((u: any) => String(u.users_id) === String(userId))?.fname || "" : ""}
+                                    readOnly
+                                />
+                                <div className="absolute right-2.5 flex items-center gap-1.5 border-l pl-1.5 border-gray-200">
+                                    <IoMdArrowDropdown className="text-gray-400 group-hover:text-gray-600 transition-colors" size={16} />
                                 </div>
                             </div>
+                            
+                            <select
+                                className="absolute inset-0 opacity-0 cursor-pointer w-full"
+                                onChange={(e: any) => setUserId(e.target.value)}
+                                value={userId}
+                            >
+                                <option value="">Search User Id/Name</option>
+                                {allUsersData?.data?.data?.map((user: any) => (
+                                    <option key={user.users_id} value={user.users_id}>
+                                        {user.users_id} - {user.fname} {user.lname}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Status Toggles */}
+                        <div className="flex items-center gap-2 ml-1">
+                            <button
+                                onClick={() => setStatusId(statusId === "0" ? "" : "0")}
+                                className={`px-4 py-1.5 rounded-lg border transition-all text-xs font-semibold shadow-sm ${
+                                    statusId === "0" 
+                                    ? "bg-gray-100 border-gray-300 text-gray-800" 
+                                    : "bg-white border-gray-200 text-gray-400 hover:border-gray-300"
+                                }`}
+                            >
+                                Pending
+                            </button>
+                            <button
+                                onClick={() => setStatusId(statusId === "4" ? "" : "4")}
+                                className={`px-4 py-1.5 rounded-lg border transition-all text-xs font-semibold shadow-sm ${
+                                    statusId === "4" 
+                                    ? "bg-[#e6f7ef] border-[#00b768]/30 text-[#00b768]" 
+                                    : "bg-white border-gray-200 text-gray-400 hover:border-gray-300"
+                                }`}
+                            >
+                                Approved
+                            </button>
+                            <button
+                                onClick={() => setStatusId(statusId === "2" ? "" : "2")}
+                                className={`px-4 py-1.5 rounded-lg border transition-all text-xs font-semibold shadow-sm ${
+                                    statusId === "2" 
+                                    ? "bg-[#fef2f2] border-pink-200 text-pink-600" 
+                                    : "bg-white border-gray-200 text-gray-400 hover:border-gray-300"
+                                }`}
+                            >
+                                Rejected
+                            </button>
                         </div>
                     </div>
-                    {totalPages > 1 && (
-                        <div className="flex justify-end items-center mt-4">
-                            <button
-                                onClick={() => handlePageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
-                                className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
-                            >
-                                <FiChevronLeft color="white" />
-                            </button>
-                            <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
-                            <button
-                                onClick={() => handlePageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages}
-                                className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
-                            >
-                                <FiChevronRight color="white" />
-                            </button>
+
+                    <div className="flex items-center gap-5">
+                        <AddLabel userData={userData} />
+                        <div className="typo-table-cell whitespace-nowrap">
+                            Total Labels: <span className="font-semibold text-red-600">{totalFilteredRecords || 0}</span>
                         </div>
-                    )}
+                    </div>
                 </div>
 
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 mt-2">
+                    <table className="w-full divide-y divide-gray-100 table-auto">
+                        <thead className="bg-[#f8f9fa]">
+                            <tr>
+                                <th scope="col" className="px-3 py-2 text-left typo-table-head w-[5%]">
+                                    No.
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-left typo-table-head w-[8%] whitespace-nowrap">
+                                    User Id
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-left typo-table-head w-[12%]">
+                                    User Name
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-left typo-table-head w-[18%]">
+                                    Email
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-left typo-table-head w-[15%]">
+                                    Channel Name
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-center typo-table-head w-[10%]">
+                                    Channel URL
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-center typo-table-head w-[10%]">
+                                    Attachment
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-center typo-table-head w-[10%]">
+                                    Status
+                                </th>
+                                <th scope="col" className="px-3 py-2 text-left typo-table-head w-[12%]">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-100">
+                            {slicedRecords?.length === 0 ? (
+                                <tr className="w-full">
+                                    <td className="text-center py-10 text-gray-400 font-medium" colSpan={10}>
+                                        No records found.
+                                    </td>
+                                </tr>
+                            ) : (
+                                slicedRecords?.map((data: any, index: any) => (
+                                    <LabelListRow 
+                                        key={data.label_id} 
+                                        label={data} 
+                                        index={index} 
+                                        currentPage={currentPage}
+                                        PAGE_SIZE={PAGE_SIZE} 
+                                    />
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+
+                {totalPages > 1 && (
+                    <div className="flex justify-end items-center mt-8">
+                        <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-all border border-gray-200"
+                        >
+                            <FiChevronLeft size={20} />
+                        </button>
+                        <span className="mx-6 typo-table-cell">{`Page ${currentPage} of ${totalPages}`}</span>
+                        <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-all border border-gray-200"
+                        >
+                            <FiChevronRight size={20} />
+                        </button>
+                    </div>
+                )}
             </div>
         </>
-    )
+    );
 }

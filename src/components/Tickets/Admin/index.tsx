@@ -21,7 +21,7 @@ export default function AdminTicketsIndex() {
     Array<{ text: string; sender: "user" | "support" }>
   >([
     {
-      text: "Title name - Nannaadharichu Replace with - VUNNATHAMAINA RAAJYAPUYAASI Spotify\nlink: https://open.spotify.com/track/3wVBApea3LNSEiOfRtuEfM\nkindly change the name of this song.",
+      text: "Title name - Nannaadhariinchu Replace with - VUNNATHAMAINA RAAJYAPUYAASI Spotify\nlink: https://open.spotify.com/track/3wVBApea3LNSEiOfRtuEfM\nKindly change the name of this song.",
       sender: "user",
     },
     {
@@ -86,19 +86,16 @@ export default function AdminTicketsIndex() {
 
   const formatDateTime = (value: string) => {
     const now = new Date();
-
     const day = String(now.getDate()).padStart(2, "0");
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const year = now.getFullYear();
     const formattedDate = `${day}/${month}/${year}`;
-
     let hours = now.getHours();
     const minutes = String(now.getMinutes()).padStart(2, "0");
     const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
     hours = hours ? hours : 12;
     const formattedTime = `${hours}:${minutes} ${ampm}`;
-
     return { date: formattedDate, time: formattedTime };
   };
 
@@ -114,8 +111,6 @@ export default function AdminTicketsIndex() {
 
   const handleSendResponse = () => {
     if (aiResponse.trim() === "") return;
-
-    // Add user message
     const userMessage = {
       text: aiResponse,
       sender: "user" as const,
@@ -123,11 +118,7 @@ export default function AdminTicketsIndex() {
     setMessages((prev) => [...prev, userMessage]);
     setAiResponse("");
     setResponseCharCount(0);
-
-    // Show typing indicator
     setIsTyping(true);
-
-    // Simulate AI response after 1.5 seconds
     setTimeout(() => {
       const randomResponse =
         stubAIResponses[Math.floor(Math.random() * stubAIResponses.length)];
@@ -155,170 +146,155 @@ export default function AdminTicketsIndex() {
         </div>
       )}
       <div className="p-4">
-        <div className="w-[150px] -mb-8 p-2">
-          <select
-            className="px-4 py-2 w-full sm:w-auto rounded-md border border-gray-300  "
-            onChange={(e) => setStatusId(e.target.value)}
-            value={statusId}
-          >
-            <option value="">All</option>
-            <option value={4}>Approved</option>
-            <option value={0}>Pending</option>
-            <option value={2}>Rejected</option>
-          </select>
-        </div>
-
-        <div>
-          <div className="flex flex-col sm:flex-row justify-between items-center p-1  w-full mb-2">
-            <div className="flex flex-col sm:flex-row items-center gap-4"></div>
-            <div className="mt-4 sm:mt-0">
-              <p className="text-right text-lg font-semibold text-black mt-2">
-                Total Tickets :{totalFilteredRecords || 0}
-              </p>
-            </div>
+        {/* Top controls row */}
+        <div className="flex flex-col sm:flex-row justify-between items-center w-full mb-2">
+          {/* Left: Search + Filter */}
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-gray-400 text-sm"
+              placeholder="Search Reason"
+              value={searchTerm}
+              onChange={handleFilter}
+            />
+            <select
+              className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-gray-400 text-sm"
+              onChange={(e) => setStatusId(e.target.value)}
+              value={statusId}
+            >
+              <option value="">All</option>
+              <option value="4">Approved</option>
+              <option value="0">Pending</option>
+              <option value="2">Rejected</option>
+            </select>
           </div>
 
-          {/* Empty container purple coloe box div on top */}
-          <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-[#9791FF] rounded-md shadow-md w-full mb-2"></div>
+          {/* Right: Edit icon + New Ticket button + Total count */}
+          <div className="flex items-center gap-4 mt-3 sm:mt-0">
+            {/* Edit icon */}
+            <button className="p-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+              <svg className="w-4 h-4 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </button>
+            {/* + New Ticket */}
+            <button className="flex items-center gap-2 px-4 py-1.5 text-green-600 font-medium text-sm border-2 border-green-500 rounded hover:bg-green-50 transition-colors whitespace-nowrap">
+              <span className="text-lg font-bold">+</span>
+              New Ticket
+            </button>
+            <p className="text-lg font-semibold text-black whitespace-nowrap">
+              Total Tickets: {totalFilteredRecords || 0}
+            </p>
+          </div>
+        </div>
 
-          <div className="flex flex-col">
-            <div className="-my-2 sm:-mx-2 lg:-mx-2">
-              <div className="py-2 align-middle inline-block min-w-full sm:px-2 lg:px-2">
-                <div
-                  className="shadow border border-gray-200 sm:rounded-lg overflow-y-auto"
-                  style={{ maxHeight: "310px" }}
-                >
-                  <table className="min-w-full divide-y divide-gray-200 table-fixed">
-                    <thead className="bg-gray-50 sticky top-0 z-10">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="w-16 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          No.
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-20 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          User Id
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-32 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          User Name
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-40 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Email
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-32 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Reason
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-20 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Description
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-26 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Ticket Id
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-26 pl-6 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Attachment
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-26 pl-6 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Status
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-30 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Action
-                        </th>
-                        <th
-                          scope="col"
-                          className="w-24 px-2 py-3 text-left text-xs text-black font-semibold uppercase"
-                        >
-                          Created at
-                        </th>
+        {/* Tickets Table */}
+        <div className="flex flex-col">
+          <div className="-my-2 sm:-mx-2 lg:-mx-2">
+            <div className="py-2 align-middle inline-block min-w-full sm:px-2 lg:px-2">
+              <div
+                className="shadow border border-gray-200 sm:rounded-lg overflow-y-auto"
+                style={{ maxHeight: "310px" }}
+              >
+                <table className="min-w-full divide-y divide-gray-200 table-fixed">
+                  <thead className="bg-gray-50 sticky top-0 z-10">
+                    <tr>
+                      <th scope="col" className="w-10 px-2 py-3 text-left text-xs text-black font-semibold">
+                        No.
+                      </th>
+                      <th scope="col" className="w-16 px-2 py-3 text-left text-xs text-black font-semibold">
+                        User Id
+                      </th>
+                      <th scope="col" className="w-24 px-2 py-3 text-left text-xs text-black font-semibold">
+                        User Name
+                      </th>
+                      <th scope="col" className="w-28 px-2 py-3 text-left text-xs text-black font-semibold">
+                        Email
+                      </th>
+                      <th scope="col" className="w-28 px-2 py-3 text-left text-xs text-black font-semibold">
+                        Reason
+                      </th>
+                      <th scope="col" className="px-2 py-3 text-left text-xs text-black font-semibold">
+                        Description
+                      </th>
+                      <th scope="col" className="w-16 px-2 py-3 text-left text-xs text-black font-semibold">
+                        Ticket Id
+                      </th>
+                      <th scope="col" className="w-20 px-2 py-3 text-left text-xs text-black font-semibold">
+                        Attachment
+                      </th>
+                      <th scope="col" className="w-20 px-2 py-3 text-left text-xs text-black font-semibold">
+                        Status
+                      </th>
+                      <th scope="col" className="w-24 px-2 py-3 text-left text-xs text-black font-semibold">
+                        Action
+                      </th>
+                      <th scope="col" className="w-24 px-2 py-3 text-left text-xs text-black font-semibold">
+                        Created At
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {records?.length === 0 ? (
+                      <tr className="w-full">
+                        <td className="text-center py-4" colSpan={11}>
+                          No tickets found.
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200 mt-2">
-                      {records?.length === 0 ? (
-                        <tr className="w-full">
-                          <td className="text-center py-4" colSpan={11}>
-                            No tickets found.
-                          </td>
-                        </tr>
-                      ) : (
-                        records?.map((data: any, index: any) => {
-                          return (
-                            <React.Fragment key={index}>
-                              <ListRow
-                                data={data}
-                                index={index}
-                                onRowClick={() => setSelectedTicket(data)}
-                                isSelected={
-                                  selectedTicket?.ticket_id === data.ticket_id
-                                }
-                              />
-                            </React.Fragment>
-                          );
-                        })
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                    ) : (
+                      records?.map((data: any, index: any) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <ListRow
+                              data={data}
+                              index={index}
+                              onRowClick={() => setSelectedTicket(data)}
+                              isSelected={
+                                selectedTicket?.ticket_id === data.ticket_id
+                              }
+                            />
+                          </React.Fragment>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         </div>
 
-        <div>
-           {/* Horizontal Line */}
-                <hr className="border-gray-200 mt-4" />
-        </div>
+        {/* Horizontal Line */}
+        <hr className="border-gray-200 mt-4" />
 
+        {/* Chat / Response Section */}
         <div className="p-2">
-          {/* AI Response Box */}
-
-          <div className="chat-container mt-2 border-2 border-green-500 rounded-xl pl-4 pt-4 pr-4 pb-1 bg-white shadow-sm  max-w-[1400px] mx-auto">
+          <div className="chat-container mt-2 border-2 border-green-500 rounded-xl pl-4 pt-4 pr-4 pb-1 bg-white shadow-sm max-w-[1400px] mx-auto">
             {/* Header Row */}
             <div className="grid grid-cols-5 gap-4 items-start">
               <div className="text-[12px] text-gray-700">
                 <div className="font-semibold">Ticket No.</div>
-                <div className="mt-1">76</div>
+                <div className="mt-1">
+                  {selectedTicket?.ticket_id || "4500"}
+                </div>
               </div>
               <div className="text-[12px] text-gray-700 truncate text-center">
-                user@gmail.com
+                {selectedTicket?.users?.[0]?.email || "User@gmail.com"}
               </div>
               <div className="text-[12px] text-gray-700 truncate text-center">
-                Change in Release
+                {selectedTicket?.reason || "Change in Release"}
               </div>
               <div className="flex justify-center">
                 <span className="px-3 py-[2px] bg-white border border-gray-400 text-gray-700 rounded text-[11px] font-medium">
-                  Pending
+                  {selectedTicket?.Status === 4 ? "DONE" : "Pending"}
                 </span>
               </div>
               <div className="text-[12px] text-gray-700 text-right pr-12">
                 {(() => {
-                  const dt = formatDateTime("10/20/2024");
+                  const dt = formatDateTime(
+                    selectedTicket?.created_at || "14/02/2025"
+                  );
                   return (
                     <div className="leading-4">
                       <div>{dt.date}</div>
@@ -326,25 +302,19 @@ export default function AdminTicketsIndex() {
                     </div>
                   );
                 })()}
-               
               </div>
-              
             </div>
 
-            {/* Separator line */}
-            {/* <div className="border-t border-gray-200 my-3 " /> */}
+            {/* Separator */}
             <div className="pr-12">
-                <div className="border-t border-gray-200 my-3 " />
+              <div className="border-t border-gray-200 my-3" />
             </div>
 
             {/* Chat Scroll Area */}
             <div className="relative">
-              {/* Scrollable messages area with visible scrollbar */}
               <div
                 className="overflow-y-auto pr-12 mb-2 custom-scrollbar"
-                style={{
-                  maxHeight: "220px",
-                }}
+                style={{ maxHeight: "220px" }}
               >
                 {messages.map((message, index) => (
                   <div
@@ -394,9 +364,8 @@ export default function AdminTicketsIndex() {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Response input area - fixed at bottom */}
-              <div className="border-gray-200 ">
-                {/* <div className="text-gray-400 text-sm mb-2">Response...</div> */}
+              {/* Response input area */}
+              <div className="border-gray-200">
                 <div className="flex items-end gap-3">
                   <div className="flex-1 pr-12">
                     <textarea
@@ -412,12 +381,9 @@ export default function AdminTicketsIndex() {
                       rows={2}
                     />
                   </div>
-              
                 </div>
 
-              
-
-                <div className="flex flex-col sm:flex-row justify-between items-center p-1  w-full mb-2">
+                <div className="flex flex-col sm:flex-row justify-between items-center p-1 w-full mb-2">
                   <div className="flex flex-col sm:flex-row items-center gap-4"></div>
                   <div className="mt-4 sm:mt-0">
                     <span className="text-sm text-gray-400 mr-2">

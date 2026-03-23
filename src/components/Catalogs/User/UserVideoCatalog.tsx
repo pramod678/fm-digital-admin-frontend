@@ -1,15 +1,26 @@
 import * as React from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useState } from "react";
-import { Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import AppHeader from "../../SharedLayout/AppHeader";
+
+// BACKEND NOTE: Video Catalog filters should follow the same status enum contract as Audio Catalog.
+const STATUS_FILTERS = [
+  { label: 'Pending', value: 'pending', color: 'border-gray-300 text-gray-500' },
+  { label: 'Draft', value: 'draft', color: 'border-gray-300 text-gray-500' },
+  { label: 'Approved', value: 'approved', color: 'border-green-500 text-green-600' },
+  { label: 'Rejected', value: 'rejected', color: 'border-red-500 text-red-600' },
+  { label: 'Corrections', value: 'corrections', color: 'border-orange-300 text-orange-400' },
+];
 
 const UserVideoCatalog = () => {
   const navigate = useNavigate();
+  // BACKEND NOTE: Implement page-based pagination with page + limit params.
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTitle, setSearchTitle] = useState("");
-  const [filterAll, setFilterAll] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("pending");
 
+  // BACKEND NOTE: Backend should apply filtering based on `status` param and return filtered results with total count.
   const videoData = [
     {
       id: 1,
@@ -19,6 +30,7 @@ const UserVideoCatalog = () => {
       label: "FM Digital",
       tracks: 1,
       date: "2025-03-15",
+      status: "-"
     },
     {
       id: 2,
@@ -28,6 +40,7 @@ const UserVideoCatalog = () => {
       label: "FM Digital",
       tracks: 1,
       date: "2024-12-20",
+      status: "-"
     },
     {
       id: 3,
@@ -37,6 +50,7 @@ const UserVideoCatalog = () => {
       label: "FM FEEL music",
       tracks: 1,
       date: "2024-10-10",
+      status: "-"
     },
     {
       id: 4,
@@ -46,6 +60,7 @@ const UserVideoCatalog = () => {
       label: "FM FEEL music",
       tracks: 1,
       date: "2024-08-05",
+      status: "-"
     },
     {
       id: 5,
@@ -55,6 +70,7 @@ const UserVideoCatalog = () => {
       label: "FM Digital",
       tracks: 1,
       date: "2024-06-12",
+      status: "-"
     },
     {
       id: 6,
@@ -64,6 +80,7 @@ const UserVideoCatalog = () => {
       label: "FM FEEL music",
       tracks: 1,
       date: "2024-04-18",
+      status: "-"
     },
     {
       id: 7,
@@ -73,6 +90,7 @@ const UserVideoCatalog = () => {
       label: "FM Digital",
       tracks: 1,
       date: "2024-02-22",
+      status: "-"
     },
     {
       id: 8,
@@ -82,6 +100,7 @@ const UserVideoCatalog = () => {
       label: "FM FEEL music",
       tracks: 1,
       date: "2023-12-30",
+      status: "-"
     },
     {
       id: 9,
@@ -91,6 +110,7 @@ const UserVideoCatalog = () => {
       label: "FM Digital",
       tracks: 1,
       date: "2023-10-14",
+      status: "-"
     },
     {
       id: 10,
@@ -100,130 +120,166 @@ const UserVideoCatalog = () => {
       label: "FM FEEL music",
       tracks: 1,
       date: "2023-08-08",
+      status: "-"
     },
   ];
 
+  /* 
+     BACKEND NOTE: Implement search query param for title/artist/label.
+  */
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  /*
+     BACKEND NOTE: Selected status filter should be sent as a query parameter (e.g., ?status=approved) to the catalog listing API.
+  */
+  const handleFilterChange = (filterVal: string) => {
+    setActiveFilter(filterVal);
+  };
+
+  React.useEffect(() => {
+    // This effect simulates the API call trigger whenever filters change.
+    console.log(`Fetching data with params: status=${activeFilter}, search=${searchQuery}, page=${currentPage}`);
+    // api.fetchCatalog({ status: activeFilter, search: searchQuery, page: currentPage });
+  }, [activeFilter, searchQuery, currentPage]);
+
+  const handleStoreClick = (id: number) => {
+    console.log("Fetch stores for", id);
+  };
+
+  const rightActions = (
+    <div className="flex items-center gap-4">
+      <button 
+        onClick={() => navigate('/user/catalog/audio')}
+        className="bg-green-700 hover:bg-green-800 text-white px-4 py-1.5 rounded typo-btn-main transition-colors"
+      >
+        Go To Audio Catalog
+      </button>
+      <div className="flex flex-col items-end leading-tight text-gray-800">
+         <span className="text-[10px] uppercase font-bold text-gray-500">Total Releases</span>
+         {/* BACKEND NOTE: Total releases count should come from catalog summary API. */}
+         <span className="typo-page-title">100</span>
+      </div>
+    </div>
+  );
+
   return (
-    <div className=" bg-gray-50 overflow-hidden flex flex-col">
-      <div className="w-full mx-auto p-4 flex-1 flex flex-col">
-        {/* Header */}
-        <div className=" text-white text-center  rounded-t-lg flex justify-between items-center mb-1">
-          <div className="bg-indigo-700 w-[50%] px-6 py-1 rounded">
-            <div className="flex items-start">
-              <h1 className="text-xl font-semibold">Video Catalog</h1>
-            </div>
+    <div className="flex flex-col h-full bg-white">
+      <AppHeader title="Video Catalog" />
+
+      <div className="p-6 flex flex-col gap-4 h-full overflow-hidden">
+        
+        {/* Top Controls Bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+          
+          {/* Left: Search */}
+          <div className="w-full md:w-64">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="w-full border border-gray-300 rounded-md px-3 py-1.5 typo-table-cell focus:outline-none focus:ring-1 focus:ring-gray-400 placeholder-gray-400"
+            />
           </div>
 
-          <button
-            onClick={() => navigate("/user/catalog/audio")}
-            className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded text-sm font-medium"
-          >
-            Go To Audio Catalog
-          </button>
+          {/* Center: Filters */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+             {STATUS_FILTERS.map((filter) => (
+               <button
+                 key={filter.value}
+                 onClick={() => handleFilterChange(filter.value)}
+                 className={`px-4 py-1.5 rounded-md typo-table-cell font-semibold border bg-white transition-all whitespace-nowrap
+                   ${filter.color}
+                   ${activeFilter === filter.value ? 'ring-1 ring-offset-1 ring-gray-200 shadow-sm' : 'hover:bg-gray-50'}
+                 `}
+               >
+                 {filter.label}
+               </button>
+             ))}
+          </div>
 
-         
-        </div>
-
-        {/* Search Bar */}
-        <div className="bg-gray-100 rounded-md shadow-md w-full mt-1 mb-3 px-6 py-3 border-b flex items-center gap-4">
-          <input
-            type="text"
-            placeholder="Search Title"
-            value={searchTitle}
-            onChange={(e) => setSearchTitle(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-1.5 text-sm flex-1 max-w-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-          <select
-            value={filterAll}
-            onChange={(e) => setFilterAll(e.target.value)}
-            className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          >
-            <option>All</option>
-            <option>Electronic</option>
-            <option>Ambient</option>
-            <option>Hip Hop</option>
-          </select>
-          <div className="ml-auto text-sm text-gray-600">
-            Total Releases : <span className="font-semibold">15</span>
+          {/* Right: Actions */}
+          <div className="ml-auto flex-shrink-0">
+             {rightActions}
           </div>
         </div>
 
-        {/* Table */}
-        <div className="bg-white overflow-x-auto flex-1 rounded-lg border border-gray-200">
-          <table className="w-full table-fixed">
-            <thead>
-              <tr className="bg-gray-100 border-b text-xs text-gray-600 uppercase rounded">
-                <th className="px-4 py-3 text-left w-24">NO.</th>
-                <th className="px-4 py-3 text-left w-24">STATUS</th>
-                <th className="px-4 py-3 text-left w-36">VIDEO THUMBNAIL</th>
-                <th className="px-4 py-3 text-left w-40">TITLE</th>
-                <th className="px-4 py-3 text-left w-40">ARTIST NAME</th>
-                <th className="px-4 py-3 text-left w-40">GENRE</th>
-                <th className="px-4 py-3 text-left w-40">LABEL</th>
-                <th className="px-4 py-3 text-left w-40"># OF TRACKS</th>
-                <th className="px-4 py-3 text-left w-40">RELEASE DATE</th>
-                <th className="px-4 py-3 text-left w-40">ACTION</th>
+        {/* Table Container */}
+        <div className="flex-1 border border-gray-200 rounded-lg overflow-hidden flex flex-col">
+          <div className="overflow-auto flex-1">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-white sticky top-0 z-10">
+              <tr className="typo-table-head border-b border-gray-200">
+                <th className="px-4 py-3 font-semibold w-16">No.</th>
+                <th className="px-4 py-3 font-semibold w-20">Status</th>
+                <th className="px-4 py-3 font-semibold w-32">Video Thumbnail</th>
+                <th className="px-4 py-3 font-semibold">Title</th>
+                <th className="px-4 py-3 font-semibold">Artist Name</th>
+                <th className="px-4 py-3 font-semibold w-24">Genre</th>
+                <th className="px-4 py-3 font-semibold">Label</th>
+                <th className="px-4 py-3 font-semibold w-24"># of tracks</th>
+                <th className="px-4 py-3 font-semibold w-32">Release Date</th>
+                <th className="px-4 py-3 font-semibold w-24">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-100">
               {videoData.map((item, index) => (
-                <tr key={item.id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-600">
-                    {index + 1}
-                  </td>
+                <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-4 py-3 typo-table-cell-strong text-gray-600">{index + 1}</td>
+                  <td className="px-4 py-3 typo-table-cell text-gray-500 text-center">{item.status}</td>
                   <td className="px-4 py-3">
-                    <div className="w-6 h-6 bg-white rounded-full border-2 border-green-500 flex items-center justify-center">
-                      <Check className="w-3.5 h-3.5 text-green-500 stroke-[3]" />
+                    {/* 
+                       BACKEND NOTE: Audio Catalog artwork currently renders placeholder only. 
+                       Backend may not be returning artwork URL yet. Frontend should render image when URL becomes available.
+                       Using similar logic for Video Thumbnail.
+                    */}
+                    <div className="w-16 h-16 border border-gray-200 rounded-md flex items-center justify-center bg-white text-[10px] text-gray-400 font-medium text-center leading-tight">
+                      Video<br/>Thumbnail
                     </div>
                   </td>
+                  <td className="px-4 py-3 typo-table-cell-strong text-gray-800 py-4 max-w-[200px] truncate" title={item.title}>{item.title}</td>
+                  <td className="px-4 py-3 typo-table-cell text-gray-600">{item.artist}</td>
+                  <td className="px-4 py-3 typo-table-cell text-gray-600">{item.genre}</td>
+                  <td className="px-4 py-3 typo-table-cell text-gray-600 truncate max-w-[150px]">{item.label}</td>
+                  <td className="px-4 py-3 typo-table-cell text-gray-600 pl-8">{item.tracks}</td>
+                  <td className="px-4 py-3 typo-table-cell text-gray-600">{item.date}</td>
                   <td className="px-4 py-3">
-                    <div className="w-10 h-10 rounded overflow-hidden">
-                      <img 
-                        src="https://picsum.photos/200/300" 
-                        alt="Album cover" 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-xs text-gray-700">
-                    {item.title}
-                  </td>
-                  <td className="px-4 py-3 text-xs text-gray-600">
-                    {item.artist}
-                  </td>
-                  <td className="px-4 py-3 text-xs text-gray-600">
-                    {item.genre}
-                  </td>
-                  <td className="px-4 py-3 text-xs text-gray-600">
-                    {item.label}
-                  </td>
-                  <td className="px-4 py-3 text-xs text-gray-600">
-                    {item.tracks}
-                  </td>
-                  <td className="px-4 py-3 text-xs text-gray-600">
-                    {item.date}
-                  </td>
-                  <td className="px-4 py-3">
-                    <button className="bg-cyan-400 hover:bg-cyan-500 text-white px-4 py-1.5 rounded text-xs font-medium">
-                      Stores
-                    </button>
+                     <button 
+                       onClick={() => handleStoreClick(item.id)}
+                       className="bg-[#6B46C1] hover:bg-[#553C9A] text-white typo-btn-action px-3 py-1.5 rounded shadow-sm transition-colors normal-case"
+                     >
+                       Stores
+                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          </div>
+          
+           {/* Pagination */}
+           <div className="p-4 border-t border-gray-200 flex justify-end items-center gap-2 bg-white">
+                <button 
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-50 text-gray-600 disabled:opacity-50"
+                  disabled={currentPage === 1}
+                >
+                  <FiChevronLeft size={16} />
+                </button>
+                <div className="typo-table-cell text-gray-600 px-2">
+                  Page: {currentPage}
+                </div>
+                <button 
+                   onClick={() => setCurrentPage(p => p + 1)}
+                   className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-50 text-gray-600"
+                >
+                  <FiChevronRight size={16} />
+                </button>
+           </div>
         </div>
 
-        {/* Pagination */}
-        <div className="bg-white px-6 py-4 rounded-b-lg flex justify-end items-center gap-2">
-          <button className="w-6 h-6 bg-gray-300 hover:bg-gray-400 rounded flex items-center justify-center text-gray-700">
-            <FiChevronLeft color="white" />
-          </button>
-          <span className="text-sm text-gray-600">Page 1</span>
-          <button className="w-6 h-6 bg-gray-800 hover:bg-gray-900 rounded flex items-center justify-center text-white">
-            <FiChevronRight color="white" />
-          </button>
-        </div>
       </div>
     </div>
   );

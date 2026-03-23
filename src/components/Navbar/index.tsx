@@ -211,13 +211,13 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                 >
                                     Account
                                 </Link>
-                                <Link 
+                                {/* <Link 
                                     to="/dashboard?tab=achievements"
                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     onClick={() => setIsMenuOpen(false)}
                                 >
                                     Achievements
-                                </Link>
+                                </Link> */}
                                 <Link 
                                     to="/dashboard?tab=subscription"
                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -225,13 +225,13 @@ export default function Index({ isOpen, setIsOpen }: props) {
                                 >
                                     Subscription
                                 </Link>
-                                <Link 
+                                {/* <Link 
                                     to="/dashboard?tab=refer"
                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     onClick={() => setIsMenuOpen(false)}
                                 >
                                     Refer a Friend
-                                </Link>
+                                </Link> */}
                                 
                                 <div className="border-t border-gray-100 my-1"></div>
                                 <button

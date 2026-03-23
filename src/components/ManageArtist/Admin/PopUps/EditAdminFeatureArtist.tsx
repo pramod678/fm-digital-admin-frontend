@@ -9,11 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { UpdateAdminFeaturingArtistApi, UpdateAdminPrimaryArtistApi, UpdatePrimaryArtistApi, UserDataApi } from "../../../../api/releaseInfo";
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
-import { FaUserEdit } from "react-icons/fa";
-import useResponsiveIconSize from "../../../../hooks/useResponsiveIconSize";
+import { FiEdit2 } from "react-icons/fi";
 import { BeatLoader } from "react-spinners";
+import useResponsiveIconSize from "../../../../hooks/useResponsiveIconSize";
 import { FeatureArtistDto } from "../../../../types/ReleaseInfo";
-
 
 export default function EditAdminManageArtist({ Initialdata }: { Initialdata: any }) {
 
@@ -39,9 +38,12 @@ export default function EditAdminManageArtist({ Initialdata }: { Initialdata: an
 
     return (
         <>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => setIsOpen(true)}>
-                <FaUserEdit className="cursor-pointer ml-4" size={size} />
-            </td>
+            <button 
+                className="p-1 rounded bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 transition-all shadow-sm group"
+                onClick={() => setIsOpen(true)}
+            >
+                <FiEdit2 size={16} className="group-hover:scale-110 transition-transform" />
+            </button>
 
 
             <Transition appear show={isOpen} as={Fragment}>
@@ -68,67 +70,85 @@ export default function EditAdminManageArtist({ Initialdata }: { Initialdata: an
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                                <Dialog.Title
-                                    as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
-                                >
-                                    Edit Featuring Artist
-                                </Dialog.Title>
+                            <div className="inline-block w-full max-w-md p-5 my-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                                <div className="flex justify-between items-center mb-3">
+                                    <Dialog.Title
+                                        as="h3"
+                                        className="text-lg font-bold text-gray-800 typo-section-title"
+                                    >
+                                        Update Artist
+                                    </Dialog.Title>
+                                    <button
+                                        type="button"
+                                        className="text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <AiOutlineCloseCircle size={20} />
+                                    </button>
+                                </div>
+                                <hr className="border-gray-100 mb-4" />
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
-                                }}>
-                                    <div className="mt-2">
+                                }} className="max-h-[70vh] overflow-y-auto pr-1 custom-scrollbar">
+                                    <div className="space-y-3">
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Featuring Artist Name" htmlFor="grid-firstName" required={true} />
+                                        <div>
+                                            <div className="mb-1">
+                                                <Label text="Artist Name" htmlFor="grid-FeaturingArtist" />
+                                            </div>
                                             <InputField
                                                 type="text"
                                                 name="FeaturingArtist"
-                                                placeholder="Enter Featuring Artist Name"
+                                                placeholder="Enter Artist Name"
                                                 register={register}
                                                 errors={errors}
-                                                requiredMessage="Featuring Artist Name is required."
+                                                requiredMessage="Artist Name is required."
                                             />
                                         </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Featuring Artist Apple Id " htmlFor="grid-lastName" />
-                                            <InputField
-                                                type="url"
-                                                name="AppleId"
-                                                placeholder="Enter Featuring Artist Apple Id "
-                                                register={register}
-                                                errors={errors}
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Featuring Artist Spotify Id " htmlFor="grid-lastName" />
+                                        <div>
+                                            <div className="mb-1">
+                                                <Label text="Spotify Id" htmlFor="grid-SpotifyId" />
+                                            </div>
                                             <InputField
                                                 type="url"
                                                 name="SpotifyId"
-                                                placeholder="Enter Featuring Artist Spotify Id "
+                                                placeholder="Enter Spotify Id"
                                                 register={register}
                                                 errors={errors}
+                                                requiredMessage="Spotify Id is required."
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <div className="mb-1">
+                                                <Label text="Apple Id" htmlFor="grid-AppleId" />
+                                            </div>
+                                            <InputField
+                                                type="url"
+                                                name="AppleId"
+                                                placeholder="Apple Id"
+                                                register={register}
+                                                errors={errors}
+                                                requiredMessage="Apple Id is required."
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="mt-4 flex justify-end space-x-2">
+                                    <div className="mt-6 flex justify-between space-x-3">
                                         <button
                                             type="button"
-                                            className="px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                            className="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 focus:outline-none transition-all typo-btn-main shadow-sm"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            Close
+                                            Cancel
                                         </button>
                                         <button
                                             type="submit"
                                             disabled={isLoading}
-                                            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+                                            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-[#00c26d] border border-transparent rounded-xl hover:bg-[#00a65d] focus:outline-none transition-all typo-btn-main shadow-md"
                                         >
-                                            {isLoading ? <BeatLoader color="#ffffff" /> : 'Update'}
+                                            {isLoading ? <BeatLoader color="#ffffff" size={8} /> : 'Update'}
                                         </button>
                                     </div>
 

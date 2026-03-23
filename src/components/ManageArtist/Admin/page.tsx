@@ -11,30 +11,12 @@ const AdminManageArtistIndex = () => {
 
     return (
         <>
-            <div className="p-4">
-                <div className="w-1/2 mb-4 bg-neutral-800 p-2">
-                    <p className="text-white font-semibold ml-4 text-base sm:text-lg ">{showPrimaryArtist ? 'Manage Primary Artist' : 'Manage Featuring Artist'}</p>
-                </div>
-                <div className="w-full flex justify-end">
-                    <button
-                        type="button"
-                        className="bg-pink-600 hover:bg-pink-900 text-white py-2 px-4 rounded sm:text-xs mb-2"
-                        onClick={() => {
-                            setShowPrimaryArtist((prev: any) => !prev)
-                        }}
-                    >
-                        {showPrimaryArtist ? 'Go to Featuring Artist' : ' Go to Primary Artist'}
-                    </button>
-                </div>
+            <div className="bg-gray-50 min-h-screen">
                 {
                     showPrimaryArtist ? (
-                        <>
-                            <AdminPrimaryArtistIndex />
-                        </>
+                        <AdminPrimaryArtistIndex setShowPrimaryArtist={setShowPrimaryArtist} />
                     ) : (
-                        <>
-                                <AdminFeaturingArtistIndex showPrimaryArtist={showPrimaryArtist} />
-                        </>
+                        <AdminFeaturingArtistIndex setShowPrimaryArtist={setShowPrimaryArtist} showPrimaryArtist={showPrimaryArtist} />
                     )
                 }
             </div>

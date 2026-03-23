@@ -18,6 +18,7 @@ import SongsUpload from "../../../ui/SongsUpload";
 import TimePicker from "react-time-picker";
 import 'react-time-picker/dist/TimePicker.css';
 import { capitalizeString } from "../../../utility/Capitilize";
+import { AiFillSave } from "react-icons/ai";
 
 
 export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetch }: { userData: any, getReleaseInfo: any, GetSongs: any, refetch: any }) {
@@ -25,12 +26,16 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
     const [primaryArtistGet, setprimaryArtistGet] = React.useState([]);
     const [featuringArtistGet, setfeaturingArtistGet] = React.useState([]);
     const [file, setFile] = useState(null);
-    const [timeValue, setTimeValue] = useState('');
 
-    const onChange = (newTimeValue: any) => {
-        // Handle TimePicker change
-        setTimeValue(newTimeValue);
-    };
+    // Multi-select state for Authors and Composers
+    const [authors, setAuthors] = React.useState<string[]>([]);
+    const [composers, setComposers] = React.useState<string[]>([]);
+
+    const [authorFirstName, setAuthorFirstName] = React.useState("");
+    const [authorLastName, setAuthorLastName] = React.useState("");
+    
+    const [composerFirstName, setComposerFirstName] = React.useState("");
+    const [composerLastName, setComposerLastName] = React.useState("");
     const {
         register,
         handleSubmit,
@@ -69,9 +74,40 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
     ]
 
 
-
     //featuringArtisttPost Api Call
     const { mutate: SongsPost, isLoading: isLoadingSongsPost } = SongsPostApi({ setIsOpen, refetch, reset, setFile })
+
+    // --- Multi-select Handlers ---
+    const handleAddAuthor = () => {
+        if (!authorFirstName.trim() || !authorLastName.trim()) return;
+        const fullName = toTitleCase(`${authorFirstName.trim()} ${authorLastName.trim()}`);
+        if (authors.length >= 3) return; // Max 3 check
+        if (!authors.includes(fullName)) {
+            setAuthors((prev) => [...prev, fullName]);
+        }
+        setAuthorFirstName("");
+        setAuthorLastName("");
+    };
+
+    const handleRemoveAuthor = (nameToRemove: string) => {
+        setAuthors((prev) => prev.filter(name => name !== nameToRemove));
+    };
+
+    const handleAddComposer = () => {
+        if (!composerFirstName.trim() || !composerLastName.trim()) return;
+        const fullName = toTitleCase(`${composerFirstName.trim()} ${composerLastName.trim()}`);
+        if (composers.length >= 3) return; // Max 3 check
+        if (!composers.includes(fullName)) {
+            setComposers((prev) => [...prev, fullName]);
+        }
+        setComposerFirstName("");
+        setComposerLastName("");
+    };
+
+    const handleRemoveComposer = (nameToRemove: string) => {
+        setComposers((prev) => prev.filter(name => name !== nameToRemove));
+    };
+
     function toTitleCase(str: string) {
         return str.replace(
             /\w\S*/g,
@@ -90,8 +126,11 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
         formData.append("VersionSubtitle", newData.VersionSubtitle);
         formData.append("Primaryartist", newData.Primaryartist);
         formData.append("FeaturingArtist", newData.FeaturingArtist);
-        formData.append("Author", toTitleCase(newData.Author));
-        formData.append("Composer", toTitleCase(newData.Composer));
+        
+        // Use local multi-select state
+        formData.append("Author", authors.join(", "));
+        formData.append("Composer", composers.join(", "));
+        
         formData.append("Producer", toTitleCase(newData.Producer));
         formData.append("Publisher", newData.Publisher);
         formData.append("ISRC", newData.ISRC);
@@ -119,7 +158,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
             {
                 !isOpen && (getReleaseInfo?.data?.data?.ReleaseType !== 'Single' || GetSongs?.data?.data?.length !== 1) &&
                 <div className="flex justify-center items-center">
-                    <button type="button" className="bg-black text-white px-2 py-2 " onClick={() => setIsOpen(true)}>Add Song Details</button>
+                    <button type="button" className="bg-black text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-sm" onClick={() => setIsOpen(true)}>Add Song Details</button>
                 </div>
             }
 
@@ -149,7 +188,7 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                            <div className="inline-block w-full max-w-5xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                                 <Dialog.Title
                                     as="h3"
                                     className="text-lg font-medium leading-6 text-gray-900"
@@ -161,239 +200,308 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
 
                                         <SongsUpload file={file} setFile={setFile} />
 
-                                        <div className="w-full mb-2">
-                                            <Label text={"Track Version"} htmlFor={""} required={true} />
-                                            <div className="flex space-y-2 gap-4">
-                                                {Trackoptions?.map((unit: any, index: any) => (
-                                                    <label key={index} className="inline-flex items-center mt-2">
-                                                        <input
-                                                            type="radio"
-                                                            className="h-4 w-4 text-gray-600"
-                                                            id={unit.value}
-                                                            defaultChecked={unit.value == "Original"}
-                                                            {...register("Trackversion", { required: `Trackversion is required ` })}
-                                                            value={unit.value}
-                                                        />
-                                                        <span className="ml-4 text-sm">{unit.label}</span>
-                                                    </label>
-                                                ))}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-6">
+                                            <div className="w-full">
+                                                <Label text="Song Title" htmlFor="grid-Title" required={true} />
+                                                <InputField
+                                                    type="text"
+                                                    name="Title"
+                                                    placeholder="Enter Title "
+                                                    register={register}
+                                                    errors={errors}
+                                                    requiredMessage="Title  is required."
+                                                />
                                             </div>
-                                        </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text={"Instrumental"} htmlFor={""} required={true} />
-                                            <div className="flex space-y-2 gap-4">
-                                                {IntsrumentalOptions?.map((unit: any, index: any) => (
-                                                    <label key={index} className="inline-flex items-center mt-2">
-                                                        <input
-                                                            type="radio"
-                                                            className="h-4 w-4 text-gray-600"
-                                                            id={unit.value}
-                                                            defaultChecked={unit.value == "No"}
-                                                            {...register("Instrumental", { required: `Instrumental is required ` })}
-                                                            value={unit.value}
-                                                        />
-                                                        <span className="ml-4 text-sm">{unit.label}</span>
-                                                    </label>
-                                                ))}
+                                            <div className="w-full">
+                                                <Label text="Version/SubTitle" htmlFor="grid-VersionSubtitle" />
+                                                <InputField
+                                                    type="text"
+                                                    name="VersionSubtitle"
+                                                    placeholder="Enter Version/Subtitle "
+                                                    register={register}
+                                                    errors={errors}
+                                                />
                                             </div>
-                                        </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Song Title" htmlFor="grid-Title" required={true} />
-                                            <InputField
-                                                type="text"
-                                                name="Title"
-                                                placeholder="Enter Title "
-                                                register={register}
-                                                errors={errors}
-                                                requiredMessage="Title  is required."
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Version/SubTitle" htmlFor="grid-VersionSubtitle" />
-                                            <InputField
-                                                type="text"
-                                                name="VersionSubtitle"
-                                                placeholder="Enter Version/Subtitle "
-                                                register={register}
-                                                errors={errors}
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Primary Artist" htmlFor="grid-Primaryartist" required={true} />
-                                            <div className="flex gap-2 items-center">
-                                                <SelectPrimaryArtist control={control} name="Primaryartist" errors={errors} required={true} id={userData?.users_id} />
-                                                <PrimaryArtist userData={userData} />
+                                            <div className="w-full">
+                                                <Label text="Primary Artist" htmlFor="grid-Primaryartist" required={true} />
+                                                <div className="flex gap-2 items-center">
+                                                    <SelectPrimaryArtist control={control} name="Primaryartist" errors={errors} required={true} id={userData?.users_id} />
+                                                    <PrimaryArtist userData={userData} />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={false} />
-                                            <div className="flex gap-2 items-center">
-                                                <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={false} id={userData?.users_id} />
-                                                <FeatureArtist userData={userData} />
+                                            <div className="w-full">
+                                                <Label text="Featuring Artist" htmlFor="grid-FeaturingArtist" required={false} />
+                                                <div className="flex gap-2 items-center">
+                                                    <SelectFeatureArtist control={control} name="FeaturingArtist" errors={errors} required={false} id={userData?.users_id} />
+                                                    <FeatureArtist userData={userData} />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Author" htmlFor="grid-Author" required={true} />
-                                            <InputField
-                                                type="text"
-                                                name="Author"
-                                                placeholder="Enter Author "
-                                                register={register}
-                                                errors={errors}
-                                                requiredMessage="Author  is required."
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Composer" htmlFor="grid-Composer" required={true} />
-                                            <InputField
-                                                type="text"
-                                                name="Composer"
-                                                placeholder="Enter Composer "
-                                                register={register}
-                                                errors={errors}
-                                                requiredMessage="Composer  is required."
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Producer" htmlFor="grid-Producer" required={true} />
-                                            <InputField
-                                                type="text"
-                                                name="Producer"
-                                                placeholder="Enter Producer "
-                                                register={register}
-                                                errors={errors}
-                                                requiredMessage="Producer  is required."
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Publisher" htmlFor="grid-Publisher" required={false} />
-                                            <InputField
-                                                type="text"
-                                                name="Publisher"
-                                                placeholder="Enter Publisher "
-                                                register={register}
-                                                errors={errors}
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="ISRC" htmlFor="grid-ISRC" required={false} />
-                                            <InputField
-                                                type="text"
-                                                name="ISRC"
-                                                placeholder="Enter ISRC "
-                                                register={register}
-                                                errors={errors}
-                                            />
-                                        </div>
-
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Genre" htmlFor="grid-Genre" required={true} />
-                                            <SelectGenre control={control} name="Genre" options={genre?.data?.data || []} errors={errors} required={true} />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Sub Genre" htmlFor="grid-SubGenre" required={false} />
-                                            <InputField
-                                                type="text"
-                                                name="Subgenre"
-                                                placeholder="Enter SubGenre"
-                                                register={register}
-                                                errors={errors}
-                                            />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text="Price Tier" htmlFor="grid-ISRC" required={true} />
-                                            <SelectPriceTier control={control} name={"PriceTier"} options={PriceOptions} errors={errors} required={true} />
-                                        </div>
-
-                                        <div className="w-full mb-2">
-                                            <Label text={"Explicit Version"} htmlFor={""} required={true} />
-                                            <div className="flex space-y-2 gap-4">
-                                                {ExplicitVersion?.map((unit: any, index: any) => (
-                                                    <label key={index} className="inline-flex items-center mt-2">
-                                                        <input
-                                                            type="radio"
-                                                            className="h-4 w-4 text-gray-600"
-                                                            id={unit.value}
-                                                            defaultChecked={unit.value == "No"}
-                                                            {...register("ExplicitVersion", { required: `ExplicitVersion is required ` })}
-                                                            value={unit.value}
-                                                        />
-                                                        <span className="ml-4 text-sm">{unit.label}</span>
-                                                    </label>
-                                                ))}
+                                            {/* AUTHOR MULTI-SELECT UI */}
+                                            <div className="w-full">
+                                                <Label text="Author" htmlFor="grid-Author" required={false} />
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="First Name"
+                                                        value={authorFirstName}
+                                                        onChange={(e) => setAuthorFirstName(e.target.value)}
+                                                        onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddAuthor())}
+                                                        className="flex-1 w-full bg-slate-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:ring-0 sm:text-sm sm:leading-6 transition-colors duration-200 ease-in-out"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Last Name"
+                                                        value={authorLastName}
+                                                        onChange={(e) => setAuthorLastName(e.target.value)}
+                                                        onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddAuthor())}
+                                                        className="flex-1 w-full bg-slate-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:ring-0 sm:text-sm sm:leading-6 transition-colors duration-200 ease-in-out"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleAddAuthor}
+                                                        disabled={authors.length >= 3 || !authorFirstName.trim() || !authorLastName.trim()}
+                                                        className="bg-blue-600 text-white px-4 py-2 rounded shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm font-medium transition-colors"
+                                                    >
+                                                        Add
+                                                    </button>
+                                                </div>
+                                                {authors.length > 0 && (
+                                                    <div className="flex flex-wrap gap-2 mt-2">
+                                                        {authors.map((author, idx) => (
+                                                            <div key={idx} className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-100 shadow-sm">
+                                                                <span>{author}</span>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveAuthor(author)}
+                                                                    className="w-4 h-4 rounded-full hover:bg-blue-200 flex items-center justify-center transition-colors"
+                                                                    title="Remove"
+                                                                >
+                                                                    ×
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                <p className="text-xs text-gray-500 mt-1">Maximum 3 authors allowed. Example: John Doe</p>
                                             </div>
-                                        </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Track Title Language" htmlFor="grid-TrackTitleLanguage" required={true} />
-                                            <SelectLanguage control={control} name="TrackTitleLanguage" errors={errors} required={true} />
-                                        </div>
+                                            {/* COMPOSER MULTI-SELECT UI */}
+                                            <div className="w-full">
+                                                <Label text="Composer" htmlFor="grid-Composer" required={false} />
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="First Name"
+                                                        value={composerFirstName}
+                                                        onChange={(e) => setComposerFirstName(e.target.value)}
+                                                        onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddComposer())}
+                                                        className="flex-1 w-full bg-slate-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:ring-0 sm:text-sm sm:leading-6 transition-colors duration-200 ease-in-out"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Last Name"
+                                                        value={composerLastName}
+                                                        onChange={(e) => setComposerLastName(e.target.value)}
+                                                        onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddComposer())}
+                                                        className="flex-1 w-full bg-slate-100 text-gray-900 border-0 rounded-md p-2 focus:bg-gray-200 focus:ring-0 sm:text-sm sm:leading-6 transition-colors duration-200 ease-in-out"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleAddComposer}
+                                                        disabled={composers.length >= 3 || !composerFirstName.trim() || !composerLastName.trim()}
+                                                        className="bg-blue-600 text-white px-4 py-2 rounded shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm font-medium transition-colors"
+                                                    >
+                                                        Add
+                                                    </button>
+                                                </div>
+                                                {composers.length > 0 && (
+                                                    <div className="flex flex-wrap gap-2 mt-2">
+                                                        {composers.map((composer, idx) => (
+                                                            <div key={idx} className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-100 shadow-sm">
+                                                                <span>{composer}</span>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleRemoveComposer(composer)}
+                                                                    className="w-4 h-4 rounded-full hover:bg-blue-200 flex items-center justify-center transition-colors"
+                                                                    title="Remove"
+                                                                >
+                                                                    ×
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                <p className="text-xs text-gray-500 mt-1">Maximum 3 composers allowed. Example: Jane Doe</p>
+                                            </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Lyrics Language" htmlFor="grid-LyricsLanguage" required={true} />
-                                            <SelectLanguage control={control} name="LyricsLanguage" errors={errors} required={true} />
-                                        </div>
+                                            <div className="w-full">
+                                                <Label text="Producer" htmlFor="grid-Producer" required={true} />
+                                                <InputField
+                                                    type="text"
+                                                    name="Producer"
+                                                    placeholder="Enter Producer "
+                                                    register={register}
+                                                    errors={errors}
+                                                    requiredMessage="Producer  is required."
+                                                />
+                                            </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Lyrics" htmlFor="grid-Lyrics" required={false} />
-                                            <InputField
-                                                type="text"
-                                                name="Lyrics"
-                                                placeholder="Enter Lyrics "
-                                                register={register}
-                                                errors={errors}
-                                            />
-                                        </div>
+                                            <div className="w-full">
+                                                <Label text="Publisher" htmlFor="grid-Publisher" required={false} />
+                                                <InputField
+                                                    type="text"
+                                                    name="Publisher"
+                                                    placeholder="Enter Publisher "
+                                                    register={register}
+                                                    errors={errors}
+                                                />
+                                            </div>
 
-                                        <div className="w-full mb-2 flex flex-col">
-                                            <Label text="Caller Tune Timing" htmlFor="grid-CallerTuneTiming" required={false} />
-                                            {/* <TimePicker
-                                                id="grid-CallerTuneTiming"
-                                                onChange={onChange}
-                                                value={timeValue}
-                                                disableClock 
-                                                format="HH:mm:ss" 
-                                                className="shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md transition ease-in-out duration-150"
-                                            /> */}
-                                            <InputField
-                                                type="text"
-                                                name="CallerTuneTiming"
-                                                placeholder="Type like this HH:mm:ss"
-                                                register={register}
-                                                errors={errors}
-                                            />
-                                        </div>
+                                            <div className="w-full">
+                                                <Label text="ISRC" htmlFor="grid-ISRC" required={false} />
+                                                <InputField
+                                                    type="text"
+                                                    name="ISRC"
+                                                    placeholder="Enter ISRC "
+                                                    register={register}
+                                                    errors={errors}
+                                                />
+                                            </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Released Video URL" htmlFor="grid-DistributeMusicvideo" required={false} />
-                                            <InputField
-                                                type="text"
-                                                name="DistributeMusicvideo"
-                                                placeholder="Released Video URL"
-                                                register={register}
-                                                errors={errors}
-                                            />
+
+                                            <div className="w-full">
+                                                <Label text="Genre" htmlFor="grid-Genre" required={true} />
+                                                <SelectGenre control={control} name="Genre" options={genre?.data?.data || []} errors={errors} required={true} />
+                                            </div>
+
+                                            <div className="w-full">
+                                                <Label text="Sub Genre" htmlFor="grid-SubGenre" required={false} />
+                                                <InputField
+                                                    type="text"
+                                                    name="Subgenre"
+                                                    placeholder="Enter SubGenre"
+                                                    register={register}
+                                                    errors={errors}
+                                                />
+                                            </div>
+
+                                            <div className="w-full">
+                                                <Label text="Price Tier" htmlFor="grid-ISRC" required={true} />
+                                                <SelectPriceTier control={control} name={"PriceTier"} options={PriceOptions} errors={errors} required={true} />
+                                            </div>
+
+                                            <div className="w-full">
+                                                <Label text="Track Title Language" htmlFor="grid-TrackTitleLanguage" required={true} />
+                                                <SelectLanguage control={control} name="TrackTitleLanguage" errors={errors} required={true} />
+                                            </div>
+
+                                            <div className="w-full">
+                                                <Label text="Lyrics Language" htmlFor="grid-LyricsLanguage" required={true} />
+                                                <SelectLanguage control={control} name="LyricsLanguage" errors={errors} required={true} />
+                                            </div>
+
+                                            <div className="w-full">
+                                                <Label text="Lyrics" htmlFor="grid-Lyrics" required={false} />
+                                                <InputField
+                                                    type="text"
+                                                    name="Lyrics"
+                                                    placeholder="Enter Lyrics "
+                                                    register={register}
+                                                    errors={errors}
+                                                />
+                                            </div>
+
+                                            <div className="w-full flex flex-col">
+                                                <Label text="Caller Tune Timing" htmlFor="grid-CallerTuneTiming" required={false} />
+                                                <InputField
+                                                    type="text"
+                                                    name="CallerTuneTiming"
+                                                    placeholder="Type like this HH:mm:ss"
+                                                    register={register}
+                                                    errors={errors}
+                                                />
+                                            </div>
+
+                                            <div className="w-full">
+                                                <Label text="Released Video URL" htmlFor="grid-DistributeMusicvideo" required={false} />
+                                                <InputField
+                                                    type="text"
+                                                    name="DistributeMusicvideo"
+                                                    placeholder="Released Video URL"
+                                                    register={register}
+                                                    errors={errors}
+                                                />
+                                            </div>
+                                            
+                                            <div className="w-full">
+                                                <Label text={"Instrumental"} htmlFor={""} required={true} />
+                                                <div className="flex space-y-2 gap-4 mt-1">
+                                                    {IntsrumentalOptions?.map((unit: any, index: any) => (
+                                                        <label key={index} className="inline-flex items-center">
+                                                            <input
+                                                                type="radio"
+                                                                className="h-4 w-4 text-gray-600"
+                                                                id={unit.value}
+                                                                defaultChecked={unit.value == "No"}
+                                                                {...register("Instrumental", { required: `Instrumental is required ` })}
+                                                                value={unit.value}
+                                                            />
+                                                            <span className="ml-2 text-sm text-gray-700">{unit.label}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="w-full">
+                                                <Label text={"Explicit Version"} htmlFor={""} required={true} />
+                                                <div className="flex space-y-2 gap-4 mt-1">
+                                                    {ExplicitVersion?.map((unit: any, index: any) => (
+                                                        <label key={index} className="inline-flex items-center">
+                                                            <input
+                                                                type="radio"
+                                                                className="h-4 w-4 text-gray-600"
+                                                                id={unit.value}
+                                                                defaultChecked={unit.value == "No"}
+                                                                {...register("ExplicitVersion", { required: `ExplicitVersion is required ` })}
+                                                                value={unit.value}
+                                                            />
+                                                            <span className="ml-2 text-sm text-gray-700">{unit.label}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            <div className="w-full col-span-1 md:col-span-2">
+                                                <Label text={"Track Version"} htmlFor={""} required={true} />
+                                                <div className="flex flex-wrap gap-4 mt-1">
+                                                    {Trackoptions?.map((unit: any, index: any) => (
+                                                        <label key={index} className="inline-flex items-center">
+                                                            <input
+                                                                type="radio"
+                                                                className="h-4 w-4 text-gray-600"
+                                                                id={unit.value}
+                                                                defaultChecked={unit.value == "Original"}
+                                                                {...register("Trackversion", { required: `Trackversion is required ` })}
+                                                                value={unit.value}
+                                                            />
+                                                            <span className="ml-2 text-sm">{unit.label}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                     </div>
 
-                                    <div className="mt-4 flex justify-end space-x-2">
+                                    <div className="mt-4 flex justify-end space-x-3 border-t border-gray-100 pt-6">
                                         <button
                                             type="button"
-                                            className="px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                            className="px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition shadow-sm"
                                             onClick={() => setIsOpen(false)}
                                         >
                                             Close
@@ -401,12 +509,11 @@ export default function SongDetails({ userData, getReleaseInfo, GetSongs, refetc
                                         <button
                                             type="submit"
                                             disabled={isLoadingSongsPost}
-                                            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+                                            className="flex items-center gap-2 bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-gray-800 transition shadow-sm text-sm font-medium"
                                         >
-                                            {isLoadingSongsPost ? <BeatLoader color="white" /> : "Submit"}
+                                            {isLoadingSongsPost ? <BeatLoader color="white" size={8} /> : "Save Changes"} <AiFillSave size={18} />
                                         </button>
                                     </div>
-
                                 </form>
                             </div>
                         </Transition.Child>

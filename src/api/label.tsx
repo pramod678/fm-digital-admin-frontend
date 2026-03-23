@@ -2,10 +2,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import api from "../lib/api";
 import cogoToast from "@successtar/cogo-toast";
 
-
-export const LabelPostApi = (setIsOpen: any, reset: any, setFile:any) => {
+/**
+ * Hook to create a new label submission.
+ */
+export const LabelPostApi = (setIsOpen: (open: boolean) => void, reset: () => void, setFile: (file: any) => void) => {
     const queryClient = useQueryClient();
-    return useMutation((data) => api.post("createRelease/labelPost", data), {
+    return useMutation((data: FormData) => api.post("createRelease/labelPost", data), {
         onSuccess: (res) => {
             cogoToast.success("Label Added");
             queryClient.refetchQueries([`GetAllLabels`]);
@@ -14,38 +16,47 @@ export const LabelPostApi = (setIsOpen: any, reset: any, setFile:any) => {
             setIsOpen(false)
         },
         onError: ({ response }) => {
-            cogoToast.error(response?.data?.message);
+            cogoToast.error(response?.data?.message || "Something went wrong");
         }
     })
 }
 
-export const UpdateLabelApi = (id: any, setIsOpen: any) => {
+/**
+ * Hook to update an existing label (e.g., after rejection).
+ */
+export const UpdateLabelApi = (id: number | string, setIsOpen: (open: boolean) => void) => {
     const queryClient = useQueryClient();
-    return useMutation((data) => api.put(`createRelease/labelUpdate/label_id/${id}`, data), {
+    return useMutation((data: FormData) => api.put(`createRelease/labelUpdate/label_id/${id}`, data), {
         onSuccess: (res) => {
-            cogoToast.success("updated Successfully");
+            cogoToast.success("Updated Successfully");
             setIsOpen(false)
             queryClient.refetchQueries([`GetAllLabels`]);
         },
         onError: ({ response }) => {
-            cogoToast.error(response?.data?.message);
+            cogoToast.error(response?.data?.message || "Update failed");
         }
     })
 }
 
-export const GetAllLabelsApi = (id: any) =>
+/**
+ * Hook to fetch all labels for a specific user.
+ */
+export const GetAllLabelsApi = (id: number | string) =>
     useQuery(
-        [`GetAllLabels`],
+        [`GetAllLabels`, id],
         async () => await api.get(`createRelease/labelgetAll/${id}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
-            enabled: id ? true : false
+            enabled: !!id
         }
     );
 
-export const GetAllAdminLabelsApi = (userId: string, statusId:string ) =>
+/**
+ * Admin: Hook to fetch all labels with optional filters.
+ */
+export const GetAllAdminLabelsApi = (userId: string, statusId: string) =>
     useQuery(
         [`GetAllAdminLabels`, userId, statusId],
         async () => await api.get(`admin/label-get-all?user_id=${userId}&status=${statusId}`),
@@ -56,16 +67,18 @@ export const GetAllAdminLabelsApi = (userId: string, statusId:string ) =>
         }
     );
 
-
+/**
+ * Admin: Hook to update label status (Approve/Reject).
+ */
 export const UpdateLabelAdminApi = () => {
     const queryClient = useQueryClient();
-    return useMutation((data: any) => api.put("admin/label-update", data), {
+    return useMutation((data: { label_id: number; Status: number; users_id?: number | string; remark?: string }) => api.put("admin/label-update", data), {
         onSuccess: (res) => {
-            cogoToast.success("label updated");
+            cogoToast.success("Label status updated");
             queryClient.refetchQueries([`GetAllAdminLabels`]);
         },
         onError: ({ response }) => {
-            cogoToast.error(response?.data?.message);
+            cogoToast.error(response?.data?.message || "Status update failed");
         }
     })
-}
+}

@@ -14,7 +14,7 @@ import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 import { BeatLoader } from "react-spinners";
 
 
-export default function Index({ data }: { data: any }) {
+export default function Index({ data, customTrigger }: { data: any, customTrigger?: React.ReactNode }) {
 
     const {
         register,
@@ -43,9 +43,15 @@ export default function Index({ data }: { data: any }) {
 
     return (
         <>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => setIsOpen(true)}>
-                <FaUserEdit className="cursor-pointer ml-4" size={size} />
-            </td>
+            {customTrigger ? (
+                <div onClick={() => setIsOpen(true)}>
+                    {customTrigger}
+                </div>
+            ) : (
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700" onClick={() => setIsOpen(true)}>
+                    <FaUserEdit className="cursor-pointer ml-4" size={size} />
+                </td>
+            )}
 
 
             <Transition appear show={isOpen} as={Fragment}>
@@ -72,20 +78,31 @@ export default function Index({ data }: { data: any }) {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                                <Dialog.Title
-                                    as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
-                                >
-                                    Edit Title
-                                </Dialog.Title>
+                            <div className="inline-block w-full max-w-md p-5 my-4 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                                <div className="flex justify-between items-center mb-2">
+                                    <div className="w-8"></div> {/* Spacer for centering */}
+                                    <Dialog.Title
+                                        as="h3"
+                                        className="text-2xl font-bold text-gray-800 font-['Poppins'] flex-grow text-center"
+                                    >
+                                        Update Artist
+                                    </Dialog.Title>
+                                    <button
+                                        type="button"
+                                        className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        <AiOutlineCloseCircle size={24} />
+                                    </button>
+                                </div>
+                                <hr className="border-gray-100 mb-4" />
                                 <form onSubmit={(e: any) => {
                                     onSubmit(e);
                                 }}>
-                                    <div className="mt-2">
+                                    <div className="mt-1">
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Artist Name" htmlFor="grid-PrimaryArtist" required={true} />
+                                        <div className="w-full mb-3">
+                                            <Label text="Artist Name" htmlFor="grid-PrimaryArtist" required={false} additionalClasses="text-sm font-semibold !text-gray-700 mb-1 block" />
                                             <InputField
                                                 type="text"
                                                 name="PrimaryArtist"
@@ -96,8 +113,8 @@ export default function Index({ data }: { data: any }) {
                                             />
                                         </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Instagram Id" htmlFor="grid-InstagramId" required={true} />
+                                        <div className="w-full mb-3">
+                                            <Label text="Instagram Id" htmlFor="grid-InstagramId" required={false} additionalClasses="text-sm font-semibold !text-gray-700 mb-1 block" />
                                             <InputField
                                                 type="url"
                                                 name="InstagramId"
@@ -108,8 +125,8 @@ export default function Index({ data }: { data: any }) {
                                             />
                                         </div>
 
-                                        <div className="w-full mb-2">
-                                            <Label text="Facebook Id" htmlFor="grid-FacebookId" required={true} />
+                                        <div className="w-full mb-3">
+                                            <Label text="Facebook Id" htmlFor="grid-FacebookId" required={false} additionalClasses="text-sm font-semibold !text-gray-700 mb-1 block" />
                                             <InputField
                                                 type="url"
                                                 name="FacebookId"
@@ -119,8 +136,8 @@ export default function Index({ data }: { data: any }) {
                                                 requiredMessage="Facebook Id is required."
                                             />
                                         </div>
-                                        <div className="w-full mb-2">
-                                            <Label text="Spotify Id" htmlFor="grid-SpotifyId" required={true} />
+                                        <div className="w-full mb-3">
+                                            <Label text="Spotify Id" htmlFor="grid-SpotifyId" required={false} additionalClasses="text-sm font-semibold !text-gray-700 mb-1 block" />
                                             <InputField
                                                 type="url"
                                                 name="SpotifyId"
@@ -130,8 +147,8 @@ export default function Index({ data }: { data: any }) {
                                                 requiredMessage="Spotify Id is required."
                                             />
                                         </div>
-                                        <div className="w-full mb-2">
-                                            <Label text="Apple Id" htmlFor="grid-AppleId" required={true} />
+                                        <div className="w-full mb-3">
+                                            <Label text="Apple Id" htmlFor="grid-AppleId" required={false} additionalClasses="text-sm font-semibold !text-gray-700 mb-1 block" />
                                             <InputField
                                                 type="url"
                                                 name="AppleId"
@@ -143,20 +160,20 @@ export default function Index({ data }: { data: any }) {
                                         </div>
                                     </div>
 
-                                    <div className="mt-4 flex justify-end space-x-2">
+                                    <div className="mt-6 flex justify-between space-x-4">
                                         <button
                                             type="button"
-                                            className="px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                            className="flex-1 px-4 py-3 text-lg font-bold text-gray-700 bg-white border border-red-200 rounded-xl hover:bg-red-50 focus:outline-none transition-colors typo-btn-main"
                                             onClick={() => setIsOpen(false)}
                                         >
-                                            Close
+                                            Cancel
                                         </button>
                                         <button
                                             type="submit"
                                             disabled={isLoading}
-                                            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+                                            className="flex-1 px-4 py-3 text-lg font-bold text-white bg-[#00c26d] border border-transparent rounded-xl hover:bg-[#00a65d] focus:outline-none transition-colors typo-btn-main"
                                         >
-                                            {isLoading ? <BeatLoader color="#ffffff" /> : 'Update'}
+                                            {isLoading ? <BeatLoader color="#ffffff" size={10} /> : 'Update'}
                                         </button>
                                     </div>
 

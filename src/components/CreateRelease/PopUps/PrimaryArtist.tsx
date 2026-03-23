@@ -194,7 +194,7 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
                   <div className="mt-4 flex justify-end space-x-2">
                     <button
                       type="button"
-                      className="px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                      className="px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-full hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                       onClick={handleCloseModal}
                     >
                       Close
@@ -203,7 +203,7 @@ export default function PrimaryArtist({ userData }: { userData: any }) {
                       type="button"
                       onClick={onSubmit}
                       disabled={isLoadingPrimaryArtisttPost}
-                      className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+                      className="px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-full hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
                     >
                       {isLoadingPrimaryArtisttPost ? (
                         <BeatLoader color="#ffffff" />

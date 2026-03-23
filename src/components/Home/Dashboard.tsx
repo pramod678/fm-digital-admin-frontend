@@ -1,7 +1,7 @@
 import { FaCircleInfo } from "react-icons/fa6";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { GrEdit } from "react-icons/gr";
-import { IoIosStats } from "react-icons/io";
+import { IoIosStats, IoMdNotificationsOutline } from "react-icons/io";
 import { BiRefresh } from "react-icons/bi";
 import { TbDatabaseDollar } from "react-icons/tb";
 import { BsCurrencyDollar } from "react-icons/bs";
@@ -15,177 +15,185 @@ import {
 import SpotifyList from "./SpotifyList";
 import YoutubeList from "./YoutubeList";
 import { GetUserAllUserFinancialApi } from "../../api/financial";
+import { AiOutlinePlus } from "react-icons/ai";
+import AppHeader from '../SharedLayout/AppHeader';
+import Skeleton from "../../ui/Skeleton";
+
+// BACKEND NOTE: Page title can later be derived from backend-driven route config if needed.
 
 export default function UserHome({ userData }: { userData: any }) {
   const size = useResponsiveIconSize();
   const navigate = useNavigate();
 
+  // ========== BACKEND INTEGRATION POINTS ==========
+  
+  // BACKEND: User Drafts API
+  // Endpoint: GET /createRelease/draftGet-all/{userId}
+  // Expected Response: {
+  //   data: [{
+  //     releseInfo_id: string,
+  //     ReleaseTitle: string,
+  //     ReleaseDate: string
+  //   }]
+  // }
   const { data: GetLatestDrafts, isLoading: isLoadingGetLatestDrafts } =
     GetLatestDraftsApi(userData?.users_id);
+    
+  // BACKEND: User Corrections API
+  // Endpoint: GET /createRelease/correctionGet-all/{userId}
+  // Expected Response: {
+  //   data: [{
+  //     releseInfo_id: string,
+  //     ReleaseTitle: string,
+  //     ReleaseDate: string
+  //   }]
+  // }
   const { data: GetLatestCoorections, isLoading } = GetLatestCoorectionsApi(
     userData?.users_id
   );
+  
+  // BACKEND: User Financial Summary API
+  // Endpoint: GET /admin/user-finacial-get-all?user_id={userId}
+  // Expected Response: {
+  //   data: {
+  //     avlaiable_sum_amount: number,
+  //     pending_amount: number,
+  //     total_earned: number
+  //   }
+  // }
   const {
     data: GetUserAllUserFinancial,
     isLoading: isLoadingGetUserAllUserFinancial,
-    isFetching,
   } = GetUserAllUserFinancialApi(userData?.users_id);
 
-  console.log(GetUserAllUserFinancial?.data);
+  // Custom actions for user header (rendered before profile)
+  const userHeaderExtraActions = (
+    <div className="flex items-center gap-3">
+      <button 
+        onClick={() => navigate('/ReleseInfo')}
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 text-xs font-medium text-gray-700 transition"
+      >
+        <AiOutlinePlus size={14} /> Create Release
+      </button>
+      
+      <div className="flex items-center px-3 py-1.5 bg-purple-50 rounded-md border border-purple-100 text-purple-700 text-xs font-medium">
+        Revenue 
+        <span className="ml-1.5 text-gray-800">
+           {isLoadingGetUserAllUserFinancial ? (
+               <Skeleton width={40} height={16} className="ml-2 inline-block align-middle" />
+           ) : (
+               `$${GetUserAllUserFinancial?.data?.avlaiable_sum_amount?.toFixed(2) || "0.00"}`
+           )}
+        </span>
+      </div>
+    </div>
+  );
 
   return (
-    <>
-      <div className="flex flex-col sm:flex-row h-[95%] p-4 gap-6">
-        <div className="flex flex-col gap-1 sm:w-[60%] h-full">
-          <div className="bg-black px-4 py-2">
-            <p className="text-white mb-0 text-lg font-semibold">
-              Latest Playlists
-            </p>
-          </div>
+    <div className="flex flex-col h-full overflow-y-auto bg-white">
+      <AppHeader title="Homepage" extraActions={userHeaderExtraActions} />
+      
+      {/* Main Content with padding */}
+      <div className="p-6 flex flex-col gap-8">
 
-          <div className="flex flex-col sm:flex-row gap-2 max-h-[85vh] bg-gray-500">
-            <div className="w-full sm:w-[30%] overflow-y-auto max-h-[85vh]">
-              <SpotifyList />
-            </div>
-
-            <div className="w-full sm:w-[70%] overflow-y-auto max-h-[85vh]">
-              <YoutubeList />
-            </div>
-          </div>
-        </div>
-
-        {/* Card */}
-        <div className="flex flex-col sm:w-[40%] mt-12 sm:mt-0">
-          {/* Connection requested */}
-          <div className="rounded-sm shadow-lg flex flex-col border border-gray-300 w-full bg-white py-2 px-2 mb-4">
-            <div className="flex items-center justify-start gap-2 border-b border-gray-300 py-1 px-1">
-              <div className="flex items-center">
-                <FaCircleInfo size={20} />
-              </div>
-              <div className="flex items-center">
-                <p className="mb-0">Correction requested</p>
-              </div>
-            </div>
-
-            <div className="h-60 overflow-y-auto">
-              {GetLatestCoorections?.data?.data?.length === 0 ? (
-                <div className="flex justify-center items-center h-full">
-                  <p className="text-gray-500">No Corrections found.</p>
-                </div>
-              ) : (
-                GetLatestCoorections?.data?.data?.map((name: any) => (
-                  <div
-                    key={name.releseInfo_id}
-                    className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full"
-                  >
-                    <div className="flex items-center gap-4">
-                      <FaRegCircleDot size={15} />
-                      <div className="flex flex-col">
-                        <p className="text-blue-500 text-sm mb-0">
-                          {name.ReleaseTitle}
-                        </p>
-                        <p className="text-gray-500 text-xs mb-0">
-                          Date Created {name.ReleaseDate}
-                        </p>
-                      </div>
-                    </div>
-                    <div
-                      className="flex items-center cursor-pointer"
-                      onClick={() =>
-                        navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)
-                      }
-                    >
-                      <GrEdit size={size} />
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Drafts */}
-          <div className="rounded-sm shadow-lg flex flex-col border border-gray-300 w-full  bg-white mb-4 py-2 px-2 ">
-            <div className="flex items-center justify-between gap-3 border-b border-gray-300 py-2 px-2">
-              <div className="flex items-center">
-                <IoIosStats size={22} />
-                <p className="mb-0 ml-2">Drafts</p>
-              </div>
-              <div className="flex items-center justify-center bg-red-500 text-white rounded-sm h-6 w-6">
-                <p className="m-0 text-sm">1</p>
-              </div>
-            </div>
-
-            <div className="h-32 overflow-y-auto">
-              {GetLatestDrafts?.data?.data?.length === 0 ? (
-                <div className="flex justify-center items-center h-full">
-                  <p className="text-black">No drafts available.</p>
-                </div>
-              ) : (
-                <>
-                  {GetLatestDrafts?.data?.data?.map((name: any) => (
-                    <div
-                      key={name.releseInfo_id}
-                      className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full"
-                    >
-                      <div className="flex items-center gap-4">
-                        <FaRegCircleDot size={15} />
-                        <div className="flex flex-col">
-                          <p className="text-blue-500 text-sm mb-0">
-                            {name.ReleaseTitle}
-                          </p>
-                          <p className="text-gray-500 text-xs mb-0">
-                            Date Created {name.ReleaseDate}
-                          </p>
-                        </div>
-                      </div>
-                      <div
-                        className="flex items-center cursor-pointer"
-                        onClick={() =>
-                          navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)
-                        }
-                      >
-                        <GrEdit size={size} />
-                      </div>
-                    </div>
-                  ))}
-                  <button
-                    className="items-start border border-gray-500 mt-2 mx-auto px-2"
-                    onClick={() => navigate(`/ReleseInfo`)}
-                  >
-                    <span>+</span>
-                    More
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Payments */}
-          <div className="rounded-sm shadow-lg flex flex-col border border-gray-300 w-full h-auto bg-white  py-2 px-2 ">
-            <div className="flex items-center justify-between gap-3 border-b border-gray-300 py-2 px-2">
-              <div className="flex items-center">
-                <TbDatabaseDollar size={22} />
-                <p className="mb-0 ml-2">Payments</p>
-              </div>
-              {/* <div className="flex items-center justify-center h-6 w-6">
-                                <BiRefresh size={22} />
-                            </div> */}
-            </div>
-
-            <button className="items-start text-white border bg-green-400 border-gray-500 mt-2  mx-auto px-2">
-              <span
-                className="flex items-center gap-1 py-1"
-                onClick={() => navigate("/Financial")}
-              >
-                <BsCurrencyDollar color={"#ffffff"} />
-                {GetUserAllUserFinancial?.data?.avlaiable_sum_amount?.toFixed(
-                  2
-                ) || 0.0}
-              </span>
-            </button>
-          </div>
+      {/* Section 1: Recommended for you (Spotify List) */}
+      <div className="flex flex-col gap-4">
+        <h2 className="text-lg font-bold text-gray-800">Recommended for you</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+             <div className="contents">
+                <SpotifyList />
+             </div>
         </div>
       </div>
-    </>
+
+      {/* Section 2: Spotify recommended song (Youtube List) */}
+      <div className="flex flex-col gap-4">
+        <h2 className="text-lg font-bold text-gray-800">Spotify recommended song for you</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+             <div className="contents">
+                <YoutubeList />
+             </div>
+        </div>
+      </div>
+
+      {/* Section 3: Status Lists (Corrections & Drafts) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-8">
+        
+        {/* Correction Requested */}
+        <div className="flex flex-col gap-4">
+             <h2 className="text-lg font-bold text-gray-800">Correction requested</h2>
+             <div className="flex flex-col gap-3">
+                {isLoading ? (
+                    // Skeleton Loader for Corrections
+                    [1, 2, 3].map((_, index) => (
+                        <div key={index} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+                            <div className="flex flex-col gap-2 w-2/3">
+                                <Skeleton width="80%" height={16} />
+                                <Skeleton width="40%" height={12} />
+                            </div>
+                            <Skeleton width={80} height={28} className="rounded-full" />
+                        </div>
+                    ))
+                ) : GetLatestCoorections?.data?.data?.length === 0 ? (
+                    <div className="py-8 text-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">No corrections requested</div>
+                ) : (
+                    GetLatestCoorections?.data?.data?.map((name: any) => (
+                        <div key={name.releseInfo_id} className="flex items-center justify-between p-4 bg-gradient-to-r from-[#f0ebff] to-[#e2dcf9] rounded-xl">
+                            <div className="flex flex-col">
+                                <span className="font-semibold text-gray-800 text-sm">{name.ReleaseTitle}</span>
+                                <span className="text-xs text-gray-600 mt-0.5">{name.ReleaseDate}</span>
+                            </div>
+                            <button 
+                                onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}
+                                className="px-4 py-1.5 bg-white rounded-full text-xs font-medium text-gray-700 shadow-sm hover:shadow hover:text-purple-600 transition"
+                            >
+                                Edit Here
+                            </button>
+                        </div>
+                    ))
+                )}
+             </div>
+        </div>
+
+        {/* Drafts */}
+        <div className="flex flex-col gap-4">
+             <h2 className="text-lg font-bold text-gray-800">Drafts</h2>
+             <div className="flex flex-col gap-3">
+                {isLoadingGetLatestDrafts ? (
+                     // Skeleton Loader for Drafts
+                    [1, 2, 3].map((_, index) => (
+                        <div key={index} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+                            <div className="flex flex-col gap-2 w-2/3">
+                                <Skeleton width="80%" height={16} />
+                                <Skeleton width="40%" height={12} />
+                            </div>
+                            <Skeleton width={80} height={28} className="rounded-full" />
+                        </div>
+                    ))
+                ) : GetLatestDrafts?.data?.data?.length === 0 ? (
+                    <div className="py-8 text-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">No drafts available</div>
+                ) : (
+                    GetLatestDrafts?.data?.data?.map((name: any) => (
+                        <div key={name.releseInfo_id} className="flex items-center justify-between p-4 bg-gradient-to-r from-[#f0ebff] to-[#e2dcf9] rounded-xl">
+                             <div className="flex flex-col">
+                                <span className="font-semibold text-gray-800 text-sm">{name.ReleaseTitle}</span>
+                                <span className="text-xs text-gray-600 mt-0.5">{name.ReleaseDate}</span>
+                            </div>
+                             <button 
+                                onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}
+                                className="px-4 py-1.5 bg-white rounded-full text-xs font-medium text-gray-700 shadow-sm hover:shadow hover:text-purple-600 transition"
+                            >
+                                Edit Here
+                            </button>
+                        </div>
+                    ))
+                )}
+             </div>
+        </div>
+
+      </div>
+
+      </div>
+    </div>
   );
 }

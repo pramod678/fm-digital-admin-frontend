@@ -1,4 +1,4 @@
-function GetDate(d: Date) {
+function GetDate(d: Date | string) {
     const date = new Date(d)
     return date.toLocaleDateString("default", { day: "2-digit", month: 'short', year: "numeric" })
 }
