@@ -152,16 +152,16 @@ const UserAudioCatalog = () => {
   };
 
   const rightActions = (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between xl:justify-end gap-4 w-full">
       <button 
         onClick={() => navigate('/user/catalog/video')}
-        className="bg-green-700 hover:bg-green-800 text-white px-4 py-1.5 rounded typo-btn-main transition-colors"
+        className="bg-green-700 hover:bg-green-800 text-white px-3 py-1.5 sm:px-4 sm:py-1.5 rounded typo-btn-main transition-colors text-xs sm:text-sm"
       >
         Go To Video Catalog
       </button>
       <div className="flex flex-col items-end leading-tight text-gray-800">
-         <span className="text-[10px] uppercase font-bold text-gray-500">Total Releases</span>
-         <span className="typo-page-title">{filteredRecords.length}</span>
+         <span className="text-[9px] sm:text-[10px] uppercase font-bold text-gray-500">Total Releases</span>
+         <span className="text-xl sm:text-2xl font-bold">{filteredRecords.length}</span>
       </div>
     </div>
   );
@@ -179,10 +179,10 @@ const UserAudioCatalog = () => {
       <div className="p-6 flex flex-col gap-4 h-full overflow-hidden">
         
         {/* Top Controls Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+        <div className="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4 w-full">
           
-          {/* Left: Search */}
-          <div className="w-full md:w-64">
+          {/* Top: Search */}
+          <div className="w-full xl:w-64">
             <input
               type="text"
               placeholder="Search..."
@@ -192,13 +192,13 @@ const UserAudioCatalog = () => {
             />
           </div>
 
-          {/* Center: Filters */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+          {/* Middle: Filters - Grid on mobile (3 cols), Flex on desktop */}
+          <div className="grid grid-cols-3 xl:flex xl:items-center gap-2 w-full xl:w-auto">
              {STATUS_FILTERS.map((filter) => (
                <button
                  key={filter.label}
                  onClick={() => handleFilterChange(filter.value)}
-                 className={`px-4 py-1.5 rounded-md typo-table-cell font-semibold border bg-white transition-all whitespace-nowrap
+                 className={`px-1.5 py-1.5 sm:px-4 sm:py-1.5 rounded-md text-[10px] sm:text-xs xl:typo-table-cell font-semibold border bg-white transition-all whitespace-nowrap text-center
                    ${filter.color}
                    ${activeFilter === filter.value ? 'ring-1 ring-offset-1 ring-gray-200 shadow-sm bg-gray-50' : 'hover:bg-gray-50'}
                  `}
@@ -208,16 +208,16 @@ const UserAudioCatalog = () => {
              ))}
           </div>
 
-          {/* Right: Actions */}
-          <div className="ml-auto flex-shrink-0">
+          {/* Bottom/Right: Actions (Button on left, Count on right on mobile) */}
+          <div className="xl:ml-auto w-full xl:w-auto flex-shrink-0">
              {rightActions}
           </div>
         </div>
 
         {/* Table Container */}
-        <div className="flex-1 border border-gray-200 rounded-lg overflow-hidden flex flex-col">
-          <div className="overflow-auto flex-1">
-          <table className="w-full text-left border-collapse">
+        <div className="flex-1 border border-gray-200 rounded-lg overflow-x-auto bg-white flex flex-col min-h-0">
+          <div className="flex-1">
+          <table style={{ minWidth: '1000px' }} className="w-full text-left border-collapse">
             <thead className="bg-white sticky top-0 z-10">
               <tr className="typo-table-head border-b border-gray-200">
                 <th className="px-4 py-3 font-semibold w-16">No.</th>

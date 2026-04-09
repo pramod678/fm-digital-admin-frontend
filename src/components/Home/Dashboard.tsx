@@ -68,17 +68,17 @@ export default function UserHome({ userData }: { userData: any }) {
 
   // Custom actions for user header (rendered before profile)
   const userHeaderExtraActions = (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
       <button 
         onClick={() => navigate('/ReleseInfo')}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 text-xs font-medium text-gray-700 transition"
+        className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 text-xs font-medium text-gray-700 transition"
       >
-        <AiOutlinePlus size={14} /> Create Release
+        <AiOutlinePlus size={14} /> <span className="hidden sm:inline">Create Release</span>
       </button>
       
-      <div className="flex items-center px-3 py-1.5 bg-purple-50 rounded-md border border-purple-100 text-purple-700 text-xs font-medium">
-        Revenue 
-        <span className="ml-1.5 text-gray-800">
+      <div className="flex items-center px-2 sm:px-3 py-1.5 bg-purple-50 rounded-md border border-purple-100 text-purple-700 text-xs font-medium">
+        <span className="hidden sm:inline">Revenue</span> 
+        <span className="sm:ml-1.5 text-gray-800">
            {isLoadingGetUserAllUserFinancial ? (
                <Skeleton width={40} height={16} className="ml-2 inline-block align-middle" />
            ) : (
@@ -94,12 +94,12 @@ export default function UserHome({ userData }: { userData: any }) {
       <AppHeader title="Homepage" extraActions={userHeaderExtraActions} />
       
       {/* Main Content with padding */}
-      <div className="p-6 flex flex-col gap-8">
+      <div className="p-4 sm:p-6 flex flex-col gap-8">
 
       {/* Section 1: Recommended for you (Spotify List) */}
       <div className="flex flex-col gap-4">
         <h2 className="text-lg font-bold text-gray-800">Recommended for you</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
              <div className="contents">
                 <SpotifyList />
              </div>
@@ -109,7 +109,7 @@ export default function UserHome({ userData }: { userData: any }) {
       {/* Section 2: Spotify recommended song (Youtube List) */}
       <div className="flex flex-col gap-4">
         <h2 className="text-lg font-bold text-gray-800">Spotify recommended song for you</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
              <div className="contents">
                 <YoutubeList />
              </div>
@@ -126,8 +126,8 @@ export default function UserHome({ userData }: { userData: any }) {
                 {isLoading ? (
                     // Skeleton Loader for Corrections
                     [1, 2, 3].map((_, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
-                            <div className="flex flex-col gap-2 w-2/3">
+                        <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm gap-3">
+                            <div className="flex flex-col gap-2 w-full sm:w-2/3">
                                 <Skeleton width="80%" height={16} />
                                 <Skeleton width="40%" height={12} />
                             </div>
@@ -138,14 +138,14 @@ export default function UserHome({ userData }: { userData: any }) {
                     <div className="py-8 text-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">No corrections requested</div>
                 ) : (
                     GetLatestCoorections?.data?.data?.map((name: any) => (
-                        <div key={name.releseInfo_id} className="flex items-center justify-between p-4 bg-gradient-to-r from-[#f0ebff] to-[#e2dcf9] rounded-xl">
+                        <div key={name.releseInfo_id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gradient-to-r from-[#f0ebff] to-[#e2dcf9] rounded-xl gap-3">
                             <div className="flex flex-col">
                                 <span className="font-semibold text-gray-800 text-sm">{name.ReleaseTitle}</span>
                                 <span className="text-xs text-gray-600 mt-0.5">{name.ReleaseDate}</span>
                             </div>
                             <button 
                                 onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}
-                                className="px-4 py-1.5 bg-white rounded-full text-xs font-medium text-gray-700 shadow-sm hover:shadow hover:text-purple-600 transition"
+                                className="px-4 py-1.5 bg-white rounded-full text-xs font-medium text-gray-700 shadow-sm hover:shadow hover:text-purple-600 transition w-fit"
                             >
                                 Edit Here
                             </button>
@@ -162,8 +162,8 @@ export default function UserHome({ userData }: { userData: any }) {
                 {isLoadingGetLatestDrafts ? (
                      // Skeleton Loader for Drafts
                     [1, 2, 3].map((_, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
-                            <div className="flex flex-col gap-2 w-2/3">
+                        <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm gap-3">
+                            <div className="flex flex-col gap-2 w-full sm:w-2/3">
                                 <Skeleton width="80%" height={16} />
                                 <Skeleton width="40%" height={12} />
                             </div>
@@ -174,14 +174,14 @@ export default function UserHome({ userData }: { userData: any }) {
                     <div className="py-8 text-center text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">No drafts available</div>
                 ) : (
                     GetLatestDrafts?.data?.data?.map((name: any) => (
-                        <div key={name.releseInfo_id} className="flex items-center justify-between p-4 bg-gradient-to-r from-[#f0ebff] to-[#e2dcf9] rounded-xl">
+                        <div key={name.releseInfo_id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gradient-to-r from-[#f0ebff] to-[#e2dcf9] rounded-xl gap-3">
                              <div className="flex flex-col">
                                 <span className="font-semibold text-gray-800 text-sm">{name.ReleaseTitle}</span>
                                 <span className="text-xs text-gray-600 mt-0.5">{name.ReleaseDate}</span>
                             </div>
                              <button 
                                 onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}
-                                className="px-4 py-1.5 bg-white rounded-full text-xs font-medium text-gray-700 shadow-sm hover:shadow hover:text-purple-600 transition"
+                                className="px-4 py-1.5 bg-white rounded-full text-xs font-medium text-gray-700 shadow-sm hover:shadow hover:text-purple-600 transition w-fit"
                             >
                                 Edit Here
                             </button>

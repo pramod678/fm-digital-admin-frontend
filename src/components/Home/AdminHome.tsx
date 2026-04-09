@@ -78,16 +78,16 @@ export default function AdminHome({ userData }: { userData: any }) {
 
     // Custom actions for admin header (rendered before profile)
     const adminHeaderExtraActions = (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
             <button 
                 onClick={() => navigate('/ReleseInfo')}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 text-xs font-medium text-gray-700 transition"
+                className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 text-xs font-medium text-gray-700 transition"
             >
-                <AiOutlinePlus size={14} /> Create Release
+                <AiOutlinePlus size={14} /> <span className="hidden sm:inline">Create Release</span>
             </button>
             
-            <div className="flex items-center px-3 py-1.5 bg-purple-50 rounded-md border border-purple-100 text-purple-700 text-xs font-medium">
-                Revenue <span className="ml-1.5 text-gray-800">${GetAdminFinancial?.data?.total_revenue?.toFixed(2) || "0.00"}</span>
+            <div className="flex items-center px-2 sm:px-3 py-1.5 bg-purple-50 rounded-md border border-purple-100 text-purple-700 text-xs font-medium">
+                <span className="hidden sm:inline">Revenue</span> <span className="sm:ml-1.5 text-gray-800">${GetAdminFinancial?.data?.total_revenue?.toFixed(2) || "0.00"}</span>
             </div>
         </div>
     );
@@ -97,7 +97,7 @@ export default function AdminHome({ userData }: { userData: any }) {
             <AppHeader title="Homepage" extraActions={adminHeaderExtraActions} />
 
             {/* Main Content with padding */}
-            <div className="p-6 flex flex-col gap-8">
+            <div className="p-4 sm:p-6 flex flex-col gap-8">
 
             {/* KPI Summary Row - 5 Cards Horizontal */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">

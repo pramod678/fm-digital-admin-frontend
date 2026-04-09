@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import cogoToast from "@successtar/cogo-toast";
-import { RegisterWithMailApi } from "../../api/authentication";
+import { RegisterWithMailApi } from "../../api/endpoint";
 import { FiArrowLeft } from "react-icons/fi";
 
 type FormValues = {

@@ -117,9 +117,9 @@ export default function ReleaseInfo() {
       {/* Tabs / Stepper */}
       <CreateReleaseTabs activeTab="Release Info" />
 
-      <div className="flex-1 overflow-y-auto px-8 py-8">
+      <div className="flex-1 overflow-y-auto px-4 py-6 md:px-8 md:py-8">
         <form onSubmit={onSubmit} className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-12">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             
             {/* Left Column - Thumbnail & Guidelines */}
             <div className="w-full lg:w-72 flex-shrink-0 flex flex-col items-center lg:items-start space-y-6">
@@ -289,8 +289,8 @@ export default function ReleaseInfo() {
 
                   <div>
                     <Label text="PLine" htmlFor="PLine" required={true} />
-                    <div className="mt-1.5 flex items-stretch">
-                      <span className="flex items-center px-3 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md text-gray-500 text-sm whitespace-nowrap select-none">
+                    <div className="mt-1.5 flex flex-col sm:flex-row items-stretch">
+                      <span className="flex items-center px-3 py-2 sm:py-0 bg-gray-100 border sm:border-r-0 border-b-0 sm:border-b border-gray-300 rounded-t-md sm:rounded-none sm:rounded-l-md text-gray-500 text-sm lg:whitespace-nowrap select-none overflow-hidden text-ellipsis">
                         FM Digital Official On Behalf Of
                       </span>
                       <Controller
@@ -302,7 +302,7 @@ export default function ReleaseInfo() {
                             {...field}
                             type="text"
                             placeholder="(Label Name)"
-                            className={`flex-1 w-full px-3 py-2 border rounded-r-md text-sm outline-none focus:ring-2 focus:ring-teal-500 transition ${
+                            className={`flex-1 w-full px-3 py-2 border rounded-b-md sm:rounded-none sm:rounded-r-md text-sm outline-none focus:ring-2 focus:ring-teal-500 transition ${
                               errors?.PLine ? "border-red-500" : "border-gray-300"
                             }`}
                           />

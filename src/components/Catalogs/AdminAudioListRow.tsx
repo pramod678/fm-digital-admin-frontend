@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FaChevronDown, FaChevronUp, FaSpotify, FaPlay, FaPause, FaCheck } from "react-icons/fa6";
+import { FaChevronDown, FaChevronUp, FaSpotify, FaPlay, FaPause, FaCheck, FaCopy } from "react-icons/fa6";
 import { SiApplemusic } from "react-icons/si";
 import { UpdateAdminCatalogApi } from "../../api/catalogs";
 import ConfirmationButton from "../../ui/ConfirmationButton";
@@ -26,6 +26,14 @@ export default function AdminAudioListRow({
   const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
 
   const { mutate: UpdateAdminCatalog } = UpdateAdminCatalogApi();
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopyLyrics = () => {
+    const lyricsText = catalog.Lyrics || "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.";
+    navigator.clipboard.writeText(lyricsText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   // Mockup shows Approve/Reject/Takedown buttons in the Action column
   const ActionButtons = () => (
@@ -40,7 +48,7 @@ export default function AdminAudioListRow({
         }
         title="Approve Release?"
       >
-        <button className="bg-green-700 hover:bg-green-800 text-white typo-btn-action normal-case">
+        <button className="bg-green-700 hover:bg-green-800 text-white typo-btn-action normal-case w-20">
           Approve
         </button>
       </ConfirmationButton>
@@ -55,7 +63,7 @@ export default function AdminAudioListRow({
         }
         title="Reject Release?"
       >
-        <button className="bg-red-700 hover:bg-red-800 text-white typo-btn-action normal-case">
+        <button className="bg-red-700 hover:bg-red-800 text-white typo-btn-action normal-case w-20">
           Reject
         </button>
       </ConfirmationButton>
@@ -70,7 +78,7 @@ export default function AdminAudioListRow({
         }
         title="Takedown Release?"
       >
-        <button className="bg-red-900 hover:bg-red-950 text-white typo-btn-action normal-case">
+        <button className="bg-red-900 hover:bg-red-950 text-white typo-btn-action normal-case w-20">
           Takedown
         </button>
       </ConfirmationButton>
@@ -116,81 +124,81 @@ export default function AdminAudioListRow({
       {isOpen && (
         <tr>
           <td colSpan={12} className="p-0 border-b border-gray-200">
-            <div className="bg-[#f3f0fa] px-6 py-6 flex gap-8">
+            <div className="bg-[#f3f0fa] px-3 py-3 flex gap-2 text-[10px]">
               
               {/* Left Section: Artwork and General Info */}
-              <div className="flex gap-6 w-1/2 border-r border-gray-300 pr-6">
+              <div className="flex gap-2 w-1/2 border-r border-gray-300 pr-2">
                  {/* Artwork Placeholder */}
                 <div className="flex-shrink-0">
-                    <div className="w-24 h-24 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
+                    <div className="w-16 h-16 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
                         {catalog.ImageDocument ? (
                              <img src={`https://api.fmdigitalofficial.com/${catalog.ImageDocument}`} className="w-full h-full object-cover rounded" alt="Artwork" />
                         ) : (
-                            <span className="text-gray-400 text-xs text-center">Artwork</span>
+                            <span className="text-gray-400 text-[9px] text-center">Artwork</span>
                          )}
                     </div>
                 </div>
 
                 {/* Info Columns */}
-                <div className="flex-1 grid grid-cols-2 gap-x-4 gap-y-1 typo-table-cell">
-                    <div className="col-span-1 text-gray-500">Release Type:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.ReleaseType || "Single"}</div>
+                <div className="flex-1 grid grid-cols-[80px_1fr] gap-x-1 gap-y-0">
+                    <div className="text-gray-500">Release Type:</div>
+                    <div className="text-gray-800 font-medium">{catalog.ReleaseType || "Single"}</div>
 
-                    <div className="col-span-1 text-gray-500">Release Title:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.ReleaseTitle || "Udhayamuna Santhosamu Kalugunu"}</div>
+                    <div className="text-gray-500">Release Title:</div>
+                    <div className="text-gray-800 font-medium">{catalog.ReleaseTitle || "Song Name"}</div>
 
-                    <div className="col-span-2 h-2"></div> {/* Spacer */}
+                    <div className="col-span-2 h-0.5"></div>
 
-                    <div className="col-span-1 text-gray-500">Primary Artist:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.PrimaryArtist || "Ramesh Hosanna Ministries"}</div>
+                    <div className="text-gray-500">Primary Artist:</div>
+                    <div className="text-gray-800 font-medium">{catalog.PrimaryArtist || "Ramesh Hosanna Ministries"}</div>
 
-                    <div className="col-span-1 text-gray-500 flex items-center gap-1">
-                        Spotify: <FaSpotify className="text-green-500" />
+                    <div className="text-gray-500 flex items-center gap-1">
+                        Spotify: <FaSpotify className="text-green-500" size={10} />
                     </div>
-                    <div className="col-span-1 text-gray-500 flex items-center gap-1">
-                        Apple music: <SiApplemusic className="text-red-500" />
+                    <div className="text-gray-500 flex items-center gap-1">
+                        Apple: <SiApplemusic className="text-red-500" size={10} />
                     </div>
 
-                    <div className="col-span-2 h-1"></div> {/* Spacer */}
+                    <div className="col-span-2 h-0.5"></div>
                     
-                    <div className="col-span-1 text-gray-500">FeaturingArtist:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.FeaturingArtist || "Pastor Ramesh"}</div>
+                    <div className="text-gray-500">Feat. Artist:</div>
+                    <div className="text-gray-800 font-medium">{catalog.FeaturingArtist || "Pastor Ramesh"}</div>
                     
-                    <div className="col-span-1 text-gray-500 flex items-center gap-1">
-                        Spotify: <FaSpotify className="text-green-500" />
+                    <div className="text-gray-500 flex items-center gap-1">
+                        Spotify: <FaSpotify className="text-green-500" size={10} />
                     </div>
-                     <div className="col-span-1 text-gray-500 flex items-center gap-1">
-                        Apple music: <SiApplemusic className="text-red-500" />
+                     <div className="text-gray-500 flex items-center gap-1">
+                        Apple: <SiApplemusic className="text-red-500" size={10} />
                     </div>
                 </div>
 
                  {/* Second Column of Info */}
-                <div className="flex-1 grid grid-cols-2 gap-x-2 gap-y-1 typo-table-cell">
-                    <div className="col-span-1 text-gray-500">Genre:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.Genre || "Devotional"}</div>
+                <div className="flex-1 grid grid-cols-[60px_1fr] gap-x-1 gap-y-0">
+                    <div className="text-gray-500">Genre:</div>
+                    <div className="text-gray-800 font-medium">{catalog.Genre || "Devotional"}</div>
 
-                    <div className="col-span-1 text-gray-500">Sub Genre:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.SubGenre || "Telugu"}</div>
+                    <div className="text-gray-500">Sub Genre:</div>
+                    <div className="text-gray-800 font-medium">{catalog.SubGenre || "Telugu"}</div>
 
-                    <div className="col-span-1 text-gray-500">PLine:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.PLine || "Fm Digital"}</div>
+                    <div className="text-gray-500">PLine:</div>
+                    <div className="text-gray-800 font-medium">{catalog.PLine || "Fm Digital"}</div>
 
-                    <div className="col-span-1 text-gray-500">CLine:</div>
-                    <div className="col-span-1 text-gray-800 font-medium leading-tight">
+                    <div className="text-gray-500">CLine:</div>
+                    <div className="text-gray-800 font-medium leading-tight">
                          {catalog.CLine || "FM Digital Official on behalf of (Ramesh Hosanna Ministries)"}
                     </div>
 
-                    <div className="col-span-1 text-gray-500">UPC/EAN:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.UPCEAN || "0123456789123"}</div>
+                    <div className="text-gray-500">UPC/EAN:</div>
+                    <div className="text-gray-800 font-medium">{catalog.UPCEAN || "0123456789123"}</div>
 
-                    <div className="col-span-1 text-gray-500">Cat No.:</div>
-                    <div className="col-span-1 text-gray-800 font-medium">{catalog.cat_id || "CAT1001"}</div>
+                    <div className="text-gray-500">Cat No.:</div>
+                    <div className="text-gray-800 font-medium">{catalog.cat_id || "CAT1001"}</div>
 
-                    <div className="col-span-2 mt-4 flex justify-end gap-2">
-                         <button className="bg-white border border-gray-300 px-2 py-1 rounded typo-btn-action flex items-center gap-1 hover:bg-gray-50 normal-case">
-                            Edit <MdEdit size={12} />
+                    <div className="col-span-2 mt-1 flex justify-end gap-1">
+                         <button className="bg-white border border-gray-300 px-1.5 py-0.5 rounded text-[10px] flex items-center gap-1 hover:bg-gray-50 normal-case">
+                            Edit <MdEdit size={10} />
                          </button>
-                         <button className="bg-white border border-gray-300 px-2 py-1 rounded typo-btn-action hover:bg-gray-50 normal-case">
+                         <button className="bg-white border border-gray-300 px-1.5 py-0.5 rounded text-[10px] hover:bg-gray-50 normal-case">
                             Download
                          </button>
                     </div>
@@ -199,12 +207,11 @@ export default function AdminAudioListRow({
 
 
               {/* Right Section: Song Details & Player */}
-              <div className="w-1/2 pl-2">
-                 <h3 className="typo-table-cell-strong text-gray-800 mb-3">{catalog.songInfo?.[0]?.Title || "Udhayamuna Santhosamu Kalugunu"}</h3>
+              <div className="w-1/2 pl-0.5">
+                 <h3 className="text-[11px] font-semibold text-gray-800 mb-1">{catalog.songInfo?.[0]?.Title || "Song Title"}</h3>
                  
-                 <div className="bg-white rounded-lg p-3 mb-3 border border-gray-100 shadow-sm relative">
-                     {/* Fake Player Visual */}
-                     <div className="flex items-center gap-3">
+                 <div className="bg-white rounded-lg p-2 mb-2 border border-gray-100 shadow-sm">
+                     <div className="flex items-center gap-2">
                          <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 text-gray-600">
                              <FaPlay size={12} className="ml-0.5" />
                          </button>
@@ -224,29 +231,67 @@ export default function AdminAudioListRow({
                      </div>
                  </div>
 
-                 <div className="grid grid-cols-2 gap-x-8 gap-y-2 typo-table-cell">
-                     <div className="space-y-1">
-                         <div className="flex justify-between"><span className="text-gray-500">Track Version:</span> <span className="text-gray-800">Original</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Instrumental:</span> <span className="text-gray-800">No</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Song Title:</span> <span className="text-gray-800 truncate max-w-[100px]">{catalog.songInfo?.[0]?.Title || "Udhayamuna..."}</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Version/SubTitle:</span> <span className="text-gray-800">--</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Primary Artist:</span> <span className="text-gray-800 truncate max-w-[100px]">Ramesh Hosanna...</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Featuring Artist:</span> <span className="text-gray-800 truncate max-w-[100px]">Ramesh Hosanna...</span></div>
+                 <div className="grid grid-cols-2 gap-x-4 gap-y-0">
+                     <div className="space-y-0">
+                         <div className="grid grid-cols-[80px_1fr] gap-x-1">
+                             <span className="text-gray-500">Track Version:</span>
+                             <span className="text-gray-800">Original</span>
+                         </div>
+                         <div className="grid grid-cols-[80px_1fr] gap-x-1">
+                             <span className="text-gray-500">Instrumental:</span>
+                             <span className="text-gray-800">No</span>
+                         </div>
+                         <div className="grid grid-cols-[80px_1fr] gap-x-1">
+                             <span className="text-gray-500">Song Title:</span>
+                             <span className="text-gray-800 truncate max-w-[120px]">{catalog.songInfo?.[0]?.Title || "Song Title"}</span>
+                         </div>
+                         <div className="grid grid-cols-[80px_1fr] gap-x-1">
+                             <span className="text-gray-500">Version/Sub:</span>
+                             <span className="text-gray-800">--</span>
+                         </div>
+                         <div className="grid grid-cols-[80px_1fr] gap-x-1">
+                             <span className="text-gray-500">Primary Artist:</span>
+                             <span className="text-gray-800 truncate max-w-[120px]">Ramesh H...</span>
+                         </div>
+                         <div className="grid grid-cols-[80px_1fr] gap-x-1">
+                             <span className="text-gray-500">Feat. Artist:</span>
+                             <span className="text-gray-800 truncate max-w-[120px]">Ramesh H...</span>
+                         </div>
                      </div>
 
-                     <div className="space-y-1">
-                         <div className="flex justify-between"><span className="text-gray-500">Price Tier:</span> <span className="text-gray-800">Digital 45 ( $1.49 )</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Explicit Version:</span> <span className="text-gray-800">No</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Track Title Language:</span> <span className="text-gray-800">Telugu</span></div>
-                         <div className="flex justify-between"><span className="text-gray-500">Lyrics Language:</span> <span className="text-gray-800">Telugu</span></div>
-                         
-                         <div className="mt-2 text-gray-500">Lyrics:</div>
-                         <div className="flex items-center gap-2 mt-0.5">
-                             <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
-                             <span className="text-gray-600 text-[10px]">Copy the lyrics</span>
+                     <div className="space-y-0">
+                         <div className="grid grid-cols-[70px_1fr] gap-x-1">
+                             <span className="text-gray-500">Price Tier:</span>
+                             <span className="text-gray-800 font-medium">Digital 45 ($1.49)</span>
                          </div>
-                         <p className="text-[10px] text-gray-400 leading-relaxed mt-1 line-clamp-2">
-                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+                         <div className="grid grid-cols-[70px_1fr] gap-x-1">
+                             <span className="text-gray-500">Explicit:</span>
+                             <span className="text-gray-800">No</span>
+                         </div>
+                         <div className="grid grid-cols-[70px_1fr] gap-x-1">
+                             <span className="text-gray-500">Title Lang:</span>
+                             <span className="text-gray-800">Telugu</span>
+                         </div>
+                         <div className="grid grid-cols-[70px_1fr] gap-x-1">
+                             <span className="text-gray-500">Lyrics Lang:</span>
+                             <span className="text-gray-800">Telugu</span>
+                         </div>
+                         
+                         <div className="mt-0.5 flex items-center gap-1.5">
+                             <span className="text-gray-500">Lyrics:</span>
+                             <button 
+                               onClick={handleCopyLyrics}
+                               className="flex items-center gap-1 text-purple-600 hover:text-purple-700 transition-colors"
+                             >
+                               {copied ? (
+                                   <><FaCheck size={8} /><span className="text-[9px]">Copied!</span></>
+                               ) : (
+                                   <><FaCopy size={8} /><span className="text-[9px]">Copy lyrics</span></>
+                               )}
+                             </button>
+                         </div>
+                         <p className="text-[9px] text-gray-400 leading-tight line-clamp-2">
+                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
                          </p>
                      </div>
                  </div>

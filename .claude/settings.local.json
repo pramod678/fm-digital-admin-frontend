@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /d/fm-digital-admin-frontend -maxdepth 2 -type f \\\\\\(-name .env* -o -name *.config.* \\\\\\))",
+      "Bash(find /d/fm-digital-admin-frontend -maxdepth 3 \\\\\\(-name .env* -o -name *env* \\\\\\) -type f)",
+      "Bash(grep -rE 'api\\\\.\\(post|put|delete|get\\)\\\\\\([\"\"\"\"`]' /d/fm-digital-admin-frontend/src/api --include=\"*.tsx\" -A 1)"
+    ]
+  }
+}

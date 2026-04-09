@@ -99,7 +99,7 @@ export default function Index() {
                     <BounceLoader size={150} color={"#000000"} />
                 </div>
             )}
-            <div className="p-6 bg-gray-50 min-h-screen">
+            <div className="p-4 md:p-6 bg-gray-50 min-h-screen">
                 <div className="mb-6">
                     <h1 className="text-xl font-bold text-gray-800 typo-page-title">Profile Linking</h1>
                 </div>
@@ -168,7 +168,7 @@ export default function Index() {
                 </div>
 
                 {/* History Section */}
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
                     <h2 className="text-xl font-bold text-gray-800 typo-section-title">History</h2>
                     <p className="text-gray-600 font-semibold typo-table-cell">
                         Total Claims: <span className="text-gray-800">{ProfileLinkingGetAll?.data?.data?.length || 0}</span>

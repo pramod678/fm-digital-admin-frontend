@@ -165,7 +165,17 @@ export default function Index({ isOpen, setIsOpen }: props) {
 
     return (
         <>
-            <div className={`hidden sm:flex flex-col justify-between bg-white border-r border-gray-200 transition-all duration-300 ease-in-out ${isOpen ? 'sm:w-[260px]' : 'w-[80px]'} py-3 h-full relative overflow-hidden`}>
+            {/* Mobile Overlay Background */}
+            {isOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/50 z-40 sm:hidden transition-opacity"
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
+            <div 
+                className={`flex flex-col justify-between bg-white border-r border-gray-200 transition-all duration-300 ease-in-out py-3 h-full z-50 fixed inset-y-0 left-0 sm:relative overflow-hidden
+                ${isOpen ? 'translate-x-0 w-[260px]' : '-translate-x-full sm:translate-x-0 w-[260px] sm:w-[80px]'}`}
+            >
                 
                 {/* Top Section: Logo & CTA */}
                 <div className="flex flex-col items-center px-4 mb-2 gap-2 w-full">

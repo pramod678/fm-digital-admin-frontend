@@ -29,7 +29,7 @@ export default function AppHeader({
     navigate('/sign-in');
   };
 
-  const { isSidebarOpen, toggleSidebar } = useAuthStore();
+  const { isSidebarOpen, setSidebarOpen } = useAuthStore();
 
   return (
     <div className="bg-white border-b border-gray-100 px-6 py-3">

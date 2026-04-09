@@ -88,14 +88,14 @@ export default function AdminVideoListRow({
               }
               title="Approve Release?"
             >
-              <button className="bg-green-700 hover:bg-green-800 text-white typo-btn-action normal-case">
+              <button className="bg-green-700 hover:bg-green-800 text-white typo-btn-action normal-case w-20">
                 Approve
               </button>
             </ConfirmationButton>
 
             <button 
               onClick={() => setIsRejectModalOpen(true)}
-              className="bg-red-700 hover:bg-red-800 text-white typo-btn-action normal-case"
+              className="bg-red-700 hover:bg-red-800 text-white typo-btn-action normal-case w-20"
             >
               Reject
             </button>
@@ -110,7 +110,7 @@ export default function AdminVideoListRow({
               }
               title="Takedown Release?"
             >
-              <button className="bg-red-900 hover:bg-red-950 text-white typo-btn-action normal-case">
+              <button className="bg-red-900 hover:bg-red-950 text-white typo-btn-action normal-case w-20">
                 Takedown
               </button>
             </ConfirmationButton>
@@ -128,11 +128,11 @@ export default function AdminVideoListRow({
       {isOpen && (
         <tr>
           <td colSpan={11} className="p-0 border-b border-gray-200">
-            <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 px-6 py-6 border-b border-gray-200 flex gap-6">
+            <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 px-3 py-3 border-b border-gray-200 flex gap-4 text-[10px]">
                 
                 {/* Thumbnail Placeholder - Landscape Rectangle */}
                 <div className="flex-shrink-0">
-                  <div className="w-48 h-32 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-transparent">
+                  <div className="w-28 h-20 border-2 border-gray-400 rounded-lg flex items-center justify-center bg-transparent">
                     {catalog.ImageDocument ? (
                       <img
                         className="w-full h-full object-cover rounded-lg"
@@ -140,7 +140,7 @@ export default function AdminVideoListRow({
                         alt="Thumbnail"
                       />
                     ) : (
-                      <div className="flex flex-col items-center justify-center">
+                      <div className="flex flex-col items-center justify-center scale-75">
                          {/* Placeholder Icon similar to mockup */}
                         <svg className="w-12 h-12 text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <rect x="3" y="3" width="18" height="18" rx="2" ry="2" strokeWidth="2"/>
@@ -157,71 +157,71 @@ export default function AdminVideoListRow({
                 {/* Content Area */}
                 <div className="flex-1 flex flex-col">
                     {/* Header: Release Name / Artist Name */}
-                    <div className="mb-4">
-                        <div className="typo-table-cell-strong text-gray-800">Release Name</div>
-                        <div className="typo-table-cell text-gray-500">Artist Name</div>
+                    <div className="mb-2">
+                        <div className="font-semibold text-gray-800 text-[11px]">Release Name</div>
+                        <div className="text-gray-500">Artist Name</div>
                     </div>
 
                     {/* Columns Grid */}
-                    <div className="grid grid-cols-3 gap-8">
+                    <div className="grid grid-cols-3 gap-4">
                         {/* Column 1 */}
-                        <div className="space-y-2 typo-table-cell">
-                             <div className="grid grid-cols-[110px_1fr]">
+                        <div className="space-y-0.5">
+                             <div className="grid grid-cols-[90px_1fr]">
                                  <span className="text-gray-500">Audio Title:</span>
                                  <span className="text-gray-800 font-medium">Track Name</span>
                              </div>
-                             <div className="grid grid-cols-[110px_1fr] items-center">
-                                 <span className="text-gray-500">Download link to video:</span>
-                                 <button className="text-gray-600 border border-gray-300 bg-white rounded px-2 py-0.5 typo-btn-action w-fit hover:bg-gray-50 normal-case">Download</button>
+                             <div className="grid grid-cols-[90px_1fr] items-center">
+                                 <span className="text-gray-500">Download:</span>
+                                 <button className="text-gray-600 border border-gray-300 bg-white rounded px-1.5 py-0.5 text-[10px] w-fit hover:bg-gray-50 normal-case">Download</button>
                              </div>
-                             <div className="grid grid-cols-[110px_1fr]">
+                             <div className="grid grid-cols-[90px_1fr]">
                                  <span className="text-gray-500">Language:</span>
                                  <span className="text-gray-800 font-medium">Hindi</span>
                              </div>
-                             <div className="grid grid-cols-[110px_1fr]">
+                             <div className="grid grid-cols-[90px_1fr]">
                                  <span className="text-gray-500">Release date:</span>
                                  <span className="text-gray-800 font-medium">20/12/2025</span>
                              </div>
-                             <div className="grid grid-cols-[110px_1fr] items-center">
-                                 <span className="text-gray-500">Video URL (If Released Previous):</span>
-                                 <div className="flex gap-2">
-                                     <FaYoutube className="text-black w-4 h-4" /> {/* Black icon in mockup */}
-                                     <FaCopy className="text-black w-3 h-3 cursor-pointer" />
+                             <div className="grid grid-cols-[90px_1fr] items-center">
+                                 <span className="text-gray-500 truncate mr-1">Video URL:</span>
+                                 <div className="flex gap-2 items-center">
+                                     <FaYoutube className="text-black w-3.5 h-3.5" />
+                                     <FaCopy className="text-black w-2.5 h-2.5 cursor-pointer" />
                                  </div>
                              </div>
                         </div>
 
                         {/* Column 2 */}
-                        <div className="space-y-2 typo-table-cell">
-                            <div className="grid grid-cols-[90px_1fr]">
+                        <div className="space-y-0.5">
+                            <div className="grid grid-cols-[80px_1fr]">
                                  <span className="text-gray-500">Track Name:</span>
                                  <span className="text-gray-800 font-medium whitespace-nowrap">--</span>
                              </div>
-                             <div className="grid grid-cols-[90px_1fr]">
+                             <div className="grid grid-cols-[80px_1fr]">
                                  <span className="text-gray-500">Video ISRC:</span>
-                                 <span className="text-gray-800 font-medium whitespace-nowrap">{catalog.songInfo?.[0]?.ISSRC || "IND-458-2014"}</span>
+                                 <span className="text-gray-800 font-medium whitespace-nowrap text-[9px]">{catalog.songInfo?.[0]?.ISSRC || "IND-458-2014"}</span>
                              </div>
-                             <div className="grid grid-cols-[90px_1fr]">
+                             <div className="grid grid-cols-[80px_1fr]">
                                  <span className="text-gray-500">Actor Name:</span>
                                  <span className="text-gray-800 font-medium">{catalog.ActorName || "Sunil"}</span>
                              </div>
-                             <div className="grid grid-cols-[90px_1fr]">
+                             <div className="grid grid-cols-[80px_1fr]">
                                  <span className="text-gray-500">Actress Name:</span>
                                  <span className="text-gray-800 font-medium">{catalog.ActressName || "Sonali"}</span>
                              </div>
                         </div>
 
                          {/* Column 3 */}
-                        <div className="space-y-2 typo-table-cell relative">
-                            <div className="grid grid-cols-[80px_1fr]">
+                        <div className="space-y-0.5 relative">
+                            <div className="grid grid-cols-[70px_1fr]">
                                  <span className="text-gray-500">Video UPC:</span>
-                                 <span className="text-gray-800 font-medium">01247652369</span>
+                                 <span className="text-gray-800 font-medium whitespace-nowrap">01247652369</span>
                              </div>
                              
                              {/* Edit Button at bottom right of this section */}
                              <div className="absolute bottom-0 right-0">
-                                 <button className="bg-white border border-gray-300 text-gray-600 px-2 py-1 rounded shadow-sm typo-btn-action flex items-center gap-1 hover:bg-gray-50 normal-case">
-                                     Edit <MdEdit size={12} />
+                                 <button className="bg-white border border-gray-300 text-gray-600 px-1.5 py-0.5 rounded shadow-sm text-[10px] flex items-center gap-1 hover:bg-gray-50 normal-case">
+                                     Edit <MdEdit size={10} />
                                  </button>
                              </div>
                         </div>

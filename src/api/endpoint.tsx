@@ -1,47 +1,77 @@
+// ─── endpoint.tsx ────────────────────────────────────────────
+// Central file for all backend endpoint URLs and the React Query
+// hooks that call them. All new features should add their URLs
+// and hooks to this file.
+//
+// Structure:
+//   ENDPOINTS.AUTH.*     → auth endpoints (login, register, ...)
+//   ENDPOINTS.USER.*     → user endpoints (future)
+//   ENDPOINTS.CATALOGS.* → catalog endpoints (future)
+//   ...
+//
+// Components should import the hooks from this file:
+//   import { LoginWithMailApi } from "../../api/endpoint";
+// ─────────────────────────────────────────────────────────────
+
 import cogoToast from "@successtar/cogo-toast";
 import { useMutation, useQuery } from "react-query";
 import api from "../lib/api";
 import { NavigateFunction } from "react-router-dom";
 
-// ─── ENDPOINTS ──────────────────────────────────────────────
-// All backend URLs used in this file live here. If a URL changes
-// on the backend, this block is the only place that needs updating.
-// Hooks below reference these constants instead of hardcoding paths.
+// ─── ENDPOINTS ───────────────────────────────────────────────
+// All backend URLs live here, grouped by feature area. If the
+// backend renames an endpoint, this block is the only place
+// that needs updating. Feature groups (AUTH, USER, ...) exist
+// so the file scales cleanly as more APIs are migrated in.
 const ENDPOINTS = {
-    LOGIN: "/user/login",
-    REGISTER: "/user/register",
-    USER_DATA: "/user/userData",
-    FORGOT_PASSWORD: "/user/forgot-password",
+    AUTH: {
+        LOGIN: "/user/login",
+        REGISTER: "/user/register",
+        USER_DATA: "/user/userData",
+        FORGOT_PASSWORD: "/user/forgot-password",
+    },
+    // Future feature groups will be added here as other APIs migrate in:
+    // USER: { ... },
+    // CATALOGS: { ... },
+    // FINANCIAL: { ... },
 } as const;
 
+// ─── TYPES ───────────────────────────────────────────────────
 type LoginPayload = {
     email: string;
     password: string;
     checkbox: boolean;
-  };
-  export const LoginWithMailApi = (reset: any, navigate: any, setToken: any, setUserType: any) => {
+};
+
+type ForgotPasswordPayload = {
+    email: string;
+};
+
+// ─── AUTH HOOKS ──────────────────────────────────────────────
+
+export const LoginWithMailApi = (reset: any, navigate: any, setToken: any, setUserType: any) => {
     console.log("Login with mail")
     return useMutation({
-      mutationFn: async (payload: LoginPayload) => {
-        // MOCK LOGIN for Development
-        if (payload.email === "admin@local.com" && payload.password === "pass123") {
-            console.log("⚡ Executing Magic Login");
-            return {
-                data: {
-                    status: "success",
+        mutationFn: async (payload: LoginPayload) => {
+            // MOCK LOGIN for Development
+            if (payload.email === "admin@local.com" && payload.password === "pass123") {
+                console.log("⚡ Executing Magic Login");
+                return {
                     data: {
-                        token: "mock-token-12345",
-                        userType: "admin"
-                    },
-                    message: "Login successfully"
-                }
-            };
-        }
+                        status: "success",
+                        data: {
+                            token: "mock-token-12345",
+                            userType: "admin"
+                        },
+                        message: "Login successfully"
+                    }
+                };
+            }
 
-        const res = await api.post(ENDPOINTS.LOGIN, payload);
-        return res;
-      },
-onSuccess: (res) => {
+            const res = await api.post(ENDPOINTS.AUTH.LOGIN, payload);
+            return res;
+        },
+        onSuccess: (res) => {
             if (res?.data?.status === "error") {
                 cogoToast.error(res?.data?.error);
             } else {
@@ -49,29 +79,29 @@ onSuccess: (res) => {
                 const tokenData = typeof res.data.data === 'string' ? res.data.data : res.data.data?.token;
                 setToken(tokenData);
                 localStorage.setItem("token", tokenData);
-                
+
                 // Set user type from response
                 const userType = res.data?.data?.userType || 'user';
                 setUserType(userType);
                 localStorage.setItem("userType", userType);
-                
+
                 navigate('/');
                 cogoToast.success("Login successfully");
                 reset()
             }
         },
-      onError: (res: any) => {
-        cogoToast.error(res?.data?.error);
-    }
+        onError: (res: any) => {
+            cogoToast.error(res?.data?.error);
+        }
     });
-  };
+};
 
 export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation({
         mutationFn: async (data) => {
             console.log('🚀 Starting registration with data:', data);
             try {
-                const res = await api.post(ENDPOINTS.REGISTER, data);
+                const res = await api.post(ENDPOINTS.AUTH.REGISTER, data);
                 console.log('✅ Registration API call successful:', res);
                 return res;
             } catch (error) {
@@ -84,7 +114,7 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
             console.log('Response data:', res?.data);
             console.log('Response status:', res?.status);
             console.log('Response headers:', res?.headers);
-            
+
             if (res?.data?.error) {
                 console.log('⚠️ Registration failed - API returned an error');
                 console.log('Error message:', res?.data?.error);
@@ -92,7 +122,7 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
             } else {
                 console.log('✅ Registration successful!');
                 cogoToast.success("Registration successfully");
-                
+
                 // Store token if provided in the response (check multiple possible paths)
                 let tokenStored = false;
                 if (res?.data?.token) {
@@ -110,7 +140,7 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
                 } else {
                     console.log('⚠️ No token found in response.');
                 }
-                
+
                 console.log('Token stored:', tokenStored);
 
                 if (tokenStored) {
@@ -134,23 +164,21 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
             console.error('Error data:', error?.response?.data);
             console.error('Error status:', error?.response?.status);
             console.error('Error message:', error?.message);
-            
+
             const errorMessage = error?.response?.data?.message || error?.message || 'Registration failed';
             console.log('Showing error message:', errorMessage);
             cogoToast.error(errorMessage);
-            
+
             // On error, do not redirect. Stay on the sign-up page.
             console.log('➡️ Staying on sign-up page due to error');
         }
     })
 }
 
-
-
 export const GetUserDataApi = (setUserData: any, navigate: NavigateFunction, setUserType: any, token: string) =>
     useQuery(
         [`GetUserData`, token],
-        async () => await api.get(`${ENDPOINTS.USER_DATA}?token=${token}`),
+        async () => await api.get(`${ENDPOINTS.AUTH.USER_DATA}?token=${token}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
@@ -171,11 +199,10 @@ export const GetUserDataApi = (setUserData: any, navigate: NavigateFunction, set
         }
     );
 
-
 export const GetTokenValidateApi = (navigate: NavigateFunction, setIsVerified: any, token: string) =>
     useQuery(
         [`GetTokenValidate`, token],
-        async () => await api.get(`${ENDPOINTS.USER_DATA}?token=${token}`),
+        async () => await api.get(`${ENDPOINTS.AUTH.USER_DATA}?token=${token}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
@@ -197,15 +224,11 @@ export const GetTokenValidateApi = (navigate: NavigateFunction, setIsVerified: a
 
 // Forgot Password API - Stubbed for frontend development
 // TODO: Update endpoint when backend is ready
-type ForgotPasswordPayload = {
-    email: string;
-};
-
 export const ForgotPasswordApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation({
         mutationFn: async (payload: ForgotPasswordPayload) => {
             // TODO: Replace with actual endpoint when backend is ready
-            const res = await api.post(ENDPOINTS.FORGOT_PASSWORD, payload);
+            const res = await api.post(ENDPOINTS.AUTH.FORGOT_PASSWORD, payload);
             return res;
         },
         onSuccess: (res) => {

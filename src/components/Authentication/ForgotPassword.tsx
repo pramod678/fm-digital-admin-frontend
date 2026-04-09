@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import ReCAPTCHA from "react-google-recaptcha";
 import cogoToast from "@successtar/cogo-toast";
-import { ForgotPasswordApi } from "../../api/authentication";
+import { ForgotPasswordApi } from "../../api/endpoint";
 
 type FormValues = {
   email: string;

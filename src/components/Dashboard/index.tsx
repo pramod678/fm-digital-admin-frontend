@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TabNavigation from "./TabNavigation";
-import { GetUserDataApi } from "../../api/authentication";
+import { GetUserDataApi } from "../../api/endpoint";
 import useAuthStore from "../../store/userstore";
 import { BounceLoader } from "react-spinners";
 import cogoToast from "@successtar/cogo-toast";

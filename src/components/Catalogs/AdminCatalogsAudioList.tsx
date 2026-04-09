@@ -131,13 +131,13 @@ export default function AdminCatalogsAudioList() {
 
       <div className="px-4 space-y-3">
         {/* Summary Strip - Lavender gradient */}
-        <div className="bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 rounded px-4 py-2 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-pink-50 via-purple-50 to-pink-50 rounded px-3 py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
           
-          {/* Left: Green "Go to Video Catalog" button + pink divider + large 5 */}
-          <div className="flex items-center gap-3">
+          {/* Left: Go to Video Catalog + count */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => navigate("/Catalogs")}
-              className="bg-green-600 text-white px-4 py-1.5 rounded typo-btn-main hover:bg-green-700 transition-colors"
+              className="bg-green-600 text-white px-3 py-1.5 rounded typo-btn-main hover:bg-green-700 transition-colors text-xs whitespace-nowrap"
             >
               Go to Video Catalog
             </button>
@@ -145,99 +145,92 @@ export default function AdminCatalogsAudioList() {
             <span className="text-3xl font-bold text-gray-800">5</span>
           </div>
 
-          {/* Right: KPI pills (2x2 grid) + Edit + Toggle */}
-          <div className="flex items-center gap-3">
-            {/* KPI Pills - 2x2 grid with pink borders */}
-            <div className="grid grid-cols-2 gap-1.5">
-              <div className="border border-pink-300 bg-white rounded px-3 py-1 flex items-center gap-2 typo-stat-value">
-                <span className="text-gray-600">Tickets</span>
-                <span className="font-semibold text-pink-600">5</span>
+          {/* Right: KPI Pills + Edit + Toggle */}
+          <div className="flex items-center gap-1.5 sm:gap-2 sm:ml-auto">
+            <div className="grid grid-cols-2 gap-1">
+              <div className="border border-pink-300 bg-white rounded px-1.5 py-0.5 sm:px-2 sm:py-1 flex items-center gap-1 sm:gap-1.5">
+                <span className="text-gray-600 text-[10px] sm:text-xs">Tickets</span>
+                <span className="font-semibold text-pink-600 text-[10px] sm:text-xs">5</span>
               </div>
-              <div className="border border-pink-300 bg-white rounded px-3 py-1 flex items-center gap-2 typo-stat-value">
-                <span className="text-gray-600">Labels</span>
-                <span className="font-semibold text-pink-600">3</span>
+              <div className="border border-pink-300 bg-white rounded px-1.5 py-0.5 sm:px-2 sm:py-1 flex items-center gap-1 sm:gap-1.5">
+                <span className="text-gray-600 text-[10px] sm:text-xs">Labels</span>
+                <span className="font-semibold text-pink-600 text-[10px] sm:text-xs">3</span>
               </div>
-              <div className="border border-pink-300 bg-white rounded px-3 py-1 flex items-center gap-2 typo-stat-value">
-                <span className="text-gray-600">UGC</span>
-                <span className="font-semibold text-pink-600">2</span>
+              <div className="border border-pink-300 bg-white rounded px-1.5 py-0.5 sm:px-2 sm:py-1 flex items-center gap-1 sm:gap-1.5">
+                <span className="text-gray-600 text-[10px] sm:text-xs">UGC</span>
+                <span className="font-semibold text-pink-600 text-[10px] sm:text-xs">2</span>
               </div>
-              <div className="border border-pink-300 bg-white rounded px-3 py-1 flex items-center gap-2 typo-stat-value">
-                <span className="text-gray-600">Profile Linking</span>
-                <span className="font-semibold text-pink-600">4</span>
+              <div className="border border-pink-300 bg-white rounded px-1.5 py-0.5 sm:px-2 sm:py-1 flex items-center gap-1 sm:gap-1.5">
+                <span className="text-gray-600 text-[10px] sm:text-xs"><span className="sm:hidden">Prof. Link</span><span className="hidden sm:inline">Profile Linking</span></span>
+                <span className="font-semibold text-pink-600 text-[10px] sm:text-xs">4</span>
               </div>
             </div>
 
-            {/* Edit Icon - opens modal to edit message */}
-            <button
-              className="p-1.5 border border-gray-300 rounded bg-white hover:bg-gray-50"
-              onClick={() => setIsModalOpen(true)}
-              title="Edit service status message"
-            >
-              <Pencil size={14} className="text-gray-500" />
-            </button>
+            <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+              <button
+                className="p-1 sm:p-1.5 border border-gray-300 rounded bg-white hover:bg-gray-50"
+                onClick={() => setIsModalOpen(true)}
+                title="Edit service status message"
+              >
+                <Pencil size={12} className="text-gray-500 sm:hidden" />
+                <Pencil size={14} className="text-gray-500 hidden sm:block" />
+              </button>
 
-            {/* Toggle */}
-            <Toggle
-              enabled={isActive}
-              onChange={(val: boolean) => {
-                if (!val) {
-                  // Toggling OFF → open modal to enter message
-                  setIsModalOpen(true);
-                } else {
-                  // Toggling ON → re-enable immediately
-                  setServiceStatus(true, '');
-                }
-              }}
-            />
+              <Toggle
+                enabled={isActive}
+                onChange={(val: boolean) => {
+                  if (!val) {
+                    setIsModalOpen(true);
+                  } else {
+                    setServiceStatus(true, '');
+                  }
+                }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Filter Row - Dense, utilitarian */}
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            {/* Search */}
+        {/* Filter Row */}
+        <div className="flex flex-col gap-2">
+          {/* Search + Dropdown */}
+          <div className="flex flex-wrap items-center gap-2">
             <input
               type="text"
               placeholder="Search..."
-              className="w-32 px-2 py-1 border border-gray-300 rounded typo-table-cell"
+              className="flex-1 min-w-[100px] px-2 py-1 border border-gray-300 rounded typo-table-cell"
               onChange={handleSearch}
             />
-
-            {/* User ID Dropdown */}
             <select className="px-2 py-1 border border-gray-300 rounded typo-table-cell text-gray-600 bg-white">
               <option>Select User Id ▼</option>
             </select>
-
-            {/* Status Filter Pills */}
-            <div className="flex items-center gap-1">
-              {STATUS_FILTERS.map((filter) => (
-                <button
-                  key={filter.label}
-                  onClick={() => setStatusId(filter.value)}
-                  className={`px-3 py-1 rounded border typo-table-cell transition-colors
-                    ${
-                      statusId === filter.value
-                        ? "bg-gray-700 text-white border-gray-700"
-                        : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                    }
-                  `}
-                >
-                  {filter.label}
-                </button>
-              ))}
+            <div className="typo-table-cell text-gray-500 ml-auto whitespace-nowrap">
+              Total: <span className="font-semibold text-red-600">{totalFilteredRecords || 1743}</span>
             </div>
           </div>
 
-          {/* Total Releases */}
-          <div className="typo-table-cell text-gray-500">
-            Total Releases: <span className="font-semibold text-red-600">{totalFilteredRecords || 1743}</span>
+          {/* Status Filter Pills */}
+          <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
+            {STATUS_FILTERS.map((filter) => (
+              <button
+                key={filter.label}
+                onClick={() => setStatusId(filter.value)}
+                className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded border text-[10px] sm:text-xs transition-colors
+                  ${
+                    statusId === filter.value
+                      ? "bg-gray-700 text-white border-gray-700"
+                      : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                  }
+                `}
+              >
+                {filter.label}
+              </button>
+            ))}
           </div>
         </div>
 
         {/* Table Section */}
-        <div className="border border-gray-200 rounded overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
+        <div className="border border-gray-200 rounded overflow-x-auto">
+            <table style={{ minWidth: '900px' }} className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   {["No.", "Title", "User ID", "Status", "User Name", "Email", "Label", "# of Tracks", "Release Date", "Action", "Created At"].map((head) => (
@@ -270,7 +263,7 @@ export default function AdminCatalogsAudioList() {
                 )}
               </tbody>
             </table>
-          </div>
+
 
           {/* Pagination - Bottom Right */}
           <div className="bg-white px-4 py-2 border-t border-gray-200 flex items-center justify-end gap-2">

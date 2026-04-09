@@ -12,7 +12,7 @@ export default function YoutubeList() {
         return (
             <>
                 {[1, 2, 3].map((_, index) => (
-                    <div key={index} className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm flex flex-col gap-3 min-h-[280px]">
+                    <div key={index} className="bg-white border border-gray-200 rounded-2xl p-2 sm:p-4 shadow-sm flex flex-col gap-2 sm:gap-3 min-h-[180px] sm:min-h-[280px]">
                        <div className="w-full aspect-video rounded-xl overflow-hidden">
                             <Skeleton className="w-full h-full" />
                        </div>
@@ -34,7 +34,7 @@ export default function YoutubeList() {
             {
                 GetDashboardsLinks?.data?.data?.map((data: any, index: number) => {
                     return (
-                        <div key={index} className="bg-gradient-to-b from-white to-[#e2dcf9] border border-gray-400 rounded-2xl p-4 shadow-sm flex flex-col gap-3 min-h-[280px]">
+                        <div key={index} className="bg-gradient-to-b from-white to-[#e2dcf9] border border-gray-400 rounded-2xl p-2 sm:p-4 shadow-sm flex flex-col gap-2 sm:gap-3 min-h-[180px] sm:min-h-[280px]">
                            <div className="w-full aspect-video rounded-xl overflow-hidden bg-black/10">
                                 <iframe 
                                     width="100%" 
@@ -47,15 +47,15 @@ export default function YoutubeList() {
                                     allowFullScreen
                                 ></iframe>
                            </div>
-                           <div className="flex flex-col gap-1 px-1">
-                                <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">
+                           <div className="flex flex-col gap-0.5 sm:gap-1 px-1">
+                                <p className="text-gray-500 text-[9px] sm:text-xs font-medium uppercase tracking-wider">
                                     {data?.category || "Video on Youtube"}
                                 </p>
-                                <div className="flex items-center justify-between gap-4">
-                                     <p className="text-sm font-semibold text-gray-800 truncate flex-1">
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+                                     <p className="text-xs sm:text-sm font-semibold text-gray-800 truncate flex-1">
                                         {data?.title || "Youtube Video"}
                                      </p>
-                                     <button className="px-3 py-1 bg-white rounded-full text-[10px] font-bold text-gray-700 border border-gray-100 hover:text-purple-600 shadow-sm">
+                                     <button className="px-2 py-1 bg-white rounded-full text-[8px] sm:text-[10px] font-bold text-gray-700 border border-gray-100 hover:text-purple-600 shadow-sm w-fit">
                                         Check full video
                                      </button>
                                 </div>

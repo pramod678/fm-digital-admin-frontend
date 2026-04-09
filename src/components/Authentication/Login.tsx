@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { LoginWithMailApi } from "../../api/authentication";
+import { LoginWithMailApi } from "../../api/endpoint";
 import { ClipLoader } from "react-spinners";
 import InputField from "../../ui/InputField";
 import useAuthStore from "../../store/userstore";
