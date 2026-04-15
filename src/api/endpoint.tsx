@@ -14,7 +14,7 @@
 // ─────────────────────────────────────────────────────────────
 
 import cogoToast from "@successtar/cogo-toast";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import api from "../lib/api";
 import { NavigateFunction } from "react-router-dom";
 
@@ -29,6 +29,10 @@ const ENDPOINTS = {
         REGISTER: "/user/register",
         USER_DATA: "/user/userData",
         FORGOT_PASSWORD: "/user/forgot-password",
+    },
+    PLATFORM: {
+        POST: "createRelease/platformPost",
+        UPDATE: "createRelease/platformUpdate",    // + /:id
     },
     // Future feature groups will be added here as other APIs migrate in:
     // USER: { ... },
@@ -247,3 +251,32 @@ export const ForgotPasswordApi = (reset: any, navigate: NavigateFunction) => {
         }
     });
 };
+
+// ─── PLATFORM HOOKS ──────────────────────────────────────────
+
+export const PlatformPostApi = (navigate: NavigateFunction) => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.post(ENDPOINTS.PLATFORM.POST, data), {
+        onSuccess: (res) => {
+            cogoToast.success("platform Added");
+            navigate('/Submission');
+        },
+        onError: ({ response }: { response: any }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+
+export const UpdatePlatformApi = ({ navigate, id, releaseId }:{navigate: NavigateFunction, id:any, releaseId:any}) => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put(`${ENDPOINTS.PLATFORM.UPDATE}/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("platform updated");
+            navigate(`/Submission/${releaseId}`);
+        },
+        onError: ({ response }: { response: any }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}

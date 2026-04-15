@@ -3,7 +3,7 @@ import AppHeader from "../SharedLayout/AppHeader";
 import CreateReleaseTabs from "./CreateReleaseTabs";
 import { GetReleaseInfoApi, GetSongsApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
 import { Link, useNavigate } from "react-router-dom";
-import { PlatformPostApi } from "../../api/platform";
+import { PlatformPostApi } from "../../api/endpoint";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
 
