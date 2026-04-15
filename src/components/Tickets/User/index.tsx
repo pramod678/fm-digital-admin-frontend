@@ -2,7 +2,7 @@ import * as React from "react";
 import ListRow from "./ListRow";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../api/releaseInfo";
-import { GetAllAdminTicketApi } from "../../../api/ticket";
+import { GetAllAdminTicketApi } from "../../../api/endpoint";
 import { BounceLoader } from "react-spinners";
 import { GetAllUsersDataApi } from "../../../api/user";
 import { stubTickets } from "../../../data/stubTickets";

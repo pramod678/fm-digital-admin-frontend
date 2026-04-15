@@ -3,7 +3,7 @@ import ListRow from "./ListRow";
 import AddTicket from "./Popups/AddTicket";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../api/releaseInfo";
-import { GetAllTicketApi } from "../../api/ticket";
+import { GetAllTicketApi } from "../../api/endpoint";
 import { BounceLoader } from "react-spinners";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 

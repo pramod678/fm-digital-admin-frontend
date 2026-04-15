@@ -50,7 +50,7 @@
 | # | File | Hooks | Risk | Status |
 |---|------|-------|------|--------|
 | 2 | `profileLinking.tsx` | 4 | Low | ✅ Done |
-| 3 | `ticket.tsx` | 4 | Low | ⏳ Queued |
+| 3 | `ticket.tsx` | 4 | Low | ✅ Done |
 | 4 | `label.tsx` | 5 | Low | ⏳ Queued |
 | 5 | `financial.tsx` | 7 | Medium | ⏳ Queued |
 | 6 | `youtubeClaims.tsx` | 7 | Medium | ⏳ Queued |

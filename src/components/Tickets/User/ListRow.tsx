@@ -1,5 +1,5 @@
 import * as React from "react";
-import { UpdateTicketAdminApi } from "../../../api/ticket";
+import { UpdateTicketAdminApi } from "../../../api/endpoint";
 
 export default function ListRow({ data, index }: { data: any, index: number }) {
 

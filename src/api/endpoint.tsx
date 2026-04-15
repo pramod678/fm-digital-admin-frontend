@@ -40,6 +40,12 @@ const ENDPOINTS = {
         ADMIN_GET_ALL: "admin/profile-linking-get-all",  // ?user_id=&status=
         ADMIN_UPDATE: "admin/profile-linking-update",
     },
+    TICKET: {
+        POST: "createRelease/ticketPost",
+        GET_ALL: "createRelease/ticketgetAll/users_id",  // + /:id
+        ADMIN_GET_ALL: "admin/ticket-get-all",           // ?user_id=&status=
+        ADMIN_UPDATE: "admin/ticket-update",
+    },
     // Future feature groups will be added here as other APIs migrate in:
     // USER: { ... },
     // CATALOGS: { ... },
@@ -337,6 +343,59 @@ export const UpdateProfileLinkingPostApi = () => {
         onSuccess: (res) => {
             cogoToast.success("Profile Linking updated");
             queryClient.refetchQueries([`GetAllAdminProfileLinking`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+// ─── TICKET HOOKS ─────────────────────────────────────────────
+
+export const TicketPostApi = (setIsOpen: any, reset: any, setFile: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.post(ENDPOINTS.TICKET.POST, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Ticket Added");
+            queryClient.refetchQueries([` GetAllTicket`]);
+            reset()
+            setFile(null)
+            setIsOpen(false)
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+export const GetAllTicketApi = (userId: any) =>
+    useQuery(
+        [` GetAllTicket`, userId],
+        async () => await api.get(`${ENDPOINTS.TICKET.GET_ALL}/${userId}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+export const GetAllAdminTicketApi = (userId:string, statusId:string) =>
+    useQuery(
+        [`GetAllAdminTicket`, userId, statusId],
+        async () => await api.get(`${ENDPOINTS.TICKET.ADMIN_GET_ALL}?user_id=${userId}&status=${statusId}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+export const UpdateTicketAdminApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put(ENDPOINTS.TICKET.ADMIN_UPDATE, data), {
+        onSuccess: (res) => {
+            cogoToast.success("ticket updated");
+            queryClient.refetchQueries([`GetAllAdminTicket`]);
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
