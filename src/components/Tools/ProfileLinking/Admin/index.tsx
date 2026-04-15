@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { ProfileLinkingDto } from "../../../../types/tools";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../../api/releaseInfo";
-import { GetAllAdminProfileLinkingApi } from "../../../../api/profileLinking";
+import { GetAllAdminProfileLinkingApi } from "../../../../api/endpoint";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { GetAllUsersDataApi } from "../../../../api/user";

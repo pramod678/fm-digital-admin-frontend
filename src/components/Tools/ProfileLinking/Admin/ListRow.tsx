@@ -2,7 +2,7 @@ import * as React from "react";
 import { format } from "date-fns";
 import { FaFacebookSquare } from "react-icons/fa";
 import { GrInstagram } from "react-icons/gr";
-import { UpdateProfileLinkingPostApi } from "../../../../api/profileLinking";
+import { UpdateProfileLinkingPostApi } from "../../../../api/endpoint";
 
 interface ListRowProps {
     link: any;

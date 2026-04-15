@@ -34,6 +34,12 @@ const ENDPOINTS = {
         POST: "createRelease/platformPost",
         UPDATE: "createRelease/platformUpdate",    // + /:id
     },
+    PROFILE_LINKING: {
+        GET_ALL: "tools/profileLinkingGetAll",           // + /:id
+        POST: "tools/profileLinkingPost",
+        ADMIN_GET_ALL: "admin/profile-linking-get-all",  // ?user_id=&status=
+        ADMIN_UPDATE: "admin/profile-linking-update",
+    },
     // Future feature groups will be added here as other APIs migrate in:
     // USER: { ... },
     // CATALOGS: { ... },
@@ -276,6 +282,63 @@ export const UpdatePlatformApi = ({ navigate, id, releaseId }:{navigate: Navigat
             navigate(`/Submission/${releaseId}`);
         },
         onError: ({ response }: { response: any }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+// ─── PROFILE LINKING HOOKS ───────────────────────────────────
+
+export const ProfileLinkingGetAllApi = (id: any) =>
+    useQuery(
+        [`profileLinkingGetAll`],
+        async () => await api.get(`${ENDPOINTS.PROFILE_LINKING.GET_ALL}/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: id ? true : false,
+            onSuccess: (res) => {
+                console.log(res.data)
+            },
+        }
+    );
+
+export const GetAllAdminProfileLinkingApi = (userId: string, statusId: string) =>
+    useQuery(
+        [`GetAllAdminProfileLinking`, userId, statusId],
+        async () => await api.get(`${ENDPOINTS.PROFILE_LINKING.ADMIN_GET_ALL}?user_id=${userId}&status=${statusId}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+export const ProfileLinkingPostApi = (reset: any, setIsOpen: any) => {
+    const queryClient = useQueryClient();
+    return useMutation((data) => api.post(ENDPOINTS.PROFILE_LINKING.POST, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Profile Linking Created");
+            setIsOpen(false)
+            queryClient.refetchQueries([`profileLinkingGetAll`]);
+            reset()
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+
+export const UpdateProfileLinkingPostApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: any) => api.put(ENDPOINTS.PROFILE_LINKING.ADMIN_UPDATE, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Profile Linking updated");
+            queryClient.refetchQueries([`GetAllAdminProfileLinking`]);
+        },
+        onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
         }
     })
