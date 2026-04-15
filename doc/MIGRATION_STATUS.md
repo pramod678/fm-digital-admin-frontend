@@ -51,7 +51,7 @@
 |---|------|-------|------|--------|
 | 2 | `profileLinking.tsx` | 4 | Low | ✅ Done |
 | 3 | `ticket.tsx` | 4 | Low | ✅ Done |
-| 4 | `label.tsx` | 5 | Low | ⏳ Queued |
+| 4 | `label.tsx` | 5 | Low | ✅ Done |
 | 5 | `financial.tsx` | 7 | Medium | ⏳ Queued |
 | 6 | `youtubeClaims.tsx` | 7 | Medium | ⏳ Queued |
 | 7 | `catalogs.tsx` | 4 | Medium | ⏳ Queued |

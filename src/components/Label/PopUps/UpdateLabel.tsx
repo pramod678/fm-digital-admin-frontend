@@ -5,7 +5,7 @@ import { AiOutlineCloseCircle, AiOutlinePlus } from 'react-icons/ai';
 import InputField from "../../../ui/InputField";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
-import { UpdateLabelApi } from "../../../api/label";
+import { UpdateLabelApi } from "../../../api/endpoint";
 import FileUpload from "../../../ui/fileupload";
 import { FaEdit } from "react-icons/fa";
 

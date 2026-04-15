@@ -46,6 +46,13 @@ const ENDPOINTS = {
         ADMIN_GET_ALL: "admin/ticket-get-all",           // ?user_id=&status=
         ADMIN_UPDATE: "admin/ticket-update",
     },
+    LABEL: {
+        POST: "createRelease/labelPost",
+        UPDATE: "createRelease/labelUpdate/label_id",    // + /:id
+        GET_ALL: "createRelease/labelgetAll",             // + /:id
+        ADMIN_GET_ALL: "admin/label-get-all",             // ?user_id=&status=
+        ADMIN_UPDATE: "admin/label-update",
+    },
     // Future feature groups will be added here as other APIs migrate in:
     // USER: { ... },
     // CATALOGS: { ... },
@@ -399,6 +406,74 @@ export const UpdateTicketAdminApi = () => {
         },
         onError: ({ response }) => {
             cogoToast.error(response?.data?.message);
+        }
+    })
+}
+
+// ─── LABEL HOOKS ──────────────────────────────────────────────
+
+export const LabelPostApi = (setIsOpen: (open: boolean) => void, reset: () => void, setFile: (file: any) => void) => {
+    const queryClient = useQueryClient();
+    return useMutation((data: FormData) => api.post(ENDPOINTS.LABEL.POST, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Label Added");
+            queryClient.refetchQueries([`GetAllLabels`]);
+            reset()
+            setFile(null)
+            setIsOpen(false)
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message || "Something went wrong");
+        }
+    })
+}
+
+export const UpdateLabelApi = (id: number | string, setIsOpen: (open: boolean) => void) => {
+    const queryClient = useQueryClient();
+    return useMutation((data: FormData) => api.put(`${ENDPOINTS.LABEL.UPDATE}/${id}`, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Updated Successfully");
+            setIsOpen(false)
+            queryClient.refetchQueries([`GetAllLabels`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message || "Update failed");
+        }
+    })
+}
+
+export const GetAllLabelsApi = (id: number | string) =>
+    useQuery(
+        [`GetAllLabels`, id],
+        async () => await api.get(`${ENDPOINTS.LABEL.GET_ALL}/${id}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            enabled: !!id
+        }
+    );
+
+export const GetAllAdminLabelsApi = (userId: string, statusId: string) =>
+    useQuery(
+        [`GetAllAdminLabels`, userId, statusId],
+        async () => await api.get(`${ENDPOINTS.LABEL.ADMIN_GET_ALL}?user_id=${userId}&status=${statusId}`),
+        {
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+export const UpdateLabelAdminApi = () => {
+    const queryClient = useQueryClient();
+    return useMutation((data: { label_id: number; Status: number; users_id?: number | string; remark?: string }) => api.put(ENDPOINTS.LABEL.ADMIN_UPDATE, data), {
+        onSuccess: (res) => {
+            cogoToast.success("Label status updated");
+            queryClient.refetchQueries([`GetAllAdminLabels`]);
+        },
+        onError: ({ response }) => {
+            cogoToast.error(response?.data?.message || "Status update failed");
         }
     })
 }

@@ -2,7 +2,7 @@ import * as React from "react";
 import { IoLogoYoutube } from "react-icons/io";
 import { Link } from "react-router-dom";
 import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
-import { UpdateLabelAdminApi } from "../../../api/label";
+import { UpdateLabelAdminApi } from "../../../api/endpoint";
 import { BsCheckCircle } from "react-icons/bs";
 import { FcCancel } from "react-icons/fc";
 
