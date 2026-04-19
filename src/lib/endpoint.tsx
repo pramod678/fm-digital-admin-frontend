@@ -1,29 +1,11 @@
-// ─── endpoint.tsx ────────────────────────────────────────────
-// Central file for all backend endpoint URLs and the React Query
-// hooks that call them. All new features should add their URLs
-// and hooks to this file.
-//
-// Structure:
-//   ENDPOINTS.AUTH.*     → auth endpoints (login, register, ...)
-//   ENDPOINTS.USER.*     → user endpoints (future)
-//   ENDPOINTS.CATALOGS.* → catalog endpoints (future)
-//   ...
-//
-// Components should import the hooks from this file:
-//   import { LoginWithMailApi } from "../../api/endpoint";
-// ─────────────────────────────────────────────────────────────
-
 import cogoToast from "@successtar/cogo-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import api from "../lib/api";
+import api from "./api";
 import { NavigateFunction } from "react-router-dom";
 
 // ─── ENDPOINTS ───────────────────────────────────────────────
-// All backend URLs live here, grouped by feature area. If the
-// backend renames an endpoint, this block is the only place
-// that needs updating. Feature groups (AUTH, USER, ...) exist
-// so the file scales cleanly as more APIs are migrated in.
-const ENDPOINTS = {
+// lib/endpoint.ts
+export const ENDPOINTS = {
     AUTH: {
         LOGIN: "/user/login",
         REGISTER: "/user/register",
@@ -32,32 +14,57 @@ const ENDPOINTS = {
     },
     PLATFORM: {
         POST: "createRelease/platformPost",
-        UPDATE: "createRelease/platformUpdate",    // + /:id
+        UPDATE: "createRelease/platformUpdate",
     },
     PROFILE_LINKING: {
-        GET_ALL: "tools/profileLinkingGetAll",           // + /:id
+        GET_ALL: "tools/profileLinkingGetAll",
         POST: "tools/profileLinkingPost",
-        ADMIN_GET_ALL: "admin/profile-linking-get-all",  // ?user_id=&status=
+        ADMIN_GET_ALL: "admin/profile-linking-get-all",
         ADMIN_UPDATE: "admin/profile-linking-update",
     },
     TICKET: {
         POST: "createRelease/ticketPost",
-        GET_ALL: "createRelease/ticketgetAll/users_id",  // + /:id
-        ADMIN_GET_ALL: "admin/ticket-get-all",           // ?user_id=&status=
+        GET_ALL: "createRelease/ticketgetAll/users_id",
+        ADMIN_GET_ALL: "admin/ticket-get-all",
         ADMIN_UPDATE: "admin/ticket-update",
     },
     LABEL: {
         POST: "createRelease/labelPost",
-        UPDATE: "createRelease/labelUpdate/label_id",    // + /:id
-        GET_ALL: "createRelease/labelgetAll",             // + /:id
-        ADMIN_GET_ALL: "admin/label-get-all",             // ?user_id=&status=
+        UPDATE: "createRelease/labelUpdate/label_id",
+        GET_ALL: "createRelease/labelgetAll",
+        ADMIN_GET_ALL: "admin/label-get-all",
         ADMIN_UPDATE: "admin/label-update",
     },
-    // Future feature groups will be added here as other APIs migrate in:
-    // USER: { ... },
-    // CATALOGS: { ... },
-    // FINANCIAL: { ... },
 } as const;
+
+// Type helper for endpoints
+export type EndpointPath = typeof ENDPOINTS;
+export type AuthEndpoints = typeof ENDPOINTS.AUTH;
+export type TicketEndpoints = typeof ENDPOINTS.TICKET;
+
+// Helper function to build URLs with parameters
+export const buildUrl = (basePath: string, params?: Record<string, string | number>) => {
+    let url = basePath;
+    if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+            url = url.replace(`:${key}`, String(value));
+        });
+    }
+    return url;
+};
+
+// Helper for query params
+export const withQueryParams = (basePath: string, params?: Record<string, any>) => {
+    if (!params) return basePath;
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+            searchParams.append(key, String(value));
+        }
+    });
+    const queryString = searchParams.toString();
+    return queryString ? `${basePath}?${queryString}` : basePath;
+};
 
 // ─── TYPES ───────────────────────────────────────────────────
 type LoginPayload = {
@@ -102,9 +109,9 @@ export const LoginWithMailApi = (reset: any, navigate: any, setToken: any, setUs
                 const tokenData = typeof res.data.data === 'string' ? res.data.data : res.data.data?.token;
                 setToken(tokenData);
                 localStorage.setItem("token", tokenData);
-
+                
                 // Set user type from response
-                const userType = res.data?.data?.userType || 'user';
+                const userType = res.data?.data?.userType || 'User';
                 setUserType(userType);
                 localStorage.setItem("userType", userType);
 

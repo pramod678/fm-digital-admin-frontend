@@ -15,7 +15,7 @@ import SelectRelease from "../../../ui/SelectRelease";
 import SelectAudio from "../../../ui/SelectAudio";
 import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi, ReleseInfoGetOneApi } from "../../../api/youtubeClaims";
 import { FaEdit } from "react-icons/fa";
-import { ProfileLinkingPostApi } from "../../../api/endpoint";
+import { ProfileLinkingPostApi } from "../../../lib/endpoint";
 
 
 export default function CreateProfile() {

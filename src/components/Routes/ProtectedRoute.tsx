@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { GetTokenValidateApi } from '../../api/endpoint';
+import { GetTokenValidateApi } from '../../lib/endpoint';
 import * as React from 'react';
 import { BounceLoader } from 'react-spinners';
 

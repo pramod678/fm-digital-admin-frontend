@@ -1,5 +1,5 @@
 import * as React from "react";
-import { UpdateTicketAdminApi } from "../../../api/endpoint";
+import { UpdateTicketAdminApi } from "../../../lib/endpoint";
 
 export default function ListRow({ data, index, onRowClick, isSelected }: { data: any, index: number, onRowClick?: () => void, isSelected?: boolean }) {
 

@@ -8,7 +8,7 @@ import InputField from "../../../ui/InputField";
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
 import { LabelDto } from "../../../types/label";
-import { LabelPostApi } from "../../../api/endpoint";
+import { LabelPostApi } from "../../../lib/endpoint";
 import FileUpload from "../../../ui/fileupload";
 import { EarningOption, FinancialDto, RequestedOptions, SelectCommission } from "../../../types/financial";
 import SelectEarnings from "../../../ui/SelectEarnings";

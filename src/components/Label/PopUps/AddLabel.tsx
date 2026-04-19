@@ -5,7 +5,7 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { useForm } from "react-hook-form";
 import { BeatLoader } from "react-spinners";
 import { LabelDto } from "../../../types/label";
-import { LabelPostApi } from "../../../api/endpoint";
+import { LabelPostApi } from "../../../lib/endpoint";
 import { GetAllUsersDataApi } from "../../../api/user";
 import useAuthStore from "../../../store/userstore";
 import FileUpload from "../../../ui/fileupload";

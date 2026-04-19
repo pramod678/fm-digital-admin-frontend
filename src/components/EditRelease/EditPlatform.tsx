@@ -1,7 +1,7 @@
 import * as React from "react";
 import { GetPlatformApi, GetReleaseInfoApi, GetReleaseInfoByIdApi, GetSongsApi, ReleaseInfoPostApi, UserDataApi } from "../../api/releaseInfo";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { PlatformPostApi, UpdatePlatformApi } from "../../api/endpoint";
+import { PlatformPostApi, UpdatePlatformApi } from "../../lib/endpoint";
 
 
 export default function EditPlatform() {

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import AdminHome from "./AdminHome";
 import UserDashboard from "../Dashboard";
-import { GetUserDataApi } from "../../api/endpoint";
+import { GetUserDataApi } from "../../lib/endpoint";
 import useAuthStore from "../../store/userstore";
 import { BounceLoader } from "react-spinners";
 import LoadUserHome from "./LoaduserHome";

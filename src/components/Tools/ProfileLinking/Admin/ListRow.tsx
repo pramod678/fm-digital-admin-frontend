@@ -2,7 +2,7 @@ import * as React from "react";
 import { format } from "date-fns";
 import { FaFacebookSquare } from "react-icons/fa";
 import { GrInstagram } from "react-icons/gr";
-import { UpdateProfileLinkingPostApi } from "../../../../api/endpoint";
+import { UpdateProfileLinkingPostApi } from "../../../../lib/endpoint";
 
 interface ListRowProps {
     link: any;
@@ -159,4 +159,4 @@ export default function ListRow({ link, index, currentPage = 1, PAGE_SIZE = 10, 
             </td>
         </tr>
     );
-}
+}

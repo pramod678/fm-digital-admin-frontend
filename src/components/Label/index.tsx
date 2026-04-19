@@ -2,7 +2,7 @@ import * as React from "react";
 import AddLabel from "./PopUps/AddLabel";
 import { UserDataApi } from "../../api/releaseInfo";
 import { useNavigate } from "react-router-dom";
-import { GetAllLabelsApi } from "../../api/endpoint";
+import { GetAllLabelsApi } from "../../lib/endpoint";
 import { BounceLoader } from "react-spinners";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight, FiSearch } from "react-icons/fi";
@@ -198,4 +198,4 @@ export default function Index() {
             </div>
         </div>
     );
-}
+}

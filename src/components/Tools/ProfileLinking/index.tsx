@@ -5,7 +5,7 @@ import { ProfileLinkingDto } from "../../../types/tools";
 import { useNavigate } from "react-router-dom";
 import { UserDataApi } from "../../../api/releaseInfo";
 import { GetAllReleseInfoApi, ProfileLinkinAdudiogGetApi } from "../../../api/youtubeClaims";
-import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../api/endpoint";
+import { ProfileLinkingGetAllApi, ProfileLinkingPostApi } from "../../../lib/endpoint";
 import ListRow from "./ListRow";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Label from "../../../ui/Label";
@@ -237,4 +237,4 @@ export default function Index() {
             </div>
         </>
     )
-}
+}

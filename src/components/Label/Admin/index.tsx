@@ -1,7 +1,7 @@
 import * as React from "react";
 import { UserDataApi } from "../../../api/releaseInfo";
 import { useNavigate } from "react-router-dom";
-import { GetAllAdminLabelsApi } from "../../../api/endpoint";
+import { GetAllAdminLabelsApi } from "../../../lib/endpoint";
 import { BounceLoader } from "react-spinners";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import LabelListRow from "./LabelListRow";

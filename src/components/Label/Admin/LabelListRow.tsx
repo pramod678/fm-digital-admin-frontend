@@ -1,7 +1,7 @@
 import * as React from "react";
 import LabelTable from "../../ManageUser/Label/LabelTable";
 import { FaYoutube, FaCopy, FaEdit, FaTrash } from "react-icons/fa";
-import { UpdateLabelAdminApi } from "../../../api/endpoint";
+import { UpdateLabelAdminApi } from "../../../lib/endpoint";
 import ConfirmationButton from "../../../ui/ConfirmationButton";
 import UpdateLabel from "../PopUps/UpdateLabel";
 import cogoToast from "@successtar/cogo-toast";
@@ -153,4 +153,4 @@ export default function LabelListRow({ label, index, currentPage, PAGE_SIZE }: {
             </tr>
         </>
     );
-}
+}

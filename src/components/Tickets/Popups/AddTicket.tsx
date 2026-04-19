@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { TicketDto } from "../../../types/ticket";
 import SelectReason from "../../../ui/SelectReason";
 import CustomTextArea from "../../../ui/CustomTextArea";
-import { TicketPostApi } from "../../../api/endpoint";
+import { TicketPostApi } from "../../../lib/endpoint";
 import FileUpload from "../../../ui/fileupload";
 import { BeatLoader } from "react-spinners";
 

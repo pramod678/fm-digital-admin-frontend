@@ -2,7 +2,7 @@ import * as React from "react";
 import GetDate from "../../../utility/GetDate";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import ConfirmationButton from "../../../ui/ConfirmationButton";
-import { UpdateLabelAdminApi } from "../../../api/endpoint";
+import { UpdateLabelAdminApi } from "../../../lib/endpoint";
 import { UpdateUserFundApi } from "../../../api/financial";
 
 

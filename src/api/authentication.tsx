@@ -2,23 +2,10 @@ import cogoToast from "@successtar/cogo-toast";
 import { useMutation, useQuery } from "react-query";
 import api from "../lib/api";
 import { NavigateFunction } from "react-router-dom";
+import { ENDPOINTS } from "../lib/endpoint";
+import { LoginPayload } from "../types/auth";
+ 
 
-// ─── ENDPOINTS ──────────────────────────────────────────────
-// All backend URLs used in this file live here. If a URL changes
-// on the backend, this block is the only place that needs updating.
-// Hooks below reference these constants instead of hardcoding paths.
-const ENDPOINTS = {
-    LOGIN: "/user/login",
-    REGISTER: "/user/register",
-    USER_DATA: "/user/userData",
-    FORGOT_PASSWORD: "/user/forgot-password",
-} as const;
-
-type LoginPayload = {
-    email: string;
-    password: string;
-    checkbox: boolean;
-  };
   export const LoginWithMailApi = (reset: any, navigate: any, setToken: any, setUserType: any) => {
     console.log("Login with mail")
     return useMutation({
@@ -38,10 +25,10 @@ type LoginPayload = {
             };
         }
 
-        const res = await api.post(ENDPOINTS.LOGIN, payload);
+        const res = await api.post(ENDPOINTS.AUTH.LOGIN, payload);
         return res;
       },
-onSuccess: (res) => {
+    onSuccess: (res) => {
             if (res?.data?.status === "error") {
                 cogoToast.error(res?.data?.error);
             } else {
@@ -51,7 +38,7 @@ onSuccess: (res) => {
                 localStorage.setItem("token", tokenData);
                 
                 // Set user type from response
-                const userType = res.data?.data?.userType || 'user';
+                const userType = res.data?.data?.userType || 'Admin';
                 setUserType(userType);
                 localStorage.setItem("userType", userType);
                 
@@ -71,7 +58,7 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
         mutationFn: async (data) => {
             console.log('🚀 Starting registration with data:', data);
             try {
-                const res = await api.post(ENDPOINTS.REGISTER, data);
+                const res = await api.post(ENDPOINTS.AUTH.REGISTER, data);
                 console.log('✅ Registration API call successful:', res);
                 return res;
             } catch (error) {
@@ -150,7 +137,7 @@ export const RegisterWithMailApi = (reset: any, navigate: NavigateFunction) => {
 export const GetUserDataApi = (setUserData: any, navigate: NavigateFunction, setUserType: any, token: string) =>
     useQuery(
         [`GetUserData`, token],
-        async () => await api.get(`${ENDPOINTS.USER_DATA}?token=${token}`),
+        async () => await api.get(`${ENDPOINTS.AUTH.USER_DATA}?token=${token}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
@@ -175,7 +162,7 @@ export const GetUserDataApi = (setUserData: any, navigate: NavigateFunction, set
 export const GetTokenValidateApi = (navigate: NavigateFunction, setIsVerified: any, token: string) =>
     useQuery(
         [`GetTokenValidate`, token],
-        async () => await api.get(`${ENDPOINTS.USER_DATA}?token=${token}`),
+        async () => await api.get(`${ENDPOINTS.AUTH.USER_DATA}?token=${token}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
@@ -205,7 +192,7 @@ export const ForgotPasswordApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation({
         mutationFn: async (payload: ForgotPasswordPayload) => {
             // TODO: Replace with actual endpoint when backend is ready
-            const res = await api.post(ENDPOINTS.FORGOT_PASSWORD, payload);
+            const res = await api.post(ENDPOINTS.AUTH.FORGOT_PASSWORD, payload);
             return res;
         },
         onSuccess: (res) => {
