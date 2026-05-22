@@ -107,7 +107,13 @@ type ForgotPasswordPayload = {
 export const ForgotPasswordApi = (reset: any, navigate: NavigateFunction) => {
     return useMutation({
         mutationFn: async (payload: ForgotPasswordPayload) => {
-            const res = await api.post(ENDPOINTS.AUTH.FORGOT_PASSWORD, payload);
+            // Body shape matches the FM-Digital Postman collection: backend
+            // expects both `email` and `phoneNumber`. The form only collects
+            // email, so phoneNumber is sent as an empty string.
+            const res = await api.post(ENDPOINTS.AUTH.FORGOT_PASSWORD, {
+                email: payload.email,
+                phoneNumber: "",
+            });
             return res;
         },
         onSuccess: (res) => {
