@@ -1,154 +1,11 @@
-<<<<<<< HEAD
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginWithMailApi } from "../../api/authentication";
-import { ClipLoader } from "react-spinners";
-import Label from "../../ui/Label";
-import InputField from "../../ui/InputField";
-import useAuthStore from "../../store/userstore";
-import { FaRegUser } from "react-icons/fa6";
-import { FaLock } from "react-icons/fa";
-import ReCAPTCHA from "react-google-recaptcha";
-import cogoToast from "@successtar/cogo-toast";
-
-type FormValues = {
-    email: string;
-    password: string;
-    checkbox: boolean;
-}
-
-const backgroundImages = [
-    'beautiful-little.jpg',
-    'caucasian-woman.jpg',
-    'yellow-color.jpg',
-    'young-man.jpg'
-    // Add more image filenames as needed
-];
-
-export default function Index() {
-
-
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors }
-    } = useForm<FormValues>({ defaultValues: { email: "", password: "" } })
-    const navigate = useNavigate();
-    const { setToken } = useAuthStore()
-    const [cap, setCaap] = React.useState(null)
-    const [backgroundImage, setBackgroundImage] = React.useState('');
-    const selectBackgroundImage = () => {
-        const date = new Date();
-        const dayOfMonth = date.getDate(); // Get the day of the month (1-31)
-        const index = (dayOfMonth - 1) % backgroundImages.length; // Calculate index based on the day
-        setBackgroundImage(backgroundImages[index]);
-    };
-
-
-
-    React.useEffect(() => {
-        selectBackgroundImage(); // Select background image when the component mounts
-    }, []);
-
-    //Login Api Call
-    const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMailApi(reset, navigate, setToken)
-
-    const onSubmit = handleSubmit(async (data: any) => {
-        if(cap){
-            const newData: any = { ...data };
-            newData.email = newData.email.toLowerCase()
-            LoginMail(newData)
-        }else{
-            cogoToast.success("verify captcha");
-        }
-        
-    });
-
-    return (
-        <>
-            <div className="flex justify-end items-center h-screen w-[100%] bg-gray-100 px-4 sm:px-6 lg:px-8 bg-cover bg-no-repeat" style={{ backgroundImage: `url(${backgroundImage})` }}>
-                {/* Card */}
-                <div className="bg-white sm:flex sm:flex-col w-full sm:w-[25%] rounded-lg shadow-lg">
-                    <div >
-                        <img src={`/${backgroundImage}`} className="h-42 object-cover w-42 rounded-t-lg" alt="" />
-                    </div>
-                    <div className="p-2 sm:p-8 md:p-6 bg-[#2d3e50] rounded-b-lg">
-                        <form onSubmit={(e: any) => {
-                            onSubmit(e);
-                            e.preventDefault();
-                        }}>
-                            <h3 className="text-center text-black font-semibold text-xl text-white mb-4">User LogIn</h3>
-                            <div className="mb-4">
-                                <div className="flex items-center gap-4">
-                                    <FaRegUser size={20} color="white" />
-                                    <InputField
-                                        type="email"
-                                        name="email"
-                                        placeholder="Enter your email"
-                                        register={register}
-                                        errors={errors}
-                                        requiredMessage="Email is required."
-                                    />
-                                </div>
-                            </div>
-                            <div className="mb-4">
-                                <div className="flex items-center gap-4">
-                                    <FaLock size={20} color="white" />
-                                    <InputField
-                                        type="password"
-                                        name="password"
-                                        placeholder="Enter your password"
-                                        register={register}
-                                        errors={errors}
-                                        requiredMessage="Password is required."
-                                    />
-                                </div>
-                            </div>
-
-                            <ReCAPTCHA sitekey="6LdFPH8pAAAAAFpZr2CrRBPvCaqoO0iXpLFVGYte" onChange={(val) => setCaap(val)} />
-
-                            <p className="text-gray-300 my-1 text-end font-semibold text-sm cursor-pointer">Forgot Password ? </p>
-                            <div className="flex justify-between gap-2">
-                                <button
-                                    type={isLoadingLoginWithMail ? "button" : "submit"}
-                                    className={`bg-gradient-to-r from-teal-500 to-indigo-500 text-white px-4 py-2 rounded-full text-center text-base cursor-pointer hover:bg-[#F28C28] font-bold mt-3`}
-                                    disabled={isLoadingLoginWithMail}
-                                >
-                                    {isLoadingLoginWithMail ? (
-                                        <ClipLoader color="white" size={25} />
-                                    ) : (
-                                        "Log in"
-                                    )}
-                                </button>
-                                <Link to={"/sign-up"}>
-                                    <button
-                                        type={"button"}
-                                        className={`bg-gradient-to-r from-teal-500 to-indigo-500 font-bold text-white px-4 py-2 rounded-full text-center text-base cursor-pointer hover:bg-[#F28C28] mt-3`}
-                                    >
-                                        Sign Up
-                                    </button>
-                                </Link>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-        </>
-    )
-}
-=======
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { LoginWithMailApi } from "../../api/authentication";
+import { LoginWithMailApi } from "../../api/authV2";
 import { ClipLoader } from "react-spinners";
 import InputField from "../../ui/InputField";
 import useAuthStore from "../../store/userstore";
-import { FaRegUser } from "react-icons/fa6";
-import { FaLock } from "react-icons/fa";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import ReCAPTCHA from "react-google-recaptcha";
 import cogoToast from "@successtar/cogo-toast";
 
@@ -169,6 +26,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const { setToken } = useAuthStore();
     const [captchaVerified, setCaptchaVerified] = React.useState<string | null>(null);
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const { mutate: LoginMail, isLoading: isLoadingLoginWithMail } = LoginWithMailApi(
         reset,
@@ -185,7 +43,11 @@ const LoginPage = () => {
             ...data,
             email: data.email.toLowerCase()
         };
-        LoginMail(payload);
+        console.log("Login Payload:", payload);
+        LoginMail(payload, {
+            onSuccess: (res) => console.log("Login Response:", res),
+            onError: (err) => console.log("Login Error:", err)
+        });
     });
 
     return (
@@ -200,20 +62,20 @@ const LoginPage = () => {
           <p className="absolute bottom-4 left-4 text-white text-xs sm:text-sm z-10">
             The choice of top performers.
           </p>
-      
+
           {/* Login Card */}
-          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh]">
+          <div className="w-full max-w-sm rounded-2xl bg-white shadow-xl overflow-y-auto max-h-[90vh] border border-gray-100">
             {/* Logo */}
             <div className="text-center pt-6 px-4">
-              <img
+              {/* <img
                 src="/images/fm-logo/footer-and-header.svg"
                 alt="FM DIGITAL"
                 className="h-20 mx-auto mb-2"
-              />
+              /> */}
               <h2 className="text-xl font-semibold text-gray-800">Welcome Back</h2>
               <p className="text-sm text-gray-500 mb-2">Continue with</p>
             </div>
-      
+
             {/* Social Login */}
             <div className="flex justify-center gap-3 mb-3 px-4">
               <button className="border px-3 py-2 rounded-md hover:bg-gray-100">
@@ -223,14 +85,14 @@ const LoginPage = () => {
                 <img src="/images/fm-logo/google logo.svg" alt="Google" className="w-5 h-5" />
               </button>
             </div>
-      
+
             {/* Divider */}
             <div className="flex items-center px-6 gap-2 mb-4">
               <div className="flex-grow h-px bg-gray-300" />
               <p className="text-xs text-gray-400">OR BY EMAIL</p>
               <div className="flex-grow h-px bg-gray-300" />
             </div>
-      
+
             {/* Form Scrollable */}
             <div className="px-6 pb-6 overflow-y-auto max-h-[65vh]">
               <form
@@ -247,16 +109,26 @@ const LoginPage = () => {
                   errors={errors}
                   requiredMessage="Email is required"
                 />
-      
-                <InputField
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  register={register}
-                  errors={errors}
-                  requiredMessage="Password is required"
-                />
-      
+
+                <div className="relative mt-1">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    className={`border-2 px-3 py-2 placeholder-gray-400 text-gray-700 bg-white rounded-xl w-full pr-10 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition ease-in-out duration-150 ${errors.password ? "border-red-500" : "border-gray-100"}`}
+                    {...register("password", { required: "Password is required" })}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+                  >
+                    {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                  </button>
+                  {errors.password && (
+                    <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+                  )}
+                </div>
+
                 <div className="my-4 flex justify-center">
                   <div className="scale-[0.88] rounded-lg overflow-hidden border border-gray-300 p-1 shadow-md bg-white">
                     <ReCAPTCHA
@@ -265,15 +137,15 @@ const LoginPage = () => {
                     />
                   </div>
                 </div>
-      
+
                 <div className="flex items-center justify-between mb-4">
                   <label className="flex items-center text-sm text-gray-700">
                     <input type="checkbox" className="mr-2" {...register("checkbox")} />
                     Remember me
                   </label>
-                  <p className="text-sm text-blue-500 cursor-pointer hover:underline">Forgot password?</p>
+                  <Link to="/forgot-password" className="text-sm text-blue-500 cursor-pointer hover:underline">Forgot password?</Link>
                 </div>
-      
+
                 <button
                   type={isLoadingLoginWithMail ? "button" : "submit"}
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-full"
@@ -281,7 +153,7 @@ const LoginPage = () => {
                 >
                   {isLoadingLoginWithMail ? <ClipLoader color="white" size={20} /> : "Sign In"}
                 </button>
-      
+
                 <p className="text-center text-sm text-gray-700 mt-4">
                   Don’t have an account?{" "}
                   <Link to="/sign-up" className="font-bold text-blue-600 hover:underline">
@@ -293,10 +165,6 @@ const LoginPage = () => {
           </div>
         </div>
       );
-      
-
-
 };
 
 export default LoginPage;
->>>>>>> 41dd8b6341e16e4abb1d7810761386846104ef2e

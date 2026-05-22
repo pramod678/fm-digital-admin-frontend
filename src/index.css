@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-=======
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -18,4 +13,3 @@ html, body {
 * {
   box-sizing: border-box;
 }
->>>>>>> 41dd8b6341e16e4abb1d7810761386846104ef2e
