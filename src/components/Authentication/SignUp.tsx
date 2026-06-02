@@ -36,6 +36,7 @@ export default function SignUp() {
     watch,
     reset,
     setValue,
+    trigger,
     formState: { errors },
     getValues,
   } = useForm<FormValues>();
@@ -57,7 +58,7 @@ export default function SignUp() {
     },
     {
       title: "Set up your Contact details",
-      fields: ["email", "password", "country", "phone"],
+      fields: ["email", "password", "phone"],
     },
     {
       title: "Set up your Payment",
@@ -75,9 +76,11 @@ export default function SignUp() {
     },
   ];
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      // Save current step data
+  const handleNext = async () => {
+    const fields = steps[currentStep].fields as (keyof FormValues)[];
+    const isValid = await trigger(fields);
+
+    if (isValid) {
       const currentData = getValues();
       setFormData((prev) => ({ ...prev, ...currentData }));
       setCurrentStep(currentStep + 1);
@@ -98,27 +101,27 @@ export default function SignUp() {
     // Get current step fields
     const currentStepFields = steps[currentStep].fields;
 
-    // Clear all form fields first
-    const emptyFormData: Partial<FormValues> = {};
-
     // Initialize only current step fields with their saved values or empty strings
+    const stepData: Partial<FormValues> = {};
     currentStepFields.forEach((fieldName) => {
       const savedValue = formData[fieldName as keyof FormValues];
-      if (
-        savedValue !== undefined &&
-        savedValue !== null &&
-        savedValue !== ""
-      ) {
-        emptyFormData[fieldName as keyof FormValues] = savedValue;
+      if (savedValue !== undefined && savedValue !== null && savedValue !== "") {
+        stepData[fieldName as keyof FormValues] = savedValue;
       } else {
-        emptyFormData[fieldName as keyof FormValues] = "";
+        stepData[fieldName as keyof FormValues] = "";
       }
     });
 
-    // Reset form with only current step data
-    reset(emptyFormData);
+    // We don't want to reset the whole form because it clears other fields in formData
+    // Instead, we just set the values for the current step
+    Object.keys(stepData).forEach((key) => {
+      const fieldKey = key as keyof FormValues;
+      const value = stepData[fieldKey] ?? "";
+      setValue(fieldKey, value as any);
+    });
+
     setIsInitialized(true);
-  }, [currentStep]); // Only depend on currentStep, not formData
+  }, [currentStep]);
 
   const onSubmit = handleSubmit((data: FormValues) => {
     const finalData = { ...formData, ...data };
@@ -197,7 +200,13 @@ export default function SignUp() {
               </label>
               <input
                 type="email"
-                {...register("email", { required: "Email is required" })}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
                 className="w-full px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2  placeholder-gray-500"
                 placeholder=""
               />
@@ -215,7 +224,13 @@ export default function SignUp() {
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  {...register("password", { required: "Password is required" })}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
                   className="w-full px-4 py-3 pr-10 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2 placeholder-gray-500"
                   placeholder=""
                 />
@@ -249,6 +264,10 @@ export default function SignUp() {
                   type="tel"
                   {...register("phone", {
                     required: "Phone number is required",
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message: "Invalid phone number (10 digits required)",
+                    },
                   })}
                   className="flex-1 min-w-[120px] px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2 placeholder-gray-500"
                   placeholder=""
@@ -339,10 +358,20 @@ export default function SignUp() {
               </label>
               <input
                 type="url"
-                {...register("facebook")}
+                {...register("facebook", {
+                  pattern: {
+                    value: /^(https?:\/\/)?(www\.)?facebook\.com\/.*$/i,
+                    message: "Invalid Facebook URL",
+                  },
+                })}
                 className="w-full px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2  placeholder-gray-500"
                 placeholder=""
               />
+              {errors.facebook && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.facebook.message}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-2">
@@ -352,10 +381,20 @@ export default function SignUp() {
                 </label>
                 <input
                   type="url"
-                  {...register("instagram")}
+                  {...register("instagram", {
+                    pattern: {
+                      value: /^(https?:\/\/)?(www\.)?instagram\.com\/.*$/i,
+                      message: "Invalid Instagram URL",
+                    },
+                  })}
                   className="w-full px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2  placeholder-gray-500"
                   placeholder=""
                 />
+                {errors.instagram && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.instagram.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-white text-sm font-medium mb-2">
@@ -363,10 +402,20 @@ export default function SignUp() {
                 </label>
                 <input
                   type="url"
-                  {...register("youtube")}
+                  {...register("youtube", {
+                    pattern: {
+                      value: /^(https?:\/\/)?(www\.)?youtube\.com\/.*$/i,
+                      message: "Invalid Youtube URL",
+                    },
+                  })}
                   className="w-full px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2  placeholder-gray-500"
                   placeholder=""
                 />
+                {errors.youtube && (
+                  <p className="text-red-400 text-sm mt-1">
+                    {errors.youtube.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -376,10 +425,20 @@ export default function SignUp() {
               </label>
               <input
                 type="url"
-                {...register("linkedin")}
+                {...register("linkedin", {
+                  pattern: {
+                    value: /^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/i,
+                    message: "Invalid Linkedin URL",
+                  },
+                })}
                 className="w-1/2 px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2  placeholder-gray-500"
                 placeholder=""
               />
+              {errors.linkedin && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.linkedin.message}
+                </p>
+              )}
             </div>
           </div>
         );
@@ -415,6 +474,7 @@ export default function SignUp() {
           <div className="mb-6">
             <div className="flex items-center mb-4 ">
               <button
+                type="button"
                 onClick={handlePrevious}
                 className="text-white hover:text-gray-300 transition-colors"
               >
@@ -450,7 +510,7 @@ export default function SignUp() {
                 <div className="flex items-center justify-between w-full space-x-2 ">
                   <button
                     type="button"
-                    onClick={handleNext}
+                    onClick={() => setCurrentStep(currentStep + 1)}
                     className="w-full bg-gradient-to-r from-teal-800 to-gray-900 hover:bg-teal-800 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200"
                   >
                     Skip
@@ -466,18 +526,20 @@ export default function SignUp() {
               ) : (
                 <div className="flex items-center justify-between w-full space-x-2 ">
                   <button
-                    type="button"
-                    onClick={onSubmit}
+                    type="submit"
                     className="w-full bg-gradient-to-r from-teal-800 to-gray-900 hover:bg-teal-800 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200"
                   >
                     Skip
                   </button>
                   <button
-                    type="button"
-                    onClick={onSubmit}
+                    type="submit"
                     className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-md transition-colors duration-200"
                   >
-                    Continue
+                    {isLoadingRegisterWithMail ? (
+                      <ClipLoader color="white" size={20} />
+                    ) : (
+                      "Register"
+                    )}
                   </button>
                 </div>
               )}
