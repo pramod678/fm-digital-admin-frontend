@@ -25,10 +25,10 @@ export default function ListRow({ data, index, currentPage, PAGE_SIZE }: { data:
                     {data.users_id || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data?.users[0].fname + " " + data.users[0].lname || '--'}
+                    {data?.users?.[0] ? `${data.users[0].fname} ${data.users[0].lname}` : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {data.users[0].email || '--'}
+                    {data?.users?.[0]?.email || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     {data.FeaturingArtist || '--'}

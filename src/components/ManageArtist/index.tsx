@@ -35,7 +35,7 @@ const Index = () => {
     };
 
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = Math.min(startIndex + pageSize, GetPrimaryArtist?.data?.data.length);
+    const endIndex = Math.min(startIndex + pageSize, GetPrimaryArtist?.data?.data?.length || 0);
 
 
     return (
@@ -87,14 +87,14 @@ const Index = () => {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200 mt-2">
                                         {
-                                            GetPrimaryArtist?.data?.data.length === 0 ? (
+                                            !GetPrimaryArtist?.data?.data || GetPrimaryArtist?.data?.data?.length === 0 ? (
                                                 <tr className="w-full">
                                                     <td className="text-center py-4" colSpan={8}>
                                                         No labels found.
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                GetPrimaryArtist?.data?.data.slice(startIndex, endIndex)?.map((data: any, index: any) => {
+                                                GetPrimaryArtist?.data?.data?.slice(startIndex, endIndex)?.map((data: any, index: any) => {
                                                     return (
                                                         <React.Fragment key={index}>
                                                             <ListRow data={data} index={index} />
