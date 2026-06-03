@@ -5,6 +5,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { GetAllUsersDataApi } from "../../api/user";
 import { BounceLoader } from "react-spinners";
 import Select from 'react-select';
+import Pagination from "../../ui/Pagination";
 
 
 export default function AdminCatalogsList() {
@@ -161,25 +162,11 @@ export default function AdminCatalogsList() {
                         </div>
                     </div>
 
-                    {totalPages > 1 && (
-                        <div className="flex justify-end items-center mt-4">
-                            <button
-                                onClick={() => handlePageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
-                                className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
-                            >
-                                <FiChevronLeft color="white" />
-                            </button>
-                            <span className="mx-4 text-gray-600">{`Page: ${currentPage}`}</span>
-                            <button
-                                onClick={() => handlePageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages}
-                                className="p-2 rounded-md bg-neutral-700 text-gray-600 hover:bg-neutral-800  disabled:opacity-50"
-                            >
-                                <FiChevronRight color="white" />
-                            </button>
-                        </div>
-                    )}
+                    <Pagination 
+                        currentPage={currentPage} 
+                        totalPages={totalPages} 
+                        onPageChange={handlePageChange} 
+                    />
                 </div>
 
 
