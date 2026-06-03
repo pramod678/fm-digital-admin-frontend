@@ -18,15 +18,15 @@ export const GetCatalogsApi = (id: any, setcatalogsGet: any, selectedOption:any)
         }
     );
 
-export const GetAdminAllCatalogsApi = (userId: string, statusId?: string) =>
+export const GetAdminAllCatalogsApi = (userId: string, status?: string, page: number = 1, limit: number = 10) =>
     useQuery(
-        [`GetAdminAllCatalogs`, userId, statusId],
-        async () => await api.get(`admin/catlogs-get-all?user_id=${userId}&status=${statusId}`),
+        [`GetAdminAllCatalogs`, userId, status, page, limit],
+        async () => await api.get(`admin/catlogs-get-all?user_id=${userId}&status=${status || ""}&page=${page}&limit=${limit}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
-            keepPreviousData:true,
+            keepPreviousData: true,
         }
     );
 
