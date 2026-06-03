@@ -1,6 +1,6 @@
 import * as React from "react";
 import { FaChevronDown, FaChevronUp, FaSpotify } from "react-icons/fa6";
-import { UpdateAdminCatalogApi } from "../../api/catalogs";
+import { UpdateAdminCatalogApi, GetAdminCatalogSongsApi, GetAdminPrimaryArtistApi, GetAdminCatalogPlatformApi } from "../../api/catalogs";
 import { MdDelete } from "react-icons/md";
 import Stores from "./PopUp/Stores";
 import AllSongs from "./AllSongs";
@@ -23,6 +23,18 @@ export default function AdminListRow({
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
 
     const { mutate: UpdateAdminCatalog } = UpdateAdminCatalogApi();
+    
+    // Fetch track count
+    const { data: songsData } = GetAdminCatalogSongsApi(catalog.users_id, catalog.releaseInfo_id, 1, 1);
+    const trackCount = songsData?.data?.pagination?.totalItems !== undefined ? songsData.data.pagination.totalItems : '--';
+
+    // Fetch primary artist data
+    const { data: primaryArtistData } = GetAdminPrimaryArtistApi(catalog.users_id, catalog.releaseInfo_id);
+    const primaryArtist = primaryArtistData?.data?.data?.[0] || catalog.primaryArtist?.[0];
+
+    // Fetch platform data
+    const { data: platformData } = GetAdminCatalogPlatformApi(catalog.users_id, catalog.releaseInfo_id);
+    const selectedPlatforms = platformData?.data?.data || [];
 
     const handleDownload = (link: any) => {
         const fileUrl = `https://api.fmdigitalofficial.com/${link}`;
@@ -103,7 +115,7 @@ export default function AdminListRow({
             case 4:
                 return (
                     <>
-                        <Stores />
+                        <Stores selectedPlatforms={selectedPlatforms} />
                     </>
                 );
             default:
@@ -127,17 +139,16 @@ export default function AdminListRow({
                     {statusButton(catalog.Status)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
-                    {catalog.userData[0]?.fname + " " + catalog.userData[0]?.lname ||
-                        "--"}
+                    {catalog.userData ? `${catalog.userData.fname} ${catalog.userData.lname}` : "--"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
-                    {catalog.userData[0]?.email || "--"}
+                    {catalog.userData?.email || "--"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.LabelName || "--"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
-                    {catalog.songInfo?.length || "--"}
+                    {trackCount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 ">
                     {catalog.ReleaseDate ? catalog.ReleaseDate : "--"}
@@ -184,13 +195,12 @@ export default function AdminListRow({
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold text-sm">Apple Id:</p>
-                                    {catalog?.primaryArtist?.length &&
-                                        catalog?.primaryArtist[0]?.AppleId !== "" ? (
+                                    {primaryArtist?.AppleId ? (
                                         <SiApplemusic
                                             className="cursor-pointer"
                                             size={14}
                                             onClick={() =>
-                                                handleUrlClick(catalog?.primaryArtist[0]?.AppleId)
+                                                handleUrlClick(primaryArtist.AppleId)
                                             }
                                         />
                                     ) : (
@@ -199,13 +209,12 @@ export default function AdminListRow({
                                 </div>
                                 <div className="flex items-center justify-between mb-1">
                                     <p className="font-semibold text-sm">Spotify Id:</p>
-                                    {catalog?.primaryArtist?.length &&
-                                        catalog?.primaryArtist[0]?.SpotifyId !== "" ? (
+                                    {primaryArtist?.SpotifyId ? (
                                         <FaSpotify
                                             className="cursor-pointer"
                                             size={14}
                                             onClick={() =>
-                                                handleUrlClick(catalog?.primaryArtist[0]?.SpotifyId)
+                                                handleUrlClick(primaryArtist.SpotifyId)
                                             }
                                         />
                                     ) : (
@@ -242,7 +251,7 @@ export default function AdminListRow({
                                 </div>
                                 <div className="w-full flex space-x-2 justify-end mt-2">
                                     <EditReleasePopUp
-                                        id={catalog?.releseInfo_id}
+                                        id={catalog?.releaseInfo_id}
                                         userId={catalog?.users_id}
                                     />
                                     <button
@@ -269,7 +278,7 @@ export default function AdminListRow({
                             onConfirm={() => {
                                 UpdateAdminCatalog({
                                     users_id: catalog.users_id,
-                                    releseInfo_id: catalog.releseInfo_id,
+                                    releaseInfo_id: catalog.releaseInfo_id,
                                     Status: 4,
                                 });
                             }}
@@ -287,7 +296,7 @@ export default function AdminListRow({
                             onConfirm={() => {
                                 UpdateAdminCatalog({
                                     users_id: catalog.users_id,
-                                    releseInfo_id: catalog.releseInfo_id,
+                                    releaseInfo_id: catalog.releaseInfo_id,
                                     Status: 3,
                                 });
                             }}
@@ -305,7 +314,7 @@ export default function AdminListRow({
                             onConfirm={() => {
                                 UpdateAdminCatalog({
                                     users_id: catalog.users_id,
-                                    releseInfo_id: catalog.releseInfo_id,
+                                    releaseInfo_id: catalog.releaseInfo_id,
                                     Status: 2,
                                 });
                             }}

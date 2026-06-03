@@ -5,7 +5,7 @@ import useResponsiveIconSize from "../../../hooks/useResponsiveIconSize";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Stores() {
+export default function Stores({ selectedPlatforms }: { selectedPlatforms?: any[] }) {
     const [isOpen, setIsOpen] = useState(false);
     const size = useResponsiveIconSize();
     const navigate = useNavigate();
@@ -40,6 +40,10 @@ export default function Stores() {
         { name: "Yandex Music (beta)", link: "https://music.yandex.com/" },
         { name: "YouTube Music", link: "https://www.youtube.com/" },
     ];
+
+    const isSelected = (name: string) => {
+        return selectedPlatforms?.some(p => p.PlatformName === name);
+    };
 
 
     return (
@@ -92,7 +96,7 @@ export default function Stores() {
                                                 <div key={index} className="flex items-center mb-4">
                                                     <label className="cursor-pointer" >
                                                         <a href={`${item?.link}`} target="_blank" >
-                                                            <input type="checkbox" checked className="mr-2" />
+                                                            <input type="checkbox" checked={isSelected(item.name)} readOnly className="mr-2" />
                                                             {item.name}
                                                         </a>
                                                     </label>

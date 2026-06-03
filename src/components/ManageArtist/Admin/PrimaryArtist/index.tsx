@@ -1,7 +1,6 @@
 import * as React from "react";
 import ListRow from "./ListRow";
-import { Link, useNavigate } from "react-router-dom";
-import { GetAllAdminPrimaryArtistApi, GetPrimaryArtistApi, UserDataApi } from "../../../../api/releaseInfo";
+import { GetAllAdminPrimaryArtistApi } from "../../../../api/releaseInfo";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { BounceLoader } from "react-spinners";
 import { GetAllUsersDataApi } from "../../../../api/user";
@@ -12,50 +11,32 @@ const AdminPrimaryArtistIndex = () => {
     
 
     const [userId, setUserId] = React.useState('');
-    const [statusId, setStatusId] = React.useState('');
-    const [catalogs, setCatalogs] = React.useState([]);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
+    const PAGE_SIZE = 25;
 
-    const { data: GetPrimaryArtist, isLoading, isFetching } = GetAllAdminPrimaryArtistApi(userId);
+    const { data: GetPrimaryArtist, isLoading, isFetching } = GetAllAdminPrimaryArtistApi(userId, currentPage, PAGE_SIZE, searchTerm);
 
     const { data: allUsersData } = GetAllUsersDataApi();
 
-    const PAGE_SIZE = 25
+    // Reset to first page when filters change
     React.useEffect(() => {
-        if (GetPrimaryArtist) {
-            setCatalogs(GetPrimaryArtist.data.data);
-            setCurrentPage(1);
-        }
-    }, [GetPrimaryArtist]);
+        setCurrentPage(1);
+    }, [userId, searchTerm]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
         setSearchTerm(inputValue);
-        setCurrentPage(1);
     };
 
     const handlePageChange = (pageNumber: any) => {
         setCurrentPage(pageNumber);
     };
 
-    const filterRecords = (data: any, term: any) => {
-        return data.filter(
-            (row: any) =>
-                row?.PrimaryArtist.toLowerCase().includes(term)
-        );
-    };
-
-    const getCurrentPageData = () => {
-        const filteredRecords = filterRecords(catalogs, searchTerm);
-        const startIndex = (currentPage - 1) * PAGE_SIZE;
-        const endIndex = startIndex + PAGE_SIZE;
-        const slicedRecords = filteredRecords.slice(startIndex, endIndex);
-        return { slicedRecords, totalFilteredRecords: filteredRecords.length };
-    };
-
-    const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
-    const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
+    const slicedRecords = GetPrimaryArtist?.data?.data || [];
+    const pagination = GetPrimaryArtist?.data?.pagination;
+    const totalFilteredRecords = pagination?.totalItems || 0;
+    const totalPages = pagination?.totalPages || 0;
 
 
     return (
@@ -85,9 +66,7 @@ const AdminPrimaryArtistIndex = () => {
                         {
                             allUsersData?.data?.data?.map((user: any) => {
                                 return (
-                                    <>
-                                        <option value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
-                                    </>
+                                    <option key={user?.users_id} value={user?.users_id}>{user?.users_id +" - "+user?.fname + " " + user?.lname}</option>
                                 )
                             })
                         }
@@ -142,8 +121,8 @@ const AdminPrimaryArtistIndex = () => {
                                         {
                                             slicedRecords.length === 0 ? (
                                                 <tr className="w-full">
-                                                    <td className="text-center py-4" colSpan={8}>
-                                                        No labels found.
+                                                    <td className="text-center py-4" colSpan={10}>
+                                                        No artists found.
                                                     </td>
                                                 </tr>
                                             ) : (

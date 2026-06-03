@@ -18,7 +18,7 @@ export default function ListRow({ catalog, index, currentPage, PAGE_SIZE }: { ca
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
 
 
-    const { mutate: DeleteCatalog, isLoading: isLoadingDeleteCatalog } = DeleteCatalogApi({ id: catalog?.releseInfo_id })
+    const { mutate: DeleteCatalog, isLoading: isLoadingDeleteCatalog } = DeleteCatalogApi({ id: catalog?.releaseInfo_id })
 
 
     const iconSelector = (status: any) => {
@@ -116,7 +116,7 @@ export default function ListRow({ catalog, index, currentPage, PAGE_SIZE }: { ca
 
     const handleNavigation = () => {
         if (catalog.Status === 0 || catalog.Status == 3) {
-            navigate(`/ReleseInfoUpdate/${catalog?.releseInfo_id}`)
+            navigate(`/ReleseInfoUpdate/${catalog?.releaseInfo_id}`)
         }
 
     }

@@ -64,7 +64,7 @@ export default function UserHome({ userData }: { userData: any }) {
                                 </div>
                             ) : (
                                 GetLatestCoorections?.data?.data?.map((name: any) => (
-                                    <div key={name.releseInfo_id} className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full">
+                                    <div key={name.releaseInfo_id} className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full">
                                         <div className="flex items-center gap-4">
                                             <FaRegCircleDot size={15} />
                                             <div className="flex flex-col">
@@ -72,7 +72,7 @@ export default function UserHome({ userData }: { userData: any }) {
                                                 <p className="text-gray-500 text-xs mb-0">Date Created {name.ReleaseDate}</p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center cursor-pointer" onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}>
+                                        <div className="flex items-center cursor-pointer" onClick={() => navigate(`/ReleseInfoUpdate/${name?.releaseInfo_id}`)}>
                                             <GrEdit size={size} />
                                         </div>
                                     </div>
@@ -103,7 +103,7 @@ export default function UserHome({ userData }: { userData: any }) {
                             ) : (
                                 <>
                                     {GetLatestDrafts?.data?.data?.map((name: any) => (
-                                        <div key={name.releseInfo_id} className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full">
+                                        <div key={name.releaseInfo_id} className="px-2 py-2 border-b border-gray-300 flex justify-between items-center w-full">
                                             <div className="flex items-center gap-4">
                                                 <FaRegCircleDot size={15} />
                                                 <div className="flex flex-col">
@@ -111,7 +111,7 @@ export default function UserHome({ userData }: { userData: any }) {
                                                     <p className="text-gray-500 text-xs mb-0">Date Created {name.ReleaseDate}</p>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center cursor-pointer" onClick={() => navigate(`/ReleseInfoUpdate/${name?.releseInfo_id}`)}>
+                                            <div className="flex items-center cursor-pointer" onClick={() => navigate(`/ReleseInfoUpdate/${name?.releaseInfo_id}`)}>
                                                 <GrEdit size={size} />
                                             </div>
                                         </div>

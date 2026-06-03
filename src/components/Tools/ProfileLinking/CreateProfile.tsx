@@ -51,7 +51,7 @@ export default function CreateProfile() {
 
     React.useEffect(() => {
         const selectedObj = releseInfoGetOne?.filter((r: any) => r?.ReleaseTitle === selectRelease)
-        setSelectedId(selectedObj[0]?.releseInfo_id)
+        setSelectedId(selectedObj[0]?.releaseInfo_id)
     }, [selectRelease]);
 
     const onSubmit = handleSubmit(async (data: any) => {

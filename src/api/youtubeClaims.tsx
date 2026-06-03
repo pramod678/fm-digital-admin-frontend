@@ -36,7 +36,7 @@ export const GetAllReleseInfoApi = (id: any, setReleseInfoGetOne: any) =>
 export const ProfileLinkinAdudiogGetApi = (userId: any, releaseId: any) =>
     useQuery(
         [`ProfileLinkinAdudiogGet`, userId, releaseId],
-        async () => await api.get(`tools/profileLinkinAdudiogGet/users_id/${userId}/releseInfo_id/${releaseId}`),
+        async () => await api.get(`tools/profileLinkinAdudiogGet/users_id/${userId}/releaseInfo_id/${releaseId}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,

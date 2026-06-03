@@ -1,11 +1,33 @@
 import * as React from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import { FaChevronDown, FaChevronUp, FaSpotify } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import AllSongs from "../../Catalogs/AllSongs";
+import { GetAdminCatalogSongsApi, GetAdminPrimaryArtistApi, GetAdminCatalogPlatformApi } from "../../../api/catalogs";
+import { SiApplemusic } from "react-icons/si";
 
 
 export default function ManageCatalogsListRow({ catalog, index, currentPage, PAGE_SIZE }: { catalog: any, index: any, currentPage: any, PAGE_SIZE: any }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const actualIndex = (currentPage - 1) * PAGE_SIZE + index + 1;
+    
+    // Fetch track count
+    const { data: songsData } = GetAdminCatalogSongsApi(catalog.users_id, catalog.releaseInfo_id, 1, 1);
+    const trackCount = songsData?.data?.pagination?.totalItems !== undefined ? songsData.data.pagination.totalItems : '--';
+
+    // Fetch primary artist data
+    const { data: primaryArtistData } = GetAdminPrimaryArtistApi(catalog.users_id, catalog.releaseInfo_id);
+    const primaryArtist = primaryArtistData?.data?.data?.[0] || catalog.primaryArtist?.[0];
+
+    // Fetch platform data
+    const { data: platformData } = GetAdminCatalogPlatformApi(catalog.users_id, catalog.releaseInfo_id);
+    const selectedPlatforms = platformData?.data?.data || [];
+
+    const handleUrlClick = (link: any) => {
+        if (link) {
+            window.open(link, "_blank");
+        }
+    };
+
     return (
         <>
             <tr onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
@@ -19,16 +41,16 @@ export default function ManageCatalogsListRow({ catalog, index, currentPage, PAG
                     {catalog.users_id || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.userData[0]?.fname + " " + catalog.userData[0]?.lname || '--'}
+                    {catalog.userData ? `${catalog.userData.fname} ${catalog.userData.lname}` : '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.userData[0]?.email || '--'}
+                    {catalog.userData?.email || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.LabelName || '--'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
-                    {catalog.songInfo?.length || '--'}
+                    {trackCount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
                     {catalog.ReleaseDate ? catalog.ReleaseDate : '--'}
@@ -43,12 +65,21 @@ export default function ManageCatalogsListRow({ catalog, index, currentPage, PAG
             </tr>
             {isOpen && (
                 <tr className="w-full">
-                    <td colSpan={8} className="px-0 py-0">
+                    <td colSpan={9} className="px-0 py-0">
                         <div className="px-6 py-4 grid sm:grid-cols-3 gap-16">
                             {/* Your accordion content goes here */}
                             <div>
-                                <div className="flex items-center justify-between  mb-1 mb-1">
-                                    <p className="font-semiboldtext-sm">Release Type:</p>
+                                <div className="flex w-full justify-center items-center mb-4">
+                                    {catalog.ImageDocument && (
+                                        <img
+                                            className="w-32 h-32 object-cover rounded"
+                                            src={`https://api.fmdigitalofficial.com/${catalog.ImageDocument}`}
+                                            alt="Art Work"
+                                        />
+                                    )}
+                                </div>
+                                <div className="flex items-center justify-between  mb-1">
+                                    <p className="font-semibold text-sm">Release Type:</p>
                                     <p className="text-sm">{catalog?.ReleaseType}</p>
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
@@ -62,11 +93,31 @@ export default function ManageCatalogsListRow({ catalog, index, currentPage, PAG
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold text-sm">Apple Id:</p>
-                                    <p className="text-sm">{catalog?.ReleaseType}</p>
+                                    {primaryArtist?.AppleId ? (
+                                        <SiApplemusic
+                                            className="cursor-pointer"
+                                            size={14}
+                                            onClick={() =>
+                                                handleUrlClick(primaryArtist.AppleId)
+                                            }
+                                        />
+                                    ) : (
+                                        "--"
+                                    )}
                                 </div>
                                 <div className="flex items-center justify-between mb-1">
                                     <p className="font-semibold text-sm">Spotify Id:</p>
-                                    <p className="text-sm">{catalog?.ReleaseType}</p>
+                                    {primaryArtist?.SpotifyId ? (
+                                        <FaSpotify
+                                            className="cursor-pointer"
+                                            size={14}
+                                            onClick={() =>
+                                                handleUrlClick(primaryArtist.SpotifyId)
+                                            }
+                                        />
+                                    ) : (
+                                        "--"
+                                    )}
                                 </div>
                                 <div className="flex items-center justify-between mt-6 mb-1">
                                     <p className="font-semibold text-sm">Genre:</p>
@@ -90,97 +141,14 @@ export default function ManageCatalogsListRow({ catalog, index, currentPage, PAG
                                 </div>
                                 <div className="flex items-center justify-between  mb-1">
                                     <p className="font-semibold text-sm">Cat No. :</p>
-                                    <p className="text-sm">{catalog?.ReleaseType}</p>
+                                    <p className="text-sm">{catalog?.cat_id}</p>
                                 </div>
                             </div>
-                            <div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Track Version</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Trackversion}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Instrumental:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Instrumental}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Song Title:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Title}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Version/SubTitle:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.VersionSubtitle}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Primary Artist:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Primaryartist}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Featuring Artist:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.FeaturingArtist}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Author:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Author}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Composer:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Composer}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Producer:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Producer}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Publisher:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Publisher}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">ISRC:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.ISRC}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Genre:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Genre}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Sub Genre:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.Subgenre}</p>
-                                </div>
+                            
+                            <div className="h-[300px] w-full sm:col-span-2">
+                                <AllSongs data={catalog} userId={catalog?.users_id} />
                             </div>
-                            <div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Price Tier:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.PriceTier}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Explicit Version:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.ExplicitVersion}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Track Title Language:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.TrackTitleLanguage}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Lyrics Language:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.LyricsLanguage}</p>
-                                </div>
-                                <div className="flex flex-col mb-1">
-                                    <p className="font-semibold text-sm mb-1">Lyrics:</p>
-                                    <div className=" h-32 border-2 border-black p-1 overflow-hidden">
-                                        <p className="whitespace-normal">
-                                            {catalog?.songInfo[0]?.Lyrics}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Caller Tune Timing:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.CallerTuneTiming}</p>
-                                </div>
-                                <div className="flex items-center justify-between  mb-1">
-                                    <p className="font-semibold text-sm">Distribute Music Video:</p>
-                                    <p className="text-sm">{catalog?.songInfo[0]?.PriceTier}</p>
-                                </div>
-                            </div>
+
                         </div>
                     </td>
                 </tr>

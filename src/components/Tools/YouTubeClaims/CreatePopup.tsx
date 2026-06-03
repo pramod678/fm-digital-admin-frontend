@@ -50,7 +50,7 @@ export default function CreatePopup() {
 
     React.useEffect(() => {
         const selectedObj = releseInfoGetOne?.filter((r: any) => r?.ReleaseTitle === selectRelease)
-        setSelectedId(selectedObj[0]?.releseInfo_id)
+        setSelectedId(selectedObj[0]?.releaseInfo_id)
     }, [selectRelease]);
 
     const { data: ProfileLinkinAdudiogGet, isLoading: isLoadingProfileLinkinAdudiogGet } = ProfileLinkinAdudiogGetApi(releseInfoGetOne[0]?.users_id, selectedId)

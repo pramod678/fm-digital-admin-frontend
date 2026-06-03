@@ -14,7 +14,7 @@ export default function Platform() {
 
 
     const { data: getReleaseInfo } = GetReleaseInfoApi(userData?.users_id)
-    const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
+    const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releaseInfo_id)
 
 
     React.useEffect(() => {
@@ -85,7 +85,7 @@ export default function Platform() {
             Audio: data,
             CRBT: data1,
             VideoPlatform: data2,
-            releseInfo_id: getReleaseInfo?.data?.data?.releseInfo_id,
+            releaseInfo_id: getReleaseInfo?.data?.data?.releaseInfo_id,
             users_id: parseInt(userData.users_id),
         }
         PlatformPost(formdata)

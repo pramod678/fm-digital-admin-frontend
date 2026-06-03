@@ -21,7 +21,7 @@ export default function SongInfo() {
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: getReleaseInfo } = GetReleaseInfoApi(userData?.users_id)
-    const { data: GetSongs, isLoading, isFetching, refetch } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
+    const { data: GetSongs, isLoading, isFetching, refetch } = GetSongsApi(getReleaseInfo?.data?.data?.releaseInfo_id)
     const { mutate: DeleteSong, isLoading: isLoadingDeleteSong } = DeleteSongApi(navigate, refetch)
 
     React.useEffect(() => {

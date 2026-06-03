@@ -31,7 +31,7 @@ export default function EditSubmission() {
 
     const handleSubmit = () => {
         let formData: any = {
-            releseInfo_id: getSubmissions?.data?.data?.releseInfo_id,
+            releaseInfo_id: getSubmissions?.data?.data?.releaseInfo_id,
             Status: 1,
             users_id: parseInt(getSubmissions?.data?.data?.users_id),
             userIagery: userIagery,

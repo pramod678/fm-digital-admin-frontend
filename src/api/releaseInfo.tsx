@@ -106,27 +106,29 @@ export const GetPrimaryArtistApi = (id: any) =>
         }
     );
 
-export const GetAllAdminPrimaryArtistApi = (userId: any) =>
+export const GetAllAdminPrimaryArtistApi = (userId: any, page: number = 1, limit: number = 25, search: string = "") =>
     useQuery(
-        [`GetAllAdminPrimaryArtist`, userId],
-        async () => await api.get(`admin/primary-artist-get-all?user_id=${userId}`),
+        [`GetAllAdminPrimaryArtist`, userId, page, limit, search],
+        async () => await api.get(`admin/manage-users-get-primary-artist?user_id=${userId}&page=${page}&limit=${limit}&search=${search}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
+            keepPreviousData: true,
             onSuccess: (res) => {
             },
         }
     );
 
-export const GetAllAdminFeaturingArtistApi = (userId: any, showPrimaryArtist: any) =>
+export const GetAllAdminFeaturingArtistApi = (userId: any, page: number = 1, limit: number = 25, search: string = "") =>
     useQuery(
-        [`GetAllAdminFeaturingArtist`, userId, showPrimaryArtist],
-        async () => await api.get(`admin/featuring-artist-get-all?user_id=${userId}`),
+        [`GetAllAdminFeaturingArtist`, userId, page, limit, search],
+        async () => await api.get(`admin/featuring-artist-get-all?user_id=${userId}&page=${page}&limit=${limit}&search=${search}`),
         {
             refetchOnMount: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
+            keepPreviousData: true,
             onSuccess: (res) => {
             },
         }

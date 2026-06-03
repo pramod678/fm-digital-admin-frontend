@@ -13,10 +13,10 @@ export default function EditPlatform() {
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
 
     const { data: getReleaseInfo, isLoading, isFetching } = GetReleaseInfoByIdApi(id)
-    const { data: getPlatfOrm } = GetPlatformApi(getReleaseInfo?.data?.data?.releseInfo_id)
-    const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
+    const { data: getPlatfOrm } = GetPlatformApi(getReleaseInfo?.data?.data?.releaseInfo_id)
+    const { data: GetSongs } = GetSongsApi(getReleaseInfo?.data?.data?.releaseInfo_id)
 
-    const { mutate: UpdatePlatform, isLoading: isLoadingUpdatePlatform } = UpdatePlatformApi({ navigate, id: getPlatfOrm?.data?.data[0]?.platform_id, releaseId: getReleaseInfo?.data?.data?.releseInfo_id })
+    const { mutate: UpdatePlatform, isLoading: isLoadingUpdatePlatform } = UpdatePlatformApi({ navigate, id: getPlatfOrm?.data?.data[0]?.platform_id, releaseId: getReleaseInfo?.data?.data?.releaseInfo_id })
 
     React.useEffect(() => {
         getUserData({ token: token })
@@ -86,7 +86,7 @@ export default function EditPlatform() {
             Audio: data,
             CRBT: data1,
             VideoPlatform: data2,
-            releseInfo_id: getReleaseInfo?.data?.data?.releseInfo_id,
+            releaseInfo_id: getReleaseInfo?.data?.data?.releaseInfo_id,
             users_id: parseInt(userData.users_id),
         }
         UpdatePlatform(formdata)

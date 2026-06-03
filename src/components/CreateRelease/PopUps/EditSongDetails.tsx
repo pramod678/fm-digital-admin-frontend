@@ -100,7 +100,7 @@ export default function EditSongDetails({ userData, song, getReleaseInfo, refetc
         // @ts-ignore
         formData.append("users_id", parseInt(userData?.users_id));
         // @ts-ignore
-        formData.append("releseInfo_id", parseInt(getReleaseInfo?.data?.data?.releseInfo_id));
+        formData.append("releaseInfo_id", parseInt(getReleaseInfo?.data?.data?.releaseInfo_id));
         SongsPost(formData)
 
     });

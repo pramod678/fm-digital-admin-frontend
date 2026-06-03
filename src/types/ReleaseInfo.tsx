@@ -12,7 +12,7 @@ export type ReleaseInfoDto = {
     UPCEAN: string
     users_id: number
     Status: number
-    releseInfo_id: number
+    releaseInfo_id: number
     ImageDocument: []
 }
 
@@ -54,6 +54,6 @@ export type SongDetailsDto = {
     CallerTuneTiming: string
     DistributeMusicvideo: string
     users_id: number
-    releseInfo_id: number
+    releaseInfo_id: number
     songsInfo_id: number
 }

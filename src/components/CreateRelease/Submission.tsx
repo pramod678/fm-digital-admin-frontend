@@ -17,7 +17,7 @@ export default function Submission() {
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: getRelease } = GetReleaseInfoApi(userData?.users_id)
-    const { data: getSubmissions } = GetSubmissionsApi(getRelease?.data?.data?.releseInfo_id)
+    const { data: getSubmissions } = GetSubmissionsApi(getRelease?.data?.data?.releaseInfo_id)
     const { mutate: SubmissionPost, isLoading: isLoadingSubmissionPost } = SubmissionPostApi(navigate)
 
     React.useEffect(() => {
@@ -33,7 +33,7 @@ export default function Submission() {
 
     const handleSubmit = () => {
         let formData: any = {
-            releseInfo_id: getSubmissions?.data?.data?.releseInfo_id,
+            releaseInfo_id: getSubmissions?.data?.data?.releaseInfo_id,
             Status: 1,
             users_id: parseInt(getSubmissions?.data?.data?.users_id),
             userIagery: userIagery,
@@ -105,7 +105,7 @@ export default function Submission() {
             <div className="flex w-full justify-end ">
                 <button
                     className="flex items-center mr-[270px] mt-6 font-semibold text-sm justify-center ml-2 py-2 px-4 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-opacity-50 mb-4 rounded-md"
-                    onClick={() => navigate(`/ReleseInfoUpdate/${getSubmissions?.data?.data?.releseInfo_id}`)}
+                    onClick={() => navigate(`/ReleseInfoUpdate/${getSubmissions?.data?.data?.releaseInfo_id}`)}
                 >
                     {/* < size={size} /> */}
                     Edit Details

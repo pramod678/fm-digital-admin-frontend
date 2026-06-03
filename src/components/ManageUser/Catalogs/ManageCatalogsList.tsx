@@ -1,8 +1,7 @@
 import * as React from "react";
 import ManageCatalogsListRow from "./ManageCatalogsListRow";
-import { GetAllUsersWithFiltersDataApi } from "../../../api/user";
 import { useParams } from "react-router-dom";
-import { GetAdminAllCatalogsApi } from "../../../api/catalogs";
+import { GetAdminReleaseCatalogsApi } from "../../../api/catalogs";
 import { BounceLoader } from "react-spinners";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
@@ -10,51 +9,31 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 export default function ManageCatalogsList() {
 
     const { id } = useParams();
+    const PAGE_SIZE = 25;
 
-    const [userId, setUserId] = React.useState('');
-    const [statusId, setStatusId] = React.useState('');
-    const [catalogs, setCatalogs] = React.useState([]);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
 
-    const { data: getCatalogs, isLoading: isLoadingGetCatalogs, isFetching } = GetAdminAllCatalogsApi(id, '');
+    const { data: getCatalogs, isLoading: isLoadingGetCatalogs, isFetching } = GetAdminReleaseCatalogsApi(id || '', '', currentPage, PAGE_SIZE, searchTerm);
 
-    const PAGE_SIZE = 25
+    // Reset to first page when search changes
     React.useEffect(() => {
-        if (getCatalogs) {
-            setCatalogs(getCatalogs.data.data);
-            setCurrentPage(1);
-        }
-    }, [getCatalogs]);
+        setCurrentPage(1);
+    }, [searchTerm]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
         setSearchTerm(inputValue);
-        setCurrentPage(1);
     };
 
     const handlePageChange = (pageNumber: any) => {
         setCurrentPage(pageNumber);
     };
 
-    const filterRecords = (data: any, term: any) => {
-        return data.filter(
-            (row: any) =>
-                row?.ReleaseTitle.toLowerCase().includes(term) ||
-                row?.LabelName.toLowerCase().includes(term)
-        );
-    };
-
-    const getCurrentPageData = () => {
-        const filteredRecords = filterRecords(catalogs, searchTerm);
-        const startIndex = (currentPage - 1) * PAGE_SIZE;
-        const endIndex = startIndex + PAGE_SIZE;
-        const slicedRecords = filteredRecords.slice(startIndex, endIndex);
-        return { slicedRecords, totalFilteredRecords: filteredRecords.length };
-    };
-
-    const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
-    const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
+    const slicedRecords = getCatalogs?.data?.data || [];
+    const pagination = getCatalogs?.data?.pagination;
+    const totalFilteredRecords = pagination?.totalItems || 0;
+    const totalPages = pagination?.totalPages || 0;
 
 
     return (

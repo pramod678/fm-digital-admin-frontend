@@ -19,7 +19,7 @@ export default function EditSongsInfo() {
 
     const { mutate: getUserData, isLoading: isLoadinggetUserData } = UserDataApi(setUserData, navigate)
     const { data: getReleaseInfo, isLoading: isLoadingReleaseInfo } = GetReleaseInfoByIdApi(id)
-    const { data: GetSongs, isLoading, isFetching, refetch } = GetSongsApi(getReleaseInfo?.data?.data?.releseInfo_id)
+    const { data: GetSongs, isLoading, isFetching, refetch } = GetSongsApi(getReleaseInfo?.data?.data?.releaseInfo_id)
     const { mutate: DeleteSong, isLoading: isLoadingDeleteSong } = DeleteSongApi(navigate, refetch)
 
     React.useEffect(() => {
@@ -42,7 +42,7 @@ export default function EditSongsInfo() {
             cogoToast.info("please upload atleast two songs")
             return
         }
-        navigate(`/Platform/${getReleaseInfo?.data?.data.releseInfo_id}`);
+        navigate(`/Platform/${getReleaseInfo?.data?.data.releaseInfo_id}`);
     }
 
 

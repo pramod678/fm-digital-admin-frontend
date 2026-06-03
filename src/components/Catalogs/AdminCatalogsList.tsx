@@ -1,6 +1,6 @@
 import * as React from "react";
 import AdminListRow from "./AdminListRow";
-import { GetAdminAllCatalogsApi } from "../../api/catalogs";
+import { GetAdminReleaseCatalogsApi, GetAdminCatalogSongsApi, GetAdminCatalogPlatformApi, GetAdminPrimaryArtistApi } from "../../api/catalogs";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { GetAllUsersDataApi } from "../../api/user";
 import { BounceLoader } from "react-spinners";
@@ -9,62 +9,46 @@ import Select from 'react-select';
 
 export default function AdminCatalogsList() {
 
+    const PAGE_SIZE = 25;
 
     //filters
     const [userId, setUserId] = React.useState('');
     const [statusId, setStatusId] = React.useState('');
-    const [catalogs, setCatalogs] = React.useState([]);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [currentPage, setCurrentPage] = React.useState(1);
 
-    const { data: getCatalogs, isLoading: isLoadingGetCatalogs, isFetching } = GetAdminAllCatalogsApi(userId, statusId);
+    const { data: getCatalogs, isLoading: isLoadingGetCatalogs, isFetching } = GetAdminReleaseCatalogsApi(userId, statusId, currentPage, PAGE_SIZE, searchTerm);
 
     const { data: allUsersData } = GetAllUsersDataApi();
 
-    const PAGE_SIZE = 25
+    // Reset to first page when filters change
     React.useEffect(() => {
-        if (getCatalogs) {
-            setCatalogs(getCatalogs.data.data);
-            setCurrentPage(1);
-        }
-    }, [getCatalogs]);
+        setCurrentPage(1);
+    }, [userId, statusId, searchTerm]);
 
     const handleFilter = (event: any) => {
         const inputValue = event.target.value.toLowerCase();
         setSearchTerm(inputValue);
-        setCurrentPage(1);
     };
 
     const handlePageChange = (pageNumber: any) => {
         setCurrentPage(pageNumber);
     };
 
-    const filterRecords = (data: any, term: any) => {
-        return data.filter(
-            (row: any) =>
-                row?.ReleaseTitle.toLowerCase().includes(term) ||
-                row?.LabelName.toLowerCase().includes(term)
-        );
-    };
+    const slicedRecords = getCatalogs?.data?.data || [];
+    const pagination = getCatalogs?.data?.pagination;
+    const totalFilteredRecords = pagination?.totalItems || 0;
+    const totalPages = pagination?.totalPages || 0;
 
-    const getCurrentPageData = () => {
-        const filteredRecords = filterRecords(catalogs, searchTerm);
-        const startIndex = (currentPage - 1) * PAGE_SIZE;
-        const endIndex = startIndex + PAGE_SIZE;
-        const slicedRecords = filteredRecords.slice(startIndex, endIndex);
-        return { slicedRecords, totalFilteredRecords: filteredRecords.length };
-    };
-
-    const { slicedRecords, totalFilteredRecords } = getCurrentPageData();
-    const totalPages = Math.ceil(totalFilteredRecords / PAGE_SIZE);
-
-
-    console.log(allUsersData?.data?.data?.find((user: any) => user?.users_id === userId))
+    const userOptions = allUsersData?.data?.data?.map((user: any) => ({
+        value: user.users_id,
+        label: `${user.users_id} - ${user.fname} ${user.lname}`
+    })) || [];
 
     return (
         <>
             {(isLoadingGetCatalogs || isFetching) && (
-                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-100">
+                <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-[100] bg-black bg-opacity-10">
                     <BounceLoader size={150} color={"#000000"} />
                 </div>
             )}
@@ -75,66 +59,37 @@ export default function AdminCatalogsList() {
 
                 {/* Filters */}
                 <div className="flex flex-col sm:flex-row justify-between items-center p-4 bg-gray-100 rounded-md shadow-md w-full mb-2">
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
                         <input
                             type="text"
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             id="search"
                             placeholder="Search Title, Label"
                             defaultValue={""}
                             onChange={handleFilter}
                         />
                         <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="px-4 py-2 w-full sm:w-auto rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             onChange={(e: any) => setStatusId(e.target.value)}
                             value={statusId}
                         >
-                            <option value="">All</option>
+                            <option value="">All Status</option>
                             <option value={4}>Approved</option>
                             <option value={0}>Draft</option>
                             <option value={1}>Pending</option>
                             <option value={2}>Rejected</option>
                             <option value={3}>Corrections</option>
                         </select>
-                        <select
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-10 overflow-y-scroll"
-                            onChange={(e: any) => setUserId(e.target.value)}
-                            value={userId}
-                        >
-                            <option value="">UserId</option>
-                            {
-                                allUsersData?.data?.data?.map((user: any) => {
-                                    return (
-                                        <>
-                                            <option value={user?.users_id}>{user?.users_id + " - " + user?.fname + " " + user?.lname}</option>
-                                        </>
-                                    )
-                                })
-                            }
-                        </select>
-                        {/* <Select
-                            className="w-40"
-                            classNamePrefix="select"
-                            isClearable
-                            isSearchable
-                            options={allUsersData?.data?.data?.map((user: any) => ({
-                                value: user?.users_id,
-                                label: user?.users_id +" - "+user?.fname + " " + user?.lname,
-                            }))}
-                            onChange={(selectedOption: any) => setUserId(selectedOption?.value || '')}
-                            value={allUsersData?.data?.data?.find((user: any) => user?.users_id === userId)?.users_id || null}
-                            getOptionLabel={(option) => option.label}
-                            getOptionValue={(option) => option.value}
-                        /> */}
-
-                        {/* <input
-                            type="text"
-                            className="px-4 py-2 w-full sm:w-auto rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            id="search"
-                            placeholder="Search Cat#"
-                            defaultValue={""}
-                        // onChange={handleFilter}
-                        /> */}
+                        <div className="w-full sm:w-64">
+                            <Select
+                                options={userOptions}
+                                isClearable
+                                placeholder="Select User"
+                                onChange={(option: any) => setUserId(option ? option.value : '')}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                            />
+                        </div>
                     </div>
 
 
