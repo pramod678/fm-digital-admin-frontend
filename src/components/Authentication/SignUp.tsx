@@ -131,8 +131,29 @@ export default function SignUp() {
       lname: finalData.lname || "",
       email: finalData.email?.toLowerCase() || "",
       password: finalData.password || "",
-      phone: finalData.phone || "",
+      // Field names below match the backend's user model as proven by the
+      // profile-edit write path (UserDetailsDto / UpdateUserDataApi), not the
+      // wizard's own field names. Three wizard fields differ from the backend:
+      //   wizard `phone`       -> backend `phoneNumber`
+      //   wizard `ibanAccount` -> backend `accountNumber`
+      //   wizard `ifscCode`    -> backend `IFSCcode`
+      //   wizard `swiftCode`   -> backend `swiftcode`
+      phoneNumber: finalData.phone || "",
       userType: "User",
+      // Bank details
+      beneficiaryName: finalData.beneficiaryName || "",
+      bankName: finalData.bankName || "",
+      accountNumber: finalData.ibanAccount || "",
+      IFSCcode: finalData.ifscCode || "",
+      swiftcode: finalData.swiftCode || "",
+      // Social media (names already match the backend)
+      facebook: finalData.facebook || "",
+      instagram: finalData.instagram || "",
+      youtube: finalData.youtube || "",
+      linkedin: finalData.linkedin || "",
+      // Referral code: no confirmed backend field exists for this (absent from
+      // UserDetailsDto). Sent under the form's own name as a best guess.
+      referralCode: finalData.referralCode || "",
     };
 
     RegisterWithMail(objdata);
