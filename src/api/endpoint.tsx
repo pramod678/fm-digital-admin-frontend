@@ -15,5 +15,7 @@ export const ENDPOINTS = {
         REGISTER: "/user/register",
         USER_DATA: "/user/userData",
         FORGOT_PASSWORD: "/user/forgotpassword",
+        VERIFY_OTP: "/user/verifyOtp",
+        RESET_PASSWORD: "/user/resetPassword",
     },
 } as const;

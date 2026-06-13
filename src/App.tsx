@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "./components/Authentication/SignUp";
 import Login from "./components/Authentication/Login";
 import ForgotPassword from "./components/Authentication/ForgotPassword";
+import VerifyOtp from "./components/Authentication/VerifyOtp";
+import ResetPassword from "./components/Authentication/ResetPassword";
 import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import PublicRoute from "./components/Routes/PublicRoute";
 import Home from "./components/Home";
@@ -70,6 +72,8 @@ function App() {
             <Route path="sign-in" element={<PublicRoute><Login /></PublicRoute>} />
             <Route path="sign-up" element={<PublicRoute><SignUp /></PublicRoute>} />
             <Route path="forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+            <Route path="verify-otp" element={<PublicRoute><VerifyOtp /></PublicRoute>} />
+            <Route path="reset-password" element={<PublicRoute><ResetPassword /></PublicRoute>} />
             {/* Add other routes outside of SharedLayout here */}
             <Route path="*" element={<>not found</>} />
           </Routes>
