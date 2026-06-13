@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import ReCAPTCHA from "react-google-recaptcha";
 import cogoToast from "@successtar/cogo-toast";
@@ -11,14 +11,17 @@ type FormValues = {
 };
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const stateEmail = (location.state as any)?.email || "";
+  const fromLoginRedirect = (location.state as any)?.fromLoginRedirect || false;
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>({ defaultValues: { email: "" } });
-
-  const navigate = useNavigate();
+  } = useForm<FormValues>({ defaultValues: { email: stateEmail } });
   const [captchaVerified, setCaptchaVerified] = React.useState<string | null>(null);
 
   const { mutate: sendOtp, isLoading } = ForgotPasswordApi(reset, navigate);
@@ -56,11 +59,20 @@ const ForgotPassword = () => {
         {/* Form Card */}
         <div className="backdrop-blur-sm rounded-2xl pl-1 pr-1 pb-8">
           <h2 className="text-white text-lg font-medium mb-2 text-center">
-            Forgot Password
+            {fromLoginRedirect ? "Create New Password" : "Forgot Password"}
           </h2>
 
           {/* Horizontal line */}
-          <hr className="border-gray-500 mb-6" />
+          <hr className="border-gray-500 mb-4" />
+
+          {fromLoginRedirect && (
+            <div className="bg-yellow-500/20 border border-yellow-500/40 rounded-lg p-3 mb-4 text-center">
+              <p className="text-yellow-200 text-sm">
+                🔒 Your password needs to be updated due to a security upgrade.
+                Please verify your email to create a new password.
+              </p>
+            </div>
+          )}
 
           <form onSubmit={onSubmit}>
             {/* Email Field */}

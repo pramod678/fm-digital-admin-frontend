@@ -6,14 +6,47 @@ import cogoToast from "@successtar/cogo-toast";
 import { RegisterWithMailApi } from "../../api/authV2";
 import { FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
 
+const COUNTRY_CODES = [
+  { code: "+91",  label: "🇮🇳 India (+91)" },
+  { code: "+1",   label: "🇺🇸 USA / Canada (+1)" },
+  { code: "+44",  label: "🇬🇧 UK (+44)" },
+  { code: "+61",  label: "🇦🇺 Australia (+61)" },
+  { code: "+971", label: "🇦🇪 UAE (+971)" },
+  { code: "+966", label: "🇸🇦 Saudi Arabia (+966)" },
+  { code: "+65",  label: "🇸🇬 Singapore (+65)" },
+  { code: "+60",  label: "🇲🇾 Malaysia (+60)" },
+  { code: "+64",  label: "🇳🇿 New Zealand (+64)" },
+  { code: "+27",  label: "🇿🇦 South Africa (+27)" },
+  { code: "+92",  label: "🇵🇰 Pakistan (+92)" },
+  { code: "+880", label: "🇧🇩 Bangladesh (+880)" },
+  { code: "+94",  label: "🇱🇰 Sri Lanka (+94)" },
+  { code: "+977", label: "🇳🇵 Nepal (+977)" },
+  { code: "+20",  label: "🇪🇬 Egypt (+20)" },
+  { code: "+234", label: "🇳🇬 Nigeria (+234)" },
+  { code: "+254", label: "🇰🇪 Kenya (+254)" },
+  { code: "+49",  label: "🇩🇪 Germany (+49)" },
+  { code: "+33",  label: "🇫🇷 France (+33)" },
+  { code: "+39",  label: "🇮🇹 Italy (+39)" },
+  { code: "+34",  label: "🇪🇸 Spain (+34)" },
+  { code: "+31",  label: "🇳🇱 Netherlands (+31)" },
+  { code: "+7",   label: "🇷🇺 Russia (+7)" },
+  { code: "+86",  label: "🇨🇳 China (+86)" },
+  { code: "+81",  label: "🇯🇵 Japan (+81)" },
+  { code: "+82",  label: "🇰🇷 South Korea (+82)" },
+  { code: "+55",  label: "🇧🇷 Brazil (+55)" },
+  { code: "+52",  label: "🇲🇽 Mexico (+52)" },
+  { code: "+54",  label: "🇦🇷 Argentina (+54)" },
+];
+
 type FormValues = {
   fname: string;
   lname: string;
   email: string;
   password: string;
-  country: string;
+  countryCode: string;
   phone: string;
   referralCode: string;
+  voucher: string;
   // Payment details
   beneficiaryName: string;
   bankName: string;
@@ -47,6 +80,11 @@ export default function SignUp() {
   const [isInitialized, setIsInitialized] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
+  // Timestamp of when the user landed on the final step. Used to ignore a click
+  // that "passes through" from the previous step's Continue button onto the
+  // Register button that now sits at the same screen position after advancing.
+  const lastStepEnteredAtRef = React.useRef<number | null>(null);
+
   // Register Api Call
   const { mutate: RegisterWithMail, isLoading: isLoadingRegisterWithMail } =
     RegisterWithMailApi(reset, navigate);
@@ -54,7 +92,7 @@ export default function SignUp() {
   const steps = [
     {
       title: "Create an account",
-      fields: ["fname", "lname", "referralCode"],
+      fields: ["fname", "lname", "referralCode", "voucher"],
     },
     {
       title: "Set up your Contact details",
@@ -98,6 +136,12 @@ export default function SignUp() {
 
   // Load form data when step changes - only for current step fields
   React.useEffect(() => {
+    // Record when we arrive on the final step so onSubmit can reject a stray
+    // click that carried over from the Continue press on the previous step.
+    if (currentStep === steps.length - 1) {
+      lastStepEnteredAtRef.current = Date.now();
+    }
+
     // Get current step fields
     const currentStepFields = steps[currentStep].fields;
 
@@ -123,7 +167,32 @@ export default function SignUp() {
     setIsInitialized(true);
   }, [currentStep]);
 
+  const isLastStep = currentStep === steps.length - 1;
+
   const onSubmit = handleSubmit((data: FormValues) => {
+    // Safety net: the wizard must only ever register from the final (social
+    // media) step. If a form submission is triggered from any earlier step,
+    // ignore it instead of registering with incomplete data.
+    if (!isLastStep) {
+      console.warn(
+        `SignUp: submit ignored — not on final step (currentStep=${currentStep})`
+      );
+      return;
+    }
+
+    // Reject a submit that fires immediately after landing on the final step:
+    // that is almost always a second click carried over from the Continue
+    // button press that advanced the step, not a deliberate Register click.
+    if (
+      lastStepEnteredAtRef.current !== null &&
+      Date.now() - lastStepEnteredAtRef.current < 500
+    ) {
+      console.warn(
+        "SignUp: submit ignored — click passthrough right after reaching final step"
+      );
+      return;
+    }
+
     const finalData = { ...formData, ...data };
 
     const objdata: any = {
@@ -131,14 +200,16 @@ export default function SignUp() {
       lname: finalData.lname || "",
       email: finalData.email?.toLowerCase() || "",
       password: finalData.password || "",
-      // Field names below match the backend's user model as proven by the
-      // profile-edit write path (UserDetailsDto / UpdateUserDataApi), not the
-      // wizard's own field names. Three wizard fields differ from the backend:
+      // Keys below match the backend's /user/register req.body contract
+      // (confirmed by backend dev). Some wizard field names differ and are
+      // remapped here:
       //   wizard `phone`       -> backend `phoneNumber`
       //   wizard `ibanAccount` -> backend `accountNumber`
       //   wizard `ifscCode`    -> backend `IFSCcode`
       //   wizard `swiftCode`   -> backend `swiftcode`
-      phoneNumber: finalData.phone || "",
+      phoneNumber: finalData.phone
+        ? `${finalData.countryCode || "+91"}${finalData.phone}`
+        : "",
       userType: "User",
       // Bank details
       beneficiaryName: finalData.beneficiaryName || "",
@@ -151,9 +222,8 @@ export default function SignUp() {
       instagram: finalData.instagram || "",
       youtube: finalData.youtube || "",
       linkedin: finalData.linkedin || "",
-      // Referral code: no confirmed backend field exists for this (absent from
-      // UserDetailsDto). Sent under the form's own name as a best guess.
       referralCode: finalData.referralCode || "",
+      voucher: finalData.voucher || "",
     };
 
     RegisterWithMail(objdata);
@@ -198,16 +268,29 @@ export default function SignUp() {
               )}
             </div>
 
-            <div>
-              <label className="block text-white text-sm font-medium mb-2">
-                Referral Code/ Referred By
-              </label>
-              <input
-                type="text"
-                {...register("referralCode")}
-                className="w-full px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2  placeholder-gray-500"
-                placeholder=""
-              />
+            <div className="flex flex-col gap-4">
+              <div>
+                <label className="block text-white text-sm font-medium mb-2">
+                  Referral Code <span className="text-gray-400 font-normal">(Optional)</span>
+                </label>
+                <input
+                  type="text"
+                  {...register("referralCode")}
+                  className="w-full px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2 placeholder-gray-500"
+                  placeholder=""
+                />
+              </div>
+              <div>
+                <label className="block text-white text-sm font-medium mb-2">
+                  Voucher <span className="text-gray-400 font-normal">(Optional)</span>
+                </label>
+                <input
+                  type="text"
+                  {...register("voucher")}
+                  className="w-full px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2 placeholder-gray-500"
+                  placeholder=""
+                />
+              </div>
             </div>
           </div>
         );
@@ -275,19 +358,24 @@ export default function SignUp() {
                 Country
               </label>
               <div className="flex gap-3">
-                <input
-                  type="text"
-                  value="+91"
-                  disabled
-                  className="w-20 px-3 py-3 bg-gray-400 text-white rounded-lg"
-                />
+                <select
+                  {...register("countryCode", { required: true })}
+                  className="w-44 px-2 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2"
+                  defaultValue="+91"
+                >
+                  {COUNTRY_CODES.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
                 <input
                   type="tel"
                   {...register("phone", {
                     required: "Phone number is required",
                     pattern: {
-                      value: /^[0-9]{10}$/,
-                      message: "Invalid phone number (10 digits required)",
+                      value: /^[0-9]{7,15}$/,
+                      message: "Invalid phone number",
                     },
                   })}
                   className="flex-1 min-w-[120px] px-4 py-3 bg-gray-400 text-gray-800 rounded-lg focus:outline-none focus:ring-2 placeholder-gray-500"
@@ -514,7 +602,18 @@ export default function SignUp() {
           {/* Horizontal line */}
           <hr className="border-gray-500 mb-6" />
 
-          <form onSubmit={onSubmit}>
+          <form
+            onSubmit={onSubmit}
+            onKeyDown={(e) => {
+              // Prevent the Enter key from submitting the whole multi-step form
+              // early. The inputs live inside this <form>, so without this guard
+              // pressing Enter on any earlier step fires onSubmit and registers
+              // the user before they reach the later steps (payment / social).
+              if (e.key === "Enter" && currentStep < steps.length - 1) {
+                e.preventDefault();
+              }
+            }}
+          >
             {renderStepContent()}
 
             {/* Action Buttons */}
