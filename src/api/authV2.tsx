@@ -179,7 +179,7 @@ export const VerifyOtpApi = (navigate: NavigateFunction) => {
                 cogoToast.error(res?.data?.error || 'Invalid OTP');
             } else {
                 cogoToast.success("OTP verified successfully");
-                navigate('/reset-password', { state: { email: variables.email } });
+                navigate('/reset-password', { state: { email: variables.email, otp: variables.otp } });
             }
         },
         onError: (error: any) => {
@@ -192,6 +192,7 @@ export const VerifyOtpApi = (navigate: NavigateFunction) => {
 type ResetPasswordPayload = {
     email: string;
     password: string;
+    otp: string;
 };
 
 export const ResetPasswordApi = (reset: any, navigate: NavigateFunction) => {

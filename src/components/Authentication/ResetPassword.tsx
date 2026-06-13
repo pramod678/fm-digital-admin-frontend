@@ -14,6 +14,7 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
   const email = (location.state as { email?: string })?.email || "";
+  const otp = (location.state as { otp?: string })?.otp || "";
 
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
@@ -29,7 +30,7 @@ export default function ResetPassword() {
   const { mutate: resetPassword, isLoading } = ResetPasswordApi(reset, navigate);
 
   const onSubmit = handleSubmit((data) => {
-    resetPassword({ email, password: data.password });
+    resetPassword({ email, password: data.password, otp });
   });
 
   return (
